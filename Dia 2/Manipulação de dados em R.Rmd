@@ -1,0 +1,519 @@
+---
+title: "Manipulação de dados"
+subtitle: "Métodos para criação, edição e limpeza de dados"
+author: "Nicholas A. C. Marino"
+date: "Introdução à Linguagem R - github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+## A natureza dos dados {.smaller}
+
+Um conjunto de dados pode estar em diferentes fases de 'maturidade'.  
+
+<div class="columns-1">
+  * Dados brutos (_raw data_)  
+  * Dados limpos (_tidy data_)  
+  * Dados processados (_processed data_)  
+  * Dados trabalhados (_output data_)  
+</div>
+
+## _"Tidying data"_ {.smaller}
+
+* É uma parte muito importante que deve ocorrer __antes__ do início da análise de dados.  
+* Envolve:
+    + criação e cálculo de novas variáveis baseadas nas que já existem;  
+    + alteração da natureza de uma variável;  
+    + seleção das variáveis que serão encaminhadas para análise de dados (colunas);  
+    + seleção da parte dos dados que será encaminhada para análise de dados (linhas);  
+    + modificação do nome das variáveis;  
+    + modificação de valores/nomes/níveis observados para uma ou mais variáveis;  
+    + alteração no formato da tabela de dados: _longo_ vs _largo_ (long vs wide);  
+    + fusão com outras tabelas;
+
+## Carregando um conjunto de dados {.smaller}
+
+```{r message=FALSE, warning=FALSE}
+# primeiro, vamos carregar dois pacotes para leitura de dados
+library(readxl) # para ler arquivos .xlsx
+```
+
+```{r}
+# agora, vamos carregar um conjunto de dados onde estão as espécies
+bioticos <- read_excel("dados/bioticos.xlsx")
+bioticos[1:6,1:4]
+```
+
+## Alguns métodos para edição de objetos {.smaller}
+
+* Temos espaços e pontos no nome das espécies - podemos consertar isso sem abrir o editor.
+```{r eval=FALSE}
+nomes <- names(bioticos)
+nomes
+```
+
+```{r echo=FALSE}
+nomes <- names(bioticos)
+nomes[1:15]
+```
+
+## Substituindo padrões {.smaller}
+
+* `sub` e `gsub` buscam por um padrão (`pattern`) em um vetor (`x`), e o substituem por qualquer coisa que você defina (`replacement`).  
+
+```{r}
+# substitui apenas a primeira ocorrência do padrão em cada elemento
+sub(pattern = "\\.", replacement = "", x = nomes[30:45])
+```
+
+## Substituindo padrões {.smaller}
+
+* `sub` e `gsub` buscam por um padrão (`pattern`) em um vetor (`x`), e o substituem por qualquer coisa que você defina (`replacement`).
+```{r}
+# substitui todas as ocorrências do padrão em cada elemento
+gsub(pattern = "\\.", replacement = "", x = nomes[30:45])
+```
+
+## Criando nomes {.smaller}
+
+* Você também pode automatizar a criação do nome das variáveis.  
+```{r eval=FALSE}
+nomes <- gsub(pattern = "\\.", replacement = "", x = nomes)
+nomes <- make.names(nomes)
+nomes
+# ver também a função abbreviate (?abbreviate)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+nomes <- gsub(pattern = "\\.", replacement = "", x = nomes)
+make.names(nomes)[1:20]
+nomes <- make.names(nomes)
+```
+
+## Criando nomes {.smaller}
+
+* Lembre-se que tudo no R é sensível à caracteres maiúsculos e minúsculos.  
+```{r eval=FALSE}
+tolower(nomes)
+```
+
+```{r echo=FALSE}
+tolower(nomes)[1:10]
+```
+
+```{r eval=FALSE}
+toupper(nomes)
+```
+
+```{r echo=FALSE}
+toupper(nomes)[1:10]
+```
+
+## Consertando o nome das colunas {.smaller}
+
+```{r eval=FALSE}
+names(bioticos) <- tolower(nomes)
+names(bioticos)
+```
+
+```{r echo=FALSE}
+names(bioticos) <- tolower(nomes)
+names(bioticos)[1:15]
+```
+
+## Unindo informações {.smaller}
+
+* Podemos unir duas colunas em uma única com a função `paste` ou `paste0`.  
+```{r}
+exemplo <- data.frame(tratamento = rep(c("pres", "aus"), each = 5), 
+                      resposta = rep(c("sim", "nao"), 5))
+exemplo
+```
+
+## Unindo informações {.smaller}
+
+* Podemos unir duas colunas em uma única com a função `paste` ou `paste0`.  
+```{r}
+# o separador ("sep") fica no meio dos dois vetores
+exemplo$unido <- paste(exemplo$tratamento, exemplo$resposta, sep = "_")
+exemplo
+```
+
+## Unindo informações {.smaller}
+
+* Podemos unir duas colunas em uma única com a função `paste` ou `paste0`.  
+* Normalmente, utilizamos a função `paste0` quando _não_ queremos espaços ou nada do gênero entre os dois vetores.  
+
+```{r}
+# aqui, o separador ("sep") vai para o final do elemento criado
+exemplo$unido2 <- paste0(exemplo$tratamento, exemplo$resposta, sep = "_")
+exemplo
+```
+
+## Substituição condicional de elementos {.smaller}
+
+* Podemos substituir um elemento por um número ou palavra de forma condicional, utilizando a função `ifelse`.
+* Pode ser usada em _vetores_ ou em _data.frame_.
+* Esta função é similar à função do Excel __se__.
+```{r}
+args(ifelse)
+```
+
+## Substituição condicional de elementos {.smaller}
+
+* Em um vetor.  
+```{r}
+sp1 <- bioticos$micromischodus.sugillatus
+sp1
+```
+
+```{r}
+ifelse(sp1 > 0, 1, 0)
+```
+
+```{r}
+ifelse(sp1 > 0, "presenca", "ausencia")
+```
+
+## Substituição condicional de elementos {.smaller}
+
+* Em um data.frame.  
+```{r eval=FALSE}
+bioticos[1:10, 2:6]
+```
+
+```{r echo=FALSE}
+names(bioticos) <- abbreviate(names(bioticos), minlength = 12)
+bioticos[1:10, 2:6]
+```
+
+## Substituição condicional de elementos {.smaller}
+
+* Em um data.frame.
+```{r}
+ifelse(bioticos > 0, 1, 0)[1:10, 2:6]
+```
+
+## Exercício 1 {.smaller}  
+
+* Crie o objeto descrito abaixo.  
+* Você deve substituir por uma palavra:  
+    + Os valores acima de 8;  
+    + os valores acima de 4;  
+    + os valores abaixo de 4.  
+```{r}
+set.seed(3)
+vetor <- runif(30, 0, 10)
+vetor
+```
+
+## O pacote _dplyr_ {.smaller}
+
+* Criado por Hadley Wickham.  
+* Facilita a manipulação de dados.  
+    + Simplifica a forma como você pensa sobre a execução de uma manipulação;  
+    + É muito mais rápido do que métodos incluídos no pacote `base` do R;
+    + É intuitivo, pois funções são baseadas em __verbos__ correspondentes às ações mais utilizadas na manipulação de dados.
+
+```{r eval=FALSE}
+install.packages("dplyr")
+install.packages("gapminder")
+```
+
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+library(gapminder)
+```
+
+## Verbos da manipulação de dados {.smaller}
+
+* `select`  
+* `filter`  
+* `arrange`  
+* `mutate`  
+* `rename` 
+* `group_by`  
+* `summarise`  
+* `do`  
+
+## gapminder data {.smaller}
+
+```{r}
+head(gapminder)
+```
+
+## _select_ {.smaller}
+
+```{r}
+select(gapminder, country, continent, year, gdpPercap)
+```
+
+## _select_ {.smaller}
+
+```{r}
+select(gapminder, -lifeExp, -pop)
+```
+
+## _select_ {.smaller}
+
+```{r}
+select(gapminder, c(country:year, gdpPercap))
+```
+
+## _filter_ {.smaller}
+
+```{r}
+filter(gapminder, year > 1986)
+```
+
+## _filter_ {.smaller}
+
+```{r}
+filter(gapminder, country == "Brazil")
+```
+
+## _filter_ {.smaller}
+
+```{r}
+filter(gapminder, country == "Brazil", gdpPercap > 5000)
+```
+
+## Exercício 2 {.smaller}  
+
+* Crie uma nova tabela baseada com as colunas:
+    + Nome do país  
+    + Tamanho da População  
+    + GDP per capita  
+* Retenha apenas as linhas referentes à Portugal.  
+* Transforme a tabela em um objeto.  
+
+## _arrange_ {.smaller}
+
+```{r}
+brasil <- filter(gapminder, country == "Brazil", gdpPercap > 5000)
+arrange(brasil, year)
+```
+
+## _arrange_ {.smaller}
+
+```{r}
+brasil <- filter(gapminder, country == "Brazil", gdpPercap > 5000)
+arrange(brasil, desc(year))
+```
+
+## _rename_ {.smaller}
+
+```{r}
+rename(gapminder, ano = year, populacao = pop)
+```
+
+## _mutate_ {.smaller}
+
+```{r}
+mutate(gapminder, gdp = gdpPercap * pop)
+```
+
+## _mutate_ {.smaller}
+
+```{r}
+mutate(gapminder, gdp = gdpPercap * pop, gdp_div = gdp/1000)
+```
+
+## Exercício 3 {.smaller}  
+
+Com a tabela que você criou no exercício anterior:  
+* Crie novos nomes para as colunas;  
+* Crie uma nova variável.  
+
+## _summarize_ {.smaller}
+
+```{r}
+summarize(gapminder, media_pop = mean(pop))
+```
+
+## _summarize_ {.smaller}
+
+```{r}
+summarize(gapminder, media_pop = mean(pop), desvio_pop = sd(pop), 
+          tamanho = n(), erro_pop = desvio_pop/tamanho)
+```
+
+## *group_by* {.smaller}
+
+```{r}
+group_by(gapminder, continent)
+```
+
+## *group_by* + *summarize* {.smaller}
+
+```{r}
+summarize(group_by(gapminder, continent), mean_gdp = mean(gdpPercap))
+```
+
+## *group_by* + *summarize* {.smaller}
+
+```{r}
+summarize(group_by(gapminder, continent, country), mean_gdp = mean(gdpPercap))
+```
+
+## Pipe operator {.smaller}
+
+* As funções do pacote `dplyr` podem agilizar __muito__ a nossa vida.  
+* Mas, a principal contribuição e funcionalidade implementada por este pacote é o _pipe operator_.  
+* Permite o usuário à encadear funções, facilitando a leitura do código e a linha de raciocínio durante a tarefa.  
+```{r eval=FALSE}
+%>% 
+```
+
+## Pipping {.smaller}
+
+```{r}
+gapminder %>% 
+  select(country, continent, gdpPercap) %>% 
+  group_by(continent, country) %>% 
+  summarise(media = mean(gdpPercap))
+```
+
+## Pipping {.smaller}
+
+```{r}
+gapminder %>% 
+  select(country, year, pop, gdpPercap) %>% 
+  filter(country == "Brazil") %>%
+  mutate(gdp = gdpPercap * pop) %>% 
+  do(data.frame(coeficiente = coef(lm(gdp ~ year, data = .))))
+```
+
+
+## Exercício 4 {.smaller}  
+
+* Calcule a média, variância e desvio padrão para todos os países Europa.  
+
+
+## Outras facilidades oferecidas pelo _dplyr_ {.smaller}
+
+* O pacote `dplyr` também permite que você selecione colunas (`select`) com base em padrões.  
+    + `contains`  
+    + `matches`  
+    + `starts_with`  
+    + `ends_with`  
+
+## Outras facilidades oferecidas pelo _dplyr_ {.smaller}
+
+```{r}
+bioticos <- read_excel("dados/bioticos.xlsx")
+select(bioticos, contains("juvenil"))
+```
+
+## Outras facilidades oferecidas pelo _dplyr_ {.smaller}
+
+* Também oferece uma série de outras funções que podem facilitar a sua vida.
+    + `lag`  
+    + `lead`  
+    + `setequal`  
+    + `setdiff`  
+    + `union`  
+    + `distinct`  
+
+   
+## Unindo planilhas diferentes {.smaller}
+
+* O `dplyr` também oferece um conjunto de funções que tem por finalidade unir duas planilhas diferentes com base em uma informação comum entre elas.
+    + `inner_join`   
+    + `left_join`  
+    + `right_join`  
+    + `full_join`  
+    + `semi_join`  
+    + `anti_join`  
+
+## Unindo planilhas diferentes {.smaller}
+
+* Um exemplo.  
+
+```{r message=FALSE, warning=FALSE}
+# vamos carregar um conjunto de dados onde estão algumas variáveis ambientais
+library(readr)
+abioticos <- read_tsv("dados/abioticos.xls")
+abioticos[1:6, 1:8]
+```
+
+## Unindo planilhas diferentes {.smaller}
+
+* Um exemplo.  
+
+```{r}
+nova_tabela <- inner_join(abioticos, bioticos, "site")
+names(nova_tabela)[1:20]
+```
+
+## O pacote _tidyr_ {.smaller}
+
+* Mais um pacote criado por Hadley Wickham.  
+* Possui diversas funcionalidades com foco na manipulação do formato e conteúdo de um conjunto de dados já existente.
+* Principais funções:
+    + `separate`  
+    + `gather`  
+    + `spread`  
+
+```{r eval=FALSE}
+install.packages("tidyr")
+library(tidyr)
+```
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyr)
+```
+
+## Separando informações {.smaller}
+
+* Podemos separar uma informação encontrada em uma coluna utilizando a função `separate`.  
+
+```{r}
+exemplo
+```
+
+## Separando informações {.smaller}
+
+* Podemos separar uma informação encontrada em uma coluna utilizando a função `separate`.  
+
+```{r}
+separate(data = exemplo, col = unido, into = c("trat_new", "resp_new"), sep = "_")
+```
+
+## Mudando o formato de uma planilha {.smaller}
+
+* A função `gather` pode ser usada para transformar uma planilha de um formato _largo para longo_.  
+```{r}
+bioticos[1:10,1:4]
+```
+
+## Mudando o formato de uma planilha {.smaller}
+
+* A função `gather` pode ser usada para transformar uma planilha de um formato _largo para longo_.  
+```{r}
+gather(data = bioticos, key = especie, value = abundancia, 
+         `Micromischodus sugillatus`:`Laimosemion dibaphus`)
+```
+
+## Mudando o formato de uma planilha {.smaller}
+
+* A função `spread` pode ser usada para transformar uma planilha de um formato _longo para largo_.  
+```{r}
+longo <- gather(data = bioticos, key = especie, value = abundancia,
+         `Micromischodus sugillatus`:`Laimosemion dibaphus`)
+longo
+```
+
+## Mudando o formato de uma planilha {.smaller}
+
+* A função `spread` pode ser usada para transformar uma planilha de um formato _longo para largo_.  
+```{r}
+spread(data = longo, key = especie, value = abundancia, fill = 0)[1:10,1:4]
+```
+
+## Revisão {.smaller}
+
+* O R te apresenta uma série de ferramentas para facilitar sua vida durante a manipulação de dados.  
+    + `base`
+    + `dplyr`
+    + `tidyr`
+* Ao máximo que você puder, tente automatizar todo o processo de manipulação e limpezados dos dados: __DON`T REPEAT YOURSELF__.  
