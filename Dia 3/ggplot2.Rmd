@@ -1,7 +1,7 @@
 ---
 title: "ggplot2"
 subtitle: "The Grammar of Graphics"
-author: "Nicholas A. C. Marino"
+author: "Camila de Barros, Nicholas A. C. Marino, Vitor Borges Jr."
 date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---

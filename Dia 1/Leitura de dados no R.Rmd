@@ -1,7 +1,7 @@
 ---
 title: "Leitura de dados no R"
 subtitle: "Métodos alternativos para leitura de dados"
-author: "Nicholas A. C. Marino"
+author: "Camila de Barros, Nicholas A. C. Marino, Vitor Borges Jr."
 date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
