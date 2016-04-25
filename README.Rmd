@@ -1,6 +1,6 @@
 # Introdução à Linguagem de Programação R
 
-Este é um repositório com o conteúdo do curso de Introdução à Linguagem de Programação R, oferecido por mim, por Camila dos Santos de Barros e Vitor Borges Jr, para os alunos do Programa de Pós-Graduação em Ecologia, da Universidade Federal do Rio de Janeiro.  
+Este é um repositório com o conteúdo do curso de Introdução à Linguagem de Programação R, oferecido por Nicholas dos A. C. Marino, por Camila dos Santos de Barros e Vitor Borges Jr, para os alunos do Programa de Pós-Graduação em Ecologia, da Universidade Federal do Rio de Janeiro.  
 
 ### Licença de Uso  
 
