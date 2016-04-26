@@ -49,6 +49,8 @@ bioticos[1:6,1:4]
 ```{r eval=FALSE}
 nomes <- names(bioticos)
 nomes
+colnames(bioticos)
+rownames(bioticos)
 ```
 
 ```{r echo=FALSE}
@@ -62,7 +64,7 @@ nomes[1:15]
 
 ```{r}
 # substitui apenas a primeira ocorrência do padrão em cada elemento
-sub(pattern = "\\.", replacement = "", x = nomes[30:45])
+sub(pattern = "\\.", replacement = "", x = nomes)
 ```
 
 ## Substituindo padrões {.smaller}
@@ -70,16 +72,17 @@ sub(pattern = "\\.", replacement = "", x = nomes[30:45])
 * `sub` e `gsub` buscam por um padrão (`pattern`) em um vetor (`x`), e o substituem por qualquer coisa que você defina (`replacement`).
 ```{r}
 # substitui todas as ocorrências do padrão em cada elemento
-gsub(pattern = "\\.", replacement = "", x = nomes[30:45])
+gsub(pattern = "\\.", replacement = "", x = nomes)
 ```
 
 ## Criando nomes {.smaller}
 
 * Você também pode automatizar a criação do nome das variáveis.  
 ```{r eval=FALSE}
-nomes <- gsub(pattern = "\\.", replacement = "", x = nomes)
-nomes <- make.names(nomes)
-nomes
+nomes <- names(bioticos)
+nomes1 <- gsub(pattern = "\\.", replacement = "", x = nomes)
+nomes2 <- make.names(nomes1)
+nomes2
 # ver também a função abbreviate (?abbreviate)
 ```
 
@@ -93,7 +96,7 @@ nomes <- make.names(nomes)
 
 * Lembre-se que tudo no R é sensível à caracteres maiúsculos e minúsculos.  
 ```{r eval=FALSE}
-tolower(nomes)
+tolower(nomes2)
 ```
 
 ```{r echo=FALSE}
@@ -101,7 +104,7 @@ tolower(nomes)[1:10]
 ```
 
 ```{r eval=FALSE}
-toupper(nomes)
+toupper(nomes2)
 ```
 
 ```{r echo=FALSE}
@@ -111,7 +114,7 @@ toupper(nomes)[1:10]
 ## Consertando o nome das colunas {.smaller}
 
 ```{r eval=FALSE}
-names(bioticos) <- tolower(nomes)
+names(bioticos) <- tolower(nomes2)
 names(bioticos)
 ```
 
@@ -126,6 +129,10 @@ names(bioticos)[1:15]
 ```{r}
 exemplo <- data.frame(tratamento = rep(c("pres", "aus"), each = 5), 
                       resposta = rep(c("sim", "nao"), 5))
+exemplo
+names(exemplo) <- c("João", "Maria")
+exemplo
+rownames(exemplo) <- seq(from = 11, to = 20)
 exemplo
 ```
 

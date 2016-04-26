@@ -69,6 +69,7 @@ dados_pequeno
 ```
 
 
+
 ## Métodos tradicionais para leitura de dados  
 
 ```{r}
@@ -82,22 +83,15 @@ head(dados_pequeno)
 
 ```{r}
 # agora, vamos simular um conjunto de dados maior ainda
-
-set.seed(3)
 x <- rnorm(n = 1e6, mean = 0, sd = 1)
-
-set.seed(9)
 y <- rpois(n = 1e6, lambda = 6)
-
-set.seed(98)
 z <- rbinom(n = 1e6, size = 1, prob = 0.5)
-
 dados_grande <- data.frame(x,y,z)
-dados_grande
 ```
 
 ```{r}
 format(object.size(dados_grande), units = "Mb")
+str(dados_grande)
 ```
 
 

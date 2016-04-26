@@ -60,7 +60,7 @@ set.seed(6)
 ```{r eval = FALSE}
 x > y # Qual resutado foi gerado a partir desta operação? 
 x >= y # Lembre-se de fazer suas observações após as linhas de comando!
-x >= y # Essa hábito vai acelerar consideravelmente o seu aprendizado 
+x <= y # Essa hábito vai acelerar consideravelmente o seu aprendizado 
 x < y # E será uma tremenda mão na roda quando você retornar aos scripts após algum tempo
 x == y 
 x!= y 
@@ -95,10 +95,14 @@ x[c(2, 4, 6, 8, 10)] # extrai os elementos em posições pares do vetor x
 
 * Agora é sua vez de exercitar os novos conhecimentos! Utilizando os comandos de lógica, crie novos vetores (ex. a, b, c, d, etc) que contenham:
 
-1. Os elementos do vetor x que são maiores que y;
+1. Os elementos do vetor x que são maiores que y; 
+(a <- x[x > y])
 2. Os elementos em comum entre os vetores x e y;
+(b -> x[x == y])
 3. Os elementos entre o valores máximo e mínimo do vetor x;
+(c <- x[x  > min(x) & x < max(x)])
 4. Os elementos do vetor y maiores ou iguais aos de x.
+(d <- y[y > x | y == x])
 
 ***
 
@@ -146,7 +150,7 @@ m[2, 1]
 m[3, ]
 m[, 2] # os valores retornados estão na forma de vetor
 m[, 2, drop = FALSE] # o R retorna os valores na forma de matriz
-m[3, , drop = FALSE] 
+m[c(1, 2, 3), c(1, 2), drop = FALSE] 
 ```
 
 ***
@@ -170,13 +174,14 @@ m[3, , drop = FALSE]
 
 ``` {r eval = FALSE}
 (df <- data.frame(sp1 = x, sp2 = y, area = charac))
+str(df)
 df[3,2]
 df[6, ]
 df[, 2] # ou...
 df[, "sp2"]
 df[c(1,2,3), c(2:3)] # ou..
 df[1:3, c("sp2", "area")]
-df[df$area == "b", ]
+areaB <- df[df$area == "b", ]
 df[df$area == "a" & df$sp1 < 10, ]
 df[df$area == "b" | df$sp2 > 10, ]
 ```
@@ -201,7 +206,7 @@ df
 
 * Dados ausentes em uma tabela de dados podem ser um problema na hora de realizar as análises. A função *is.na*() é muito útil para identificar e remover os dados ausentes na tabela de dados.
 * Vamos testar o funcionamento de *is.na*() no data frame df. 
-* Primeiro, vamos extrair apenas a coluna y e chama-la de y.noNA.
+* Primeiro, vamos extrair apenas a coluna sp2 e chama-la de y.noNA.
 
 ```{r eval = FALSE}
 y.NA <- df$sp2
@@ -212,6 +217,7 @@ is.na(y.NA) # retorna um vetor lógico
 
 ```{r eval = FALSE}
 y.NA[is.na(y.NA)] # retorna apenas os NA's
+
 ```
 
 * Lembram o que siginifica o ponto de exclamação (!)? Ele siginifica negação. O que acontece então se colocarmos o ponto de exclamação antes da função *is.na*() (ex. *!is.na*())?
@@ -223,6 +229,8 @@ y.NA[!is.na(y.NA)] # o R retorna apenas os valores observados e remove os NA's!
 * Também podemos remover os NA's diretamente de um data frame utilizando a função *complete.cases*(). Contudo,  observações que foram de fato realizadas serão perdidas quando estas estiverem na mesma linha de uma observação ausente.
 * Vamos entender melhor o que acontece excluindo os NA's do data frame df.
 
+df[-c(5:9),]
+
 ```{r eval = FALSE}
 df.noNA <- complete.cases(df)
 df[df.noNA, ]
@@ -233,10 +241,34 @@ df[df.noNA, ]
 * É hora de trabalhar o que foi aprendido! Carregue a planilha de dados *airquality* e solucione as seguintes questões:
 
 1. Calcule a média da variável Ozone. Lembre-se de remorver os dados ausentes (ex. NA's).
+
 2. Calcule a variância da variável Solar.R no mês 5. Lembre-se de remover os dados ausentes (ex. NA's).
-3. Extraia os dados de todas as variáveis relativas ao mês 8 **e** que apresentem temperaturas abaixo de 90.
+
+a. Filtrar as linhas cujo Mês seja igual a 5
+air_mes5 <- airquality[airquality$Month == 5, 2]
+air_mes5
+b. calcular a variância
+var(air_mes5, na.rm = TRUE)
+
+método hardcore:
+var(airquality[airquality$Month == 5, 2], na.rm=TRUE)
+
+3. Extraia o data frame relativo ao mês 8 **e** que apresentem temperaturas abaixo de 90. (bonus: me diga as informações que descrevem as variáveis)
+
+summary(airquality)
+
+ex3 <- airquality[airquality$Month == 8 & airquality$Temp < 90,]
+summary(ex3)
+
 4. Extraia os dados de todas as variáveis associadas a valores de Solar.R maiores que 200, **ou** Wind > 15.
+
+airquality[airquality$Solar.R > 200 | airquality$Wind > 15,]
+
 5. Remova todos os NA's e salve o data frame em um novo objeto chamado *airq.complete*.
+
+airq.complete <- airquality[complete.cases(airquality),]
+airq.complete
+
 
 ***
 
