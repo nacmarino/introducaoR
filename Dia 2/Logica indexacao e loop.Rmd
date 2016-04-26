@@ -1,0 +1,397 @@
+---
+title: "Lógica, Indexação e Loop"
+author: "Vitor Borges Junior"
+date: "25 de abril de 2016"
+output: html_document
+---
+
+# **Introdução a Linguagem R** 
+## **Lógica, Indexação e Loop**
+### **Operadores de Lógica**  
+
+* Existem 8 operadores de lógica na linguagem R.  
+
+Operador | Significado
+-------- | ------------
+>        | maior que 
+>=       | maior que ou igual a
+<        | menor que
+<=       | menor que ou igual a
+==       | igualdade
+!=       | diferença
+&        | "e"
+"|"      | "ou"
+
+***
+
+* Entendo o funcionamento dos operadores de lógica.
+* Vamos gerar aleatoriamente dois vetores, x e y, contendo 10 valores em cada vetor. Para isso usaremos a função *sample*().
+
+```{r eval = FALSE}
+set.seed(1)
+(x <- sample(1:20, 10))
+set.seed(6)
+(y  <- sample(1:20, 10)) 
+```
+* Acesse o help da função *sample*() e veja quais são os seus argumentos e o que cada um significa. 
+
+```{r eval = FALSE}
+?sample
+```
+
+* Um hábito que facilita o entendimento de uma função após a leitura do help é executar os exemplos que se encontram ao final do arquivo. Você pode copiar, colar e executar o exemplo a partir do seu script, ou rodar todos os exemplos utilizando a função *example*().
+
+```{r eval = FALSE}
+example(sample)
+```
+
+* Agora, gere dois novos vetores, w e z, acresecentando o argumento replace = TRUE. Aproveite as mesmas linhas de comando que você utilizou anteriormente, substituindo apenas os nomes dos vetores.
+
+```{r eval = FALSE}
+set.seed(1) # pré determina o valor inicial do processo de amostragem
+(w <- sample(1:20, 10, replace = TRUE)) # Lembre-se de fazer suas observações após as linhas de comando descrevendo a tarefa que foi executada!
+set.seed(6)
+(z  <- sample(1:20, 10, replace = TRUE)) 
+```
+
+* Observaram algo diferente? O que mudou? Para que serve o argumento replace?
+* Agora, vamos realizar operações de lógica entre os vetores x e y, utilizando os operadores apresentados na tabela 
+
+```{r eval = FALSE}
+x > y # Qual resutado foi gerado a partir desta operação? 
+x >= y # Lembre-se de fazer suas observações após as linhas de comando!
+x >= y # Essa hábito vai acelerar consideravelmente o seu aprendizado 
+x < y # E será uma tremenda mão na roda quando você retornar aos scripts após algum tempo
+x == y 
+x!= y 
+```
+
+***
+
+### **Indexação de Vetores**
+
+* Indexação é a ação de extrair um elemento específico, ou um conjunto de elementos, de um objeto no R.
+* Há pelo menos quatro formas diferentes de indexação de objetos no R.
+* []  extrai um ou mais elementos em vetores, listas, ou data frames;
+* [[]]  extrai um único elemento em listas, ou data frames;
+* $  extrai elementos pelo nome em listas e data frames;
+* *attach*() permite extrair elementos pelo nome em listas e data frames, porém deve ser utilizada com muito cuidado. Nossa recomendação é evitar o seu uso.
+
+* Vamos extrair:
+
+1. O primeiro elemento do vetor x;
+2. Todos os elementos do vetor x menores que 10;  
+3. Os cinco primeiros elementos do vetor x; e
+4. Apenas os elementos em posições pares do vetor x.
+
+```{r eval = FALSE}
+x[1] # extrai o primeiro elemento do vetor x
+x[x < 10] # extrai todos os elementos do vetor x < que 10
+x[1:5] # extrai os cinco pirmeiros elementos do vetor x
+x[c(2, 4, 6, 8, 10)] # extrai os elementos em posições pares do vetor x
+```
+
+#### Exercício 1
+
+* Agora é sua vez de exercitar os novos conhecimentos! Utilizando os comandos de lógica, crie novos vetores (ex. a, b, c, d, etc) que contenham:
+
+1. Os elementos do vetor x que são maiores que y;
+2. Os elementos em comum entre os vetores x e y;
+3. Os elementos entre o valores máximo e mínimo do vetor x;
+4. Os elementos do vetor y maiores ou iguais aos de x.
+
+***
+
+### **Indexação de matrizes**
+
+* Matrizes são objetos de duas dimensões, pois possuem a dimensão linha e a dimensão coluna. 
+* Objetos do tipo matriz só podem possuir um único tipo de elemento (ex. exclusivamente numérico, ou exclusivamete de caracteres). 
+* Há três comandos diferentes para se gerar uma matriz:
+
+1. *cbind*() significa "columns bind" e gera a matriz juntando os vetores em colunas
+
+```{r eval = FALSE}
+cbind(x, y)
+(charac <- rep(letters[1:2], each = 5))
+cbind(x, y, charac) # ????
+```
+
+2. *rbind*() significa "rows bind" e gera a matriz juntando os vetores em linhas
+
+```{r eval = FALSE}
+rbind(x, y)
+```
+
+3. *matrix*() permite ao usuário especificar como a matriz será gerada
+
+```{r eval = FALSE}
+matrix(x, nrow = 5, ncol = 2)
+?matrix
+matrix(x, nrow = 5, ncol = 2, byrow = TRUE)
+matrix(x, nrow = 5, ncol = 2, byrow = TRUE, dimnames = list(letters[1:5]))
+(m <- matrix(x, nrow = 5, ncol = 2, byrow = TRUE, dimnames = list(letters[1:5], LETTERS[1:2])))
+dim(m) # fornece o número de dimensões (ex. número de linhas e colunas)
+```
+
+* Para acessar a informação dentro de uma matriz utilizamos os colchetes da seguinte maneira: [linha, coluna]. Assim, vamos extrair:
+
+1. O elemento da primeira linha e da segunda coluna da matriz m;
+2. O elemento da segunda linha e da primeira coluna da matriz m;
+3. Todos os elementos da terceira linha; e
+4. Todos os elementos da segunda coluna.
+
+```{r eval = FALSE}
+m[1, 2]
+m[2, 1]
+m[3, ]
+m[, 2] # os valores retornados estão na forma de vetor
+m[, 2, drop = FALSE] # o R retorna os valores na forma de matriz
+m[3, , drop = FALSE] 
+```
+
+***
+
+### **Indexação de Data Frames**
+
+* Objetos do tipo data frames são uma forma de tabela de dados mais completa que permite a inclusão de diferentes tipos de vetores. 
+* Ou seja, é possível gerar um mesmo data frame a partir de vetores numéricos e de caracteres.
+* Para acessar a informação dentro de um data frame utilizamos os colchetes da mesma forma que fizemos anteriormente com o objeto do tipo matriz: [linha, coluna].
+* Também podemos acessar as colunas pelo nome utilizando $ após o nome do data frame (ex. df$x).
+* Agora, nós vamos:
+
+1. Criar um data frame df a partir dos vetores x, y e charac;
+2. Extrair o elemento da terceira linha e segunda coluna;
+3. Extrair os elemento da sexta linha;
+4. Extrair os elementos da segunda coluna; 
+5. Extrair os elementos das 3 primeiras linhas e da segunda e terceira colunas;
+6. Extrair os valores de todas as colunas associados ao caracter b;
+7. Extrair os valores de todas as colunas associados ao caracter a **e** com valores de x menores que 10; e
+8. Extrair os valores de todas as colunas associadas ao caracter b, **ou** com valores de y maiores que 10
+
+``` {r eval = FALSE}
+(df <- data.frame(sp1 = x, sp2 = y, area = charac))
+df[3,2]
+df[6, ]
+df[, 2] # ou...
+df[, "sp2"]
+df[c(1,2,3), c(2:3)] # ou..
+df[1:3, c("sp2", "area")]
+df[df$area == "b", ]
+df[df$area == "a" & df$sp1 < 10, ]
+df[df$area == "b" | df$sp2 > 10, ]
+```
+
+* Imagine que você se confundiu ao digitar seus dados e gerou vetores com valores errados. Digamos que as observações 2, 5 e 7 do vetor x e 3, 5 e 8 do vetor y são, na realidade, dados ausentes (ex. NA). 
+* Podemos corrigir esses enganos de duas formas diferentes:
+
+1. Corrigindo os vetores e gerando novamente o data frame. Iremos chamar o novo data frame de df1.
+
+```{r eval = FALSE}
+x[c(2, 5, 7)] <- NA
+y[c(3, 5, 8)] <- NA
+(df1 <- data.frame(sp1 = x, sp2 = y, area = charac))
+
+2. Também podemos corrigir o erro diretamente no data frame df. Para isso, precisamos saber em quais linhas e colunas se encontram os valores que foram digitados errados.
+
+```{r eval = FALSE}
+df[c(2, 5, 7), "sp1"] <- NA
+df[c(3, 5, 8), "sp2"] <- NA
+df
+```
+
+* Dados ausentes em uma tabela de dados podem ser um problema na hora de realizar as análises. A função *is.na*() é muito útil para identificar e remover os dados ausentes na tabela de dados.
+* Vamos testar o funcionamento de *is.na*() no data frame df. 
+* Primeiro, vamos extrair apenas a coluna y e chama-la de y.noNA.
+
+```{r eval = FALSE}
+y.NA <- df$sp2
+is.na(y.NA) # retorna um vetor lógico
+```
+
+* O que acontece se aplicarmos a função *is.na*() dentro do vetor y.NA (ex. y.NA[])?
+
+```{r eval = FALSE}
+y.NA[is.na(y.NA)] # retorna apenas os NA's
+```
+
+* Lembram o que siginifica o ponto de exclamação (!)? Ele siginifica negação. O que acontece então se colocarmos o ponto de exclamação antes da função *is.na*() (ex. *!is.na*())?
+
+```{r eval = FALSE}
+y.NA[!is.na(y.NA)] # o R retorna apenas os valores observados e remove os NA's!
+```
+
+* Também podemos remover os NA's diretamente de um data frame utilizando a função *complete.cases*(). Contudo,  observações que foram de fato realizadas serão perdidas quando estas estiverem na mesma linha de uma observação ausente.
+* Vamos entender melhor o que acontece excluindo os NA's do data frame df.
+
+```{r eval = FALSE}
+df.noNA <- complete.cases(df)
+df[df.noNA, ]
+```
+
+### **Exercício 2**
+
+* É hora de trabalhar o que foi aprendido! Carregue a planilha de dados *airquality* e solucione as seguintes questões:
+
+1. Calcule a média da variável Ozone. Lembre-se de remorver os dados ausentes (ex. NA's).
+2. Calcule a variância da variável Solar.R no mês 5. Lembre-se de remover os dados ausentes (ex. NA's).
+3. Extraia os dados de todas as variáveis relativas ao mês 8 **e** que apresentem temperaturas abaixo de 90.
+4. Extraia os dados de todas as variáveis associadas a valores de Solar.R maiores que 200, **ou** Wind > 15.
+5. Remova todos os NA's e salve o data frame em um novo objeto chamado *airq.complete*.
+
+***
+
+### **Indexação Listas**
+
+* As listas são capazes de armazenar diferentes tipos de objetos. 
+* Vamos gerar uma lista com um dos objetos de cada tipo que criamos até agora. Ou seja, nossa lista conterá um vetor, uma matriz e um data frame.
+
+```{r eval = FALSE}
+(lista0 <- list(x, m, df)) # [[]] indicam o nome dos objetos na lista
+(lista <- list(vetor = x, matriz = m, dataframe = df)) # cada objeto possui um $nome
+```
+
+* Podemos acessar cada objeto individualmente utilizando [[]], ou $ mais o nome.
+
+```{r eval = FALSE}
+lista[[1]]
+lista$vetor
+lista[[2]]
+lista$matriz
+lista[[3]]
+lista$dataframe
+```
+
+* Para acessar mais de um objeto ao mesmo tempo em uma lista utilizamos [].
+
+```{r eval = FALSE}
+lista[c(1,3)]
+```
+
+* Para acessar elementos dentro dentro de um objeto em uma lista utilizamos [[]][[]]. 
+
+```{r eval = FALSE}
+lista[[1]][[10]] # acessa o décimo elemento do primeiro objeto da lista
+lista[[2]][[1,1]] # Faça suas observações!
+lista[[3]][[2,3]]
+```
+
+***
+
+### **Indexando com *subset*()**
+
+* A função *subset*() realiza as mesmas indexações descritas anteriormente de uma forma automatizada.
+* Vamos realizar novamente as questões 3 e 4 do exercício 2 utilizando a função *subset*()
+
+1. Calcule a média da variável Ozone. Lembre-se de remorver os dados ausentes (ex. NA's).
+
+```{r eval = FALSE}
+(ozone.NA <- subset(x = airquality, select = Ozone))
+ozone.clean <- ozone.NA[!is.na(ozone.NA)]
+mean(ozone.clean)
+```
+
+2. Calcule a variância da variável Solar.R no mês 5. Lembre-se de remover os dados ausentes (ex. NA's).
+
+```{r eval = FALSE}
+(solar.r5 <- subset(x = airquality, subset = Month == 5, select = Solar.R))
+solar.r5clean <- solar.r5[!is.na(solar.r5)]
+var(solar.r5clean)
+```
+
+3. Extraia os dados de todas as variáveis relativas ao mês 8 **e** que apresentem temperaturas abaixo de 90.
+
+```{r eval = FALSE}
+subset(x = airquality, subset = Month == 8 & Temp < 90)
+```
+
+4. Extraia os dados de todas as variáveis associadas a valores de Solar.R maiores que 200, **ou** Wind > 15.
+
+```{r eval = FALSE}
+subset(x = airquality, subset = Solar.R > 200 | Wind > 15)
+```
+
+***
+
+### **Funções de loop**
+
+* As funções de loop servem para iniciar e repetir uma tarefa específica no R tantas vezes quanto desejarmos.
+* Umas das funções de loping mais importantes é a função *for*().
+* A função *for* funciona da seguinte maneira:
+
+> for(i in 1:n) {comandos}
+
+* onde para cada valor de *i* o R executa os comandos que estão entre as chaves. A expressão "i in 1:n" indica que os valores de i serão de i = 1 até i = n.
+* Ou seja, na primeira rodada i = 1, na segunda i = 2, e assim por diante até que i = n.
+* Vamos ver como a função *for*() funciona na prática. Primeiro precisamos criar um objeto vazio para armazenar o resultado da operação.
+
+```{r eval = FALSE}
+resu <- numeric(0) # gera um vetor numérico vazio
+resu  
+```
+
+* Agora vamos utilizar a função *for*() para elevar i valores ao quadrado.
+
+```{r eval = FALSE}
+for (i in 1:5) { # será o i = 1, i = 2, i = 3, i = 4, i = 5
+        resu[i] <- i^2 # realiza a operação e armazena no vetor resu
+} # fim da função
+resu
+(1:5)^2
+```
+* Vamos fazer um "filme" para demonstrar o que a função for está fazendo.
+
+```{r eval = FALSE}
+plot(0:10,0:10, type="n") # plota um gráfico vazio 
+for (i in 1:9) {
+        text(i,i, paste("Passo", i)) # plota um texto no gráfico
+        Sys.sleep(1) ## retarda os passos em 1 s
+}
+```
+
+* A sequência de Fibonacci é uma sequência famosa na matemática. Os dois primeiros números da sequência são [1, 1]. 
+* Os números subsequentes são compostos pela soma dos dois números anteriores. 
+* Assim, o terceiro número da sequência de Fibonacci é 1+1=2, o quarto é 1+2=3, e assim por diante. 
+* Vamos usar a função for para descobrir os 12 primeiros números da sequência de Fibonacci
+
+```{r eval = FALSE}
+Fibonacci <- numeric(0)
+Fibonacci[c(1,2)] <- 1 # o primeiro e segundo valor da sequência devem ser 1
+for (i in 3:12) { # 3 a 12 porque já temos os dois primeiros
+        Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1]
+}
+Fibonacci
+```
+
+### **Exercício 3**
+
+1. Mude os dois primeiros elementos da sequencia para 2 e 2 
+2. Mude os dois primeiros elementos da sequencia para 3 e 2
+3. Modifique o código para que os valores sejam compostos pela diferença entre o primeiro e o segundo valor imediatamente anteriores.
+4. Modifique o código para que os valores sejam compostos pela diferença entre os dois valores imediatamente anteriores somada ao terceiro valor imediatamente anterior. Faça inicialmente com que a sequencia comece com 3 valores [1,1,1]
+
+***
+
+### **Amostragem utilizando *for*()**
+
+* Também podemos utilizar a função for para realizar sorteios e amostragens aleatóreas.
+* Vamos sortear 20 jogos da megasena.
+
+```{r eval = FALSE}
+njogos <- 20 # determinar o número de jogos
+numeros <- matrix(NA, nrow = 6, ncol = njogos) # criar a matriz para armazenar os jogos
+for (i in 1:njogos) { # determina o número total de jogos sorteados
+  numeros[,i]<-sample(1:60,6) # realiza a amostragem de 6 números por jogo
+ }
+numeros
+```
+
+* A partir do mesmo princípio, podemos utilizar as funções *sample*() e *mea*() para realizar subamostragens e caluclar suas médias. Esse é princíopio de uma ferramente ecológica amplamente utilizada, o bootstrap.
+
+```{r eval = FALSE}
+reamostragens <- 100 # determinar o número de jogos
+medias <- numeric(0) # criar a matriz para armazenar os jogos
+for (i in 1:reamostragens) { # determina o número total de jogos sorteados
+  medias[i]<-mean(sample(1:60,6)) # realiza a amostragem de 6 números por jogo
+ }
+medias
+```
