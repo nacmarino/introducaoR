@@ -39,7 +39,7 @@ library(readxl) # para ler arquivos .xlsx
 
 ```{r}
 # agora, vamos carregar um conjunto de dados onde estão as espécies
-bioticos <- read_excel("dados/bioticos.xlsx")
+bioticos <- read_excel("Dia 2/dados/bioticos.xlsx")
 bioticos[1:6,1:4]
 ```
 
@@ -116,6 +116,7 @@ toupper(nomes)[1:10]
 ```{r eval=FALSE}
 names(bioticos) <- tolower(nomes2)
 names(bioticos)
+bioticos[1:6,1:4]
 ```
 
 ```{r echo=FALSE}
@@ -130,8 +131,8 @@ names(bioticos)[1:15]
 exemplo <- data.frame(tratamento = rep(c("pres", "aus"), each = 5), 
                       resposta = rep(c("sim", "nao"), 5))
 exemplo
-names(exemplo) <- c("João", "Maria")
-exemplo
+#names(exemplo) <- c("João", "Maria")
+#exemplo
 rownames(exemplo) <- seq(from = 11, to = 20)
 exemplo
 ```
@@ -141,6 +142,18 @@ exemplo
 * Podemos unir duas colunas em uma única com a função `paste` ou `paste0`.  
 ```{r}
 # o separador ("sep") fica no meio dos dois vetores
+exemplo$vamos_ver <- seq(from = 1, to = 10)
+exemplo
+
+set.seed(3)
+exemplo$olha_so <- rnorm(10, 4, 2)
+exemplo
+
+exemplo$calculo <- exemplo$vamos_ver * exemplo$olha_so
+exemplo
+
+
+
 exemplo$unido <- paste(exemplo$tratamento, exemplo$resposta, sep = "_")
 exemplo
 ```
@@ -169,7 +182,8 @@ args(ifelse)
 
 * Em um vetor.  
 ```{r}
-sp1 <- bioticos$micromischodus.sugillatus
+bioticos[1:6, 1:4]
+sp1 <- bioticos[,2]
 sp1
 ```
 
@@ -190,21 +204,21 @@ bioticos[1:10, 2:6]
 
 ```{r echo=FALSE}
 names(bioticos) <- abbreviate(names(bioticos), minlength = 12)
-bioticos[1:10, 2:6]
+bioticos[1:10, 1:6]
 ```
 
 ## Substituição condicional de elementos {.smaller}
 
 * Em um data.frame.
 ```{r}
-ifelse(bioticos > 0, 1, 0)[1:10, 2:6]
+ifelse(bioticos[1:6,2:6] > 0, 1, 0)
 ```
 
 ## Exercício 1 {.smaller}  
 
 * Crie o objeto descrito abaixo.  
 * Você deve substituir por uma palavra:  
-    + Os valores acima de 8;  
+    + os valores acima de 8;  
     + os valores acima de 4;  
     + os valores abaixo de 4.  
 ```{r}
@@ -212,6 +226,27 @@ set.seed(3)
 vetor <- runif(30, 0, 10)
 vetor
 ```
+
+
+## _rowSums_ e _colSums_
+
+```{r}
+b1 <- bioticos[,-1] #abundâncias
+pa <- ifelse(b1 > 0, 1, 0) #presenca e ausência
+
+b1[1:6, 1:4]
+
+(abund <- rowSums(b1))
+(riq <- rowSums(pa))
+
+infos <- data.frame(riqueza = riq, abundancia = abund)
+
+cbind(b1, infos)
+
+colSums(b1)
+colSums(pa)
+```
+
 
 ## O pacote _dplyr_ {.smaller}
 
@@ -245,7 +280,10 @@ library(gapminder)
 ## gapminder data {.smaller}
 
 ```{r}
+library(dplyr)
+library(gapminder)
 head(gapminder)
+nrow(gapminder)
 ```
 
 ## _select_ {.smaller}
@@ -263,7 +301,9 @@ select(gapminder, -lifeExp, -pop)
 ## _select_ {.smaller}
 
 ```{r}
-select(gapminder, c(country:year, gdpPercap))
+gapminder
+select(gapminder, country:year, gdpPercap)
+select(gapminder, -c(country:year))
 ```
 
 ## _filter_ {.smaller}
@@ -292,6 +332,9 @@ filter(gapminder, country == "Brazil", gdpPercap > 5000)
     + GDP per capita  
 * Retenha apenas as linhas referentes à Portugal.  
 * Transforme a tabela em um objeto.  
+
+select(filter(gapminder, country == "Portugal"), country, pop, gdpPercap)
+summary(filter(select(gapminder, country, pop, gdpPercap), country == "Portugal"))
 
 ## _arrange_ {.smaller}
 
@@ -322,7 +365,8 @@ mutate(gapminder, gdp = gdpPercap * pop)
 ## _mutate_ {.smaller}
 
 ```{r}
-mutate(gapminder, gdp = gdpPercap * pop, gdp_div = gdp/1000)
+mutate(gapminder, gdp = gdpPercap * pop, 
+       gdp_div = gdp/1000)
 ```
 
 ## Exercício 3 {.smaller}  
@@ -341,7 +385,7 @@ summarize(gapminder, media_pop = mean(pop))
 
 ```{r}
 summarize(gapminder, media_pop = mean(pop), desvio_pop = sd(pop), 
-          tamanho = n(), erro_pop = desvio_pop/tamanho)
+          tamanho = n(), erro_pop = desvio_pop/sqrt(tamanho))
 ```
 
 ## *group_by* {.smaller}
@@ -359,7 +403,8 @@ summarize(group_by(gapminder, continent), mean_gdp = mean(gdpPercap))
 ## *group_by* + *summarize* {.smaller}
 
 ```{r}
-summarize(group_by(gapminder, continent, country), mean_gdp = mean(gdpPercap))
+summarize(group_by(gapminder, continent, country), 
+          mean_gdp = mean(gdpPercap))
 ```
 
 ## Pipe operator {.smaller}
@@ -393,8 +438,14 @@ gapminder %>%
 
 ## Exercício 4 {.smaller}  
 
-* Calcule a média, variância e desvio padrão para todos os países Europa.  
+* Calcule a média, variância e desvio padrão do gdpPercap para todos os países Europa.  
 
+gapminder %>% 
+  select(continent, country, gdpPercap) %>% 
+  filter(continent == "Europe") %>% 
+  group_by(country) %>% 
+  summarise(media = mean(gdpPercap), variancia = var(gdpPercap), 
+            desvio = sd(gdpPercap))
 
 ## Outras facilidades oferecidas pelo _dplyr_ {.smaller}
 
@@ -403,6 +454,11 @@ gapminder %>%
     + `matches`  
     + `starts_with`  
     + `ends_with`  
+
+```{r}
+select(bioticos, contains("juvenil"))
+```
+
 
 ## Outras facilidades oferecidas pelo _dplyr_ {.smaller}
 
@@ -432,6 +488,21 @@ select(bioticos, contains("juvenil"))
     + `semi_join`  
     + `anti_join`  
 
+```{r}
+set.seed(3)
+plan1 <- data.frame(chave = rep(c("a","b","c"), 5),
+                    valor = rnorm(15, 0, 1))
+plan1
+
+plan2 <- data.frame(chave = c("a", "b", "c"),
+                    multiplicador = c(3,7,2))
+plan2
+
+inner_join(plan1, plan2, by = "chave")
+
+```
+
+
 ## Unindo planilhas diferentes {.smaller}
 
 * Um exemplo.  
@@ -439,7 +510,7 @@ select(bioticos, contains("juvenil"))
 ```{r message=FALSE, warning=FALSE}
 # vamos carregar um conjunto de dados onde estão algumas variáveis ambientais
 library(readr)
-abioticos <- read_tsv("dados/abioticos.xls")
+abioticos <- read_tsv("Dia 2/dados/abioticos.xls")
 abioticos[1:6, 1:8]
 ```
 
@@ -483,7 +554,8 @@ exemplo
 * Podemos separar uma informação encontrada em uma coluna utilizando a função `separate`.  
 
 ```{r}
-separate(data = exemplo, col = unido, into = c("trat_new", "resp_new"), sep = "_")
+separate(data = exemplo, col = unido, into = c("trat_new", "resp_new"), 
+         sep = "_")
 ```
 
 ## Mudando o formato de uma planilha {.smaller}
@@ -497,8 +569,7 @@ bioticos[1:10,1:4]
 
 * A função `gather` pode ser usada para transformar uma planilha de um formato _largo para longo_.  
 ```{r}
-gather(data = bioticos, key = especie, value = abundancia, 
-         `Micromischodus sugillatus`:`Laimosemion dibaphus`)
+gather(data = bioticos, key = especie, value = abundancia,         micromischodus.sugillatus:laimosemion.dibaphus)
 ```
 
 ## Mudando o formato de uma planilha {.smaller}
@@ -506,7 +577,7 @@ gather(data = bioticos, key = especie, value = abundancia,
 * A função `spread` pode ser usada para transformar uma planilha de um formato _longo para largo_.  
 ```{r}
 longo <- gather(data = bioticos, key = especie, value = abundancia,
-         `Micromischodus sugillatus`:`Laimosemion dibaphus`)
+         micromischodus.sugillatus:laimosemion.dibaphus)
 longo
 ```
 
@@ -514,7 +585,23 @@ longo
 
 * A função `spread` pode ser usada para transformar uma planilha de um formato _longo para largo_.  
 ```{r}
-spread(data = longo, key = especie, value = abundancia, fill = 0)[1:10,1:4]
+novo <- spread(data = longo, key = especie, value = abundancia, fill = 0)
+novo
+```
+
+## Salvando os dados criados {.smaller}  
+
+```{r}
+write.table(x = novo, file = "Dia 2/dados/novo.xls", 
+            row.names = FALSE, sep = "\t")
+```
+
+
+## Reordenando as suas colunas {.smaller}  
+
+```{r}
+gapminder %>% 
+  select(year:gdpPercap, country, continent)
 ```
 
 ## Revisão {.smaller}
