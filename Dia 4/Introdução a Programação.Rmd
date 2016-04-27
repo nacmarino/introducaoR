@@ -1,0 +1,20 @@
+---
+title: "Introdução a Programação"
+author: "Camila de Barros, Nicholas A. C. Marino, Vitor Borges Jr"
+date: "27 de abril de 2016"
+output: html_document
+---
+
+# **Introdução a Programação**
+
+* Até agora nós escrevemos e executamos linhas de comando a partir das funções já existentes no R.
+* Porém, uma das maiores vantagens do R é que os seus usuário também podem programar funções para executar tarefas específicas que ainda não existem.
+
+## **Sintaxe para escrever funções**
+
+* A sintaxe básica para escrever uma função é: *function(lista de argumentos){corpo da função}*
+* 
+```{r}
+
+```
+
