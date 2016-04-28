@@ -81,7 +81,7 @@ args(qplot)
 
 * Exercício 1: por que não precisamos especificar o __geom__?
 ```{r}
-qplot(x = conc, y = uptake, data = CO2)
+qplot(x = conc, y = uptake, data = CO2, geom = "points")
 ```
 
 ## _qplot_ {.smaller}  
@@ -97,7 +97,7 @@ qplot(x = conc, y = uptake, data = CO2, shape = Type,
 * Podemos criar painéis diferentes com o argumento `facets`.  
 ```{r fig.height=3, fig.width=4}
 qplot(x = conc, y = uptake, data = CO2, facets = ~Type, 
-      size = 3, colour = Treatment)
+      size = 3, colour = Treatment, shape = Type)
 ```
 
 ## _qplot_ {.smaller}  
@@ -280,9 +280,27 @@ g + tema
 ## Exercício 2: sua vez!  {.smaller}
 
 * Com os dados do `gapminder`:  
-1. Construa um gráfico da relação entre o ano e o GDP para cada continente;  
-2. Construa um gráfico com a distribuição de expectativa de vida para cada continente;  
-3. Construa um gráfico com a distribuição de expectativa de vida.  
+1. Construa um gráfico da relação entre o ano e o gdpPercap para cada continente.  
+
+```{r}
+library(gapminder)
+qplot(data = gapminder, x = year, y = gdpPercap, facets = ~continent, shape = continent, colour = continent, size = 5)
+
+g <- ggplot(data = gapminder, mapping = aes(x = year, y = gdpPercap))
+g <- g + facet_grid(~continent)
+g <- g + geom_point()
+g
+
+ggplot(data = gapminder, mapping = aes(x = year, y = gdpPercap)) +
+  facet_grid(~continent) +
+  geom_point()
+
+g <- ggplot(data = gapminder, mapping = aes(x = year, y = gdpPercap)) +
+  facet_grid(~continent) +
+  geom_point()
+g
+```
+
 
 ## Interação com o dplyr {.smaller}
 
