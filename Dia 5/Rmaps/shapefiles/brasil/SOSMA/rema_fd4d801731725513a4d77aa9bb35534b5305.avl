@@ -1,0 +1,180 @@
+/3.2
+(ODB.1
+	FirstRootClassName:	"Legend"
+	Roots:	2
+	Version:	32
+)
+
+(Legend.2
+	SymType:	0x02
+	LegType:	0x08
+	ClassType:	0x03
+	FieldNames:	3
+	Symbols:	4
+	Class:	21
+	Class:	22
+	Class:	23
+	Class:	24
+	StdDevs:	1.00000000000000
+	NullSym:	25
+	NullValues:	29
+	StatValues:	30
+	Precision:	-3
+)
+
+(AVStr.3
+	S:	"Classes"
+)
+
+(SymList.4
+	Child:	5
+	Child:	9
+	Child:	13
+	Child:	17
+)
+
+(BShSym.5
+	Color:	6
+	OutlineColor:	7
+	OutlineWidth:	0.10000000000000
+	BgColor:	8
+)
+
+(TClr.6
+	Green:	0xffff
+)
+
+(TClr.7
+)
+
+(TClr.8
+	Red:	0xffff
+	Green:	0xffff
+	Blue:	0xffff
+)
+
+(BShSym.9
+	Color:	10
+	OutlineColor:	11
+	OutlineWidth:	0.10000000000000
+	BgColor:	12
+)
+
+(TClr.10
+	Red:	0xff00
+	Green:	0xbf7b
+	Blue:	0xfe
+)
+
+(TClr.11
+)
+
+(TClr.12
+	Red:	0xffff
+	Green:	0xffff
+	Blue:	0xffff
+)
+
+(BShSym.13
+	Color:	14
+	OutlineColor:	15
+	OutlineWidth:	0.10000000000000
+	BgColor:	16
+)
+
+(TClr.14
+	Red:	0xa100
+	Green:	0x6686
+	Blue:	0x32f0
+)
+
+(TClr.15
+)
+
+(TClr.16
+	Red:	0xffff
+	Green:	0xffff
+	Blue:	0xffff
+)
+
+(BShSym.17
+	Color:	18
+	Outline:	1
+	OutlineColor:	19
+	OutlineWidth:	0.10000000000000
+	BgColor:	20
+)
+
+(TClr.18
+	Name:	"Transparent"
+)
+
+(TClr.19
+	Name:	"Transparent"
+)
+
+(TClr.20
+	Red:	0xffff
+	Green:	0xffff
+	Blue:	0xffff
+)
+
+(LClass.21
+	IsText:	1
+	Label:	"Mata"
+	MinStr:	"Mata"
+	MaxStr:	"Mata"
+	Precision:	-3
+)
+
+(LClass.22
+	IsText:	1
+	Label:	"Mangue"
+	MinStr:	"Mangue"
+	MaxStr:	"Mangue"
+	Precision:	-3
+)
+
+(LClass.23
+	IsText:	1
+	Label:	"Restinga"
+	MinStr:	"Restinga"
+	MaxStr:	"Restinga"
+	Precision:	-3
+)
+
+(LClass.24
+	IsNoData:	1
+	IsText:	1
+	Label:	"No Data"
+	Precision:	-3
+)
+
+(BShSym.25
+	Color:	26
+	Outline:	1
+	OutlineColor:	27
+	OutlineWidth:	0.10000000000000
+	BgColor:	28
+)
+
+(TClr.26
+	Name:	"Transparent"
+)
+
+(TClr.27
+	Name:	"Transparent"
+)
+
+(TClr.28
+	Red:	0xffff
+	Green:	0xffff
+	Blue:	0xffff
+)
+
+(NameDict.29
+)
+
+(NameDict.30
+)
+

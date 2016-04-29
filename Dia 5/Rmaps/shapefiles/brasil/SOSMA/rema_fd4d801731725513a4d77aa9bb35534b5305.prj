@@ -1,0 +1,1 @@
+PROJCS["Polyconic",GEOGCS["Australian Natl & S. Amer. 1969",DATUM["D_unknown",SPHEROID["aust_SA",6378160,298.25]],PRIMEM["Greenwich",0],UNIT["Degree",0.017453292519943295]],PROJECTION["Polyconic"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-45],PARAMETER["false_easting",0],PARAMETER["false_northing",0],UNIT["Meter",1]]

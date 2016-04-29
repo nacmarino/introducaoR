@@ -1,0 +1,12 @@
+base
+maps
+mapdata
+sp
+rworldmap
+maptools
+mapproj
+ggplot2
+ggmap
+rgdal
+raster
+spatstat
