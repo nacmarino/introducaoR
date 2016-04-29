@@ -60,7 +60,7 @@ map("worldHires","Brazil")
 ```{r maps2, warning=FALSE, message=FALSE}
 par(mar=c(1,1,1,1))
 map("world","Brazil")
-map.axes()
+map.axes() # para colocar os eixos do gráfico já com longitude e latitude
 ```
 
 ## Mapas desde os pacotes de R
@@ -78,7 +78,7 @@ Dá para usar qualquer elemento de plot do base R (points, abline, text, legend)
 ```{r maps4, warning=FALSE, message=FALSE}
 map("world","Brazil")
 map.axes()
-map.scale(ratio = F, cex = 0.7)
+map.scale(ratio = F, cex = 0.7) # para colocar a escala do mapa
 abline(h = 0, lty = 2)
 ```
 
@@ -87,22 +87,22 @@ abline(h = 0, lty = 2)
 
 ```{r maps5, warning=FALSE, message=FALSE}
 map("world","Brazil", fill=T, col="grey90")
-map(,,add=T)
+map(add=T) # para plotar os limites geográficos dos países sob o gráfico existente
 map.axes()
 map.scale(ratio=F, cex=0.7)
-abline(h=0, lty = 2)
-map.cities(country = "Brazil",minpop = 2000000,pch=19, cex=1.2)# pacote maps
+abline(h=0, lty = 2) # para colocar o equador
+map.cities(country = "Brazil", minpop = 2000000, pch=19, cex=1.2)# pacote maps
 ```
 
 ## Mapas desde os pacotes de R
 
 ```{r maps6, warning=FALSE, message=FALSE}
 m <- map("world","Brazil", fill=T, col="grey95")
-map(,,add=T)
+map(add=T)
 map.axes()
 map.scale(ratio=F, cex=0.7)
 abline(h=0, lty = 2)
-map.grid(m, nx = 5, ny = 5, col="grey50", font=1, cex=0.7 , pretty = T)#library(mapproj)
+map.grid(m, col="grey50", font=1, cex=0.7, pretty = T, labels = FALSE) #library(mapproj)
 ```
 
 ## Projeções 
@@ -120,14 +120,15 @@ legend(-0.3, 4.37, legend= c("Albers", "WGS84"), col=c("black","grey70"), lty=c(
 
 ```{r shapefiles1, echo=T,eval=T,message=FALSE,warning=FALSE,cache=T}
 #library(rgdal)
+library(maptools)
 # maptools::readShapePoly
-br <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm0.shp") # 0: país, 1: estados, 2: municípios
-estados1 <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm1.shp") # 0: país, 1: estados, 2: municípios
-cidades <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm2")
-biomas <- readShapePoly("./shapefiles/brasil/BR_BIOMAS_IBGE.shp")
+br <- maptools::readShapePoly("shapefiles/brasil/BRA_adm_shp/BRA_adm0") # 0: país, 1: estados, 2: municípios
+estados1 <- readShapePoly("shapefiles/brasil/BRA_adm_shp/BRA_adm1") # 0: país, 1: estados, 2: municípios
+cidades <- readShapePoly("shapefiles/brasil/BRA_adm_shp/BRA_adm2")
+biomas <- readShapePoly("shapefiles/brasil/BR_BIOMAS_IBGE.shp")
 
 # rgdal::readOGR
-estados <- readOGR("./shapefiles/brasil/BRA_adm_shp/", "BRA_adm1")
+estados <- readOGR("shapefiles/brasil/BRA_adm_shp/", "BRA_adm1")
 ```
 
 `readOGR` inclui uma projeção padrão no shapefile - não será necessário incluí-la manualmente depois, caso seja necessário
@@ -219,7 +220,7 @@ map.scale(x = -45,ratio = F)
 
 ```{r ggplot, message=FALSE, warning=FALSE}
 source("./fct/create_scale_bar.R")
-brasil.mapa <- borders("worldHires", regions = "Brazil", fill = "grey90", colour = "black")
+brasil.mapa <- borders("world", regions = "Brazil", fill = "grey90", colour = "black")
 bra.map <- map_data("worldHires","Brazil")
 
 mapa.1 <- ggplot() + brasil.mapa + coord_equal()  ##borders inclui o mapa como uma camada no fundo 
@@ -276,7 +277,7 @@ O pacote `raster` faz a maior parte das operações necessárias para ler, corta
 
 ```{r raster1,message=FALSE,warning=FALSE}
 library(raster)
-alt <- raster("./rasters/h_dem/hdr.adf")
+alt <- raster("Dia 5/Rmaps/rasters/h_dem/hdr.adf")
 plot(alt)
 ```
 
@@ -285,7 +286,7 @@ plot(alt)
 Vários rasters podem ser juntos num "stack".
 
 ```{r raster2,message=FALSE,warning=FALSE}
-arquivos <- list.files("./rasters", full.names = T)
+arquivos <- list.files("Dia 5/Rmaps//rasters", full.names = T)
 head(arquivos)
 env <- stack(arquivos)
 ```
