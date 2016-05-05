@@ -1,0 +1,5 @@
+## Observação sobre este conjunto de dados
+
+Os dados nesta pasta foram _criados_ para fins educativos do curso. Eles são baseados em dados já existentes: `varechem` e `varespect` do pacote `vegan`. Nós só alteramos os nomes das colunas e também o nome de algumas espécies, para que o uso da tabela de dados fosse mais didático.  
+
+Para mais detalhes sobre o conjunto de dados original, por favor busque a documentação do pacote `vegan`.
