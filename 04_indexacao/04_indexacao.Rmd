@@ -1,0 +1,10 @@
+---
+title: "Indexação"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+1. Filtragem de dados em matrizes (“Conditional Subsetting”)
+2. Dados relacionais
