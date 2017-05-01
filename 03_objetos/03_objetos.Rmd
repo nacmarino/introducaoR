@@ -1,0 +1,11 @@
+---
+title: "Objetos e Operações da Linguagem R"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+4. Operações básicas
+5. Criando objetos
+6. Tipos e classes de objetos

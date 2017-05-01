@@ -1,0 +1,7 @@
+---
+title: "Reproducible Research"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---

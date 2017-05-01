@@ -9,6 +9,4 @@ output: html_document
 1. Apresentação do curso e avaliação
 2. Introdução ao RStudio
 3. Conseguindo ajuda e instalação de pacotes
-4. Operações básicas
-5. Criando objetos
-6. Tipos e classes de objetos
+
