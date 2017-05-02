@@ -276,3 +276,5 @@ Operador | Significado
 ## Operações Condicionais em Vetores
 
 ## Operações Condicionais em `data.frame`
+
+# subset
