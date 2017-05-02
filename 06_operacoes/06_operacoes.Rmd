@@ -1,0 +1,19 @@
+---
+title: "Indexação"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+1. dim
+2. length
+3. nrow
+4. ncol
+5. rowSums
+6. colSums
+7. mean, sd,...
+1. Operação condicional com vetores;
+2. Reciclagem de vetores;
+3. Filtragem de dados em matrizes (“Conditional Subsetting”)
+4. Dados relacionais
