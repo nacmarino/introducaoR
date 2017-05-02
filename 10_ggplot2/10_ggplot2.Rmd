@@ -47,8 +47,21 @@ Do livro "_ggplot2_"
 
 * Você pode carregar individualmente o pacote `ggplot2` ou através do pacote `tidyverse`.
 
-```{r}
+```{r echo=FALSE}
+suppressPackageStartupMessages(suppressMessages(library(tidyverse)))
+```
+
+```{r eval=FALSE}
 library(tidyverse)
+```
+
+* Vamos carregar um conjunto de dados para trabalharmos: aquele das Palestras do PPGE.
+
+```{r}
+# para carregar os dados
+dados <- read_delim("../04_leitura_de_dados/dados/lista_de_presenca.csv", delim = ";")
+# dando uma olhada nos dados
+dados
 ```
 
 ## Função básica: _qplot_.
@@ -61,10 +74,16 @@ library(tidyverse)
 args(qplot)
 ```
 
-* Podemos adicionar elementos gráficos, baseado em alguma informação sobre os dados.  
+* Um gráfico rápido: número total de pessoas em cada uma das categorias de formação (pessoas estão sendo contadas múltiplas vezes).
+
 ```{r fig.height=3, fig.width=4}
-qplot(x = conc, y = uptake, data = CO2, shape = Type, 
-      size = 3, colour = Treatment)
+qplot(x = formacao_ouvinte, data = dados)
+```
+
+* Podemos adicionar elementos gráficos, baseado em alguma informação sobre os dados.  
+
+```{r fig.height=3, fig.width=4}
+qplot(x = formacao_ouvinte, data = dados, fill = origem_ouvinte)
 ```
 
 ## _qplot_
