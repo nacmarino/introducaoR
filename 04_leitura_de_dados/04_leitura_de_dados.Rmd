@@ -202,6 +202,10 @@ args(excel_sheets)
 read_excel(path = "dados/Lista de Palestras.xlsx")
 ```
 
+* Tanto o `readxl::read_excel` quanto o `readr::read_<extensão>` fazem uma 'leitura prévia' dos dados em questão e tentam 'adivinhar' qual é o tipo de objeto em cada uma das colunas, de forma apresentar de forma mais adequada o dado para o usuário. Isto vem às custas de uma lentidão (quase imperceptível aos nossos olhos) na hora de carregar os dados.
+    + Você pode 'acelerar' a leitura de dados através destas funções adicionar o tipo de variável que cada coluna assume pelo argumento `col_types` nestas funções;
+    + Caso você não o faça, não há problema: as duas funções vão ler as primeiras linhas de cada coluna e tentar este processo de 'adivinhação' (quase sempre, acertam).
+
 ## Exportando dados
 
 * Carregar os dados é parte do trabalho, a outra parte é exportar os dados que você limpou, ou aqueles que devem ser usados no final das contas para uma análise, ou até mesmo os resultados de uma análise e as predições de um modelo para gerar uma figura posteriormente;

@@ -311,8 +311,8 @@ h1,h2,h3,h4,h5,h6{
 ## 528         Vertebrados   30  11 2016       10 Eugenia Zandona
 ## 529         Vertebrados   30  11 2016       10 Eugenia Zandona
 ## 530       Inseto-Planta   30  11 2016       10 Eugenia Zandona
-## 531                 LEV   30  11 2016       10 Eugenia Zandona
-## 532                 LEV   30  11 2016       10 Eugenia Zandona
+## 531    Ecologia Vegetal   30  11 2016       10 Eugenia Zandona
+## 532    Ecologia Vegetal   30  11 2016       10 Eugenia Zandona
 ##                                                        titulo  responsavel
 ## 527 A mulher na ciencia ecologia - limitacoes e oportunidades Gisele Winck
 ## 528 A mulher na ciencia ecologia - limitacoes e oportunidades Gisele Winck
@@ -348,9 +348,9 @@ h1,h2,h3,h4,h5,h6{
 <pre><code>## 'data.frame':    532 obs. of  22 variables:
 ##  $ id                     : int  179 105 78 138 122 33 47 155 67 84 ...
 ##  $ formacao_ouvinte       : Factor w/ 10 levels &quot;Biologo&quot;,&quot;Doutor&quot;,..: 8 6 6 3 6 3 7 9 4 9 ...
-##  $ origem_ouvinte         : Factor w/ 20 levels &quot;Dept Biol Marinha&quot;,..: 18 18 18 18 18 18 13 3 9 3 ...
-##  $ instituicao_ouvinte    : Factor w/ 21 levels &quot;Caldas&quot;,&quot;CEDERJ&quot;,..: 17 17 17 17 17 17 17 17 17 17 ...
-##  $ laboratorio_ouvinte    : Factor w/ 27 levels &quot;Bentos&quot;,&quot;Biodiv Marinha&quot;,..: 20 20 9 27 27 9 10 10 NA 16 ...
+##  $ origem_ouvinte         : Factor w/ 17 levels &quot;Dept Biol Marinha&quot;,..: 15 15 15 15 15 15 10 3 7 3 ...
+##  $ instituicao_ouvinte    : Factor w/ 18 levels &quot;Caldas&quot;,&quot;CEDERJ&quot;,..: 15 15 15 15 15 15 15 15 15 15 ...
+##  $ laboratorio_ouvinte    : Factor w/ 25 levels &quot;Bentos&quot;,&quot;Biodiv Marinha&quot;,..: 17 17 9 25 25 9 14 14 NA 13 ...
 ##  $ data                   : int  4 4 4 4 4 4 4 4 4 4 ...
 ##  $ mes                    : int  4 4 4 4 4 4 4 4 4 4 ...
 ##  $ ano                    : int  2017 2017 2017 2017 2017 2017 2017 2017 2017 2017 ...
@@ -563,6 +563,13 @@ args(read_excel)</code></pre>
 ## #   Nacionalidade &lt;chr&gt;, Origem &lt;chr&gt;, Instituicao &lt;chr&gt;, PPGE &lt;chr&gt;,
 ## #   Laboratorio &lt;chr&gt;, Formacao &lt;chr&gt;, `Tema #1` &lt;chr&gt;, Horario &lt;chr&gt;,
 ## #   Semana &lt;chr&gt;, Local &lt;chr&gt;</code></pre>
+<ul>
+<li>Tanto o <code>readxl::read_excel</code> quanto o <code>readr::read_&lt;extensão&gt;</code> fazem uma ‘leitura prévia’ dos dados em questão e tentam ‘adivinhar’ qual é o tipo de objeto em cada uma das colunas, de forma apresentar de forma mais adequada o dado para o usuário. Isto vem às custas de uma lentidão (quase imperceptível aos nossos olhos) na hora de carregar os dados.
+<ul>
+<li>Você pode ‘acelerar’ a leitura de dados através destas funções adicionar o tipo de variável que cada coluna assume pelo argumento <code>col_types</code> nestas funções;</li>
+<li>Caso você não o faça, não há problema: as duas funções vão ler as primeiras linhas de cada coluna e tentar este processo de ‘adivinhação’ (quase sempre, acertam).</li>
+</ul></li>
+</ul>
 </div>
 <div id="exportando-dados" class="section level2">
 <h2>Exportando dados</h2>
