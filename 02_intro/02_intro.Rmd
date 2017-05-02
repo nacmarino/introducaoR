@@ -153,6 +153,7 @@ install.packages(pkgs = "taxize", dependencies = TRUE)
 6. Na dúvida sobre uma função? Coloque o curso em cima dela (no console ou no script) e pressione `Function + F1` no MAC ou `F1` no Windows;
 6. Use a ferramenta de auto-completar do RStudio: comece a escrever o nome da função que você deseja, aperte `Tab` e navegue pelas opções através das setas.
 7. Na dúvida também sobre os argumentos que existem em uma função? Dentro do parenteses que descreve seus argumentos, pressione `Tab`, navegue pela lista de argumentos e veja uma pequena descrição do que cada um deles deve ser.
+8. Quer apagar tudo que está escrito no seu console? Use `Control + L` no MAC ou no Windows.
 
 ## Exercício
 
