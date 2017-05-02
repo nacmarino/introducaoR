@@ -39,7 +39,7 @@ Do livro "_ggplot2_"
 * Diminui a distância da mente para a página.  
 
 <center>
-<img src="figuras/ggplot2.png" height="250px"></img>
+<img src="figuras/ggplot2.png" height="400px"></img>
 </center>
 
 ## Filosofia do ggplot2
