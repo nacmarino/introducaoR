@@ -10,6 +10,12 @@ output: html_document
 body, td {
    font-size: 18px;
 }
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
 h1,h2,h3,h4,h5,h6{
   font-size: 24pt;
 }
@@ -19,7 +25,8 @@ h1,h2,h3,h4,h5,h6{
 
 1. Introdução ao RStudio;
 2. Instalação de Pacotes;
-3. Leitura de um arquivo de Ajuda.
+3. Leitura de arquivos de Ajuda;
+4. Algumas dicas iniciais do RStudio.
 
 ## Introdução ao RStudio
 
@@ -73,7 +80,7 @@ h1,h2,h3,h4,h5,h6{
 
 ### Outras funcionalidades presentes do RStudio
 
-* Aqui estão concentradas funcionalidades importantes do RStudio e do R.
+* Aqui estão concentradas algumas funcionalidades importantes do RStudio e do R.
     1. Aba _"Files"_
         a. Contém todos os arquivos em um diretório;
         b. O __".."__ na primeira linha pode ser utilizado para mover ao diretório acima do que você observa;
@@ -89,4 +96,64 @@ h1,h2,h3,h4,h5,h6{
 
 ## Instalação de Pacotes
 
+* Um pacote do R contém um conjunto de __funções__ que auxiliam na execução de determinadas tarefas (carregamento de dados, criação de gráficos, análises estatísticas e etc). 
+* Um exemplo de função é o `install.packages`, utilizado para instalar novos pacotes ao seu R.
+* Uma função pode levar inúmeros __argumentos__.
+* Um argumento são valores ou opções necessárias para a execução de uma função.
 
+```{r}
+args(install.packages)
+```
+
+* Vamos instalar um pacote para exemplificar o uso da função `install.packages`:
+
+```{r eval=FALSE}
+install.packages(pkgs = "taxize", dependencies = TRUE)
+```
+
+## Leitura de arquivos de Ajuda
+
+* Para pedir ajuda sobre uma função você pode usar:
+    1. Método específico para funções:
+        + `?nome_da_funcao`;
+        + `help(topic = "nome_da_funcao", package = "nome_do_pacote_em_que_esta_a_funcao")`;
+    2. Método específico para pacotes:
+        + `help(package = "nome_do_pacote_em_que_esta_a_funcao")`;
+    3. Ajuda de forma generalizada sobre um pacote ou função:
+        + `??nome_do_pacote_ou_funcao`;
+        + O pacote `sos` tem um método de busca bem legal também.
+* Todo arquivo de ajuda de uma função é separado em:
+    1. Nome da função e pacote no qual ela está localizada;
+    2. Título da função;
+    3. Descrição geral da função
+    4. Forma de uso da função, contendo a sua chamada e todos os argumentos existentes nelas;
+    5. Descrição detalhada de todos os argumentos usados pela função;
+    
+    <center><img src="figures/funcoes1.png" height="250px"></img></center>  
+    
+    6. Descrição do funcionamento geral da função, consequências do uso de um ou outro tipo de opção no uso dos argumentos, discussão geral sobre a teoria por trás de cada argumento e etc;
+    
+    <center><img src="figures/funcoes2.png" height="250px"></img></center>  
+    
+    7. Notas gerais sobre o funcionamento da função;
+    8. Sugestões de outras funções correlatas;
+    9. Exemplo prático do uso da função.
+
+<center><img src="figures/funcoes3.png" height="250px"></img></center>  
+
+* __Assim como qualquer outra língua, você precisa saber o básico dela para entender o que está escrito.__
+
+## Algumas dicas iniciais do RStudio
+
+1. Use sempre um projeto para organizar os seus scripts;
+2. Organize seu script em "capítulos" - para isso, utilize o atalho do teclado: `Command + Shift + r` no MAC ou `Control + Shift + r` no Windows;
+3. Adicione comentários ao seu script sempre que puder, através do `#`.
+4. Ao invés de ficar pressionando o botão `Run` para enviar os comandos do script para o console, utilize `Command + Enter` no MAC ou `Control + Enter` no Windows;
+5. Para ver os últimos comandos lançados no console, coloque o cursor lá e utilize `Command + Seta para cima` no MAC ou `Control + Seta para cima` no Windows;
+6. Na dúvida sobre uma função? Coloque o curso em cima dela (no console ou no script) e pressione `Function + F1` no MAC ou `F1` no Windows;
+6. Use a ferramenta de auto-completar do RStudio: comece a escrever o nome da função que você deseja, aperte `Tab` e navegue pelas opções através das setas.
+7. Na dúvida também sobre os argumentos que existem em uma função? Dentro do parenteses que descreve seus argumentos, pressione `Tab`, navegue pela lista de argumentos e veja uma pequena descrição do que cada um deles deve ser.
+
+## Exercício
+
+1. Instale os pacotes `readr` e `readxl`, além de todas as suas dependencias.
