@@ -21,7 +21,7 @@ h1,h2,h3,h4,h5,h6{
 }
 </style>
 
-# Elemento da Aula
+# Elementos da Aula
 
 1. Introdução ao RStudio;
 2. Instalação de Pacotes;
