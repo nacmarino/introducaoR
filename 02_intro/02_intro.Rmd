@@ -1,12 +1,92 @@
 ---
-title: "Primeiros Passos"
+title: "Funcionamento Básico"
 subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
-1. Apresentação do curso e avaliação
-2. Introdução ao RStudio
-3. Conseguindo ajuda e instalação de pacotes
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elemento da Aula
+
+1. Introdução ao RStudio;
+2. Instalação de Pacotes;
+3. Leitura de um arquivo de Ajuda.
+
+## Introdução ao RStudio
+
+* O RStudio é uma __interface__ usada para facilitar a sua vida ao utilizar a linguagem R.  
+* __Ele não é o R em si!__
+* Outras opções existem, como o Tinn-R e o Microsoft R.  
+* A interface gráfica básica do RStudio.
+
+<center><img src="figures/figura0.png" height="250px"></img></center>  
+
+### O Console
+
+* É a janela de execução do R, similar a abrir somente o programa base do R.
+* Nesta área você encontra:
+    1. O console do R;
+    2. A versão do R que está sendo executada;
+    3. O diretório de trabalho da sessão.
+
+<center><img src="figures/figura1.png" height="250px"></img></center>  
+
+### O Projeto
+
+* Podemos organizar todo o trabalho que estamos fazendo ao redor de um __projeto__.
+* Um projeto vai conter todos os arquivos, scripts e figuras necessários para realizarmos uma tarefa (manuscrito, dissertação, tese, análise,...).
+* Existem muitas vantagens em se iniciar um projeto para cada tarefa que estamos fazendo - uma delas é que o diretório utilizado para carregar r salvar arquivos fica sendo consistente entre qualquer computador em que você abrir o projeto.
+
+<center><img src="figures/figura2.png" height="250px"></img></center>  
+
+### O Script
+
+* É sempre bom escrevermos o código que queremos usar em uma tarefa em um script e, a partir dele, enviar os comandos para o console.
+* Um script pode conter o código e anotações utilizadas para gerar qualquer tipo de computação.
+* Sempre use um script para manter o registro de tudo o que você está fazendo ao realizar uma tarefa.
+* Nesta área você encontra:
+    1. A janela do script;
+    2. O botão _Run_, usado para enviar o comando do script ao console;
+    3. Um botão para _salvar_ o script em um diretório de sua escolha (ou salvar as alterações feitas nele);
+    4. Um botão de _busca_ e/ou _substituição_;
+    5. Uma aba para facilitar a navegação entre as partes ("capítulos") do seu script.
+
+<center><img src="figures/figura3.png" height="250px"></img></center>  
+
+### Informações relacionadas à sessão
+
+* Todas informações relacionadas aos arquivos e objetos existentes em uma sessão (__1__, aba _"Environment"_) e todo o histórico de comandos executados (__2__, aba _"History"_) são encontrados aqui.
+* Na aba _"Environment"_, você encontra utilidades como:
+    3. Um botão para excluir todos os arquivos e objetos carregados/criados;
+    4. Um botão para importar tabelas para o ambiente (_"Import Dataset"_; __uso não recomendado__).
+
+<center><img src="figures/figura4.png" height="250px"></img></center>  
+
+### Outras funcionalidades presentes do RStudio
+
+* Aqui estão concentradas funcionalidades importantes do RStudio e do R.
+    1. Aba _"Files"_
+        a. Contém todos os arquivos em um diretório;
+        b. O __".."__ na primeira linha pode ser utilizado para mover ao diretório acima do que você observa;
+    2. Ainda na aba _"Files"_, existem botões que você pode usar para:
+        a. Criar uma nova pasta em um diretório (_"New folder"_);
+        b. Deletar um arquivo ou pasta (_"Delete"_);
+        c. Renomear um arquivo ou pasta (_"Rename"_).
+    3. Toda vez que você criar um gráfico ou figura, ele será apresentado na aba _"Plots"_; você pode salvar esta figura diretamente a partir da aba, mas isso não é muito recomendado (veremos isso nas aulas de `base::plot` e `ggplot2`);
+    4. A partir da aba _"Packages"_ você pode instalar, fazer o update, carregar e/ou acessar o conteúdo de um pacote.
+    5. Todo e qualquer arquivo de ajuda de uma função ou pacote é apresentado e descrito na aba _"Help"_.
+
+<center><img src="figures/figura5.png" height="250px"></img></center>  
+
+## Instalação de Pacotes
+
 
