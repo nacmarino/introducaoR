@@ -6,4 +6,47 @@ date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
-1. ggplot2
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# ggplot2
+
+* Escrito por Hadley Wickham, quando ainda era um estudante de pós graduação;  
+* É um dos pacotes gráficos mais utilizados na linguagem R, junto do pacote `base` e `lattice`;  
+* É a implementação do _The Grammar of Graphics_, idéia desenvolvida por Leland Wilkinson.  
+
+# ggplot2
+
+### “Resumidamente, a gramática nos diz que um gráfico deve ser mapeado (__mapping__) a partir dos dados (__data__), de acordo com a aparência (__aesthetic__) (color, formato, tamanho) de objetos geométricos (__geometric__) (pontos, linhas, barras). A figura também pode conter transformações estatísticas dos dados, sendo desenhada a partir de um sistema específico de coordenadas.”  
+
+Do livro "_ggplot2_"  
+
+## ggplot2
+
+* Faça um paralelo com a nossa gramática:
+    + sujeito (_data_, _aesthetics_)
+    + verbo (_geometries_, _facets_)
+    + adjetivo (_color_, _fill_, _shape_, _alpha_)
+* Diminui a distância da mente para a página.  
+
+<center>
+<img src="figuras/ggplot2.png" height="250px"></img>
+</center>
+
+## Filosofia do ggplot2
+
+* Você desenha, adicionando e modificando as camadas durante o processo.  
+    + Não é preciso realizar todo o desenho em um único objeto (ao contrário do `lattice`);  
+    + Uma vez que você tenha adicionado uma entidade ao gráfico, você pode alterar ela posteriormente (ao contrário do `base`);  
+    + Gráficos complexos, com comandos simples (ao contrário do `lattice` e `base`).  
+
+## ggplot2
