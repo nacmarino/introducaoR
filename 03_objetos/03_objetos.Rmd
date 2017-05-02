@@ -84,9 +84,9 @@ LETTERS
 month.name
 ```
 
-##### Exercício
+##### Exercício 1
 
-* Qual a raiz quadrada do arcoseno de 0.43?
+a. Qual a raiz quadrada do arcoseno de 0.43?
 
 ## Objetos
 
@@ -111,17 +111,17 @@ resultado
 
 * Existe um atalho no RStudio para adicionar o operador de atribuição de forma mais fácil: `Option + -` no MAC ou `Alt + -` no Windows.
 
-##### Exercício 1
-
-* Calcule o resultado da operação da multiplicação de 5 por 6;
-* Armazene o resultado desta operação em um objeto chamado `resultado`;
-* Sem olhar, qual o valor armazenado no objeto `resultado`?
-
 ##### Exercício 2
 
-* Divida o objeto `resultado` pela raiz quadrada de 9;
-* Armazene o resultado desta operação em um objeto chamado `resultado`;
-* Sem olhar, qual o valor armazenado no objeto `resultado`?
+a. Calcule o resultado da operação da multiplicação de 5 por 6;
+b. Armazene o resultado desta operação em um objeto chamado `resultado`;
+c. Sem olhar, qual o valor armazenado no objeto `resultado`?
+
+##### Exercício 3
+
+a. Divida o objeto `resultado` pela raiz quadrada de 9;
+b. Armazene o resultado desta operação em um objeto chamado `resultado`;
+c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 
 ## Scoping rules
 
@@ -142,18 +142,230 @@ resultado
 
 ## Tipos e Classes de Objetos
 
-# numeric
-# integer
-# double
-# character
-# factor
-# logical
-# date: as.Date.POSIXct(Sys.time())
-# na
-# infinite
+* Como qualquer outra língua, os elementos e objetos que compõem a linguagem R pertencem a diferentes classes (em um paralelo às classes gramaticas de uma língua).
+* Você pode determinar a classe de um objeto perguntando para o R:
 
-## Concatenar
+```{r}
+class(5)
+```
 
-## Vetores, Listas, Matrizes e Data Frames
+* Ou tentar diferentes tipos:
 
-## str
+```{r}
+# o 5 é um número?
+is.numeric(5) 
+ # o 5 é um caractere?
+is.character(5)
+ # a expressão "Ola!" é formada por caracteres?
+is.character("Ola!")
+```
+
+##### Exercício 4
+
+a. Pergunte ao R se o número 5 é um número inteiro.
+
+```{r}
+# o número 5 é inteiro?
+is.integer(5) 
+# o número 5 é inteiro?
+is.integer(5L) 
+```
+
+* O R não sabe se o número 5 é inteiro pois, na 'concepção' dele, pode haver uma casa decimal em algum ponto que não o caracterize como número inteiro.
+* Portanto, ao criar ou testar um número que você sabe que é inteiro, você precisa adicionar o "L" ao lado dele para que o R entenda.
+* Por conta dessa incerteza, o R também classifica os números como um objeto do tipo `double`: ele pode ser inteiro ou contínuo.
+
+```{r}
+is.double(5)
+```
+
+* O R também possui classes especiais de objetos:
+
+```{r}
+# o valor "FALSE" é um objeto lógico?
+is.logical(FALSE)
+# o valor NA (not available) é um objeto do tipo NA
+is.na(NA)
+# a operação abaixo é númerica?
+is.nan(1/sqrt(-2))
+# qual o resultado da divisão abaixo?
+is.infinite(10/0)
+```
+
+* Além de perguntarmos a classe de um objeto, também podemos forçar que um objeto assuma uma determina classe:
+
+```{r}
+# o número 5 é inteiro?
+is.integer(5)
+# vamos criar um objeto chamado inteiro, e vamos forçar o número 5 a pertencer a classe integer
+(inteiro <- as.integer(5))
+# o número 5 no objeto criado é inteiro?
+is.integer(inteiro)
+```
+
+* Forçar um valor a assumir uma classe de objeto pode ser bastante importante, principalmente quando estamos trabalhando com fatores.
+    + Um fator é uma variável categórica que descreva de forma discreta uma observação;
+    + Muito útil para fazermos algumas análises, criarmos alguns gráficos ou ainda utilizar algumas funções!
+* __Algumas funções só funcionam caso as classes de objetos correspondam com aquela descrita nos argumentos da função!__
+
+```{r}
+# o número inteiro 5 é um fator?
+is.factor(5)
+```
+
+##### Exercício 5
+
+a. Faça com que o número 5 seja entendido como um fator.
+
+## Vetores
+
+* Até o momento estamos trabalhando com objetos que armazenam e/ou assumem um único valor, mas muitas vezes estamos interessados em conjuntos de valores muito maiores.
+* Podemos juntar diferentes valores em um __vetor__ através da função `c` (abreviação para __concatenar__):
+
+```{r}
+c(27, 24, 22, 29, 23, 22)
+```
+
+* Podemos guardar estes números em um objeto chamado `idade`, e perguntar ao R:
+    + que tipo de classe de objeto ele pertence;
+    + se o objeto é um vetor;
+
+```{r}
+# criando o objeto com as idades
+idade <- c(27, 24, 22, 29, 23, 22)
+# qual a classe do objeto idade?
+class(idade)
+# o objeto classe é um vetor?
+is.vector(idade)
+```
+
+##### Exercício 6
+
+a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
+
+* __Dica:__ ao utilizar qualquer palavra ou criar um vetor que contenha palavras, você precisa usar as aspas em cada palavra, para que o R entenda que aquilo é uma palavra, caso contrário ele vai procurar um objeto que contenha aquele nome no ambiente global.
+
+##### Exercício 7
+
+a. Crie um vetor combinando os vetores `frutas` e `idade`.
+b. O objeto criado é um vetor?
+c. Sem olhar, qual a classe do objeto criado?
+
+* Ou seja:
+    + Por padrão, sempre que houver algum caractere em um vetor, o R vai assumir que aquele é um vetor de caracteres.
+    + Um vetor pode conter qualquer tipo de objeto: lógicos, numéricos, inteiros, caracteres...
+    + Um fator é um valor que codifica uma categoria: pode ser um número ou um caractere.
+* Você também pode criar um vetor através da função `vector`.
+
+```{r}
+# para criar um vetor vazio com comprimento 10
+vector(length = 10)
+# criar um vetor vazio
+teste <- vector()
+```
+
+## Matriz
+
+* Um conjunto de vetores pode ser organizado dentro de uma matriz, criada a partir da função `matrix`.
+* A matriz pode ser criada a partir de um vetor, determinando quantas linhas e quantas colunas ela deve assumir.
+* Uma matriz pode ser preenchida por linhas (`byrow = TRUE`) ou por colunas (`byrow = FALSE`)
+
+```{r}
+# criando uma matriz sendo preenchida por linhas
+matrix(data = idade, nrow = 2, ncol = 3, byrow = TRUE)
+# criando uma matriz sendo preenchida por colunas
+matrix(data = idade, nrow = 2, ncol = 3, byrow = FALSE)
+# criando uma matriz contendo apenas uma coluna
+matrix(data = idade)
+```
+
+* Você também pode montar uma matriz a partir de dois ou mais vetores:
+
+```{r}
+# observando o vetor idade
+idade
+# criando um vetor com alturas, do mesmo comprimento que idade
+altura <- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
+# criando uma matriz com a idade e a altura
+(informacoes <- matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE))
+```
+
+##### Exercício 8
+
+a. Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;
+b. Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;
+c. O que aconteceu à matriz quando criamos a matriz com idades e nomes?
+d. Por que isso acontenceu?
+e. O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?
+
+* Ou seja:
+    + Uma matriz pode armazenar objetos de apenas um tipo: ou todos os objetos são numéricos, ou são todos caracteres, ou são todos lógicos, e etc.
+    + Uma matriz é útil para fazer cálculos, péssimo para armazenar informações de diferentes tipos.
+
+## Lista
+
+* Uma outra forma de armazenar informacões é através da criação de listas com a função `list`;
+* Cada elemento de uma lista pode ser um vetor, matriz ou outro tipo de objeto (inclusive, outra lista);
+* A ideia central da lista é que ela salva cada elemento em uma 'dimensão' diferente.
+
+```{r}
+# criando um vetor com nomes de frutas
+frutas <- c("morango", "banana", "maca", "laranja")
+# criando um vetor com anos
+anos <- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
+# criando uma lista
+(coisas <- list(informacoes, frutas, anos))
+```
+
+* Uma lista pode ser muito útil para armazenarmos informações de diferentes tipos, mas não facilita muito o uso destes dados e, tampouco, salvar os dados que estão dentro delas.
+
+## Data Frame
+
+* O tipo de objeto mais utilizado por nós é o data frame, criado pela função `data.frame`.
+* Ao contrário da matriz, um `data.frame` pode comportar diferentes tipos de objetos em cada coluna; de forma similar, ao contrário da lista, todos os elementos estão no mesmo 'plano'.
+
+```{r}
+# um vetor com nomes
+nomes <- c("Joana", "Joao", "Maria", "Mario", "Joelma", "Ximbinha")
+# um vetor lógico
+logico <- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
+# um data frame
+(dados <- data.frame(idade, nomes, logico))
+```
+
+* Ou seja, um `data.frame` pode ser visto como um objeto no qual cada coluna é um vetor (elementos pertencem a um único tipo de objeto) e cada linha é uma lista (cada elemento pertence a tipos de objetos diferentes).
+
+##### Exercício 9
+
+a. Crie dois vetores com uma informação que você desejar;
+b. Crie uma matriz contendo a informação destes dois vetores;
+c. Crie um Data Frame contendo a informação destes dois vetores;
+d. Coloque tudo isto em uma lista.
+
+## Outras formas de criar Matrizes e Data Frames
+
+* Uma matriz ou data.frame pode ser criado tanto pela adição de colunas quanto pela adicao de linhas;
+* O R dispõem de duas funções que fazem estas tarefas:
+    + `rbind` e `rbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de linhas, respectivamente;
+    + `cbind` e `cbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de colunas, respectivamente.
+
+##### Exercício 10
+
+a. Repita o passo "c" do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.
+b. Qual função é a melhor para o caso acima?
+c. Por que?
+
+## Um atalho para determinar o tipo e classe dos elementos de um objeto
+
+* 
+
+```{r}
+# qual a estrutura do objeto 'informacoes'?
+str(informacoes)
+# qual a estrutura do objeto 'coisas'?
+str(coisas)
+# qual a estrutura do objeto 'dados'?
+str(dados)
+```
+
+* Elementos que sejam caracteres são 'transformados' em fatores ao serem adicionados
