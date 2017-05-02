@@ -10,6 +10,12 @@ output: html_document
 body, td {
    font-size: 18px;
 }
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
 h1,h2,h3,h4,h5,h6{
   font-size: 24pt;
 }
@@ -146,18 +152,18 @@ c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 * Você pode determinar a classe de um objeto perguntando para o R:
 
 ```{r}
-class(5)
+class(x = 5)
 ```
 
 * Ou tentar diferentes tipos:
 
 ```{r}
 # o 5 é um número?
-is.numeric(5) 
+is.numeric(x = 5) 
  # o 5 é um caractere?
-is.character(5)
+is.character(x = 5)
  # a expressão "Ola!" é formada por caracteres?
-is.character("Ola!")
+is.character(x = "Ola!")
 ```
 
 ##### Exercício 4
@@ -166,9 +172,9 @@ a. Pergunte ao R se o número 5 é um número inteiro.
 
 ```{r}
 # o número 5 é inteiro?
-is.integer(5) 
+is.integer(x = 5) 
 # o número 5 é inteiro?
-is.integer(5L) 
+is.integer(x = 5L) 
 ```
 
 * O R não sabe se o número 5 é inteiro pois, na 'concepção' dele, pode haver uma casa decimal em algum ponto que não o caracterize como número inteiro.
@@ -176,31 +182,31 @@ is.integer(5L)
 * Por conta dessa incerteza, o R também classifica os números como um objeto do tipo `double`: ele pode ser inteiro ou contínuo.
 
 ```{r}
-is.double(5)
+is.double(x = 5)
 ```
 
 * O R também possui classes especiais de objetos:
 
 ```{r}
 # o valor "FALSE" é um objeto lógico?
-is.logical(FALSE)
+is.logical(x = FALSE)
 # o valor NA (not available) é um objeto do tipo NA
-is.na(NA)
+is.na(x = NA)
 # a operação abaixo é númerica?
-is.nan(1/sqrt(-2))
+is.nan(x = 1/sqrt(-2))
 # qual o resultado da divisão abaixo?
-is.infinite(10/0)
+is.infinite(x = 10/0)
 ```
 
 * Além de perguntarmos a classe de um objeto, também podemos forçar que um objeto assuma uma determina classe:
 
 ```{r}
 # o número 5 é inteiro?
-is.integer(5)
+is.integer(x = 5)
 # vamos criar um objeto chamado inteiro, e vamos forçar o número 5 a pertencer a classe integer
-(inteiro <- as.integer(5))
+(inteiro <- as.integer(x = 5))
 # o número 5 no objeto criado é inteiro?
-is.integer(inteiro)
+is.integer(x = inteiro)
 ```
 
 * Forçar um valor a assumir uma classe de objeto pode ser bastante importante, principalmente quando estamos trabalhando com fatores.
@@ -210,7 +216,7 @@ is.integer(inteiro)
 
 ```{r}
 # o número inteiro 5 é um fator?
-is.factor(5)
+is.factor(x = 5)
 ```
 
 ##### Exercício 5
@@ -234,9 +240,9 @@ c(27, 24, 22, 29, 23, 22)
 # criando o objeto com as idades
 idade <- c(27, 24, 22, 29, 23, 22)
 # qual a classe do objeto idade?
-class(idade)
+class(x = idade)
 # o objeto classe é um vetor?
-is.vector(idade)
+is.vector(x = idade)
 ```
 
 ##### Exercício 6
@@ -357,15 +363,36 @@ c. Por que?
 
 ## Um atalho para determinar o tipo e classe dos elementos de um objeto
 
-* 
+* Ao trabalharmos com qualquer um dos tipos de objetos descritos acima, é sempre interessante verificar a estrutura dele com o uso da função `str`.
+* Esta função te mostra qual a classe geral do objeto e, dentro dele, qual os tipos de elementos que o compõem.
 
 ```{r}
 # qual a estrutura do objeto 'informacoes'?
-str(informacoes)
+str(object = informacoes)
 # qual a estrutura do objeto 'coisas'?
-str(coisas)
+str(object = coisas)
 # qual a estrutura do objeto 'dados'?
-str(dados)
+str(object = dados)
 ```
 
-* Elementos que sejam caracteres são 'transformados' em fatores ao serem adicionados
+* Um vetor de caracteres são 'transformados' em fatores ao serem adicionados a um data.frame.
+    + __Lado positivo:__ ao codificarmos uma variável como caracteres, normalmente queremos que eles sejam fatores, variáveis com níveis discretos; este padrão então facilita a nossa vida.
+    + __Lado negativo:__ se você codificar os níveis dos fatores como números, o R não vai entender que são fatores; você precisa transformar esta variável antes de usar em uma análise ou na confecção de gráficos.
+    
+## Fatores ordenados
+
+* Por padrão, o R ordena os níveis de um fator em ordem alfabética e/ou do menor para o maior.
+
+```{r}
+(letras <- factor(x = c("Alto", "Médio", "Baixo")))
+(numeros <- factor(x = c(2, 4, 6)))
+```
+
+* Entretanto, às vezes, faz mais sentido ordenar os fatores de acordo com algum tipo de lógica ou sequência desejada. Para tal, podemos determinar diretamente qual a ordem dos níveis do fator:
+
+```{r}
+# através da função ordered
+ordered(x = letras, c("Baixo", "Médio", "Alto"))
+# ou através da própria função factor, através do argumento 'ordered'
+factor(x = c(2, 4, 6), ordered = TRUE)
+```

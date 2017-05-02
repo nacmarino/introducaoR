@@ -128,6 +128,12 @@ $(document).ready(function () {
 body, td {
    font-size: 18px;
 }
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
 h1,h2,h3,h4,h5,h6{
   font-size: 24pt;
 }
@@ -296,19 +302,19 @@ resultado = 5 + 5</code></pre>
 <li>Como qualquer outra língua, os elementos e objetos que compõem a linguagem R pertencem a diferentes classes (em um paralelo às classes gramaticas de uma língua).</li>
 <li>Você pode determinar a classe de um objeto perguntando para o R:</li>
 </ul>
-<pre class="r"><code>class(5)</code></pre>
+<pre class="r"><code>class(x = 5)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <ul>
 <li>Ou tentar diferentes tipos:</li>
 </ul>
 <pre class="r"><code># o 5 é um número?
-is.numeric(5) </code></pre>
+is.numeric(x = 5) </code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code> # o 5 é um caractere?
-is.character(5)</code></pre>
+is.character(x = 5)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code> # a expressão &quot;Ola!&quot; é formada por caracteres?
-is.character(&quot;Ola!&quot;)</code></pre>
+is.character(x = &quot;Ola!&quot;)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <div id="exercicio-4" class="section level5">
 <h5>Exercício 4</h5>
@@ -316,45 +322,45 @@ is.character(&quot;Ola!&quot;)</code></pre>
 <li>Pergunte ao R se o número 5 é um número inteiro.</li>
 </ol>
 <pre class="r"><code># o número 5 é inteiro?
-is.integer(5) </code></pre>
+is.integer(x = 5) </code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code># o número 5 é inteiro?
-is.integer(5L) </code></pre>
+is.integer(x = 5L) </code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ul>
 <li>O R não sabe se o número 5 é inteiro pois, na ‘concepção’ dele, pode haver uma casa decimal em algum ponto que não o caracterize como número inteiro.</li>
 <li>Portanto, ao criar ou testar um número que você sabe que é inteiro, você precisa adicionar o “L” ao lado dele para que o R entenda.</li>
 <li>Por conta dessa incerteza, o R também classifica os números como um objeto do tipo <code>double</code>: ele pode ser inteiro ou contínuo.</li>
 </ul>
-<pre class="r"><code>is.double(5)</code></pre>
+<pre class="r"><code>is.double(x = 5)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ul>
 <li>O R também possui classes especiais de objetos:</li>
 </ul>
 <pre class="r"><code># o valor &quot;FALSE&quot; é um objeto lógico?
-is.logical(FALSE)</code></pre>
+is.logical(x = FALSE)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code># o valor NA (not available) é um objeto do tipo NA
-is.na(NA)</code></pre>
+is.na(x = NA)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code># a operação abaixo é númerica?
-is.nan(1/sqrt(-2))</code></pre>
+is.nan(x = 1/sqrt(-2))</code></pre>
 <pre><code>## Warning in sqrt(-2): NaNs produzidos</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code># qual o resultado da divisão abaixo?
-is.infinite(10/0)</code></pre>
+is.infinite(x = 10/0)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ul>
 <li>Além de perguntarmos a classe de um objeto, também podemos forçar que um objeto assuma uma determina classe:</li>
 </ul>
 <pre class="r"><code># o número 5 é inteiro?
-is.integer(5)</code></pre>
+is.integer(x = 5)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code># vamos criar um objeto chamado inteiro, e vamos forçar o número 5 a pertencer a classe integer
-(inteiro &lt;- as.integer(5))</code></pre>
+(inteiro &lt;- as.integer(x = 5))</code></pre>
 <pre><code>## [1] 5</code></pre>
 <pre class="r"><code># o número 5 no objeto criado é inteiro?
-is.integer(inteiro)</code></pre>
+is.integer(x = inteiro)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <ul>
 <li>Forçar um valor a assumir uma classe de objeto pode ser bastante importante, principalmente quando estamos trabalhando com fatores.
@@ -365,7 +371,7 @@ is.integer(inteiro)</code></pre>
 <li><strong>Algumas funções só funcionam caso as classes de objetos correspondam com aquela descrita nos argumentos da função!</strong></li>
 </ul>
 <pre class="r"><code># o número inteiro 5 é um fator?
-is.factor(5)</code></pre>
+is.factor(x = 5)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 </div>
 <div id="exercicio-5" class="section level5">
@@ -393,10 +399,10 @@ is.factor(5)</code></pre>
 <pre class="r"><code># criando o objeto com as idades
 idade &lt;- c(27, 24, 22, 29, 23, 22)
 # qual a classe do objeto idade?
-class(idade)</code></pre>
+class(x = idade)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
 <pre class="r"><code># o objeto classe é um vetor?
-is.vector(idade)</code></pre>
+is.vector(x = idade)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <div id="exercicio-6" class="section level5">
 <h5>Exercício 6</h5>
@@ -533,7 +539,7 @@ nomes &lt;- c(&quot;Joana&quot;, &quot;Joao&quot;, &quot;Maria&quot;, &quot;Mari
 # um vetor lógico
 logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 # um data frame
-data.frame(idade, nomes, logico)</code></pre>
+(dados &lt;- data.frame(idade, nomes, logico))</code></pre>
 <pre><code>##   idade    nomes logico
 ## 1    27    Joana   TRUE
 ## 2    24     Joao  FALSE
@@ -541,18 +547,89 @@ data.frame(idade, nomes, logico)</code></pre>
 ## 4    29    Mario   TRUE
 ## 5    23   Joelma  FALSE
 ## 6    22 Ximbinha   TRUE</code></pre>
-</div>
-<div id="estrutura" class="section level2">
-<h2>Estrutura</h2>
 <ul>
-<li>Muitas vezes, é impraticável correr coluna a coluna de uma matriz, data frame ou lista para saber o tipo de cada variável; para isso, existe a função <code>str</code>.</li>
-<li>Esta função descreve a <strong>estrutura</strong> básica de um objeto:</li>
+<li>Ou seja, um <code>data.frame</code> pode ser visto como um objeto no qual cada coluna é um vetor (elementos pertencem a um único tipo de objeto) e cada linha é uma lista (cada elemento pertence a tipos de objetos diferentes).</li>
 </ul>
-<pre class="r"><code>str(coisas)</code></pre>
+<div id="exercicio-9" class="section level5">
+<h5>Exercício 9</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Crie dois vetores com uma informação que você desejar;</li>
+<li>Crie uma matriz contendo a informação destes dois vetores;</li>
+<li>Crie um Data Frame contendo a informação destes dois vetores;</li>
+<li>Coloque tudo isto em uma lista.</li>
+</ol>
+</div>
+</div>
+<div id="outras-formas-de-criar-matrizes-e-data-frames" class="section level2">
+<h2>Outras formas de criar Matrizes e Data Frames</h2>
+<ul>
+<li>Uma matriz ou data.frame pode ser criado tanto pela adição de colunas quanto pela adicao de linhas;</li>
+<li>O R dispõem de duas funções que fazem estas tarefas:
+<ul>
+<li><code>rbind</code> e <code>rbind.data.frame</code>, para criar/expandir matrizes e data.frames pela adição de linhas, respectivamente;</li>
+<li><code>cbind</code> e <code>cbind.data.frame</code>, para criar/expandir matrizes e data.frames pela adição de colunas, respectivamente.</li>
+</ul></li>
+</ul>
+<div id="exercicio-10" class="section level5">
+<h5>Exercício 10</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Repita o passo “c” do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.</li>
+<li>Qual função é a melhor para o caso acima?</li>
+<li>Por que?</li>
+</ol>
+</div>
+</div>
+<div id="um-atalho-para-determinar-o-tipo-e-classe-dos-elementos-de-um-objeto" class="section level2">
+<h2>Um atalho para determinar o tipo e classe dos elementos de um objeto</h2>
+<ul>
+<li>Ao trabalharmos com qualquer um dos tipos de objetos descritos acima, é sempre interessante verificar a estrutura dele com o uso da função <code>str</code>.</li>
+<li>Esta função te mostra qual a classe geral do objeto e, dentro dele, qual os tipos de elementos que o compõem.</li>
+</ul>
+<pre class="r"><code># qual a estrutura do objeto 'informacoes'?
+str(object = informacoes)</code></pre>
+<pre><code>##  num [1:6, 1:2] 27 24 22 29 23 22 1.75 1.56 1.67 1.7 ...</code></pre>
+<pre class="r"><code># qual a estrutura do objeto 'coisas'?
+str(object = coisas)</code></pre>
 <pre><code>## List of 3
 ##  $ : num [1:6, 1:2] 27 24 22 29 23 22 1.75 1.56 1.67 1.7 ...
 ##  $ : chr [1:4] &quot;morango&quot; &quot;banana&quot; &quot;maca&quot; &quot;laranja&quot;
 ##  $ : num [1:11] 1987 1990 1993 1996 1999 ...</code></pre>
+<pre class="r"><code># qual a estrutura do objeto 'dados'?
+str(object = dados)</code></pre>
+<pre><code>## 'data.frame':    6 obs. of  3 variables:
+##  $ idade : num  27 24 22 29 23 22
+##  $ nomes : Factor w/ 6 levels &quot;Joana&quot;,&quot;Joao&quot;,..: 1 2 4 5 3 6
+##  $ logico: logi  TRUE FALSE TRUE TRUE FALSE TRUE</code></pre>
+<ul>
+<li>Um vetor de caracteres são ‘transformados’ em fatores ao serem adicionados a um data.frame.
+<ul>
+<li><strong>Lado positivo:</strong> ao codificarmos uma variável como caracteres, normalmente queremos que eles sejam fatores, variáveis com níveis discretos; este padrão então facilita a nossa vida.</li>
+<li><strong>Lado negativo:</strong> se você codificar os níveis dos fatores como números, o R não vai entender que são fatores; você precisa transformar esta variável antes de usar em uma análise ou na confecção de gráficos.</li>
+</ul></li>
+</ul>
+</div>
+<div id="fatores-ordenados" class="section level2">
+<h2>Fatores ordenados</h2>
+<ul>
+<li>Por padrão, o R ordena os níveis de um fator em ordem alfabética e/ou do menor para o maior.</li>
+</ul>
+<pre class="r"><code>(letras &lt;- factor(x = c(&quot;Alto&quot;, &quot;Médio&quot;, &quot;Baixo&quot;)))</code></pre>
+<pre><code>## [1] Alto  Médio Baixo
+## Levels: Alto Baixo Médio</code></pre>
+<pre class="r"><code>(numeros &lt;- factor(x = c(2, 4, 6)))</code></pre>
+<pre><code>## [1] 2 4 6
+## Levels: 2 4 6</code></pre>
+<ul>
+<li>Entretanto, às vezes, faz mais sentido ordenar os fatores de acordo com algum tipo de lógica ou sequência desejada. Para tal, podemos determinar diretamente qual a ordem dos níveis do fator:</li>
+</ul>
+<pre class="r"><code># através da função ordered
+ordered(x = letras, c(&quot;Baixo&quot;, &quot;Médio&quot;, &quot;Alto&quot;))</code></pre>
+<pre><code>## [1] Alto  Médio Baixo
+## Levels: Baixo &lt; Médio &lt; Alto</code></pre>
+<pre class="r"><code># ou através da própria função factor, através do argumento 'ordered'
+factor(x = c(2, 4, 6), ordered = TRUE)</code></pre>
+<pre><code>## [1] 2 4 6
+## Levels: 2 &lt; 4 &lt; 6</code></pre>
 </div>
 </div>
 
