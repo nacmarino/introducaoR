@@ -1,5 +1,5 @@
 ---
-title: "Objetos e Operações da Linguagem R"
+title: "Operações Básicas e Objetos"
 subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
@@ -141,3 +141,19 @@ resultado
     + Ao iniciar uma sessão, limpe tudo que está no ambiente global do R - `rm(list=ls(all=TRUE))`.
 
 ## Tipos e Classes de Objetos
+
+# numeric
+# integer
+# double
+# character
+# factor
+# logical
+# date: as.Date.POSIXct(Sys.time())
+# na
+# infinite
+
+## Concatenar
+
+## Vetores, Listas, Matrizes e Data Frames
+
+## str
