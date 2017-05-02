@@ -6,14 +6,27 @@ date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
 1. dim
 2. length
 3. nrow
 4. ncol
 5. rowSums
 6. colSums
-7. mean, sd,...
 1. Operação condicional com vetores;
-2. Reciclagem de vetores;
 3. Filtragem de dados em matrizes (“Conditional Subsetting”)
 4. Dados relacionais
