@@ -381,6 +381,111 @@ nrow(dados)</code></pre>
 dim(dados)</code></pre>
 <pre><code>## [1] 532  22</code></pre>
 <ul>
+<li>E também podemos verificar os nomes das linhas e colunas.</li>
+</ul>
+<pre class="r"><code># nomes das colunas
+colnames(dados)</code></pre>
+<pre><code>##  [1] &quot;id&quot;                      &quot;formacao_ouvinte&quot;       
+##  [3] &quot;origem_ouvinte&quot;          &quot;instituicao_ouvinte&quot;    
+##  [5] &quot;laboratorio_ouvinte&quot;     &quot;data&quot;                   
+##  [7] &quot;mes&quot;                     &quot;ano&quot;                    
+##  [9] &quot;palestra&quot;                &quot;palestrante&quot;            
+## [11] &quot;titulo&quot;                  &quot;responsavel&quot;            
+## [13] &quot;nacionalidade&quot;           &quot;origem_palestrante&quot;     
+## [15] &quot;instituicao_palestrante&quot; &quot;ppge&quot;                   
+## [17] &quot;laboratorio_palestrante&quot; &quot;formacao_palestrante&quot;   
+## [19] &quot;tema..1&quot;                 &quot;horario&quot;                
+## [21] &quot;semana&quot;                  &quot;local&quot;</code></pre>
+<pre class="r"><code># nomes das linhas
+rownames(dados)</code></pre>
+<pre><code>##   [1] &quot;1&quot;   &quot;2&quot;   &quot;3&quot;   &quot;4&quot;   &quot;5&quot;   &quot;6&quot;   &quot;7&quot;   &quot;8&quot;   &quot;9&quot;   &quot;10&quot;  &quot;11&quot; 
+##  [12] &quot;12&quot;  &quot;13&quot;  &quot;14&quot;  &quot;15&quot;  &quot;16&quot;  &quot;17&quot;  &quot;18&quot;  &quot;19&quot;  &quot;20&quot;  &quot;21&quot;  &quot;22&quot; 
+##  [23] &quot;23&quot;  &quot;24&quot;  &quot;25&quot;  &quot;26&quot;  &quot;27&quot;  &quot;28&quot;  &quot;29&quot;  &quot;30&quot;  &quot;31&quot;  &quot;32&quot;  &quot;33&quot; 
+##  [34] &quot;34&quot;  &quot;35&quot;  &quot;36&quot;  &quot;37&quot;  &quot;38&quot;  &quot;39&quot;  &quot;40&quot;  &quot;41&quot;  &quot;42&quot;  &quot;43&quot;  &quot;44&quot; 
+##  [45] &quot;45&quot;  &quot;46&quot;  &quot;47&quot;  &quot;48&quot;  &quot;49&quot;  &quot;50&quot;  &quot;51&quot;  &quot;52&quot;  &quot;53&quot;  &quot;54&quot;  &quot;55&quot; 
+##  [56] &quot;56&quot;  &quot;57&quot;  &quot;58&quot;  &quot;59&quot;  &quot;60&quot;  &quot;61&quot;  &quot;62&quot;  &quot;63&quot;  &quot;64&quot;  &quot;65&quot;  &quot;66&quot; 
+##  [67] &quot;67&quot;  &quot;68&quot;  &quot;69&quot;  &quot;70&quot;  &quot;71&quot;  &quot;72&quot;  &quot;73&quot;  &quot;74&quot;  &quot;75&quot;  &quot;76&quot;  &quot;77&quot; 
+##  [78] &quot;78&quot;  &quot;79&quot;  &quot;80&quot;  &quot;81&quot;  &quot;82&quot;  &quot;83&quot;  &quot;84&quot;  &quot;85&quot;  &quot;86&quot;  &quot;87&quot;  &quot;88&quot; 
+##  [89] &quot;89&quot;  &quot;90&quot;  &quot;91&quot;  &quot;92&quot;  &quot;93&quot;  &quot;94&quot;  &quot;95&quot;  &quot;96&quot;  &quot;97&quot;  &quot;98&quot;  &quot;99&quot; 
+## [100] &quot;100&quot; &quot;101&quot; &quot;102&quot; &quot;103&quot; &quot;104&quot; &quot;105&quot; &quot;106&quot; &quot;107&quot; &quot;108&quot; &quot;109&quot; &quot;110&quot;
+## [111] &quot;111&quot; &quot;112&quot; &quot;113&quot; &quot;114&quot; &quot;115&quot; &quot;116&quot; &quot;117&quot; &quot;118&quot; &quot;119&quot; &quot;120&quot; &quot;121&quot;
+## [122] &quot;122&quot; &quot;123&quot; &quot;124&quot; &quot;125&quot; &quot;126&quot; &quot;127&quot; &quot;128&quot; &quot;129&quot; &quot;130&quot; &quot;131&quot; &quot;132&quot;
+## [133] &quot;133&quot; &quot;134&quot; &quot;135&quot; &quot;136&quot; &quot;137&quot; &quot;138&quot; &quot;139&quot; &quot;140&quot; &quot;141&quot; &quot;142&quot; &quot;143&quot;
+## [144] &quot;144&quot; &quot;145&quot; &quot;146&quot; &quot;147&quot; &quot;148&quot; &quot;149&quot; &quot;150&quot; &quot;151&quot; &quot;152&quot; &quot;153&quot; &quot;154&quot;
+## [155] &quot;155&quot; &quot;156&quot; &quot;157&quot; &quot;158&quot; &quot;159&quot; &quot;160&quot; &quot;161&quot; &quot;162&quot; &quot;163&quot; &quot;164&quot; &quot;165&quot;
+## [166] &quot;166&quot; &quot;167&quot; &quot;168&quot; &quot;169&quot; &quot;170&quot; &quot;171&quot; &quot;172&quot; &quot;173&quot; &quot;174&quot; &quot;175&quot; &quot;176&quot;
+## [177] &quot;177&quot; &quot;178&quot; &quot;179&quot; &quot;180&quot; &quot;181&quot; &quot;182&quot; &quot;183&quot; &quot;184&quot; &quot;185&quot; &quot;186&quot; &quot;187&quot;
+## [188] &quot;188&quot; &quot;189&quot; &quot;190&quot; &quot;191&quot; &quot;192&quot; &quot;193&quot; &quot;194&quot; &quot;195&quot; &quot;196&quot; &quot;197&quot; &quot;198&quot;
+## [199] &quot;199&quot; &quot;200&quot; &quot;201&quot; &quot;202&quot; &quot;203&quot; &quot;204&quot; &quot;205&quot; &quot;206&quot; &quot;207&quot; &quot;208&quot; &quot;209&quot;
+## [210] &quot;210&quot; &quot;211&quot; &quot;212&quot; &quot;213&quot; &quot;214&quot; &quot;215&quot; &quot;216&quot; &quot;217&quot; &quot;218&quot; &quot;219&quot; &quot;220&quot;
+## [221] &quot;221&quot; &quot;222&quot; &quot;223&quot; &quot;224&quot; &quot;225&quot; &quot;226&quot; &quot;227&quot; &quot;228&quot; &quot;229&quot; &quot;230&quot; &quot;231&quot;
+## [232] &quot;232&quot; &quot;233&quot; &quot;234&quot; &quot;235&quot; &quot;236&quot; &quot;237&quot; &quot;238&quot; &quot;239&quot; &quot;240&quot; &quot;241&quot; &quot;242&quot;
+## [243] &quot;243&quot; &quot;244&quot; &quot;245&quot; &quot;246&quot; &quot;247&quot; &quot;248&quot; &quot;249&quot; &quot;250&quot; &quot;251&quot; &quot;252&quot; &quot;253&quot;
+## [254] &quot;254&quot; &quot;255&quot; &quot;256&quot; &quot;257&quot; &quot;258&quot; &quot;259&quot; &quot;260&quot; &quot;261&quot; &quot;262&quot; &quot;263&quot; &quot;264&quot;
+## [265] &quot;265&quot; &quot;266&quot; &quot;267&quot; &quot;268&quot; &quot;269&quot; &quot;270&quot; &quot;271&quot; &quot;272&quot; &quot;273&quot; &quot;274&quot; &quot;275&quot;
+## [276] &quot;276&quot; &quot;277&quot; &quot;278&quot; &quot;279&quot; &quot;280&quot; &quot;281&quot; &quot;282&quot; &quot;283&quot; &quot;284&quot; &quot;285&quot; &quot;286&quot;
+## [287] &quot;287&quot; &quot;288&quot; &quot;289&quot; &quot;290&quot; &quot;291&quot; &quot;292&quot; &quot;293&quot; &quot;294&quot; &quot;295&quot; &quot;296&quot; &quot;297&quot;
+## [298] &quot;298&quot; &quot;299&quot; &quot;300&quot; &quot;301&quot; &quot;302&quot; &quot;303&quot; &quot;304&quot; &quot;305&quot; &quot;306&quot; &quot;307&quot; &quot;308&quot;
+## [309] &quot;309&quot; &quot;310&quot; &quot;311&quot; &quot;312&quot; &quot;313&quot; &quot;314&quot; &quot;315&quot; &quot;316&quot; &quot;317&quot; &quot;318&quot; &quot;319&quot;
+## [320] &quot;320&quot; &quot;321&quot; &quot;322&quot; &quot;323&quot; &quot;324&quot; &quot;325&quot; &quot;326&quot; &quot;327&quot; &quot;328&quot; &quot;329&quot; &quot;330&quot;
+## [331] &quot;331&quot; &quot;332&quot; &quot;333&quot; &quot;334&quot; &quot;335&quot; &quot;336&quot; &quot;337&quot; &quot;338&quot; &quot;339&quot; &quot;340&quot; &quot;341&quot;
+## [342] &quot;342&quot; &quot;343&quot; &quot;344&quot; &quot;345&quot; &quot;346&quot; &quot;347&quot; &quot;348&quot; &quot;349&quot; &quot;350&quot; &quot;351&quot; &quot;352&quot;
+## [353] &quot;353&quot; &quot;354&quot; &quot;355&quot; &quot;356&quot; &quot;357&quot; &quot;358&quot; &quot;359&quot; &quot;360&quot; &quot;361&quot; &quot;362&quot; &quot;363&quot;
+## [364] &quot;364&quot; &quot;365&quot; &quot;366&quot; &quot;367&quot; &quot;368&quot; &quot;369&quot; &quot;370&quot; &quot;371&quot; &quot;372&quot; &quot;373&quot; &quot;374&quot;
+## [375] &quot;375&quot; &quot;376&quot; &quot;377&quot; &quot;378&quot; &quot;379&quot; &quot;380&quot; &quot;381&quot; &quot;382&quot; &quot;383&quot; &quot;384&quot; &quot;385&quot;
+## [386] &quot;386&quot; &quot;387&quot; &quot;388&quot; &quot;389&quot; &quot;390&quot; &quot;391&quot; &quot;392&quot; &quot;393&quot; &quot;394&quot; &quot;395&quot; &quot;396&quot;
+## [397] &quot;397&quot; &quot;398&quot; &quot;399&quot; &quot;400&quot; &quot;401&quot; &quot;402&quot; &quot;403&quot; &quot;404&quot; &quot;405&quot; &quot;406&quot; &quot;407&quot;
+## [408] &quot;408&quot; &quot;409&quot; &quot;410&quot; &quot;411&quot; &quot;412&quot; &quot;413&quot; &quot;414&quot; &quot;415&quot; &quot;416&quot; &quot;417&quot; &quot;418&quot;
+## [419] &quot;419&quot; &quot;420&quot; &quot;421&quot; &quot;422&quot; &quot;423&quot; &quot;424&quot; &quot;425&quot; &quot;426&quot; &quot;427&quot; &quot;428&quot; &quot;429&quot;
+## [430] &quot;430&quot; &quot;431&quot; &quot;432&quot; &quot;433&quot; &quot;434&quot; &quot;435&quot; &quot;436&quot; &quot;437&quot; &quot;438&quot; &quot;439&quot; &quot;440&quot;
+## [441] &quot;441&quot; &quot;442&quot; &quot;443&quot; &quot;444&quot; &quot;445&quot; &quot;446&quot; &quot;447&quot; &quot;448&quot; &quot;449&quot; &quot;450&quot; &quot;451&quot;
+## [452] &quot;452&quot; &quot;453&quot; &quot;454&quot; &quot;455&quot; &quot;456&quot; &quot;457&quot; &quot;458&quot; &quot;459&quot; &quot;460&quot; &quot;461&quot; &quot;462&quot;
+## [463] &quot;463&quot; &quot;464&quot; &quot;465&quot; &quot;466&quot; &quot;467&quot; &quot;468&quot; &quot;469&quot; &quot;470&quot; &quot;471&quot; &quot;472&quot; &quot;473&quot;
+## [474] &quot;474&quot; &quot;475&quot; &quot;476&quot; &quot;477&quot; &quot;478&quot; &quot;479&quot; &quot;480&quot; &quot;481&quot; &quot;482&quot; &quot;483&quot; &quot;484&quot;
+## [485] &quot;485&quot; &quot;486&quot; &quot;487&quot; &quot;488&quot; &quot;489&quot; &quot;490&quot; &quot;491&quot; &quot;492&quot; &quot;493&quot; &quot;494&quot; &quot;495&quot;
+## [496] &quot;496&quot; &quot;497&quot; &quot;498&quot; &quot;499&quot; &quot;500&quot; &quot;501&quot; &quot;502&quot; &quot;503&quot; &quot;504&quot; &quot;505&quot; &quot;506&quot;
+## [507] &quot;507&quot; &quot;508&quot; &quot;509&quot; &quot;510&quot; &quot;511&quot; &quot;512&quot; &quot;513&quot; &quot;514&quot; &quot;515&quot; &quot;516&quot; &quot;517&quot;
+## [518] &quot;518&quot; &quot;519&quot; &quot;520&quot; &quot;521&quot; &quot;522&quot; &quot;523&quot; &quot;524&quot; &quot;525&quot; &quot;526&quot; &quot;527&quot; &quot;528&quot;
+## [529] &quot;529&quot; &quot;530&quot; &quot;531&quot; &quot;532&quot;</code></pre>
+<ul>
+<li>Outra forma de ver os nomes das linhas de um data.frame, ou o nome das observações em um vetor ou das sub-listas de uma lista é através da função <code>names</code>.</li>
+</ul>
+<pre class="r"><code># nomes das colunas do data.frame dados
+# outra forma de ver isso: nome dos vetores que compõem o data.frame dados
+names(dados)</code></pre>
+<pre><code>##  [1] &quot;id&quot;                      &quot;formacao_ouvinte&quot;       
+##  [3] &quot;origem_ouvinte&quot;          &quot;instituicao_ouvinte&quot;    
+##  [5] &quot;laboratorio_ouvinte&quot;     &quot;data&quot;                   
+##  [7] &quot;mes&quot;                     &quot;ano&quot;                    
+##  [9] &quot;palestra&quot;                &quot;palestrante&quot;            
+## [11] &quot;titulo&quot;                  &quot;responsavel&quot;            
+## [13] &quot;nacionalidade&quot;           &quot;origem_palestrante&quot;     
+## [15] &quot;instituicao_palestrante&quot; &quot;ppge&quot;                   
+## [17] &quot;laboratorio_palestrante&quot; &quot;formacao_palestrante&quot;   
+## [19] &quot;tema..1&quot;                 &quot;horario&quot;                
+## [21] &quot;semana&quot;                  &quot;local&quot;</code></pre>
+<ul>
+<li>Atenção: ao contrário de um data.frame, uma matriz possui nomes às suas dimensões!</li>
+</ul>
+<pre class="r"><code># criando uma matriz de zeros
+(matriz &lt;- matrix(0, nrow = 2, ncol = 2, dimnames = list(c(1, 2), c(3, 4))))</code></pre>
+<pre><code>##   3 4
+## 1 0 0
+## 2 0 0</code></pre>
+<pre class="r"><code># quais os nomes das colunas da matriz?
+names(matriz)</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code># quais os nomes das colunas da matriz?
+colnames(matriz)</code></pre>
+<pre><code>## [1] &quot;3&quot; &quot;4&quot;</code></pre>
+<pre class="r"><code># quais os nomes das dimensões da matriz?
+dimnames(matriz)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;1&quot; &quot;2&quot;
+## 
+## [[2]]
+## [1] &quot;3&quot; &quot;4&quot;</code></pre>
+<ul>
 <li><p>Normalmente, ao carregarmos um conjunto de dados, é boa prática verificar se ele corresponde de fato aquilo que esperamos, para evitar surpresas durante a análise de dados ou no seu primeiro uso.</p></li>
 <li>A função <code>read.csv</code> é específica para arquivos separados por <code>,</code> (ou <code>;</code> como no caso do nosso exemplo), mas existem também outras funções que permitem ler arquivos com outro tipo de extensão, como a função <code>read.table</code>.</li>
 <li><p>A função <code>read.table</code> é usada principalmente para leitura de arquivos com extensão .txt.</p></li>

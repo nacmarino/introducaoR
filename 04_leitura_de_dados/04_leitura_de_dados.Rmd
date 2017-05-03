@@ -111,6 +111,35 @@ nrow(dados)
 dim(dados)
 ```
 
+* E também podemos verificar os nomes das linhas e colunas.
+```{r}
+# nomes das colunas
+colnames(dados)
+# nomes das linhas
+rownames(dados)
+```
+
+* Outra forma de ver os nomes das linhas de um data.frame, ou o nome das observações em um vetor ou das sub-listas de uma lista é através da função `names`.
+
+```{r}
+# nomes das colunas do data.frame dados
+# outra forma de ver isso: nome dos vetores que compõem o data.frame dados
+names(dados)
+```
+
+* Atenção: ao contrário de um data.frame, uma matriz possui nomes às suas dimensões!
+
+```{r}
+# criando uma matriz de zeros
+(matriz <- matrix(0, nrow = 2, ncol = 2, dimnames = list(c(1, 2), c(3, 4))))
+# quais os nomes das colunas da matriz?
+names(matriz)
+# quais os nomes das colunas da matriz?
+colnames(matriz)
+# quais os nomes das dimensões da matriz?
+dimnames(matriz)
+```
+
 * Normalmente, ao carregarmos um conjunto de dados, é boa prática verificar se ele corresponde de fato aquilo que esperamos, para evitar surpresas durante a análise de dados ou no seu primeiro uso.
 
 * A função `read.csv` é específica para arquivos separados por `,` (ou `;` como no caso do nosso exemplo), mas existem também outras funções que permitem ler arquivos com outro tipo de extensão, como a função `read.table`.
