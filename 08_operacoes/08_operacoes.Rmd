@@ -30,13 +30,131 @@ h1,h2,h3,h4,h5,h6{
 
 ## Reciclagem de Vetores
 
+* Como já vimos, muito do que fazemos tende a ser focado em vetores - estejam eles na forma de um vetor _per se_ ou como uma coluna em um `data.frame`.
+* Assim como para um elemento, podemos fazer qualquer operação matemática usando um vetor.
+
+```{r}
+# vamos criar um vetor com uma sequência de 20 números
+(vetor1 <- 1:20)
+# podemos adicionar uma constante ao vetor
+vetor1 + 10
+# podemos subtrair uma contante ao vetor
+vetor1 - 5
+# multiplicar
+vetor1 * 3
+# ou dividir
+vetor1 / 3
+```
+
+* Além disso, podemos realizar outras operações matemáticas com os vetores:
+
+```{r}
+# raiz quadrada
+sqrt(vetor1)
+# log
+log10(vetor1)
+# potencia
+vetor1^2
+```
+
+* E também podemos fazer operações entre vetores:
+
+```{r}
+# criando um novo vetor
+(vetor2 <- 21:40)
+# adição entre vetores
+vetor1 + vetor2
+# multiplicacao
+vetor1 * vetor2
+# potencia
+vetor1 ^ vetor2
+```
+
+* Note que aqui nós estamos fazendo uma operação utilizando vetores de mesmo comprimento, mas o que acontece ao fazermos uma operação com vetores de comprimento diferente?
+
+```{r}
+# criando um vetor de comprimento 2, com 0 e 1
+(vetor3 <- c(0, 1))
+# multiplicando o vetor3 pela 1
+vetor1 * vetor3
+```
+
+* Ao realizar uma operação com vetores de tamanho diferentes, ocorre a __reciclagem__ do vetor mais curso: o vetor mais curto é reaproveitado _n_ vezes na operação até o final do vetor mais longo.
+    + Lado Positivo: facilita a sua vida dependendo do tipo de calculo que você precisa fazer;
+    + Lado Negativo: por desatenção, você pode errar em uma operação simples em que você não previa um vetor de tamanho menor.
+    
+---
 
 ## Operações Gerais com Vetores
-Mean, sd, sqrt,...lag, lead, cumsum, fechar com summary
+
+* O R começa a ficar mais interessante ao movermos destes cálculos mais básicos para o seu uso em análises estatísticas e exploratórias: existem diversas funções de cunho estatístico que podem ser usados no contexto desta linguagem:
+
+```{r}
+# qual a media do vetor1?
+mean(vetor1)
+# qual a variância associada ao vetor1?
+var(vetor1)
+# qual o desvio padrão associado ao vetor1?
+sqrt(var(vetor1))
+# OU, MESMO RESULTADO:
+sd(vetor1)
+# qual a mediana associada ao vetor1?
+median(vetor1)
+# quais são os valores dos interquartis da distribuição de valores do vetor1?
+quantile(x = vetor1)
+```
+
+* É necessário ter atenção ao usar estas funções, pois normalmente o R não sabe muito bem o que fazer ao encontrar um `NA` - felizmente, existe o argumento `na.rm` que pode ser usado para remover os `NA`s ao usar estas funções.
+
+```{r}
+# um vetor com NA
+(vetor4 <- c(22, 77, 44, 33, NA, 66, 44))
+# a media deste vetor
+mean(vetor4)
+# especificando o que fazer com o NA deve ser removido.
+mean(vetor4, na.rm = TRUE)
+```
+
+* Podemos usar algumas funções periféricas para fazer cálculos que podem ajudar em algumas análises estatísticas e fornecer novas perspectivas sobre um conjunto de dados que estamos trabalhando:
+
+```{r}
+# somatório de todos os valores presentes no vetor1
+sum(vetor1)
+# somatório acumulado de todos os valores presentes no vetor1
+cumsum(vetor1)
+# valor máximo presente no vetor1
+max(vetor1)
+# valor mínimo presente no vetor1
+min(vetor1)
+# trimmed mean
+mean(vetor4, trim = 0.1, na.rm = TRUE) # removendo 10% dos dados mais extremos
+mean(vetor4, trim = 0.2, na.rm = TRUE) # removendo 20% dos dados mais extremos
+```
+
+* Também podemos ter acesso a grande parte destas informações através da função `summary`:
+
+```{r}
+summary(vetor1)
+```
 
 ## Operações Gerais com Matrizes;
+
+* Entender o funcionamento básico destas operações com vetores é o básico para podermos passar a fazer a mesma coisa com matrizes e `data.frame`.
+
+```{r}
+# vamos carregar um conjunto de dados para podermos trabalhar nesta aula
+# vamos usar aqueles das palestras do PPGE
+# carregando o pacote
+suppressPackageStartupMessages(library(readr))
+# carregando dados
+dados <- suppressMessages(read_delim("../05_leitura_de_dados/dados/lista_de_presenca.csv", delim = ";"))
+# dando uma olhada nos dados que acabamos de carregar
+dados
+```
+
+
+
 começar com summary
-multiplicacao
 adicao de colunas com $
 fechar mostrando que normalmente queremos fazer as coisas via niveis da categoria
 
@@ -48,4 +166,3 @@ fechar mostrando que normalmente queremos fazer as coisas via niveis da categori
 # tapply
 # lapply
 # mapply
-by
