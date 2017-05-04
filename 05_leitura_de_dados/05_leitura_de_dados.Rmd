@@ -155,13 +155,7 @@ a. Use a função `read.table` para ler o arquivo `exemplo.txt`.
 b. Você conseguiu carregar este arquivo? Se não, por que?
 c. Como consertar este possível 'Erro'?
 
-* __Dica do R:__ você sabe a diferença entre um `error`, `warning` e uma `message`?
-    + `error`: ocorreu um erro durante o processamento e o que quer que você tenha pedido para ser feito não aconteceu;
-    + `warning`: o processamento foi feito, mas alguma coisa não correu como o esperado e pode ter comprometido o resultado do processamento;
-    + `message`: o processamento foi feito, tudo correu bem e só uma observação, que não compremete a tarefa, é apresentada.
-    + `error` vs `warning` vs `message`: 
-        1. ordem de perigo: `warning` > `message` > `error` (__melhor não fazer, do que fazer mal feito__).
-        2. ordem de desespero de alguém que está iniciando: `warning` = `message` = `error`.
+---
 
 * Uma forma de carregar o arquivo `exemplo.txt` é:
 

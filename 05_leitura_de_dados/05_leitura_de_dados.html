@@ -507,18 +507,8 @@ dimnames(matriz)</code></pre>
 <li>Você conseguiu carregar este arquivo? Se não, por que?</li>
 <li>Como consertar este possível ‘Erro’?</li>
 </ol>
+<hr />
 <ul>
-<li><strong>Dica do R:</strong> você sabe a diferença entre um <code>error</code>, <code>warning</code> e uma <code>message</code>?
-<ul>
-<li><code>error</code>: ocorreu um erro durante o processamento e o que quer que você tenha pedido para ser feito não aconteceu;</li>
-<li><code>warning</code>: o processamento foi feito, mas alguma coisa não correu como o esperado e pode ter comprometido o resultado do processamento;</li>
-<li><code>message</code>: o processamento foi feito, tudo correu bem e só uma observação, que não compremete a tarefa, é apresentada.</li>
-<li><code>error</code> vs <code>warning</code> vs <code>message</code>:
-<ol style="list-style-type: decimal">
-<li>ordem de perigo: <code>warning</code> &gt; <code>message</code> &gt; <code>error</code> (<strong>melhor não fazer, do que fazer mal feito</strong>).</li>
-<li>ordem de desespero de alguém que está iniciando: <code>warning</code> = <code>message</code> = <code>error</code>.</li>
-</ol></li>
-</ul></li>
 <li>Uma forma de carregar o arquivo <code>exemplo.txt</code> é:</li>
 </ul>
 <pre class="r"><code># suppressWarnings suprime o aviso de 'warnings'
