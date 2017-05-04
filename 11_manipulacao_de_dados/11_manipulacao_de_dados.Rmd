@@ -6,8 +6,45 @@ date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
-1. No pacote base
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. A natureza dos dados;
+2. Métodos básicos para a limpeza e criação de dados;
+3. Métodos para simplificar a criação, limpeza e manutenção de dados;
+4. Base de dados relacionais.
+
+## A natureza dos dados
+
+* Um dado pode estar em diferentes fases de maturidade:
+    + Dados brutos (_raw data_)  
+    + Dados limpos (_tidy data_)  
+    + Dados para análise
+    + Dados dos resultados das análises
+
+* O que é tidy data?
+
+## Métodos básicos para a criação e limpeza de dados
+
+criação de dados pela indexação com $, sub, gsub, make.names, tolower, toupper, paste, paste0, abbreviate, revisitando ifelse, strsplit (separate da base R), stringr, forcats
+
+## Métodos para simplificar a criação, limpeza e manutenção de dados
+
 2. dplyr
 3. tidyr
-4. forcats
-5. stringr
+
+## Base de dados relacionais
