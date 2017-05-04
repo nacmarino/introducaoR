@@ -94,6 +94,8 @@ month.name
 
 a. Qual a raiz quadrada do arcoseno de 0.43?
 
+---
+
 ## Objetos
 
 * Pode ser muito repetitivo ter que ficar digitando constantemente uma operação para obter um resultado; as vezes, isto não é só repetitivo, mas a escrita do código pode ser demasiada longa e enviesada ao erro;
@@ -123,11 +125,15 @@ a. Calcule o resultado da operação da multiplicação de 5 por 6;
 b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 
+---
+
 ##### Exercício 3
 
 a. Divida o objeto `resultado` pela raiz quadrada de 9;
 b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
+
+---
 
 ## Scoping rules
 
@@ -169,6 +175,8 @@ is.character(x = "Ola!")
 ##### Exercício 4
 
 a. Pergunte ao R se o número 5 é um número inteiro.
+
+---
 
 ```{r}
 # o número 5 é inteiro?
@@ -223,6 +231,8 @@ is.factor(x = 5)
 
 a. Faça com que o número 5 seja entendido como um fator.
 
+---
+
 ## Vetores
 
 * Até o momento estamos trabalhando com objetos que armazenam e/ou assumem um único valor, mas muitas vezes estamos interessados em conjuntos de valores muito maiores.
@@ -251,6 +261,8 @@ a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
 
 * __Dica:__ ao utilizar qualquer palavra ou criar um vetor que contenha palavras, você precisa usar as aspas em cada palavra, para que o R entenda que aquilo é uma palavra, caso contrário ele vai procurar um objeto que contenha aquele nome no ambiente global.
 
+---
+
 ##### Exercício 7
 
 a. Crie um vetor combinando os vetores `frutas` e `idade`.
@@ -262,6 +274,8 @@ c. Sem olhar, qual a classe do objeto criado?
     + Um vetor pode conter qualquer tipo de objeto: lógicos, numéricos, inteiros, caracteres...
     + Um fator é um valor que codifica uma categoria: pode ser um número ou um caractere.
 * Você também pode criar um vetor através da função `vector`.
+
+---
 
 ```{r}
 # para criar um vetor vazio com comprimento 10
@@ -308,6 +322,8 @@ e. O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?
     + Uma matriz pode armazenar objetos de apenas um tipo: ou todos os objetos são numéricos, ou são todos caracteres, ou são todos lógicos, e etc.
     + Uma matriz é útil para fazer cálculos, péssimo para armazenar informações de diferentes tipos.
 
+---
+
 ## Lista
 
 * Uma outra forma de armazenar informacões é através da criação de listas com a função `list`;
@@ -347,6 +363,8 @@ a. Crie dois vetores com uma informação que você desejar;
 b. Crie uma matriz contendo a informação destes dois vetores;
 c. Crie um Data Frame contendo a informação destes dois vetores;
 d. Coloque tudo isto em uma lista.
+
+---
 
 ## Outras formas de criar Matrizes e Data Frames
 
