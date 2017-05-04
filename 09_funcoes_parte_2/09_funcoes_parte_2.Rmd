@@ -6,5 +6,8 @@ date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
-1. funcoes loop: for, while,...
-2. funcoes: function
+1. Numeros aleatorios
+2. Sort vs order
+3. round, ceiling, floor
+4. funcoes: function
+5. funcoes loop: for, while,...
