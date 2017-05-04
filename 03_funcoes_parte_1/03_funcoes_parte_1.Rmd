@@ -1,0 +1,38 @@
+---
+title: "Funções - Parte 1"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. O que são funções?
+2. Scoping Rules;
+3. Tipos de argumentos.
+
+
+* __Dica do R:__ você sabe a diferença entre um `error`, `warning` e uma `message`?
+    + `error`: uma indicação de que um problema fatal ocorreu, levando à parada da execução da função;
+    + `warning`: uma indicação de que algo de errado aconteceu, mas que não é necessariamente fatal - desta forma, a execução da função prossegue;
+    + `message`: uma mensagem ou notificação genérica, que não tem haver com um erro ou problema na execução da função - tudo ocorre de forma natural.
+
+* `error` vs `warning` vs `message`: 
+    1. ordem de perigo: `warning` > `message` > `error` (__melhor não fazer, do que fazer mal feito__).
+    2. ordem de desespero de alguém que está iniciando: `warning` = `message` = `error`.
