@@ -400,13 +400,94 @@ which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") != "Joana")
 
 ---
 
-* Um outro conjunto de funções pode ser usado como em um teste de conjuntos:  `setdiff`, `intersect` e `union`
+* Também podemos usar a função `which` para determinarmos qual a posição dos elementos compartilhados por dois vetores. 
 
 ```{r}
-(vetor2 <- 26:35)
-setdiff(vetor1, vetor2)
+# criando um segundo vetor
+(vetor2 <- 25:35)
+# qual a posição dos elementos do vetor1 que estão presentes no vetor2?
+which(vetor1 %in% vetor2)
+# qual a posição dos elementos do vetor2 que estão presentes no vetor1?
+which(vetor2 %in% vetor1)
 ```
 
+* Este tipo de teste pode ser feito através do conjunto de funções: `setdiff`, `intersect` e `union`.
+
+```{r}
+# quais os valores diferentes entre o vetor1 e o vetor2?
+setdiff(vetor1, vetor2)
+# quais os valores semelhantes entre o vetor1 e o vetor2?
+intersect(vetor1, vetor2)
+# qual a união dos valores no vetor1 e vetor2?
+union(vetor1, vetor2)
+```
+
+---
+
 * Por fim, existe a função `ifelse`, que usa um teste lógico para executar uma ação:
+    + Dado um teste lógico;
+    + Faça `yes` caso ele seja verdadeiro;
+    + Faça `no` caso ele seja falso.
+
+```{r}
+args(ifelse)
+```
+
+* Um exemplo da aplicação desta função:
+
+```{r}
+ifelse(vetor1 <= 23, "baixo", "alto")
+```
+
+* Você pode encadear diversos testes e substituições lógicos, mas cuidado - isto tende a se tornar cada vez mais complexo!
+
+```{r}
+ifelse(vetor1 <= 23, "baixo", ifelse(vetor1 <= 26, "médio", ifelse(vetor1 <= 29, "alto", "muito alto")))
+```
+
+---
 
 ## Aplicações da Indexação e Operações Condicionais
+
+* Talvez você se pergunte: "_para que gastar tanto tempo entendendo como fazer estas indexações e realizar testes lógicos_"?
+* Você verá, ao longo do tempo, a indexação é muito útil em diversas etapas da análise, manipulação e limpeza de dados:
+    + Trabalhar com sub-conjuntos dos dados para tarefas específicas;
+    + Remover ou adicionar observacões a um conjunto de dados;
+    + _Consertar_ erros em um conjunto de dados;
+    + _Modificar_ aspectos de um conjuntos de dados;
+    + ...
+
+* Um exemplo de como podemos usar a indexação para consertar um dado: o `data.frame` que criamos, `exemplo`.
+
+```{r}
+# você se lembra do 'NA', na terceira linha?
+exemplo
+# e se por um acaso descobrirmos que esse NA era, na realidade o número 10? podemos alterar este valor diretamente pela indexacao
+# o NA está na terceira linha, primeira coluna
+exemplo[3,1] # aqui está o NA
+# para substituir ele, é só indexar e fornecer um novo valor aquela posição
+exemplo[3,1] <- 10
+# se olharmos este data.frame agora
+exemplo
+```
+
+* De forma similar, podemos indexar alguns aspectos de um objeto para fazer outros tipos de modificações:
+
+```{r}
+# foo1 e foo2 são dois nomes péssimos para colunas, o que acham de modificarmos estes nomes?
+names(exemplo) # aqui estão os nomes das colunas - estes nomes são um vetor!
+# vamos criar outros dois nomes para as colunas: idade e nome
+novas_colunas <- c("idade", "nome")
+# podemos dizer para o R que os nomes das colunas de exemplo agora serão dadas pelo vetor que criamos
+names(exemplo) <- novas_colunas
+# se olharmos o data.frame
+exemplo
+```
+
+* Note, portanto, que a indexação e testes lógicos podem ser muito úteis para a edição e customização dos dados diretamente no R, sem a necessidade de fazermos qualquer alteração através do Excel (por exemplo).
+
+##### Exercício 8
+
+* Com o `data.frame` que acabamos de usar, `exemplo`:
+    a. Substitua o conteúdo de cada linha pela idade e um sobrenome de 5 pessoas que estão sentadas próximas a você;
+    b. Substitua apenas o título da coluna 'nome' por 'sobrenome'.
