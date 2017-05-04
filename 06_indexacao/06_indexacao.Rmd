@@ -87,6 +87,8 @@ d. Crie um vetor com as letras "A" e "B", em sequência, cada uma repetida metad
 e. Junte três dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
 f. Qual o comprimento do data.frame? O que este comprimento representa?
 
+---
+
 * Eu vou fazer as três primeiras partes do exercício também:
 
 ```{r}
@@ -170,6 +172,8 @@ a. Utilizando o `vetor2`, faça uma indexação que retorne:
     3. Os cinco primeiros elementos e os elementos entre as posições 20 e 30;
     4. Apenas os elementos em posição par.
 
+---
+
 * Da mesma forma como podemos selecionar os elementos que __queremos__, podemos selecionar aqueles elementos que __não queremos__!
 
 ```{r}
@@ -189,6 +193,9 @@ vetor2[-c(1:20)]
 ##### Exercício 3
 
 a. Exclua todos os elementos em posição ímpar do `vetor2`.  
+
+---
+
 
 ### Indexando `data.frame`
 
@@ -216,6 +223,8 @@ a. Usando o data.frame `dados`:
     3. Selecione toda colunas, mas apenas as linhas pares;
     4. Elimine apenas a coluna 3;
     5. Elimine as linhas 15 a 30.
+
+---
 
 * Também podemos indexar um conjunto de dados em um `data.frame` através do nome da coluna ou da sub-lista.
 
