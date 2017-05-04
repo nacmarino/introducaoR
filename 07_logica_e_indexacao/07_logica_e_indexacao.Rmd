@@ -90,6 +90,8 @@ c. Qual a explicação para isso?
     + se um elemento não passar em um determinado teste, elimine este elemento.
 * Agora, veremos como podemos usar estes critérios para realizar operações condicionais com vetores e `data.frame`.
 
+---
+
 ## Operações Condicionais em Vetores
 
 * Vamos criar um vetor de comprimento 50, contendo uma sequência de números de 1 a 34, e usar a função `round` para arredondar os valores para 1 casa decimal.
@@ -125,6 +127,8 @@ letras != "B"
 
 a. Quais elementos do `vetor1` são menores do que 10 e maiores do que 25?
 b. Quais elementos do `vetor1` são maiores de 15 (inclusive) ou menores do que 3?
+
+---
 
 * Uma coisa importante a se notar é que ao fazermos estes testes, __o resultado retornado é um vetor__.
 
@@ -173,6 +177,8 @@ c. Faça com que os valores "impar" e "par" sejam repetidos 50 vezes, de forma i
 d. Indexe o vetor criado no passo "a" de forma que somente os números __pares__ sejam apresentados.
 
 * O que este último exercício nos mostra é que podemos usar condições relacionadas a um vetor para indexar valores em um outro vetor. Isto é um passo importante para entendermos as operações condicionais em um `data.frame`.
+
+---
 
 ## Operações Condicionais em `data.frame`
 
@@ -233,6 +239,8 @@ dados[dados$paises == "Brasil", c(2,3)]
 a. Indexe todas as linhas de `dados` cujo valor de `vetor1` seja maior 30 (inclusive);
 b. Indexe todas as linhas de `dados` que correspondam à letra "B", mas removendo a coluna países.
 
+---
+
 * Podemos extender o uso da indexação para mais de uma condição:
 
 ```{r}
@@ -270,6 +278,8 @@ c. Agora, retenha todas as linhas de carros cuja hp sejam maiores que 90 E o con
 d. Retenha todos os carros que tenham 4 ou 5 marchas e cujo mph seja maior do que 30;
 e. Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg seja menor do que 20 e que tenha 6 cilindros.
 
+--- 
+
 * Como podemos ver, indexar um `data.frame` de acordo com múltiplas condições pode rapidamente se tornar complexo e impraticável.
 * Existe uma forma mais fácil de __filtrar__ um sub-conjunto dos dados, usando a função `subset`.
     + podemos usar o argumento `subset` desta função para indicar os elementos que queremos indexar;
@@ -304,9 +314,11 @@ subset(x = mtcars, select = c(cyl, hp, mpg, disp))
     c. retenha as observações das espécies "setosa" e "virgina";
     d. retenha as observações das espécies "setosa" e "virgina", cuja largura da pétala seja maior do que 0.3.
 
+---
+
 ## Outras operações e funções condicionais
 
-* Além dos operadores lógicos, o R possui um conjunto de funções que também podem ser empregadas para testes lógicos: `is.na`, `is.infinite`, `is.nan`, `setequal`, `setdiff`, `which`, `which.min`, `which.max` e `ifelse`.
+* Além dos operadores lógicos, o R possui um conjunto de funções que também podem ser empregadas para testes lógicos: `is.na`, `is.infinite` e `is.nan`.
 
 * As funções `is.na`, `is.inf`, `is.nan` são usadas para determinar a existência de `NA`, `Inf` e `NaN` em um vetor: assim como os testes lógicos em vetores, estas funções retornam valores de `TRUE` ou `FALSE` para os valores que passam ou não no teste lógico.
 
@@ -363,14 +375,38 @@ exemplo[!is.na(exemplo$foo1), ]
 
 * Todos os exemplos que vimos até agora trabalham como testes lógicos que retornam `TRUE` e `FALSE`. Isto é útil para visualizar quais os valores não batem como uma condição e, mais a frente, veremos que também pode ser útil em operações matemáticas.
   
-* No entanto, as vezes queremos saber qual a posição absoluta em que um determinado elemento que satisfaça uma condição está, para isto existem as funções: `setequal`, `setdiff`, `which`, `which.min`, `which.max` e `ifelse`.
+* No entanto, às vezes queremos saber qual a posição absoluta em que está elemento que satisfaça uma condição, para isto existem as funções: `which.min`, `which.max`, `which` - note que essas funções devem ser usadas em __vetores__.
 
+```{r}
+# criando um vetor
+(vetor1 <- 20:30)
+# onde está o valor mínimo do vetor1?
+which.min(vetor1)
+# onde está o valor máximo do vetor1?
+which.max(vetor1)
+# onde estão os valores que satisfaçam uma determina condição?
+which(vetor1 >= 25)
+which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") == "Joana")
+which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") != "Joana")
+```
 
-# which
-# which.max
-# which.min
-# setequal
-# setdiff
-# ifelse
+##### Exercício 7
+
+* Usando o conjunto de dados `iris`:
+    a. Em que linha está o valor mínimo da largura da sépala?
+    b. Em que linhas está o valor máximo do comprimento da pétala?
+    c. Em que linhas estão as observações que correspondem à espécie "virginica"?
+    d. Usando a função `which`, retorne um `data.frame` que contenha apenas as linhas com observações da espécie "versicolor".  
+
+---
+
+* Um outro conjunto de funções pode ser usado como em um teste de conjuntos:  `setdiff`, `intersect` e `union`
+
+```{r}
+(vetor2 <- 26:35)
+setdiff(vetor1, vetor2)
+```
+
+* Por fim, existe a função `ifelse`, que usa um teste lógico para executar uma ação:
 
 ## Aplicações da Indexação e Operações Condicionais

@@ -252,6 +252,7 @@ h1,h2,h3,h4,h5,h6{
 </ul></li>
 <li>Agora, veremos como podemos usar estes critérios para realizar operações condicionais com vetores e <code>data.frame</code>.</li>
 </ul>
+<hr />
 </div>
 </div>
 <div id="operacoes-condicionais-em-vetores" class="section level2">
@@ -317,6 +318,7 @@ letras != &quot;B&quot;</code></pre>
 <li>Quais elementos do <code>vetor1</code> são menores do que 10 e maiores do que 25?</li>
 <li>Quais elementos do <code>vetor1</code> são maiores de 15 (inclusive) ou menores do que 3?</li>
 </ol>
+<hr />
 <ul>
 <li>Uma coisa importante a se notar é que ao fazermos estes testes, <strong>o resultado retornado é um vetor</strong>.</li>
 </ul>
@@ -374,6 +376,7 @@ vetor1[exemplo == &quot;B&quot;]</code></pre>
 <ul>
 <li>O que este último exercício nos mostra é que podemos usar condições relacionadas a um vetor para indexar valores em um outro vetor. Isto é um passo importante para entendermos as operações condicionais em um <code>data.frame</code>.</li>
 </ul>
+<hr />
 </div>
 </div>
 <div id="operacoes-condicionais-em-data.frame" class="section level2">
@@ -492,6 +495,7 @@ dados[dados$paises == &quot;Brasil&quot;, c(2,3)]</code></pre>
 <li>Indexe todas as linhas de <code>dados</code> cujo valor de <code>vetor1</code> seja maior 30 (inclusive);</li>
 <li>Indexe todas as linhas de <code>dados</code> que correspondam à letra “B”, mas removendo a coluna países.</li>
 </ol>
+<hr />
 <ul>
 <li>Podemos extender o uso da indexação para mais de uma condição:</li>
 </ul>
@@ -614,6 +618,7 @@ dados[dados$paises %in% c(&quot;Brasil&quot;,&quot;Togo&quot;), ]</code></pre>
 <li>Retenha todos os carros que tenham 4 ou 5 marchas e cujo mph seja maior do que 30;</li>
 <li>Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg seja menor do que 20 e que tenha 6 cilindros.</li>
 </ol>
+<hr />
 <ul>
 <li>Como podemos ver, indexar um <code>data.frame</code> de acordo com múltiplas condições pode rapidamente se tornar complexo e impraticável.</li>
 <li>Existe uma forma mais fácil de <strong>filtrar</strong> um sub-conjunto dos dados, usando a função <code>subset</code>.
@@ -749,12 +754,13 @@ subset(x = mtcars, mpg &gt; 20 &amp; hp &lt; 100, select = c(mpg, cyl, hp))</cod
 <li>retenha as observações das espécies “setosa” e “virgina”, cuja largura da pétala seja maior do que 0.3.</li>
 </ol></li>
 </ul>
+<hr />
 </div>
 </div>
 <div id="outras-operacoes-e-funcoes-condicionais" class="section level2">
 <h2>Outras operações e funções condicionais</h2>
 <ul>
-<li><p>Além dos operadores lógicos, o R possui um conjunto de funções que também podem ser empregadas para testes lógicos: <code>is.na</code>, <code>is.infinite</code>, <code>is.nan</code>, <code>setequal</code>, <code>setdiff</code>, <code>which</code>, <code>which.min</code>, <code>which.max</code> e <code>ifelse</code>.</p></li>
+<li><p>Além dos operadores lógicos, o R possui um conjunto de funções que também podem ser empregadas para testes lógicos: <code>is.na</code>, <code>is.infinite</code> e <code>is.nan</code>.</p></li>
 <li><p>As funções <code>is.na</code>, <code>is.inf</code>, <code>is.nan</code> são usadas para determinar a existência de <code>NA</code>, <code>Inf</code> e <code>NaN</code> em um vetor: assim como os testes lógicos em vetores, estas funções retornam valores de <code>TRUE</code> ou <code>FALSE</code> para os valores que passam ou não no teste lógico.</p></li>
 </ul>
 <pre class="r"><code># criando um vetor com NA e testando sua existência
@@ -832,27 +838,48 @@ exemplo[!is.na(exemplo$foo1), ]</code></pre>
 ## 5    9    A</code></pre>
 <ul>
 <li><p>Todos os exemplos que vimos até agora trabalham como testes lógicos que retornam <code>TRUE</code> e <code>FALSE</code>. Isto é útil para visualizar quais os valores não batem como uma condição e, mais a frente, veremos que também pode ser útil em operações matemáticas.</p></li>
-<li><p>No entanto, as vezes queremos saber qual a posição absoluta em que um determinado elemento que satisfaça uma condição está, para isto existem as funções: <code>setequal</code>, <code>setdiff</code>, <code>which</code>, <code>which.min</code>, <code>which.max</code> e <code>ifelse</code>.</p></li>
+<li><p>No entanto, às vezes queremos saber qual a posição absoluta em que está elemento que satisfaça uma condição, para isto existem as funções: <code>which.min</code>, <code>which.max</code>, <code>which</code> - note que essas funções devem ser usadas em <strong>vetores</strong>.</p></li>
+</ul>
+<pre class="r"><code># criando um vetor
+(vetor1 &lt;- 20:30)</code></pre>
+<pre><code>##  [1] 20 21 22 23 24 25 26 27 28 29 30</code></pre>
+<pre class="r"><code># onde está o valor mínimo do vetor1?
+which.min(vetor1)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># onde está o valor máximo do vetor1?
+which.max(vetor1)</code></pre>
+<pre><code>## [1] 11</code></pre>
+<pre class="r"><code># onde estão os valores que satisfaçam uma determina condição?
+which(vetor1 &gt;= 25)</code></pre>
+<pre><code>## [1]  6  7  8  9 10 11</code></pre>
+<pre class="r"><code>which(c(&quot;Joao&quot;, &quot;Maria&quot;, &quot;Gabriel&quot;, &quot;Joana&quot;, &quot;Mario&quot;, &quot;Gabriela&quot;) == &quot;Joana&quot;)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>which(c(&quot;Joao&quot;, &quot;Maria&quot;, &quot;Gabriel&quot;, &quot;Joana&quot;, &quot;Mario&quot;, &quot;Gabriela&quot;) != &quot;Joana&quot;)</code></pre>
+<pre><code>## [1] 1 2 3 5 6</code></pre>
+<div id="exercicio-7" class="section level5">
+<h5>Exercício 7</h5>
+<ul>
+<li>Usando o conjunto de dados <code>iris</code>:
+<ol style="list-style-type: lower-alpha">
+<li>Em que linha está o valor mínimo da largura da sépala?</li>
+<li>Em que linhas está o valor máximo do comprimento da pétala?</li>
+<li>Em que linhas estão as observações que correspondem à espécie “virginica”?</li>
+<li>Usando a função <code>which</code>, retorne um <code>data.frame</code> que contenha apenas as linhas com observações da espécie “versicolor”.</li>
+</ol></li>
+</ul>
+<hr />
+<ul>
+<li>Um outro conjunto de funções pode ser usado como em um teste de conjuntos: <code>setdiff</code>, <code>intersect</code> e <code>union</code></li>
+</ul>
+<pre class="r"><code>(vetor2 &lt;- 26:35)</code></pre>
+<pre><code>##  [1] 26 27 28 29 30 31 32 33 34 35</code></pre>
+<pre class="r"><code>setdiff(vetor1, vetor2)</code></pre>
+<pre><code>## [1] 20 21 22 23 24 25</code></pre>
+<ul>
+<li>Por fim, existe a função <code>ifelse</code>, que usa um teste lógico para executar uma ação:</li>
 </ul>
 </div>
 </div>
-<div id="which" class="section level1">
-<h1>which</h1>
-</div>
-<div id="which.max" class="section level1">
-<h1>which.max</h1>
-</div>
-<div id="which.min" class="section level1">
-<h1>which.min</h1>
-</div>
-<div id="setequal" class="section level1">
-<h1>setequal</h1>
-</div>
-<div id="setdiff" class="section level1">
-<h1>setdiff</h1>
-</div>
-<div id="ifelse" class="section level1">
-<h1>ifelse</h1>
 <div id="aplicacoes-da-indexacao-e-operacoes-condicionais" class="section level2">
 <h2>Aplicações da Indexação e Operações Condicionais</h2>
 </div>
