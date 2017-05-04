@@ -24,9 +24,17 @@ h1,h2,h3,h4,h5,h6{
 # Elementos da Aula
 
 1. O que são funções?
-2. Scoping Rules;
-3. Tipos de argumentos.
+2. Scoping rules;
+3. Suas principais fontes de erro serão...;
+3. Tipos de Argumentos;
 
+## O que são funções?
+
+## Scoping rules
+
+## Suas principais fonte de erro serão...
+    
+## Tipos de Argumentos
 
 * __Dica do R:__ você sabe a diferença entre um `error`, `warning` e uma `message`?
     + `error`: uma indicação de que um problema fatal ocorreu, levando à parada da execução da função;
