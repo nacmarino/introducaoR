@@ -261,6 +261,7 @@ resultado = 5 + 5</code></pre>
 <li>Calcule o resultado da operação da multiplicação de 5 por 6;</li>
 <li>Armazene o resultado desta operação em um objeto chamado <code>resultado</code>;</li>
 <li>Sem olhar, qual o valor armazenado no objeto <code>resultado</code>?</li>
+<li>Por que isto aconteceu?</li>
 </ol>
 <hr />
 </div>
@@ -270,34 +271,10 @@ resultado = 5 + 5</code></pre>
 <li>Divida o objeto <code>resultado</code> pela raiz quadrada de 9;</li>
 <li>Armazene o resultado desta operação em um objeto chamado <code>resultado</code>;</li>
 <li>Sem olhar, qual o valor armazenado no objeto <code>resultado</code>?</li>
+<li>Por que isto aconteceu?</li>
 </ol>
 <hr />
 </div>
-</div>
-<div id="scoping-rules" class="section level2">
-<h2>Scoping rules</h2>
-<ul>
-<li>A linguagem R trabalha associando um <strong>nome</strong> a um <strong>objeto</strong>.</li>
-<li>O R segue um <em>scoping rule</em> do tipo <em>Lexical scoping</em> (ou <em>Static scoping</em>):
-<ul>
-<li>Ao “chamar” um <strong>objeto</strong>, o R busca a operação/comando/arquivo/etc que corresponde aquele nome no ambiente;</li>
-<li>A busca pelo objeto começa do pacote carregado mais recentemente e vai até o ambiente global (para ver todos os pacotes carregados:<code>search()</code>; para ver todos os objetos criados e existentes no ambiente global: <code>ls()</code>).</li>
-</ul></li>
-<li>Consequências:
-<ul>
-<li>Você só precisa definir um nome para um objeto uma única vez;</li>
-<li>Todo objeto criado é salvo no ambiente (<em>“Environment”</em>) da sessão;</li>
-<li>Cada objeto criado ocupa um espaço e ‘come’ poder de processamento;</li>
-<li>Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;</li>
-<li>Sobre-escrever o nome de uma função com um objeto <em>não</em> apaga a função, apenas faz com que o seu uso necessite de operadores especiais (<strong>ou seja, podem haver mensagens de erro ao sobre-escrever funções</strong>).</li>
-</ul></li>
-<li><strong>Boa prática</strong>:
-<ul>
-<li>Apague objetos que você não vá usar mais em uma sessão - <code>rm(objeto)</code>;</li>
-<li>Evite salvar a área de trabalho ao sair do R (casos especiais justificam salvá-lo);</li>
-<li>Ao iniciar uma sessão, limpe tudo que está no ambiente global do R - <code>rm(list=ls(all=TRUE))</code>.</li>
-</ul></li>
-</ul>
 </div>
 <div id="tipos-e-classes-de-objetos" class="section level2">
 <h2>Tipos e Classes de Objetos</h2>

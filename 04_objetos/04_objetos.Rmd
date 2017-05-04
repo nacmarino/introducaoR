@@ -124,6 +124,7 @@ resultado
 a. Calcule o resultado da operação da multiplicação de 5 por 6;
 b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
+d. Por que isto aconteceu?
 
 ---
 
@@ -132,25 +133,9 @@ c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 a. Divida o objeto `resultado` pela raiz quadrada de 9;
 b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
+d. Por que isto aconteceu?
 
 ---
-
-## Scoping rules
-
-* A linguagem R trabalha associando um __nome__ a um __objeto__.
-* O R segue um _scoping rule_ do tipo _Lexical scoping_ (ou _Static scoping_):
-    + Ao "chamar" um __objeto__, o R busca a operação/comando/arquivo/etc que corresponde aquele nome no ambiente;
-    + A busca pelo objeto começa do pacote carregado mais recentemente e vai até o ambiente global (para ver todos os pacotes carregados:`search()`; para ver todos os objetos criados e existentes no ambiente global: `ls()`).
-* Consequências:
-    + Você só precisa definir um nome para um objeto uma única vez;
-    + Todo objeto criado é salvo no ambiente (_"Environment"_) da sessão;
-    + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
-    + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
-    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais (__ou seja, podem haver mensagens de erro ao sobre-escrever funções__).
-* __Boa prática__: 
-    + Apague objetos que você não vá usar mais em uma sessão - `rm(objeto)`;
-    + Evite salvar a área de trabalho ao sair do R (casos especiais justificam salvá-lo);
-    + Ao iniciar uma sessão, limpe tudo que está no ambiente global do R - `rm(list=ls(all=TRUE))`.
 
 ## Tipos e Classes de Objetos
 
