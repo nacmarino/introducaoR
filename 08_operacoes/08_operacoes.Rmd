@@ -21,8 +21,31 @@ h1,h2,h3,h4,h5,h6{
 }
 </style>
 
-1. mean, sd,...
-2. summary
-3. apply
-4. tapply
-5. Reciclagem de vetores.
+# Elementos da Aula
+
+1. Reciclagem de Vetores;
+2. Operações Gerais com Vetores;
+3. Operações Gerais com Matrizes;
+4. Operações Condicionais com Funções Loop.
+
+## Reciclagem de Vetores
+
+
+## Operações Gerais com Vetores
+Mean, sd, sqrt,...lag, lead, cumsum, fechar com summary
+
+## Operações Gerais com Matrizes;
+começar com summary
+multiplicacao
+adicao de colunas com $
+fechar mostrando que normalmente queremos fazer as coisas via niveis da categoria
+
+## Operações Condicionais com Funções Loop
+# by
+# aggregate
+# apply
+# sapply
+# tapply
+# lapply
+# mapply
+by
