@@ -1,13 +1,42 @@
 ---
-title: "Funções"
+title: "Funções - Parte 2"
 subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
-1. Numeros aleatorios
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. Criando sequências de números aleatórios
+2. Funções - Parte 2: criando suas próprias funções
+3. Funções "loop"
+
+## Criando sequências de números aleatórios
+
+1. round, ceiling, floor
 2. Sort vs order
-3. round, ceiling, floor
-4. funcoes: function
-5. funcoes loop: for, while,...
+3. Sample
+3. Numeros aleatorios
+
+## Funções - Parte 2: criando suas próprias funções
+
+
+## Funcoes "loop"
+
+for, while,...
