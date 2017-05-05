@@ -76,6 +76,8 @@ rep(x = c(1, 2, 3, 4, 5), each = 2)
 length(vetor1)
 ```
 
+---
+
 ##### Exercício 1
 
 a. Crie dois vetores de mesmo comprimento:
@@ -164,6 +166,8 @@ numeros <- c(1, 5, 7, 9)
 vetor2[numeros]
 ```
 
+---
+
 ##### Exercício 2
 
 a. Utilizando o `vetor2`, faça uma indexação que retorne:
@@ -190,12 +194,13 @@ vetor2[-numeros]
 vetor2[-c(1:20)]
 ```
 
+---
+
 ##### Exercício 3
 
 a. Exclua todos os elementos em posição ímpar do `vetor2`.  
 
 ---
-
 
 ### Indexando `data.frame`
 
@@ -214,6 +219,8 @@ dados[1,1]
 # podemos usar o operar [[]] para indexar as colunas de um data.frame
 dados[[3]]
 ```
+
+---
 
 ##### Exercício 4
 
@@ -266,6 +273,8 @@ lista[[2]]
 # selecionando a segunda e terceira coluna da segunda sub-lista
 lista[[2]][,c(2:3)]
 ```
+
+---
 
 ##### Exercício 5
 

@@ -137,6 +137,8 @@ mean(vetor4, trim = 0.2, na.rm = TRUE) # removendo 20% dos dados mais extremos
 summary(vetor1)
 ```
 
+---
+
 ##### Exercício 1
 
 a. Carregue o conjunto de dados `lista_de_presenca.csv` que está na pasta `05_leitura_de_dados`, para prosseguirmos na aula.
@@ -194,6 +196,8 @@ exemplo <- as.data.frame(tabela)
 
 * Ao forçarmos a última transformação, fizemos com que uma tabela no formato largo passasse a ser um no formato longo. No entanto, para continuar trabalhando neste `data.frame`, precisaremos fazer algumas modificações.
 
+---
+
 ##### Exercício 2
 
 a. O `data.frame` que acabamos de criar tem nomes de colunas que não são as ideais. Você consegue modificar o nome das colunas? Elas devem passar a ser chamadas:
@@ -225,6 +229,8 @@ summary(exemplo)
 # qual o total de presentes nas palestras?
 sum(exemplo$presentes)
 ```
+
+---
 
 ##### Exercício 3
 
@@ -296,6 +302,8 @@ suppressWarnings(aggregate(x = exemplo, by = list(exemplo$formacao), FUN = mean)
 aggregate(x = exemplo$presentes, by = list(exemplo$formacao), FUN = mean)
 ```
 
+---
+
 ##### Exercício 4
 
 a. Aplique a função `aggregate` para determinar o comprimento médio da pétala da espécie "setosa", no conjunto de dados `iris`.
@@ -317,6 +325,8 @@ tapply(X = exemplo$presentes, INDEX = list(exemplo$formacao), FUN = mean)
 tapply(X = exemplo$presentes, INDEX = list(exemplo$palestra), FUN = sum)
 ```
 
+---
+
 ##### Exercício 5
 
 a. Aplique a função `tapply` para determinar o consumo médio de combustível (mpg) de acordo com o número de cilindros (cyl) e marchas (gear), no conjunto de dados `mtcars`.
@@ -337,6 +347,8 @@ by(data = exemplo$presentes, INDICES = list(exemplo$formacao), FUN = mean)
 # número total de ouvintes presentes por palestra
 by(data = exemplo$presentes, INDICES = list(exemplo$palestra), FUN = sum)
 ```
+
+---
 
 ##### Exercício 6
 
@@ -372,6 +384,8 @@ presentes
 # número médio de ouvintes presentes por categoria de formacao
 lapply(X = presentes, FUN = mean)
 ```
+
+---
 
 ##### Exercício 7
 

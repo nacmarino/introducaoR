@@ -90,6 +90,8 @@ LETTERS
 month.name
 ```
 
+---
+
 ##### Exercício 1
 
 a. Qual a raiz quadrada do arcoseno de 0.43?
@@ -118,6 +120,8 @@ resultado
 ```
 
 * Existe um atalho no RStudio para adicionar o operador de atribuição de forma mais fácil: `Option + -` no MAC ou `Alt + -` no Windows.
+
+---
 
 ##### Exercício 2
 
@@ -156,6 +160,8 @@ is.character(x = 5)
  # a expressão "Ola!" é formada por caracteres?
 is.character(x = "Ola!")
 ```
+
+---
 
 ##### Exercício 4
 
@@ -212,6 +218,8 @@ is.integer(x = inteiro)
 is.factor(x = 5)
 ```
 
+---
+
 ##### Exercício 5
 
 a. Faça com que o número 5 seja entendido como um fator.
@@ -240,6 +248,8 @@ class(x = idade)
 is.vector(x = idade)
 ```
 
+---
+
 ##### Exercício 6
 
 a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
@@ -254,13 +264,13 @@ a. Crie um vetor combinando os vetores `frutas` e `idade`.
 b. O objeto criado é um vetor?
 c. Sem olhar, qual a classe do objeto criado?
 
+---
+
 * Ou seja:
     + Por padrão, sempre que houver algum caractere em um vetor, o R vai assumir que aquele é um vetor de caracteres.
     + Um vetor pode conter qualquer tipo de objeto: lógicos, numéricos, inteiros, caracteres...
     + Um fator é um valor que codifica uma categoria: pode ser um número ou um caractere.
 * Você também pode criar um vetor através da função `vector`.
-
----
 
 ```{r}
 # para criar um vetor vazio com comprimento 10
@@ -294,6 +304,8 @@ altura <- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
 # criando uma matriz com a idade e a altura
 (informacoes <- matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE))
 ```
+
+---
 
 ##### Exercício 8
 
@@ -342,6 +354,8 @@ logico <- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 
 * Ou seja, um `data.frame` pode ser visto como um objeto no qual cada coluna é um vetor (elementos pertencem a um único tipo de objeto) e cada linha é uma lista (cada elemento pertence a tipos de objetos diferentes).
 
+---
+
 ##### Exercício 9
 
 a. Crie dois vetores com uma informação que você desejar;
@@ -357,6 +371,8 @@ d. Coloque tudo isto em uma lista.
 * O R dispõem de duas funções que fazem estas tarefas:
     + `rbind` e `rbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de linhas, respectivamente;
     + `cbind` e `cbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de colunas, respectivamente.
+
+---
 
 ##### Exercício 10
 

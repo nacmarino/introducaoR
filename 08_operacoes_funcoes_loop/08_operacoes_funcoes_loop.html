@@ -286,6 +286,7 @@ mean(vetor4, trim = 0.1, na.rm = TRUE) # removendo 10% dos dados mais extremos</
 <pre class="r"><code>summary(vetor1)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    1.00    5.75   10.50   10.50   15.25   20.00</code></pre>
+<hr />
 <div id="exercicio-1" class="section level5">
 <h5>Exercício 1</h5>
 <ol style="list-style-type: lower-alpha">
@@ -402,6 +403,7 @@ exemplo &lt;- as.data.frame(tabela)</code></pre>
 <ul>
 <li>Ao forçarmos a última transformação, fizemos com que uma tabela no formato largo passasse a ser um no formato longo. No entanto, para continuar trabalhando neste <code>data.frame</code>, precisaremos fazer algumas modificações.</li>
 </ul>
+<hr />
 <div id="exercicio-2" class="section level5">
 <h5>Exercício 2</h5>
 <ol style="list-style-type: lower-alpha">
@@ -443,6 +445,7 @@ summary(exemplo)</code></pre>
 <pre class="r"><code># qual o total de presentes nas palestras?
 sum(exemplo$presentes)</code></pre>
 <pre><code>## [1] 518</code></pre>
+<hr />
 </div>
 <div id="exercicio-3" class="section level5">
 <h5>Exercício 3</h5>
@@ -614,6 +617,7 @@ aggregate(x = exemplo$presentes, by = list(exemplo$formacao), FUN = mean)</code>
 ## 8        PosDoc 5.2222222
 ## 9     Professor 4.2222222
 ## 10   Researcher 0.5555556</code></pre>
+<hr />
 <div id="exercicio-4" class="section level5">
 <h5>Exercício 4</h5>
 <ol style="list-style-type: lower-alpha">
@@ -660,6 +664,7 @@ tapply(X = exemplo$presentes, INDEX = list(exemplo$formacao), FUN = mean)</code>
 tapply(X = exemplo$presentes, INDEX = list(exemplo$palestra), FUN = sum)</code></pre>
 <pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 16 18 19 20 
 ## 54 21 38 47 18 17 24 25 14 46 13 16 22 50 25 20 22 46</code></pre>
+<hr />
 <div id="exercicio-5" class="section level5">
 <h5>Exercício 5</h5>
 <ol style="list-style-type: lower-alpha">
@@ -781,6 +786,7 @@ by(data = exemplo$presentes, INDICES = list(exemplo$palestra), FUN = sum)</code>
 ## -------------------------------------------------------- 
 ## : 20
 ## [1] 46</code></pre>
+<hr />
 <div id="exercicio-6" class="section level5">
 <h5>Exercício 6</h5>
 <ol style="list-style-type: lower-alpha">
@@ -888,6 +894,7 @@ lapply(X = presentes, FUN = mean)</code></pre>
 ## 
 ## $Researcher
 ## [1] 0.5555556</code></pre>
+<hr />
 <div id="exercicio-7" class="section level5">
 <h5>Exercício 7</h5>
 <ol style="list-style-type: lower-alpha">

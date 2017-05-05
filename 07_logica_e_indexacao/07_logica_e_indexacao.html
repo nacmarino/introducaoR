@@ -236,6 +236,7 @@ h1,h2,h3,h4,h5,h6{
 <pre class="r"><code># o número 4 é maior do que 5 OU é menor do que 3?
 4 &lt; 5 | 4 &gt; 3</code></pre>
 <pre><code>## [1] TRUE</code></pre>
+<hr />
 <div id="exercicio-1" class="section level5">
 <h5>Exercício 1</h5>
 <ol style="list-style-type: lower-alpha">
@@ -312,6 +313,7 @@ letras != &quot;B&quot;</code></pre>
 ## [23]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
 ## [45] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<hr />
 <div id="exercicio-2" class="section level5">
 <h5>Exercício 2</h5>
 <ol style="list-style-type: lower-alpha">
@@ -364,6 +366,7 @@ vetor1[exemplo == &quot;B&quot;]</code></pre>
 ## [15] 23.9 24.6 25.2 25.9 26.6 27.3</code></pre>
 <pre class="r"><code># ou seja, todo o resto do vetor que não corresponde às posições dos TRUEs é descartada!
 # cuidado ao usar esta forma de indexação!</code></pre>
+<hr />
 </div>
 <div id="exercicio-3" class="section level5">
 <h5>Exercício 3</h5>
@@ -489,6 +492,7 @@ dados[dados$paises == &quot;Brasil&quot;, c(2,3)]</code></pre>
 <ul>
 <li>O que estamos fazendo é dizendo para o R para que ele olhe o <code>data.frame</code> e retenha as observações nas linhas que satisfaçam a uma determina condição (nesse caso, cujo país seja o Brasil).</li>
 </ul>
+<hr />
 <div id="exercicio-4" class="section level5">
 <h5>Exercício 4</h5>
 <ol style="list-style-type: lower-alpha">
@@ -608,6 +612,7 @@ dados[dados$paises %in% c(&quot;Brasil&quot;,&quot;Togo&quot;), ]</code></pre>
 ## 42   Togo   28.6      B
 ## 46 Brasil   31.3      B
 ## 47   Togo   32.0      B</code></pre>
+<hr />
 </div>
 <div id="exercicio-5" class="section level5">
 <h5>Exercício 5</h5>
@@ -742,6 +747,7 @@ subset(x = mtcars, mpg &gt; 20 &amp; hp &lt; 100, select = c(mpg, cyl, hp))</cod
 ## Ferrari Dino          6 175 19.7 145.0
 ## Maserati Bora         8 335 15.0 301.0
 ## Volvo 142E            4 109 21.4 121.0</code></pre>
+<hr />
 </div>
 <div id="exercicio-6" class="section level5">
 <h5>Exercício 6</h5>
@@ -856,6 +862,7 @@ which(vetor1 &gt;= 25)</code></pre>
 <pre><code>## [1] 4</code></pre>
 <pre class="r"><code>which(c(&quot;Joao&quot;, &quot;Maria&quot;, &quot;Gabriel&quot;, &quot;Joana&quot;, &quot;Mario&quot;, &quot;Gabriela&quot;) != &quot;Joana&quot;)</code></pre>
 <pre><code>## [1] 1 2 3 5 6</code></pre>
+<hr />
 <div id="exercicio-7" class="section level5">
 <h5>Exercício 7</h5>
 <ul>
@@ -977,6 +984,7 @@ exemplo</code></pre>
 <ul>
 <li>Note, portanto, que a indexação e testes lógicos podem ser muito úteis para a edição e customização dos dados diretamente no R, sem a necessidade de fazermos qualquer alteração através do Excel (por exemplo).</li>
 </ul>
+<hr />
 <div id="exercicio-8" class="section level5">
 <h5>Exercício 8</h5>
 <ul>

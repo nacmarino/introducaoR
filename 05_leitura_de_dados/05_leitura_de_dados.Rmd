@@ -149,6 +149,8 @@ dimnames(matriz)
 args(read.table)
 ```
 
+---
+
 ##### Exercício 1
 
 a. Use a função `read.table` para ler o arquivo `exemplo.txt`.
@@ -252,6 +254,8 @@ arquivo <- read.table(file = "dados/exemplo.txt", header = TRUE, skip = 5)
 write_delim(x = arquivo, path = "dados/teste.xls", delim = "\t", col_names = TRUE)
 ```
 
+---
+
 ##### Exercício 2
 
 a. Crie três vetores contendo tipos de informações diferentes;
@@ -259,5 +263,7 @@ b. Transforme estes três vetores em um data.frame;
 c. Salve este data.frame como um arquivo .csv e como um arquivo .xls em um diretório a sua escolha;
 d. Apague os objetos que você criou para salvar estes arquivos;
 e. Leia estes dois arquivos a partir do seu HD.
+
+---
 
 > __Importante:__ nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!

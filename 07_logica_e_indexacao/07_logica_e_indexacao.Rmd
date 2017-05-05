@@ -78,6 +78,8 @@ Operador | Significado
 4 < 5 | 4 > 3
 ```
 
+---
+
 ##### Exercício 1
 
 a. Sem olhar, qual valor o teste lógico `4 > 5 | 4 > 3` deve assumir?
@@ -122,6 +124,8 @@ letras == "A"
 # quais das letras não são iguais a A
 letras != "B"
 ```
+
+---
 
 ##### Exercício 2
 
@@ -168,6 +172,8 @@ vetor1[exemplo == "B"]
 # ou seja, todo o resto do vetor que não corresponde às posições dos TRUEs é descartada!
 # cuidado ao usar esta forma de indexação!
 ```
+
+---
 
 ##### Exercício 3
 
@@ -234,6 +240,8 @@ dados[dados$paises == "Brasil", c(2,3)]
 
 * O que estamos fazendo é dizendo para o R para que ele olhe o `data.frame` e retenha as observações nas linhas que satisfaçam a uma determina condição (nesse caso, cujo país seja o Brasil).
 
+---
+
 ##### Exercício 4
 
 a. Indexe todas as linhas de `dados` cujo valor de `vetor1` seja maior 30 (inclusive);
@@ -270,6 +278,8 @@ dados[dados$paises == "Brasil" | dados$paises == "Togo", ]
 dados[dados$paises %in% c("Brasil","Togo"), ]
 ```
 
+---
+
 ##### Exercício 5
 
 a. Vamos usar uma tabela de dados que já existe no seu R: `mtcars`.
@@ -305,6 +315,8 @@ subset(x = mtcars, select = mpg:hp)
 ```{r}
 subset(x = mtcars, select = c(cyl, hp, mpg, disp))
 ```
+
+---
 
 ##### Exercício 6
 
@@ -389,6 +401,8 @@ which(vetor1 >= 25)
 which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") == "Joana")
 which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") != "Joana")
 ```
+
+---
 
 ##### Exercício 7
 
@@ -485,6 +499,8 @@ exemplo
 ```
 
 * Note, portanto, que a indexação e testes lógicos podem ser muito úteis para a edição e customização dos dados diretamente no R, sem a necessidade de fazermos qualquer alteração através do Excel (por exemplo).
+
+---
 
 ##### Exercício 8
 
