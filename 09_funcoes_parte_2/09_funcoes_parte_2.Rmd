@@ -758,4 +758,3 @@ dados
 ```
 
 Este é só um exemplo de como podemos aplicar um _loop_ para resolver uma tarefa corriqueira que fazemos. Existem outras coisas que poderiam ser úteis ao fazermos uma tarefa como essa, como criando uma coluna dizendo de onde veio cada observação (i.e., que arquivo corresponde a cada observação), mas para o momento está ótimo. Você pode usar esta mesma lógica para carregar qualquer tipo de dado: desde um `data.frame` até uma página da internet, arquivo raster e por aí vai.  
-
