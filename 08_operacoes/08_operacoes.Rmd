@@ -1,5 +1,5 @@
 ---
-title: "Operações com Vetores e Matrizes"
+title: "Operações e Funções Loop"
 subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
@@ -26,7 +26,7 @@ h1,h2,h3,h4,h5,h6{
 1. Reciclagem de Vetores;
 2. Operações Gerais com Vetores;
 3. Operações Gerais com Matrizes;
-4. Operações com Funções Loop.
+4. Funções Loop.
 
 ## Reciclagem de Vetores
 
@@ -238,7 +238,7 @@ sum(exemplo$presentes)
 
 ---
 
-## Operações com Funções Loop
+## Funções Loop
 
 * Como acabamos de ver, pode ficar impraticável calcular algumas estatísticas descritivas quando temos muitos níveis de um ou mais fatores. Uma forma de contornar o problema de ter que criar sub-conjuntos de dados para nível do fator (ou dos fatores em questão) é através do uso de __funções loop__.
 
