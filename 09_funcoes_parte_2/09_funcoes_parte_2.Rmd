@@ -29,14 +29,733 @@ h1,h2,h3,h4,h5,h6{
 
 ## Criando sequências de números aleatórios
 
-1. round, ceiling, floor
-2. Sort vs order
-3. Sample
-3. Numeros aleatorios
+O R possui um conjunto de funções que pode ser usada para criar números aleatórios a partir de diferentes famílias de distribuição de probabilidade:
+    + `rnorm`: gerador de números aleatórios de acordo com a __distribuição normal__.
+    + `runif`: gerador de números aleatórios de acordo com a __distribuição uniforme__.
+    + `rpois`: gerador de números aleatórios de acordo com a __distribuição de Poisson__.
+    + `rbinom`: gerador de números aleatórios de acordo com a __distribuição binomial__.
+    + ...
+
+Como se tratam de famílias de distribuição de probabilidade diferentes, os argumentos em cada uma dessas funções vai diferir, pois cada distribuição de probabilidade é descrita por conjuntos diferentes de parâmetros (e.g., média e desvio para a distribuição normal, lambda para a distribuição de Poisson,...)
+
+---
+
+##### Exercício 1
+
+a. Em duplas, combinem um tipo de família de distribuição de probabilidade e os valores dos argumentos que usarão;  
+b. Gerem uma sequência de números aleatórios conforme o combinado, cada um em seu próprio computador;  
+c. Comparem o resultado;  
+d. Vocês chegaram nos mesmos valores? Por que?  
+
+---
+
+Por se tratar de um gerador de números _aleatórios_, toda vez que você usar estas funções estas vão te mostrar números diferentes - mesmo que você esteja usando o mesmo computador! Isto ocorre pois a função é alimentada por um gerador de números aleatórios, que escolhe um 'ponto de partida' diferente a cada vez que você inicia a função. Algo semelhante ocorre quando você coloca as músicas no seu celular em muda aleatório, por exemplo.
+
+É importante termos isso em mente pois muitas vezes precisamos fazer análises que são baseadas em testes de aleatorização e, portanto, teremos resultados diferentes cada vez que rodarmos uma análise. No entanto, existe uma forma de remover esta aleatoriedade do 'ponto de partida' do gerador de números aleatórios se nós fornecermos a esse gerador um ponto de partida determinado. Podemos fazer isso através da função `set.seed`.
+
+Vamos fornecer um número determinado para alimentar o ponto de partida do gerador de números aleatórios:
+
+```{r}
+# podemos usar qualquer valor, mas para chegarmos no mesmo resultado, vamos usar o mesmo número
+set.seed(943)
+# gerando 10 números aleatórios que seguem uma distribuição com média 10 e desvio 5
+rnorm(n = 10, mean = 10, sd = 5)
+```
+
+Agora chegarmos todos ao mesmo resultado! Assim, cada vez que você for usar uma função que use um gerador de números aleatórios, é necessário fornecer um _seed_. Isso quer dizer que se rodarmos novamente a função `rnorm` precisaremos usar o `set.seed` novamente, com o mesmo valor usado anteriormente.
+
+Vamos armazenar o resultado daquela função em um objeto para ver algumas outras funções úteis para trabalhar com sequências de números.
+
+```{r}
+set.seed(943)
+(vetor1 <- rnorm(n = 10, mean = 10, sd = 5))
+```
+
+Os números gerados têm 6 casas decimais. Podemos manipular isto com o uso de três funções muito úteis: `floor`, `ceiling` e `round`.
+
+```{r}
+# arredondando os valores para o menor número inteiro
+floor(x = vetor1)
+# arredondando os valores para o maior número inteiro
+ceiling(x = vetor1)
+# arredondando os valores de forma personalizada
+round(x = vetor1, digits = 3) # 3 casas decimais
+round(x = vetor1, digits = 1) # 1 casa decimal
+# arredondando para o número inteiro mais próximo seguindo as regras normais para tal
+(vetor1 <- round(x = vetor1, digits = 0))
+```
+
+Neste último passo, nos transformamos o `vetor1` para números inteiros, para prosseguirmos vendo outras formas de manipular sequências de números. Note que os números estão fora de ordem e existem alguns números iguais na sequência. Para colocar estes números em sequência podemos trabalhar com duas funções: `sort` e `order`.
+
+---
+
+##### Exercício 2
+
+a. Use cada uma das duas funções descritas acima no vetor1;  
+b. Qual a diferença entre elas?  
+
+---
+
+Algumas vezes, temos observações geradas a partir de um conjunto de dados que não podem ser biologicamente reamostrados. No entanto, existe um meio de realizar uma _reamostragem estatística_ através da função `sample`.
+
+Esta função é bastante importante, pois ela permite que reamostremos os valores de um vetor, determinando o tamanho da amostra gerada (argumento numérico `size`) e se o procedimento deve ou não ser feito com substituição (argumento lógico `sample`). Lembre-se, esta reamostragem ocorre de forma aleatória - todos os valores em um vetor têm a mesma probabilidade de serem amostrados! Desta forma, ao usar esta função também precisarmos usar o `set.seed` para chegarmos todos aos mesmos valores!
+
+```{r}
+# reamostrando o vetor, com uma amostra de tamanho 5, com substituição
+set.seed(733)
+sample(x = vetor1, size = 5, replace = TRUE)
+# sem substiuição
+set.seed(235)
+sample(x = vetor1, size = 5, replace = FALSE)
+```
+
+---
+
+##### Exercício 3
+
+a. Crie um vetor baseado em algum gerador de números aleatórios via uma das funções descritas no início da aula;  
+b. Use a função `sample` para reamostrar o vetor gerado, usando um tamanho da reamostragem duas vezes maior do que o do vetor, mas:  
+    1. Rode uma vez com substituição;  
+    2. Rode uma vez sem substituição;  
+c. O que aconteceu?  
+
+---
+
+A função `sample` é a base para fazermos testes de aleatorização como _bootstrap_, _jacknife_ e outros testes não paramétricos. No geral, estes métodos incluem calcular algum teste estatístico a partir dos dados, e recalcular e comparar _n_ vezes o valor deste teste estatístico obtido através de aleatorizações do conjunto original de dados. Nesse sentido, um exemplo do conjunto de operações para obtermos estes testes é:
+    1. Obter um teste estatístico a partir dos dados;
+    2. Aleatorizar o conjunto de dados original por reamostragem (com ou sem substituição);
+    3. Calcular o teste estatístico a partir dos dados aleatorizados;
+    4. Comparar o valor do teste estatístico original com o do teste estatístico obtido através da aleatorização;
+    5. Registrar se o valor aleatorizado é maior (ou menor) ao do valor original;
+    6. Reptir os passos 2 a 5 _n_ vezes;
+    7. Calcular a proporção das _n_ vezes em que o valor real é maior (ou menor) do que o obtido pela aleatorização.
+    
+Esta lista de passos ilustra que devemos realizar uma tarefa bem repetitiva para chegarmos a um valor desejado. Se fizermos isso na mão, vamos levar uma eternidade - todavia, uma alternativa é programar uma função para fazer isto para nós.
 
 ## Funções - Parte 2: criando suas próprias funções
 
+Até aqui já vimos que tudo no R funciona através de funções. Muitas delas já estão programadas direto na `base` do R, outras estão programadas em pacotes, e muitas outras só existem na sua imaginação - e podem se tornar funções sem muita complicação! Esta é a grande vantagem de aprender uma linguagem de programação: você passa a usar ela em favor das suas necessidades, da sua criatividade.
 
+Uma função é criada através de uma função: a função `function`. Uma função não precisa ser complexa, por exemplo:
+
+```{r}
+# criando uma função chamada foo
+foo <- function(){
+  5
+}
+# usando a função foo
+foo()
+```
+
+A função `foo` é uma função que tem um único objetivo: imprimir o número 5! É claro que você não precisa programar uma função tão simples como essa, mas é importante nos aprofundarmos um pouco mais no funcionamento do R e de lógica para podermos ir para funções um pouco mais avançadas.
+
+Conforme vimos, toda função _pode_ ter uma lista de argumentos e um corpo (o código que a compõem):
+
+```{r eval=FALSE}
+function(lista_de_argumentos_){
+  corpo_da_função
+  <código>
+  <operações>
+}
+```
+
+Sempre escrevemos a lista de argumentos da função dentro dos parênteses que seguem à função `function` e colocaremos todo o corpo que compõem a função dentro de chaves. Para exemplificar, vamos criar uma função simples, que calcula o logaritimo da razão de resposta entre dois tratamentos:
+
+```{r}
+foo <- function(valor_tratamento1, valor_tratamento2){
+  log(valor_tratamento1/valor_tratamento2)
+}
+```
+
+Podemos usar essa função, por exemplo, para determinar se o uso do tratamento 1 gera um efeito maior em uma resposta do que o uso do tratamento 2:
+
+```{r}
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+```
+
+Como já havíamos visto anteriormente, podemos modificar a ordem em que fornecemos as informações sobre os argumentos e até mesmo suprimir o nome dos argumentos (mas mantendo a ordem original em que eles podem aparecer), pois o R faz um _lazy evaluation_ do conteúdo das funções.
+
+```{r}
+# forma mais 'correta'
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+# mesmo resultado
+foo(valor_tratamento2 = 5, valor_tratamento1 = 10)
+foo(10, 5)
+```
+
+Além disso, como vimos também, uma função pode ter valores padrão (_default_) - na ausência de uma determinação do usuário, ele vai assumir que tudo deve ser feito utilizando aquele valor padrão:
+
+```{r}
+# vamos dar um valor padrão para um dos tratamentos
+foo <- function(valor_tratamento1, valor_tratamento2 = 1){
+  log(valor_tratamento1/valor_tratamento2)
+}
+# se não especificarmos o valor do tratamento2
+foo(valor_tratamento1 = 10)
+# e se especificarmoso valor do tratamento2?
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+```
+
+Uma observação importante é que podemos criar objetos dentro da função - estes objetos só existirão dentro da função que estamos criando! No entanto, lembre-se que ao criarmos um objeto, o padrão do R é não mostrar o resultado dele!
+
+```{r}
+# salvando resultado do cálculo em um objeto dentro da função
+foo <- function(valor_tratamento1, valor_tratamento2){
+  
+  resposta <- log(valor_tratamento1/valor_tratamento2)
+
+  }
+# usando a função - cade o resultado?
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+# obrigando o R a mostrar o resultado
+(foo(valor_tratamento1 = 10, valor_tratamento2 = 5))
+# outra forma de obter o resultado
+# usando a função
+cade <- foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+cade
+```
+
+Uma forma mais simples de contornar este problema, principalmente quando o resultado final de uma função é um objeto criado dentro dela, é o uso da função `print`:
+
+```{r}
+# adicionando a função print
+foo <- function(valor_tratamento1, valor_tratamento2){
+  
+  resposta <- log(valor_tratamento1/valor_tratamento2)
+  
+  print(resposta)
+}
+# usando função
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+```
+
+---
+
+##### Exercício 4
+
+O R não possui uma função capaz de calcular o erro padrão da média de um vetor - você é capaz de criar essa função?  
+    + Dica 1: a fórmula para o erro padrão da média é - desvio padrão dividido pela raiz quadrada do tamanho da amostra;  
+    + Dica 2: é sempre útil listar o que você tem que fazer para criar uma função:  
+        1. Criar um vetor com números;  
+        2. Calcular o desvio padrão;  
+        3. Determinar o comprimento do vetor e tirar a sua raiz quadrada;  
+        4. Dividir o resultado do passo 2 pelo passo 3;  
+        5. ...  
+
+---
+
+Já que estamos começando a entender um pouco melhor como montar uma função, podemos avançar um pouco mais e tentar trabalhar uma ideia um pouco mais complexa de função: cara e coroa!
+
+Suponha que tenhamos uma moeda e queremos fazer uma simulação para determinar se tomamos ou não uma ação: cara faremos _x_, coroa faremos _y_. Podemos escrever uma função que jogue essa 'moeda' e nos mostre o resultado de _n_ arremessos dela. Primeiro, vamos criar nossa moeda: 
+
+```{r}
+(moeda <- c("cara", "coroa"))
+```
+
+Agora, podemos simular o arremesso através da função `sample` que aprendemos no início da aula:
+
+```{r}
+# como é uma aleatorização, precisamos usar o set.seed
+set.seed(90)
+# queremos apenas um arremeso da moeda
+sample(x = moeda, size = 1)
+```
+
+Pode acontencer de você não ter gostado do resultado...uma opção é rodar a função `sample` de novo, a outra é programar uma função que faça isso para você _n_ vezes! Para facilitar, vamos primeiro desenhar qual o formato básico que a função `sample` deve assumir no caso desejado:
+
+```{r eval=FALSE}
+sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)
+```
+
+Com isto em mente, fica mais fácil desenhar a função, pois sabemos quais os argumentos da função que vamos usar deverão ser manipulados!
+
+```{r}
+# criando função
+lancar_moeda <- function(numero_de_lancamentos) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)
+  
+}
+# lancando moeda 2 vezes
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 2)
+# lancando moeda 10 vezes
+set.seed(3098)
+lancar_moeda(numero_de_lancamentos = 10)
+```
+
+Podemos inclusive viciar a moeda, adicionando mais um argumento na nossa função: `prob`, que é um argumento existente dentro da função `sample`!
+    + O argumento `prob` deve ser um vetor de comprimento igual ao número de categorias no objeto `x` da função `sample` (no nosso caso, o vetor `moedas`); este vetor deve conter probabilidades entre 0 e 1 para cada categoria, de forma que o somatório final seja 1!
+
+---
+
+##### Exercício 5
+
+a. Use a função abaixo;  
+b. Ela funciona?  
+c. Por que?  
+d. Como você pode modificar o funcionamento dela?  
+
+```{r eval=FALSE}
+# adicionando um vicio a moeda
+lancar_moeda <- function(numero_de_lancamentos, vicio) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}
+# lancando moeda 10 vezes
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 10)
+```
+
+---
+
+##### Exercício 6
+
+a. O que acontece se criarmos um objeto chamado `vicio` fora da lista de argumentos da função, por exemplo, antes do `set.seed`?
+b. E o que acontece se adicionarmos o argumento `vicio` dentro da lista de argumentos da função, mas sem especificar qual o valor ele deve assumir (também considerando que criamos o objeto `vicio` antes do `set.seed`)?
+c. E se o objeto criado não se chamar `vicio`, mas sim `justica`?
+
+```{r eval=FALSE}
+# adicionando um vicio a moeda
+lancar_moeda <- function(numero_de_lancamentos, vicio) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}
+# lancando moeda 10 vezes
+vicio <- c(0.2, 0.8)
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 10, vicio)
+```
+
+---
+
+##### Exercício 7
+
+Na função abaixo, o argumento `valor_da_moeda` deve ser um caractere, indicando qual o valor da moeda usada.  
+a. O que acontece se não especificarmos este argumento?  
+b. O que acontece se especificarmos este argumento?  
+
+```{r}
+lancar_moeda <- function(numero_de_lancamentos, vicio, valor_da_moeda) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}
+```
+
+---
+
+##### Exercício 8
+
+O que acontece se adicionar o argumento `prob` a lista de argumentos da nossa função, mas no local onde ela é usada nós adicionarmos um vetor determinado?
+
+```{r}
+lancar_moeda <- function(numero_de_lancamentos, prob) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = c(0.5, 0.5))
+  
+}
+```
+
+---
+
+O que estamos observando nestes últimos exercícios é que:  
+    1. Todo argumento usado pelo código dentro de uma função precisa ser especificado na lista de argumentos;  
+    2. Argumentos que são usados por uma função mas que foram determinados (como o `x` no `sample` e o `prob` no último exercício) sobre-escrevem qualquer ordem recebida na lista de argumentos;  
+    3. Se um argumento assume um valor padrão (_default_) na lista de argumentos, deixar de especificar o valor que ele deve assumir na lista de argumentos não tem impacto sobre o funcionamento da função;  
+    4. Por _lazy evaluation_, por mais que você não especifique o nome do argumento, o R é capaz de casar a posição com que a informação é fornecida com a posição esperada para aquele argumento;  
+    5. Especificar argumentos que não são usados por uma função, na maioria das vezes, não tem efeito algum sobre o funcionamento dela.  
+    
+Para concluirmos esta parte, existe também a possibilidade de usarmos uma função dentro de outra. No exemplo abaixo, após determinarmos qual o resultado de cada lançamento da moeda podemos usar uma função para calcular o total de lançamentos em cada uma das categorias:
+
+```{r}
+# criando a função
+lancar_moeda <- function(numero_de_lancamentos) {
+  
+  lancamentos <- sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)
+  
+  resultados <- function(){
+    
+    table(lancamentos)
+    
+  }
+  
+  resultados()
+  
+}
+# testando função
+lancar_moeda(20)
+```
+    
 ## Controladores de Fluxo
 
-for, while,...
+Existem algumas funções que são usadas especialmente para controlar o fluxo de computação de certas tarefas. Estas estruturas de controle de fluxo são muito úteis ao escrevermos funções e fornecem mais flexibilidade ao programarmos uma tarefa, principalmente tarefas repetitivas. Os principais controladores de fluxo para funções são:
+
+Controlador de Fluxo     | Uso
+------------------------ | ------------
+`if`, `else`             | testa uma condição para executar uma ação
+`for`                    | executa uma tarefa repetitivamente por um número determinado de vezes (conhecido como __loop__; não confundir com funções loop)
+`while`                  | executa um loop enquanto uma condição for verdadeira
+`repeat`                 | executa uma ação infinitamente (__perigo: loop infinito__)
+`break`                  | executa a execução de um loop (precisa ser usado com repeat, mas pode ser usado também com `while` e `for`)
+`next`                   | pula a iteração de um loop
+`return`                 | usado ao fim de uma função para fornecer o output que ela deve retornar
+
+Apesar de parecerem similares, o `return` e o `print` não funcionam da mesma forma:  
+        a. `return`: só retorna o valor da função e a finaliza;  
+        b. `print`: imprime todos os valores e retorna estes valores (`return` + `print`).
+
+Vamos tentar entender melhor o funcionamento de cada um destes controladores de fluxo agora, dada a sua importância para a criação de funções.
+
+### `if`, `else`
+
+Esta função executa uma ação se uma condição for atendida, caso contrário, ela realizará uma outra ação.
+  
+* Não confundir com a função `ifelse`!    
+* O funcionamento básico desta função é:  
+
+```{r eval=FALSE}
+if(condição) {
+        <ação>
+        } else {
+        <outra ação>        
+        }
+```
+
+Podemos utilizar o exemplo abaixo para entender a funcionalidade desta função:
+
+```{r}
+# vamos criar um objeto com o número 5
+x <- 5
+# e vamos usar a estrutura de controle if, else
+teste_condicional <- if(x < 10){
+  "número menor que 10"
+} else {
+  "número não é menor que 10"
+}
+teste_condicional
+```
+
+Testando com outro valor de `x`:
+
+```{r}
+# vamos criar um objeto com o número 20
+x <- 20
+# e vamos usar a estrutura de controle if, else
+teste_condicional <- if(x < 10){
+  "número menor que 10"
+} else {
+  "número é maior que 10"
+}
+teste_condicional
+```
+
+É importante frisar aqui que este controlador de fluxo não está restrito à uma única condição, podendo ser incluídas múltiplas condições.  
+
+```{r}
+# vamos criar um objeto com o número 20
+x <- 10
+# e vamos usar a estrutura de controle if, else
+teste_condicional <- if(x < 10){
+  "número menor que 10"
+} else if(x == 10) {
+  "número é igual a 10"
+} else {
+  "número é maior que 10"
+}
+teste_condicional
+```
+
+---
+
+##### Exercício 9
+
+Usando o controlador de fluxo `if`, `else` construa um teste lógico que te retorne a frase "o resultado é cara" ou "o resultado é coroa" com o resultado do lançamento da moeda.  
+  
+* Dica: você deve usar o resultado da função `sample` com o lançamento da uma moeda uma única vez para fazer este teste.  
+
+---
+
+### `for`
+
+Este é o controlador de fluxo mais útil e, portanto, o mais usado ao programarmos funções. Ele executa uma tarefa repetidamente por um número determinado de vezes. A estrutura básica dele é:
+
+```{r eval=FALSE}
+for(i in quantidade_de_vezes) { # onde i é cada uma das vezes
+        <ação>
+}
+```
+
+Um exemplo do uso desse controlador de fluxo é:
+
+```{r eval=FALSE}
+for (i in 1:10) { # para cada i de 1 a 10
+  print(i) # imprima o valor de i
+  Sys.sleep(time = 1) # aguarde 1 segundo antes de prosseguir
+  # repita a operaçao
+}
+```
+
+O grande poder deste controlador de fluxo é a sua utilidade em realizar uma tarefa repetitiva, de forma que a cada vez que a tarefa é realizada, o seu resultado é __armazenado__ em algum objeto do R. Exemplos desta aplicação saão:  
+  
+  * Juntar diferentes abas de uma mesma planilha Excel em um único arquivo;  
+  * Juntar conjuntos de dados que estejam separados em diferentes arquivos em um único arquivo;  
+  * Realizar testes de aleatorização;  
+  * Usar a informação em uma célula de um conjunto de dados para buscar uma determina informação e adicionar a um vetor/conjunto de dados (e.g., verificar se os nomes de uma espécie batem com a base do GBIF, extrair informações de coordenadas de um mapa,...);  
+  * Fazer testes de sensibilidade para um _range_ de valores de uma variável;  
+  * ... (toda e qualquer tarefa que envolva o uso de um mesmo conjunto de ações repetitivas para partes dos dados)
+
+Por exemplo, se quiséssemos criar uma sequência Fibonacci:  
+  
+* Os dois primeiros números da sequência são 1;  
+* A partir do terceiro número, todo número é a soma dos dois números anteriores;  
+* Exemplo: 1, 1, 2, 3, 5, 8, 13, 21,...  
+  
+Para tentar reproduzir essa sequência, vamos primeiro criar um vetor com dois números "1":
+
+```{r}
+vetor1 <- c(1, 1)
+```
+
+Este é um vetor de comprimento 2 (teste: `length(vetor1)`) e, se indexarmos a posição 3 deste vetor, obteremos um NA:
+
+```{r}
+# o que acontece se indexarmos a segunda posição deste vetor?
+vetor1[3]
+```
+
+O que isto nos sugere é que o comprimento de um vetor não é algo fixo após ele ser criado - novos elementos podem ser adicionados nas posições seguintes caso nós queiramos. Com isto, podemos usar o controlador de fluxo `for` para que a cada posição em um vetor seja preenchida pela soma dos valores das duas últimas posições.
+
+---
+
+##### Exercício 10
+
+Some a primeira e a segunda posição do `vetor1` através da indexação.  
+
+---
+
+Agora que já nos lembramos como usar a indexação para fazer a soma, podemos tentar usar o `for` para criar a sequência Fibonacci. Neste caso, vamos especificar um tamanho para a sequência, e usar o for para calcular os valores das posições da sequência na posição 3 até aquela que nós determinamos. No entanto, a cada repetição, vamos dizer para o __loop_ armazenar o resultado da soma na posição sendo repetida no `vetor1`.
+
+```{r eval=FALSE}
+# qual o tamanho da sequência desejado?
+tamanho_sequencia <- 15
+# iniciando o loop
+for(i in 3:tamanho_sequencia){ # para cada valor i, iniciando em i = 3 até i = tamanho da sequência
+  vetor1[i] <- vetor1[i - 2] + vetor1[i - 1] # e.g, quando i = 3, "i - 2 = 1" e "i - 1 = 2", com o resultado da soma armazenado em vetor1[i]
+  print(vetor1) # mostre o vetor1
+  Sys.sleep(time = 1.5) # aguarde 1 segundo antes de prosseguir
+}
+```
+
+---
+
+##### Exercício 11
+
+Agora que você tem o exemplo da sequência Fibonacci, vamos aplicar a mesma ideia para calcular _n_ vezes o valor da média de uma amostra aleatória de um vetor contendo números de 1 a 10. Vamos fazer isso em duas etapas:
+  
+  1. Etapa 1:  
+    a. Crie um vetor de 1 a 10;  
+    b. Usando o controlador de fluxo `for`, retire uma amostra aleatória de 10 números e guarde em um vetor;  
+    c. Faça com que este vetor seja impresso e que o sistema aguarde 1 segundo antes de repetir o procedimento;   
+    d. O procedimento precisa ser repetido 10 vezes;  
+  2. Etapa 2:  
+    e. Agora, ao invés do controlador de fluxo retornar o vetor de números reamostrados, você deverá calcular a média do vetor reamostrado;  
+    f. A média do vetor reamostrado deverá ser armazenada em um outro vetor, na posição que condiza com a sequência testada no controlador de fluxo;  
+    g. Repita este procedimento 10 vezes também;  
+  3. Etapa 3:  
+    h. Após finalizar as Etapas 1 e 2, calcule o valor da média do vetor criado originalmente;  
+    i. Determine quantas vezes o valor da média do vetor original é __maior__ ou igual à média das aleatorizações;  
+    j. Determine quantas vezes o valor da média do vetor original é __menor__ ou igual à média das aleatorizações;  
+    i. Para os passos _i_ e _j_, determine a proporção das vezes, dividindo a quantidade total pelo número de observações.  
+
+* Dica para os passos _i_ e _j_: os valores dos testes lógicos, `TRUE` e `FALSE` são interpretados como `1` e `0` pelo R, respectivamente.
+
+---
+
+Se tudo deu certo, parabéns! Você acabou de fazer seu primeiro teste de aleatorização!
+
+### `while`
+
+Este controlador de fluxo executa uma ação (ou não) enquanto uma condição for verdadeira. A estrutura geral do uso deste controlador de fluxo é:
+
+```{r eval=FALSE}
+while(condição) {
+  <ação>
+}
+```
+
+Apesar desta estrutura se parecer com a do controlador de fluxo `if`, `else`, ele permite que as condições sejam testadas de forma iterativa.
+
+```{r eval=FALSE}
+contagem  <- 0
+while (contagem < 10) {
+  print(contagem)
+  Sys.sleep(0.5)
+  contagem <- contagem + 1
+}
+```
+
+Este controlador de fluxo pode ser útil se estivermos trabalhando com algum processo de otimização em um modelo, e quisermos que o processamento dsó pare ao atingir uma determinada condição que caracterize uma boa otimização. Você também pode combinar este controlador de fluxo com os outros.
+
+```{r eval=FALSE}
+# quanto dinheiro tinha na minha conta?
+minha_conta <- 0
+# como ela vai flutuar?
+while(minha_conta < 100 & minha_conta > -100){ # enquanto o que eu tiver na conta estiver em 100 e -100
+  
+  print(minha_conta) # imprime o saldo
+  
+  destino <- sample(x = c(0,1), size = 1) # ai entra o destino, como sempre
+  
+  if(destino == 1) { # se o destino for feliz
+    
+    minha_conta <- minha_conta + 20 # deposita 20 na minha conta
+  
+    } else { # se o destino for triste
+    
+    minha_conta <- minha_conta - 20 # tira 20 da minha conta
+    }
+  Sys.sleep(0.5)
+}
+```
+
+* __Dica:__ você pode interromper o processamento de uma função à qualquer momento, apertando `Esc` no seu teclado ou o botão `Stop` no console.
+
+### `repeat` + `break`
+
+O controlador de fluxo `repeat` vai repetir um operação infinita, até que você interrompa o processamento de forma artificial ou até que uma condição seja atingida e haja a presença do controlador `break` - que vai interromper o processamento da função 
+
+```{r eval=FALSE}
+x <- 1
+repeat { # aqui está um controlador de fluxo
+        print(x)
+        Sys.sleep(time = 1)
+        x = x+1
+        if (x == 6){
+                break # aqui está o outro controlador de fluxo
+        }
+
+}
+```
+
+### `next`
+
+Este controlador de fluxo faz com que uma ação seja "pulada", e é útil quando em combinação com outros controladores de fluxo.  
+
+```{r eval=FALSE}
+x <- 1:10
+for (val in x) {
+    if (val > 3 & val < 6){
+        next # aqui está o controlador de fluxo
+    }
+    print(val)
+    Sys.sleep(time = 1)
+}
+```
+
+## Aplicação prática dos controladores de fluxo
+
+O que vimos é que muitas destes controladores de fluxo podem ser uma mão na roda para evitar que quebremos cabeça com tarefas chatas e repetitivas. Além disso, uma grande utilidade destes controladores de fluxo é a _automatização_ destes processos, que poupa tempo e reduz a chance de erros ao repeti-lo. Aqui, vou demonstrar como pode usar o controlador de fluxo `for` para ler múltiplos arquivos contendo as informações das enquentes.
+
+As respostas à enquente que enviei para vocês e que a turma anterior também responde estão localizadas no pasta `97_enquete`. Uma forma de ver tudo o que está dentro dela usando os comandos do R é através da função `list.files`.
+
+```{r}
+list.files(path = "../97_enquete/")
+```
+
+Esta pasta contém um arquivo `.xlsx` com o título das perguntas que eu fiz para vocês (`00_perguntas.xlsx`), uma arquivo contendo todas as respostas dos alunos da turma do ano passado (`01_turma_2016.xlsx`) e vários outros arquivos com as respostas individuais de cada um de vocês. Como podemos juntar isso? 
+
+Repare que todas as 13 planilhas com as respostas dos alunos são iguais: contém o mesmo número de colunas, o mesmo título para cada coluna, os mesmos tipos de resposta em cada coluna...isto é muito útil ao organizarmos uma planilha de dados, principalmente se eles têm a mesma origem, descrevem as mesmas coisas e, um dia, você vai querer juntar eles de alguma forma.
+
+Para poder juntar estas planilhas diferentes, podemos usar um controlador de fluxo do tipo `for`, que vai ler um arquivo, ler um segundo arquivo, juntar com o primeiro, ler o terceiro arquivo, juntar com o primeiro e segundo, e por aí vai. Caso você se lembre do exemplo da sequência Fibonacci, nós _iniciamos_ a tarefa do _loop_ fora dele pois queríamos que todo o resto da tarefa seguisse a informação primaria que nós demos - aqui faremos o mesmo, lendo um arquivo antes de iniciar o _loop_ e os demais dentro do _loop_.
+
+Mas como que o R vai saber qual arquivo carregar de forma automática? Note que o resultado fornecido pelo `list.files` __é um vetor__. Note também que não precisamos do arquivo `00_perguntas.xlsx`, pois ele só contém as perguntas e tem outras estrutura. Por tanto podemos descatar este elemento do vetor fornecido.
+
+```{r}
+# colocando os arquivos em um vetor
+(arquivos <- list.files(path = "../97_enquete/"))
+# eliminando o primeiro elemento do vetor, que não é do nosso interesse - ele tem outro formato e conteudo
+arquivos <- arquivos[-1]
+```
+
+O que acabamos de fazer exatamento no último passo foi sobre-escrever o objeto `arquivos`, dizendo que ele terá o mesmo nome, mas será o `arquivos` original com a exceção do primeiro elemento (`00_perguntas.xlsx`). Agora, você se lembra como carregamos um dado com extensão `.xlsx`? Vamos carregar apenas o arquivo `01_turma_2016.xlsx`.
+
+---
+
+##### Exercício 12
+
+Carregue os dados `01_turma_2016.xlsx` no seu R, e dê o nome ao objeto `dados`.
+
+---
+
+```{r echo=FALSE}
+# carregando o pacote
+library(readxl)
+# carregando os dados
+dados <- read_excel(path = "../97_enquete/01_turma_2016.xlsx")
+```
+
+Com estes dados carregados, agora podemos pensar em iniciar o _loop_. Lembre-se da dica de sempre tentar entender primeiro o que o código de uma função precisa fazer antes dela, de fator, fazer! O mesmo vale para os controladores de fluxo!  
+
+  
+O que temos então?  
+  
+1. Carregar cada um dos elementos de `arquivos`, da posição 2 até a última posição dele;  
+2. Para cada vez que carregarmos um arquivo no objeto `arquivos`, vamos anexar ele ao objeto `dados`, que já criamos;  
+3. Repetiremos isso tantas vezes quanto as que forem o número de arquivos.  
+
+Para tal, vamos listar algumas funções e outras coisas que podem nos ajudar em tal processo:  
+  
+* `length`: nos diz o comprimento máximo de um objeto. Isto é útil para automatizar o início do nosso _loop_, onde diremos para o R que o _loop_ deve ir do segundo elemento de `arquivos` até o seu último elemento (ou seja, aquele que marca o seu comprimento máximo);  
+* indexação de objetos: lembre-se que podemos indexar um objeto para saber o conteúdo dele naquela posição (e.g., `arquivos[6]`);  
+* `paste0`: esta é uma função muito útil para colar duas informações sem deixar espaço entre elas. Veremos mais sobre o seu funcionamento na próxima semana, mas ela será bem importante para que possamos fazer este _loop_ funcionar, pois ela vai nos ajudar a colar o `path` do diretório em que estão os arquivos ao nome do arquivo que será aberto para cara `i` do _loop_;  
+* `rbind.data.frame`: lembre-se que uma maneira de fazer um `data.frame` crescer é através da adição de linhas e colunas. Esta função anexa dois ou mais `data.frame` através das linhas, desde que eles possuam o mesmo número de colunas e mesmo nome em suas colunas.  
+
+Podemos testar o uso da função `paste0` em combinação com a indexação de objetos para entendermos a lógica do que estamos para fazer:
+
+```{r}
+# vamos colar uma palavra qualquer e o terceiro elemento do vetor arquivos
+paste0("Vamos abrir: ", arquivos[3])
+# outro teste
+paste0("Será que vai funcionar? Vamos tentar abrir: ", arquivos[10])
+```
+
+---
+
+##### Exercício 13
+
+Usando a função `paste0` e a indexação do objeto `arquivos`, tente abrir uma das planilhas do objeto `arquivos` usando a função `read_excel`. Você pode digitar o caminho para o diretório `97_enquete`. __Não transforme esta planilha em um objeto__!
+
+---
+
+Se você entendeu onde estamos chegando, então agora é um pulo para usar o _loop_. Resumindamente, o que ele fará é ir de elemento a elemento no objeto `arquivos` e colar o diretório em que estes arquivos estão com o nome do elemento. Feito isso, esta planilha será aberta e atribuída a um objeto temporário, que será anexada à planilha `dados` que nós já criamos.
+
+---
+
+##### Exercício 14
+
+Tente completar a tarefa a partir desse ponto sozinho. Não olhe as linhas abaixo!
+
+---
+
+O _loop_ que faz a tarefa árdua e repetitiva para nós está abaixo:
+
+```{r}
+# observando a planilha de dados
+dados
+# iniciando o loop
+for(i in 2:length(arquivos)) {
+  
+  tmp <- read_excel(path = paste0("../97_enquete/", arquivos[i]))
+
+  dados <- rbind.data.frame(dados, tmp)
+  
+}
+# observando novamente a planilha de dados
+dados
+```
+
+Este é só um exemplo de como podemos aplicar um _loop_ para resolver uma tarefa corriqueira que fazemos. Existem outras coisas que poderiam ser úteis ao fazermos uma tarefa como essa, como criando uma coluna dizendo de onde veio cada observação (i.e., que arquivo corresponde a cada observação), mas para o momento está ótimo. Você pode usar esta mesma lógica para carregar qualquer tipo de dado: desde um `data.frame` até uma página da internet, arquivo raster e por aí vai.  
+

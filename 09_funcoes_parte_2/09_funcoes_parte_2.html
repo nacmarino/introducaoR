@@ -147,19 +147,690 @@ h1,h2,h3,h4,h5,h6{
 </ol>
 <div id="criando-sequencias-de-numeros-aleatorios" class="section level2">
 <h2>Criando sequências de números aleatórios</h2>
-<ol style="list-style-type: decimal">
-<li>round, ceiling, floor</li>
-<li>Sort vs order</li>
-<li>Sample</li>
-<li>Numeros aleatorios</li>
+<p>O R possui um conjunto de funções que pode ser usada para criar números aleatórios a partir de diferentes famílias de distribuição de probabilidade: + <code>rnorm</code>: gerador de números aleatórios de acordo com a <strong>distribuição normal</strong>. + <code>runif</code>: gerador de números aleatórios de acordo com a <strong>distribuição uniforme</strong>. + <code>rpois</code>: gerador de números aleatórios de acordo com a <strong>distribuição de Poisson</strong>. + <code>rbinom</code>: gerador de números aleatórios de acordo com a <strong>distribuição binomial</strong>. + …</p>
+<p>Como se tratam de famílias de distribuição de probabilidade diferentes, os argumentos em cada uma dessas funções vai diferir, pois cada distribuição de probabilidade é descrita por conjuntos diferentes de parâmetros (e.g., média e desvio para a distribuição normal, lambda para a distribuição de Poisson,…)</p>
+<hr />
+<div id="exercicio-1" class="section level5">
+<h5>Exercício 1</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Em duplas, combinem um tipo de família de distribuição de probabilidade e os valores dos argumentos que usarão;<br />
+</li>
+<li>Gerem uma sequência de números aleatórios conforme o combinado, cada um em seu próprio computador;<br />
+</li>
+<li>Comparem o resultado;<br />
+</li>
+<li>Vocês chegaram nos mesmos valores? Por que?</li>
 </ol>
+<hr />
+<p>Por se tratar de um gerador de números <em>aleatórios</em>, toda vez que você usar estas funções estas vão te mostrar números diferentes - mesmo que você esteja usando o mesmo computador! Isto ocorre pois a função é alimentada por um gerador de números aleatórios, que escolhe um ‘ponto de partida’ diferente a cada vez que você inicia a função. Algo semelhante ocorre quando você coloca as músicas no seu celular em muda aleatório, por exemplo.</p>
+<p>É importante termos isso em mente pois muitas vezes precisamos fazer análises que são baseadas em testes de aleatorização e, portanto, teremos resultados diferentes cada vez que rodarmos uma análise. No entanto, existe uma forma de remover esta aleatoriedade do ‘ponto de partida’ do gerador de números aleatórios se nós fornecermos a esse gerador um ponto de partida determinado. Podemos fazer isso através da função <code>set.seed</code>.</p>
+<p>Vamos fornecer um número determinado para alimentar o ponto de partida do gerador de números aleatórios:</p>
+<pre class="r"><code># podemos usar qualquer valor, mas para chegarmos no mesmo resultado, vamos usar o mesmo número
+set.seed(943)
+# gerando 10 números aleatórios que seguem uma distribuição com média 10 e desvio 5
+rnorm(n = 10, mean = 10, sd = 5)</code></pre>
+<pre><code>##  [1]  8.019158  6.181476  5.439000 12.496896 10.246580 11.996215 14.331548
+##  [8] 16.224457  3.806046  4.333618</code></pre>
+<p>Agora chegarmos todos ao mesmo resultado! Assim, cada vez que você for usar uma função que use um gerador de números aleatórios, é necessário fornecer um <em>seed</em>. Isso quer dizer que se rodarmos novamente a função <code>rnorm</code> precisaremos usar o <code>set.seed</code> novamente, com o mesmo valor usado anteriormente.</p>
+<p>Vamos armazenar o resultado daquela função em um objeto para ver algumas outras funções úteis para trabalhar com sequências de números.</p>
+<pre class="r"><code>set.seed(943)
+(vetor1 &lt;- rnorm(n = 10, mean = 10, sd = 5))</code></pre>
+<pre><code>##  [1]  8.019158  6.181476  5.439000 12.496896 10.246580 11.996215 14.331548
+##  [8] 16.224457  3.806046  4.333618</code></pre>
+<p>Os números gerados têm 6 casas decimais. Podemos manipular isto com o uso de três funções muito úteis: <code>floor</code>, <code>ceiling</code> e <code>round</code>.</p>
+<pre class="r"><code># arredondando os valores para o menor número inteiro
+floor(x = vetor1)</code></pre>
+<pre><code>##  [1]  8  6  5 12 10 11 14 16  3  4</code></pre>
+<pre class="r"><code># arredondando os valores para o maior número inteiro
+ceiling(x = vetor1)</code></pre>
+<pre><code>##  [1]  9  7  6 13 11 12 15 17  4  5</code></pre>
+<pre class="r"><code># arredondando os valores de forma personalizada
+round(x = vetor1, digits = 3) # 3 casas decimais</code></pre>
+<pre><code>##  [1]  8.019  6.181  5.439 12.497 10.247 11.996 14.332 16.224  3.806  4.334</code></pre>
+<pre class="r"><code>round(x = vetor1, digits = 1) # 1 casa decimal</code></pre>
+<pre><code>##  [1]  8.0  6.2  5.4 12.5 10.2 12.0 14.3 16.2  3.8  4.3</code></pre>
+<pre class="r"><code># arredondando para o número inteiro mais próximo seguindo as regras normais para tal
+(vetor1 &lt;- round(x = vetor1, digits = 0))</code></pre>
+<pre><code>##  [1]  8  6  5 12 10 12 14 16  4  4</code></pre>
+<p>Neste último passo, nos transformamos o <code>vetor1</code> para números inteiros, para prosseguirmos vendo outras formas de manipular sequências de números. Note que os números estão fora de ordem e existem alguns números iguais na sequência. Para colocar estes números em sequência podemos trabalhar com duas funções: <code>sort</code> e <code>order</code>.</p>
+<hr />
+</div>
+<div id="exercicio-2" class="section level5">
+<h5>Exercício 2</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Use cada uma das duas funções descritas acima no vetor1;<br />
+</li>
+<li>Qual a diferença entre elas?</li>
+</ol>
+<hr />
+<p>Algumas vezes, temos observações geradas a partir de um conjunto de dados que não podem ser biologicamente reamostrados. No entanto, existe um meio de realizar uma <em>reamostragem estatística</em> através da função <code>sample</code>.</p>
+<p>Esta função é bastante importante, pois ela permite que reamostremos os valores de um vetor, determinando o tamanho da amostra gerada (argumento numérico <code>size</code>) e se o procedimento deve ou não ser feito com substituição (argumento lógico <code>sample</code>). Lembre-se, esta reamostragem ocorre de forma aleatória - todos os valores em um vetor têm a mesma probabilidade de serem amostrados! Desta forma, ao usar esta função também precisarmos usar o <code>set.seed</code> para chegarmos todos aos mesmos valores!</p>
+<pre class="r"><code># reamostrando o vetor, com uma amostra de tamanho 5, com substituição
+set.seed(733)
+sample(x = vetor1, size = 5, replace = TRUE)</code></pre>
+<pre><code>## [1] 12 12  4  6 12</code></pre>
+<pre class="r"><code># sem substiuição
+set.seed(235)
+sample(x = vetor1, size = 5, replace = FALSE)</code></pre>
+<pre><code>## [1]  4 16 10  8  6</code></pre>
+<hr />
+</div>
+<div id="exercicio-3" class="section level5">
+<h5>Exercício 3</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Crie um vetor baseado em algum gerador de números aleatórios via uma das funções descritas no início da aula;<br />
+</li>
+<li>Use a função <code>sample</code> para reamostrar o vetor gerado, usando um tamanho da reamostragem duas vezes maior do que o do vetor, mas:
+<ol style="list-style-type: decimal">
+<li>Rode uma vez com substituição;<br />
+</li>
+<li>Rode uma vez sem substituição;<br />
+</li>
+</ol></li>
+<li>O que aconteceu?</li>
+</ol>
+<hr />
+<p>A função <code>sample</code> é a base para fazermos testes de aleatorização como <em>bootstrap</em>, <em>jacknife</em> e outros testes não paramétricos. No geral, estes métodos incluem calcular algum teste estatístico a partir dos dados, e recalcular e comparar <em>n</em> vezes o valor deste teste estatístico obtido através de aleatorizações do conjunto original de dados. Nesse sentido, um exemplo do conjunto de operações para obtermos estes testes é: 1. Obter um teste estatístico a partir dos dados; 2. Aleatorizar o conjunto de dados original por reamostragem (com ou sem substituição); 3. Calcular o teste estatístico a partir dos dados aleatorizados; 4. Comparar o valor do teste estatístico original com o do teste estatístico obtido através da aleatorização; 5. Registrar se o valor aleatorizado é maior (ou menor) ao do valor original; 6. Reptir os passos 2 a 5 <em>n</em> vezes; 7. Calcular a proporção das <em>n</em> vezes em que o valor real é maior (ou menor) do que o obtido pela aleatorização.</p>
+<p>Esta lista de passos ilustra que devemos realizar uma tarefa bem repetitiva para chegarmos a um valor desejado. Se fizermos isso na mão, vamos levar uma eternidade - todavia, uma alternativa é programar uma função para fazer isto para nós.</p>
+</div>
 </div>
 <div id="funcoes---parte-2-criando-suas-proprias-funcoes" class="section level2">
 <h2>Funções - Parte 2: criando suas próprias funções</h2>
+<p>Até aqui já vimos que tudo no R funciona através de funções. Muitas delas já estão programadas direto na <code>base</code> do R, outras estão programadas em pacotes, e muitas outras só existem na sua imaginação - e podem se tornar funções sem muita complicação! Esta é a grande vantagem de aprender uma linguagem de programação: você passa a usar ela em favor das suas necessidades, da sua criatividade.</p>
+<p>Uma função é criada através de uma função: a função <code>function</code>. Uma função não precisa ser complexa, por exemplo:</p>
+<pre class="r"><code># criando uma função chamada foo
+foo &lt;- function(){
+  5
+}
+# usando a função foo
+foo()</code></pre>
+<pre><code>## [1] 5</code></pre>
+<p>A função <code>foo</code> é uma função que tem um único objetivo: imprimir o número 5! É claro que você não precisa programar uma função tão simples como essa, mas é importante nos aprofundarmos um pouco mais no funcionamento do R e de lógica para podermos ir para funções um pouco mais avançadas.</p>
+<p>Conforme vimos, toda função <em>pode</em> ter uma lista de argumentos e um corpo (o código que a compõem):</p>
+<pre class="r"><code>function(lista_de_argumentos_){
+  corpo_da_função
+  &lt;código&gt;
+  &lt;operações&gt;
+}</code></pre>
+<p>Sempre escrevemos a lista de argumentos da função dentro dos parênteses que seguem à função <code>function</code> e colocaremos todo o corpo que compõem a função dentro de chaves. Para exemplificar, vamos criar uma função simples, que calcula o logaritimo da razão de resposta entre dois tratamentos:</p>
+<pre class="r"><code>foo &lt;- function(valor_tratamento1, valor_tratamento2){
+  log(valor_tratamento1/valor_tratamento2)
+}</code></pre>
+<p>Podemos usar essa função, por exemplo, para determinar se o uso do tratamento 1 gera um efeito maior em uma resposta do que o uso do tratamento 2:</p>
+<pre class="r"><code>foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<p>Como já havíamos visto anteriormente, podemos modificar a ordem em que fornecemos as informações sobre os argumentos e até mesmo suprimir o nome dos argumentos (mas mantendo a ordem original em que eles podem aparecer), pois o R faz um <em>lazy evaluation</em> do conteúdo das funções.</p>
+<pre class="r"><code># forma mais 'correta'
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<pre class="r"><code># mesmo resultado
+foo(valor_tratamento2 = 5, valor_tratamento1 = 10)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<pre class="r"><code>foo(10, 5)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<p>Além disso, como vimos também, uma função pode ter valores padrão (<em>default</em>) - na ausência de uma determinação do usuário, ele vai assumir que tudo deve ser feito utilizando aquele valor padrão:</p>
+<pre class="r"><code># vamos dar um valor padrão para um dos tratamentos
+foo &lt;- function(valor_tratamento1, valor_tratamento2 = 1){
+  log(valor_tratamento1/valor_tratamento2)
+}
+# se não especificarmos o valor do tratamento2
+foo(valor_tratamento1 = 10)</code></pre>
+<pre><code>## [1] 2.302585</code></pre>
+<pre class="r"><code># e se especificarmoso valor do tratamento2?
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<p>Uma observação importante é que podemos criar objetos dentro da função - estes objetos só existirão dentro da função que estamos criando! No entanto, lembre-se que ao criarmos um objeto, o padrão do R é não mostrar o resultado dele!</p>
+<pre class="r"><code># salvando resultado do cálculo em um objeto dentro da função
+foo &lt;- function(valor_tratamento1, valor_tratamento2){
+  
+  resposta &lt;- log(valor_tratamento1/valor_tratamento2)
+
+  }
+# usando a função - cade o resultado?
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+# obrigando o R a mostrar o resultado
+(foo(valor_tratamento1 = 10, valor_tratamento2 = 5))</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<pre class="r"><code># outra forma de obter o resultado
+# usando a função
+cade &lt;- foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+cade</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<p>Uma forma mais simples de contornar este problema, principalmente quando o resultado final de uma função é um objeto criado dentro dela, é o uso da função <code>print</code>:</p>
+<pre class="r"><code># adicionando a função print
+foo &lt;- function(valor_tratamento1, valor_tratamento2){
+  
+  resposta &lt;- log(valor_tratamento1/valor_tratamento2)
+  
+  print(resposta)
+}
+# usando função
+foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
+<pre><code>## [1] 0.6931472</code></pre>
+<hr />
+<div id="exercicio-4" class="section level5">
+<h5>Exercício 4</h5>
+<p>O R não possui uma função capaz de calcular o erro padrão da média de um vetor - você é capaz de criar essa função?<br />
++ Dica 1: a fórmula para o erro padrão da média é - desvio padrão dividido pela raiz quadrada do tamanho da amostra;<br />
++ Dica 2: é sempre útil listar o que você tem que fazer para criar uma função:<br />
+1. Criar um vetor com números;<br />
+2. Calcular o desvio padrão;<br />
+3. Determinar o comprimento do vetor e tirar a sua raiz quadrada;<br />
+4. Dividir o resultado do passo 2 pelo passo 3;<br />
+5. …</p>
+<hr />
+<p>Já que estamos começando a entender um pouco melhor como montar uma função, podemos avançar um pouco mais e tentar trabalhar uma ideia um pouco mais complexa de função: cara e coroa!</p>
+<p>Suponha que tenhamos uma moeda e queremos fazer uma simulação para determinar se tomamos ou não uma ação: cara faremos <em>x</em>, coroa faremos <em>y</em>. Podemos escrever uma função que jogue essa ‘moeda’ e nos mostre o resultado de <em>n</em> arremessos dela. Primeiro, vamos criar nossa moeda:</p>
+<pre class="r"><code>(moeda &lt;- c(&quot;cara&quot;, &quot;coroa&quot;))</code></pre>
+<pre><code>## [1] &quot;cara&quot;  &quot;coroa&quot;</code></pre>
+<p>Agora, podemos simular o arremesso através da função <code>sample</code> que aprendemos no início da aula:</p>
+<pre class="r"><code># como é uma aleatorização, precisamos usar o set.seed
+set.seed(90)
+# queremos apenas um arremeso da moeda
+sample(x = moeda, size = 1)</code></pre>
+<pre><code>## [1] &quot;coroa&quot;</code></pre>
+<p>Pode acontencer de você não ter gostado do resultado…uma opção é rodar a função <code>sample</code> de novo, a outra é programar uma função que faça isso para você <em>n</em> vezes! Para facilitar, vamos primeiro desenhar qual o formato básico que a função <code>sample</code> deve assumir no caso desejado:</p>
+<pre class="r"><code>sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)</code></pre>
+<p>Com isto em mente, fica mais fácil desenhar a função, pois sabemos quais os argumentos da função que vamos usar deverão ser manipulados!</p>
+<pre class="r"><code># criando função
+lancar_moeda &lt;- function(numero_de_lancamentos) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)
+  
+}
+# lancando moeda 2 vezes
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 2)</code></pre>
+<pre><code>## [1] &quot;cara&quot; &quot;cara&quot;</code></pre>
+<pre class="r"><code># lancando moeda 10 vezes
+set.seed(3098)
+lancar_moeda(numero_de_lancamentos = 10)</code></pre>
+<pre><code>##  [1] &quot;coroa&quot; &quot;coroa&quot; &quot;cara&quot;  &quot;cara&quot;  &quot;coroa&quot; &quot;coroa&quot; &quot;cara&quot;  &quot;cara&quot; 
+##  [9] &quot;cara&quot;  &quot;coroa&quot;</code></pre>
+<p>Podemos inclusive viciar a moeda, adicionando mais um argumento na nossa função: <code>prob</code>, que é um argumento existente dentro da função <code>sample</code>! + O argumento <code>prob</code> deve ser um vetor de comprimento igual ao número de categorias no objeto <code>x</code> da função <code>sample</code> (no nosso caso, o vetor <code>moedas</code>); este vetor deve conter probabilidades entre 0 e 1 para cada categoria, de forma que o somatório final seja 1!</p>
+<hr />
+</div>
+<div id="exercicio-5" class="section level5">
+<h5>Exercício 5</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Use a função abaixo;<br />
+</li>
+<li>Ela funciona?<br />
+</li>
+<li>Por que?<br />
+</li>
+<li>Como você pode modificar o funcionamento dela?</li>
+</ol>
+<pre class="r"><code># adicionando um vicio a moeda
+lancar_moeda &lt;- function(numero_de_lancamentos, vicio) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}
+# lancando moeda 10 vezes
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 10)</code></pre>
+<hr />
+</div>
+<div id="exercicio-6" class="section level5">
+<h5>Exercício 6</h5>
+<ol style="list-style-type: lower-alpha">
+<li>O que acontece se criarmos um objeto chamado <code>vicio</code> fora da lista de argumentos da função, por exemplo, antes do <code>set.seed</code>?</li>
+<li>E o que acontece se adicionarmos o argumento <code>vicio</code> dentro da lista de argumentos da função, mas sem especificar qual o valor ele deve assumir (também considerando que criamos o objeto <code>vicio</code> antes do <code>set.seed</code>)?</li>
+<li>E se o objeto criado não se chamar <code>vicio</code>, mas sim <code>justica</code>?</li>
+</ol>
+<pre class="r"><code># adicionando um vicio a moeda
+lancar_moeda &lt;- function(numero_de_lancamentos, vicio) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}
+# lancando moeda 10 vezes
+vicio &lt;- c(0.2, 0.8)
+set.seed(792)
+lancar_moeda(numero_de_lancamentos = 10, vicio)</code></pre>
+<hr />
+</div>
+<div id="exercicio-7" class="section level5">
+<h5>Exercício 7</h5>
+<p>Na função abaixo, o argumento <code>valor_da_moeda</code> deve ser um caractere, indicando qual o valor da moeda usada.<br />
+a. O que acontece se não especificarmos este argumento?<br />
+b. O que acontece se especificarmos este argumento?</p>
+<pre class="r"><code>lancar_moeda &lt;- function(numero_de_lancamentos, vicio, valor_da_moeda) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = vicio)
+  
+}</code></pre>
+<hr />
+</div>
+<div id="exercicio-8" class="section level5">
+<h5>Exercício 8</h5>
+<p>O que acontece se adicionar o argumento <code>prob</code> a lista de argumentos da nossa função, mas no local onde ela é usada nós adicionarmos um vetor determinado?</p>
+<pre class="r"><code>lancar_moeda &lt;- function(numero_de_lancamentos, prob) {
+  
+  sample(x = moeda, size = numero_de_lancamentos, replace = TRUE, prob = c(0.5, 0.5))
+  
+}</code></pre>
+<hr />
+<p>O que estamos observando nestes últimos exercícios é que:<br />
+1. Todo argumento usado pelo código dentro de uma função precisa ser especificado na lista de argumentos;<br />
+2. Argumentos que são usados por uma função mas que foram determinados (como o <code>x</code> no <code>sample</code> e o <code>prob</code> no último exercício) sobre-escrevem qualquer ordem recebida na lista de argumentos;<br />
+3. Se um argumento assume um valor padrão (<em>default</em>) na lista de argumentos, deixar de especificar o valor que ele deve assumir na lista de argumentos não tem impacto sobre o funcionamento da função;<br />
+4. Por <em>lazy evaluation</em>, por mais que você não especifique o nome do argumento, o R é capaz de casar a posição com que a informação é fornecida com a posição esperada para aquele argumento;<br />
+5. Especificar argumentos que não são usados por uma função, na maioria das vezes, não tem efeito algum sobre o funcionamento dela.</p>
+<p>Para concluirmos esta parte, existe também a possibilidade de usarmos uma função dentro de outra. No exemplo abaixo, após determinarmos qual o resultado de cada lançamento da moeda podemos usar uma função para calcular o total de lançamentos em cada uma das categorias:</p>
+<pre class="r"><code># criando a função
+lancar_moeda &lt;- function(numero_de_lancamentos) {
+  
+  lancamentos &lt;- sample(x = moeda, size = numero_de_lancamentos, replace = TRUE)
+  
+  resultados &lt;- function(){
+    
+    table(lancamentos)
+    
+  }
+  
+  resultados()
+  
+}
+# testando função
+lancar_moeda(20)</code></pre>
+<pre><code>## lancamentos
+##  cara coroa 
+##     8    12</code></pre>
+</div>
 </div>
 <div id="controladores-de-fluxo" class="section level2">
 <h2>Controladores de Fluxo</h2>
-<p>for, while,…</p>
+<p>Existem algumas funções que são usadas especialmente para controlar o fluxo de computação de certas tarefas. Estas estruturas de controle de fluxo são muito úteis ao escrevermos funções e fornecem mais flexibilidade ao programarmos uma tarefa, principalmente tarefas repetitivas. Os principais controladores de fluxo para funções são:</p>
+<table style="width:53%;">
+<colgroup>
+<col width="34%"></col>
+<col width="18%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Controlador de Fluxo</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>if</code>, <code>else</code></td>
+<td>testa uma condição para executar uma ação</td>
+</tr>
+<tr class="even">
+<td><code>for</code></td>
+<td>executa uma tarefa repetitivamente por um número determinado de vezes (conhecido como <strong>loop</strong>; não confundir com funções loop)</td>
+</tr>
+<tr class="odd">
+<td><code>while</code></td>
+<td>executa um loop enquanto uma condição for verdadeira</td>
+</tr>
+<tr class="even">
+<td><code>repeat</code></td>
+<td>executa uma ação infinitamente (<strong>perigo: loop infinito</strong>)</td>
+</tr>
+<tr class="odd">
+<td><code>break</code></td>
+<td>executa a execução de um loop (precisa ser usado com repeat, mas pode ser usado também com <code>while</code> e <code>for</code>)</td>
+</tr>
+<tr class="even">
+<td><code>next</code></td>
+<td>pula a iteração de um loop</td>
+</tr>
+<tr class="odd">
+<td><code>return</code></td>
+<td>usado ao fim de uma função para fornecer o output que ela deve retornar</td>
+</tr>
+</tbody>
+</table>
+<p>Apesar de parecerem similares, o <code>return</code> e o <code>print</code> não funcionam da mesma forma:<br />
+a. <code>return</code>: só retorna o valor da função e a finaliza;<br />
+b. <code>print</code>: imprime todos os valores e retorna estes valores (<code>return</code> + <code>print</code>).</p>
+<p>Vamos tentar entender melhor o funcionamento de cada um destes controladores de fluxo agora, dada a sua importância para a criação de funções.</p>
+<div id="if-else" class="section level3">
+<h3><code>if</code>, <code>else</code></h3>
+<p>Esta função executa uma ação se uma condição for atendida, caso contrário, ela realizará uma outra ação.</p>
+<ul>
+<li>Não confundir com a função <code>ifelse</code>!<br />
+</li>
+<li>O funcionamento básico desta função é:</li>
+</ul>
+<pre class="r"><code>if(condição) {
+        &lt;ação&gt;
+        } else {
+        &lt;outra ação&gt;        
+        }</code></pre>
+<p>Podemos utilizar o exemplo abaixo para entender a funcionalidade desta função:</p>
+<pre class="r"><code># vamos criar um objeto com o número 5
+x &lt;- 5
+# e vamos usar a estrutura de controle if, else
+teste_condicional &lt;- if(x &lt; 10){
+  &quot;número menor que 10&quot;
+} else {
+  &quot;número não é menor que 10&quot;
+}
+teste_condicional</code></pre>
+<pre><code>## [1] &quot;número menor que 10&quot;</code></pre>
+<p>Testando com outro valor de <code>x</code>:</p>
+<pre class="r"><code># vamos criar um objeto com o número 20
+x &lt;- 20
+# e vamos usar a estrutura de controle if, else
+teste_condicional &lt;- if(x &lt; 10){
+  &quot;número menor que 10&quot;
+} else {
+  &quot;número é maior que 10&quot;
+}
+teste_condicional</code></pre>
+<pre><code>## [1] &quot;número é maior que 10&quot;</code></pre>
+<p>É importante frisar aqui que este controlador de fluxo não está restrito à uma única condição, podendo ser incluídas múltiplas condições.</p>
+<pre class="r"><code># vamos criar um objeto com o número 20
+x &lt;- 10
+# e vamos usar a estrutura de controle if, else
+teste_condicional &lt;- if(x &lt; 10){
+  &quot;número menor que 10&quot;
+} else if(x == 10) {
+  &quot;número é igual a 10&quot;
+} else {
+  &quot;número é maior que 10&quot;
+}
+teste_condicional</code></pre>
+<pre><code>## [1] &quot;número é igual a 10&quot;</code></pre>
+<hr />
+<div id="exercicio-9" class="section level5">
+<h5>Exercício 9</h5>
+<p>Usando o controlador de fluxo <code>if</code>, <code>else</code> construa um teste lógico que te retorne a frase “o resultado é cara” ou “o resultado é coroa” com o resultado do lançamento da moeda.</p>
+<ul>
+<li>Dica: você deve usar o resultado da função <code>sample</code> com o lançamento da uma moeda uma única vez para fazer este teste.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="for" class="section level3">
+<h3><code>for</code></h3>
+<p>Este é o controlador de fluxo mais útil e, portanto, o mais usado ao programarmos funções. Ele executa uma tarefa repetidamente por um número determinado de vezes. A estrutura básica dele é:</p>
+<pre class="r"><code>for(i in quantidade_de_vezes) { # onde i é cada uma das vezes
+        &lt;ação&gt;
+}</code></pre>
+<p>Um exemplo do uso desse controlador de fluxo é:</p>
+<pre class="r"><code>for (i in 1:10) { # para cada i de 1 a 10
+  print(i) # imprima o valor de i
+  Sys.sleep(time = 1) # aguarde 1 segundo antes de prosseguir
+  # repita a operaçao
+}</code></pre>
+<p>O grande poder deste controlador de fluxo é a sua utilidade em realizar uma tarefa repetitiva, de forma que a cada vez que a tarefa é realizada, o seu resultado é <strong>armazenado</strong> em algum objeto do R. Exemplos desta aplicação saão:</p>
+<ul>
+<li>Juntar diferentes abas de uma mesma planilha Excel em um único arquivo;<br />
+</li>
+<li>Juntar conjuntos de dados que estejam separados em diferentes arquivos em um único arquivo;<br />
+</li>
+<li>Realizar testes de aleatorização;<br />
+</li>
+<li>Usar a informação em uma célula de um conjunto de dados para buscar uma determina informação e adicionar a um vetor/conjunto de dados (e.g., verificar se os nomes de uma espécie batem com a base do GBIF, extrair informações de coordenadas de um mapa,…);<br />
+</li>
+<li>Fazer testes de sensibilidade para um <em>range</em> de valores de uma variável;<br />
+</li>
+<li>… (toda e qualquer tarefa que envolva o uso de um mesmo conjunto de ações repetitivas para partes dos dados)</li>
+</ul>
+<p>Por exemplo, se quiséssemos criar uma sequência Fibonacci:</p>
+<ul>
+<li>Os dois primeiros números da sequência são 1;<br />
+</li>
+<li>A partir do terceiro número, todo número é a soma dos dois números anteriores;<br />
+</li>
+<li>Exemplo: 1, 1, 2, 3, 5, 8, 13, 21,…</li>
+</ul>
+<p>Para tentar reproduzir essa sequência, vamos primeiro criar um vetor com dois números “1”:</p>
+<pre class="r"><code>vetor1 &lt;- c(1, 1)</code></pre>
+<p>Este é um vetor de comprimento 2 (teste: <code>length(vetor1)</code>) e, se indexarmos a posição 3 deste vetor, obteremos um NA:</p>
+<pre class="r"><code># o que acontece se indexarmos a segunda posição deste vetor?
+vetor1[3]</code></pre>
+<pre><code>## [1] NA</code></pre>
+<p>O que isto nos sugere é que o comprimento de um vetor não é algo fixo após ele ser criado - novos elementos podem ser adicionados nas posições seguintes caso nós queiramos. Com isto, podemos usar o controlador de fluxo <code>for</code> para que a cada posição em um vetor seja preenchida pela soma dos valores das duas últimas posições.</p>
+<hr />
+<div id="exercicio-10" class="section level5">
+<h5>Exercício 10</h5>
+<p>Some a primeira e a segunda posição do <code>vetor1</code> através da indexação.</p>
+<hr />
+<p>Agora que já nos lembramos como usar a indexação para fazer a soma, podemos tentar usar o <code>for</code> para criar a sequência Fibonacci. Neste caso, vamos especificar um tamanho para a sequência, e usar o for para calcular os valores das posições da sequência na posição 3 até aquela que nós determinamos. No entanto, a cada repetição, vamos dizer para o __loop_ armazenar o resultado da soma na posição sendo repetida no <code>vetor1</code>.</p>
+<pre class="r"><code># qual o tamanho da sequência desejado?
+tamanho_sequencia &lt;- 15
+# iniciando o loop
+for(i in 3:tamanho_sequencia){ # para cada valor i, iniciando em i = 3 até i = tamanho da sequência
+  vetor1[i] &lt;- vetor1[i - 2] + vetor1[i - 1] # e.g, quando i = 3, &quot;i - 2 = 1&quot; e &quot;i - 1 = 2&quot;, com o resultado da soma armazenado em vetor1[i]
+  print(vetor1) # mostre o vetor1
+  Sys.sleep(time = 1.5) # aguarde 1 segundo antes de prosseguir
+}</code></pre>
+<hr />
+</div>
+<div id="exercicio-11" class="section level5">
+<h5>Exercício 11</h5>
+<p>Agora que você tem o exemplo da sequência Fibonacci, vamos aplicar a mesma ideia para calcular <em>n</em> vezes o valor da média de uma amostra aleatória de um vetor contendo números de 1 a 10. Vamos fazer isso em duas etapas:</p>
+<ol style="list-style-type: decimal">
+<li>Etapa 1:
+<ol style="list-style-type: lower-alpha">
+<li>Crie um vetor de 1 a 10;<br />
+</li>
+<li>Usando o controlador de fluxo <code>for</code>, retire uma amostra aleatória de 10 números e guarde em um vetor;<br />
+</li>
+<li>Faça com que este vetor seja impresso e que o sistema aguarde 1 segundo antes de repetir o procedimento;<br />
+</li>
+<li>O procedimento precisa ser repetido 10 vezes;<br />
+</li>
+</ol></li>
+<li>Etapa 2:
+<ol start="5" style="list-style-type: lower-alpha">
+<li>Agora, ao invés do controlador de fluxo retornar o vetor de números reamostrados, você deverá calcular a média do vetor reamostrado;<br />
+</li>
+<li>A média do vetor reamostrado deverá ser armazenada em um outro vetor, na posição que condiza com a sequência testada no controlador de fluxo;<br />
+</li>
+<li>Repita este procedimento 10 vezes também;<br />
+</li>
+</ol></li>
+<li>Etapa 3:
+<ol start="8" style="list-style-type: lower-alpha">
+<li>Após finalizar as Etapas 1 e 2, calcule o valor da média do vetor criado originalmente;<br />
+</li>
+<li>Determine quantas vezes o valor da média do vetor original é <strong>maior</strong> ou igual à média das aleatorizações;<br />
+</li>
+<li>Determine quantas vezes o valor da média do vetor original é <strong>menor</strong> ou igual à média das aleatorizações;<br />
+</li>
+<li>Para os passos <em>i</em> e <em>j</em>, determine a proporção das vezes, dividindo a quantidade total pelo número de observações.</li>
+</ol></li>
+</ol>
+<ul>
+<li>Dica para os passos <em>i</em> e <em>j</em>: os valores dos testes lógicos, <code>TRUE</code> e <code>FALSE</code> são interpretados como <code>1</code> e <code>0</code> pelo R, respectivamente.</li>
+</ul>
+<hr />
+<p>Se tudo deu certo, parabéns! Você acabou de fazer seu primeiro teste de aleatorização!</p>
+</div>
+</div>
+<div id="while" class="section level3">
+<h3><code>while</code></h3>
+<p>Este controlador de fluxo executa uma ação (ou não) enquanto uma condição for verdadeira. A estrutura geral do uso deste controlador de fluxo é:</p>
+<pre class="r"><code>while(condição) {
+  &lt;ação&gt;
+}</code></pre>
+<p>Apesar desta estrutura se parecer com a do controlador de fluxo <code>if</code>, <code>else</code>, ele permite que as condições sejam testadas de forma iterativa.</p>
+<pre class="r"><code>contagem  &lt;- 0
+while (contagem &lt; 10) {
+  print(contagem)
+  Sys.sleep(0.5)
+  contagem &lt;- contagem + 1
+}</code></pre>
+<p>Este controlador de fluxo pode ser útil se estivermos trabalhando com algum processo de otimização em um modelo, e quisermos que o processamento dsó pare ao atingir uma determinada condição que caracterize uma boa otimização. Você também pode combinar este controlador de fluxo com os outros.</p>
+<pre class="r"><code># quanto dinheiro tinha na minha conta?
+minha_conta &lt;- 0
+# como ela vai flutuar?
+while(minha_conta &lt; 100 &amp; minha_conta &gt; -100){ # enquanto o que eu tiver na conta estiver em 100 e -100
+  
+  print(minha_conta) # imprime o saldo
+  
+  destino &lt;- sample(x = c(0,1), size = 1) # ai entra o destino, como sempre
+  
+  if(destino == 1) { # se o destino for feliz
+    
+    minha_conta &lt;- minha_conta + 20 # deposita 20 na minha conta
+  
+    } else { # se o destino for triste
+    
+    minha_conta &lt;- minha_conta - 20 # tira 20 da minha conta
+    }
+  Sys.sleep(0.5)
+}</code></pre>
+<ul>
+<li><strong>Dica:</strong> você pode interromper o processamento de uma função à qualquer momento, apertando <code>Esc</code> no seu teclado ou o botão <code>Stop</code> no console.</li>
+</ul>
+</div>
+<div id="repeat-break" class="section level3">
+<h3><code>repeat</code> + <code>break</code></h3>
+<p>O controlador de fluxo <code>repeat</code> vai repetir um operação infinita, até que você interrompa o processamento de forma artificial ou até que uma condição seja atingida e haja a presença do controlador <code>break</code> - que vai interromper o processamento da função</p>
+<pre class="r"><code>x &lt;- 1
+repeat { # aqui está um controlador de fluxo
+        print(x)
+        Sys.sleep(time = 1)
+        x = x+1
+        if (x == 6){
+                break # aqui está o outro controlador de fluxo
+        }
+
+}</code></pre>
+</div>
+<div id="next" class="section level3">
+<h3><code>next</code></h3>
+<p>Este controlador de fluxo faz com que uma ação seja “pulada”, e é útil quando em combinação com outros controladores de fluxo.</p>
+<pre class="r"><code>x &lt;- 1:10
+for (val in x) {
+    if (val &gt; 3 &amp; val &lt; 6){
+        next # aqui está o controlador de fluxo
+    }
+    print(val)
+    Sys.sleep(time = 1)
+}</code></pre>
+</div>
+</div>
+<div id="aplicacao-pratica-dos-controladores-de-fluxo" class="section level2">
+<h2>Aplicação prática dos controladores de fluxo</h2>
+<p>O que vimos é que muitas destes controladores de fluxo podem ser uma mão na roda para evitar que quebremos cabeça com tarefas chatas e repetitivas. Além disso, uma grande utilidade destes controladores de fluxo é a <em>automatização</em> destes processos, que poupa tempo e reduz a chance de erros ao repeti-lo. Aqui, vou demonstrar como pode usar o controlador de fluxo <code>for</code> para ler múltiplos arquivos contendo as informações das enquentes.</p>
+<p>As respostas à enquente que enviei para vocês e que a turma anterior também responde estão localizadas no pasta <code>97_enquete</code>. Uma forma de ver tudo o que está dentro dela usando os comandos do R é através da função <code>list.files</code>.</p>
+<pre class="r"><code>list.files(path = &quot;../97_enquete/&quot;)</code></pre>
+<pre><code>##  [1] &quot;00_perguntas.xlsx&quot;  &quot;01_turma_2016.xlsx&quot; &quot;2017_1.xlsx&quot;       
+##  [4] &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;       &quot;2017_12.xlsx&quot;      
+##  [7] &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;        &quot;2017_4.xlsx&quot;       
+## [10] &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;        &quot;2017_7.xlsx&quot;       
+## [13] &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
+<p>Esta pasta contém um arquivo <code>.xlsx</code> com o título das perguntas que eu fiz para vocês (<code>00_perguntas.xlsx</code>), uma arquivo contendo todas as respostas dos alunos da turma do ano passado (<code>01_turma_2016.xlsx</code>) e vários outros arquivos com as respostas individuais de cada um de vocês. Como podemos juntar isso?</p>
+<p>Repare que todas as 13 planilhas com as respostas dos alunos são iguais: contém o mesmo número de colunas, o mesmo título para cada coluna, os mesmos tipos de resposta em cada coluna…isto é muito útil ao organizarmos uma planilha de dados, principalmente se eles têm a mesma origem, descrevem as mesmas coisas e, um dia, você vai querer juntar eles de alguma forma.</p>
+<p>Para poder juntar estas planilhas diferentes, podemos usar um controlador de fluxo do tipo <code>for</code>, que vai ler um arquivo, ler um segundo arquivo, juntar com o primeiro, ler o terceiro arquivo, juntar com o primeiro e segundo, e por aí vai. Caso você se lembre do exemplo da sequência Fibonacci, nós <em>iniciamos</em> a tarefa do <em>loop</em> fora dele pois queríamos que todo o resto da tarefa seguisse a informação primaria que nós demos - aqui faremos o mesmo, lendo um arquivo antes de iniciar o <em>loop</em> e os demais dentro do <em>loop</em>.</p>
+<p>Mas como que o R vai saber qual arquivo carregar de forma automática? Note que o resultado fornecido pelo <code>list.files</code> <strong>é um vetor</strong>. Note também que não precisamos do arquivo <code>00_perguntas.xlsx</code>, pois ele só contém as perguntas e tem outras estrutura. Por tanto podemos descatar este elemento do vetor fornecido.</p>
+<pre class="r"><code># colocando os arquivos em um vetor
+(arquivos &lt;- list.files(path = &quot;../97_enquete/&quot;))</code></pre>
+<pre><code>##  [1] &quot;00_perguntas.xlsx&quot;  &quot;01_turma_2016.xlsx&quot; &quot;2017_1.xlsx&quot;       
+##  [4] &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;       &quot;2017_12.xlsx&quot;      
+##  [7] &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;        &quot;2017_4.xlsx&quot;       
+## [10] &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;        &quot;2017_7.xlsx&quot;       
+## [13] &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
+<pre class="r"><code># eliminando o primeiro elemento do vetor, que não é do nosso interesse - ele tem outro formato e conteudo
+arquivos &lt;- arquivos[-1]</code></pre>
+<p>O que acabamos de fazer exatamento no último passo foi sobre-escrever o objeto <code>arquivos</code>, dizendo que ele terá o mesmo nome, mas será o <code>arquivos</code> original com a exceção do primeiro elemento (<code>00_perguntas.xlsx</code>). Agora, você se lembra como carregamos um dado com extensão <code>.xlsx</code>? Vamos carregar apenas o arquivo <code>01_turma_2016.xlsx</code>.</p>
+<hr />
+<div id="exercicio-12" class="section level5">
+<h5>Exercício 12</h5>
+<p>Carregue os dados <code>01_turma_2016.xlsx</code> no seu R, e dê o nome ao objeto <code>dados</code>.</p>
+<hr />
+<p>Com estes dados carregados, agora podemos pensar em iniciar o <em>loop</em>. Lembre-se da dica de sempre tentar entender primeiro o que o código de uma função precisa fazer antes dela, de fator, fazer! O mesmo vale para os controladores de fluxo!</p>
+<p>O que temos então?</p>
+<ol style="list-style-type: decimal">
+<li>Carregar cada um dos elementos de <code>arquivos</code>, da posição 2 até a última posição dele;<br />
+</li>
+<li>Para cada vez que carregarmos um arquivo no objeto <code>arquivos</code>, vamos anexar ele ao objeto <code>dados</code>, que já criamos;<br />
+</li>
+<li>Repetiremos isso tantas vezes quanto as que forem o número de arquivos.</li>
+</ol>
+<p>Para tal, vamos listar algumas funções e outras coisas que podem nos ajudar em tal processo:</p>
+<ul>
+<li><code>length</code>: nos diz o comprimento máximo de um objeto. Isto é útil para automatizar o início do nosso <em>loop</em>, onde diremos para o R que o <em>loop</em> deve ir do segundo elemento de <code>arquivos</code> até o seu último elemento (ou seja, aquele que marca o seu comprimento máximo);<br />
+</li>
+<li>indexação de objetos: lembre-se que podemos indexar um objeto para saber o conteúdo dele naquela posição (e.g., <code>arquivos[6]</code>);<br />
+</li>
+<li><code>paste0</code>: esta é uma função muito útil para colar duas informações sem deixar espaço entre elas. Veremos mais sobre o seu funcionamento na próxima semana, mas ela será bem importante para que possamos fazer este <em>loop</em> funcionar, pois ela vai nos ajudar a colar o <code>path</code> do diretório em que estão os arquivos ao nome do arquivo que será aberto para cara <code>i</code> do <em>loop</em>;<br />
+</li>
+<li><code>rbind.data.frame</code>: lembre-se que uma maneira de fazer um <code>data.frame</code> crescer é através da adição de linhas e colunas. Esta função anexa dois ou mais <code>data.frame</code> através das linhas, desde que eles possuam o mesmo número de colunas e mesmo nome em suas colunas.</li>
+</ul>
+<p>Podemos testar o uso da função <code>paste0</code> em combinação com a indexação de objetos para entendermos a lógica do que estamos para fazer:</p>
+<pre class="r"><code># vamos colar uma palavra qualquer e o terceiro elemento do vetor arquivos
+paste0(&quot;Vamos abrir: &quot;, arquivos[3])</code></pre>
+<pre><code>## [1] &quot;Vamos abrir: 2017_10.xlsx&quot;</code></pre>
+<pre class="r"><code># outro teste
+paste0(&quot;Será que vai funcionar? Vamos tentar abrir: &quot;, arquivos[10])</code></pre>
+<pre><code>## [1] &quot;Será que vai funcionar? Vamos tentar abrir: 2017_6.xlsx&quot;</code></pre>
+<hr />
+</div>
+<div id="exercicio-13" class="section level5">
+<h5>Exercício 13</h5>
+<p>Usando a função <code>paste0</code> e a indexação do objeto <code>arquivos</code>, tente abrir uma das planilhas do objeto <code>arquivos</code> usando a função <code>read_excel</code>. Você pode digitar o caminho para o diretório <code>97_enquete</code>. <strong>Não transforme esta planilha em um objeto</strong>!</p>
+<hr />
+<p>Se você entendeu onde estamos chegando, então agora é um pulo para usar o <em>loop</em>. Resumindamente, o que ele fará é ir de elemento a elemento no objeto <code>arquivos</code> e colar o diretório em que estes arquivos estão com o nome do elemento. Feito isso, esta planilha será aberta e atribuída a um objeto temporário, que será anexada à planilha <code>dados</code> que nós já criamos.</p>
+<hr />
+</div>
+<div id="exercicio-14" class="section level5">
+<h5>Exercício 14</h5>
+<p>Tente completar a tarefa a partir desse ponto sozinho. Não olhe as linhas abaixo!</p>
+<hr />
+<p>O <em>loop</em> que faz a tarefa árdua e repetitiva para nós está abaixo:</p>
+<pre class="r"><code># observando a planilha de dados
+dados</code></pre>
+<pre><code>## # A tibble: 18 × 9
+##                  P1                                             P2
+##               &lt;chr&gt;                                          &lt;chr&gt;
+## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
+## 2         Doutorado Bacharel em Biologia (qualquer especialização)
+## 3          Mestrado Bacharel em Biologia (qualquer especialização)
+## 4          Mestrado Bacharel em Biologia (qualquer especialização)
+## 5          Mestrado Bacharel em Biologia (qualquer especialização)
+## 6         Doutorado Bacharel em Biologia (qualquer especialização)
+## 7         Doutorado Bacharel em Biologia (qualquer especialização)
+## 8         Doutorado Bacharel em Biologia (qualquer especialização)
+## 9          Mestrado Bacharel em Biologia (qualquer especialização)
+## 10         Mestrado Bacharel em Biologia (qualquer especialização)
+## 11         Mestrado              Bacharel e Licenciado em Biologia
+## 12  Tentar Mestrado Bacharel em Biologia (qualquer especialização)
+## 13         Mestrado Bacharel em Biologia (qualquer especialização)
+## 14         Mestrado Bacharel em Biologia (qualquer especialização)
+## 15         Mestrado Bacharel em Biologia (qualquer especialização)
+## 16         Mestrado Bacharel em Biologia (qualquer especialização)
+## 17        Doutorado Bacharel em Biologia (qualquer especialização)
+## 18        Doutorado Bacharel em Biologia (qualquer especialização)
+## # ... with 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;, P5 &lt;chr&gt;, P6 &lt;chr&gt;,
+## #   P7 &lt;chr&gt;, P8 &lt;chr&gt;, P9 &lt;chr&gt;</code></pre>
+<pre class="r"><code># iniciando o loop
+for(i in 2:length(arquivos)) {
+  
+  tmp &lt;- read_excel(path = paste0(&quot;../97_enquete/&quot;, arquivos[i]))
+
+  dados &lt;- rbind.data.frame(dados, tmp)
+  
+}
+# observando novamente a planilha de dados
+dados</code></pre>
+<pre><code>## # A tibble: 30 × 9
+##                  P1                                             P2
+## *             &lt;chr&gt;                                          &lt;chr&gt;
+## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
+## 2         Doutorado Bacharel em Biologia (qualquer especialização)
+## 3          Mestrado Bacharel em Biologia (qualquer especialização)
+## 4          Mestrado Bacharel em Biologia (qualquer especialização)
+## 5          Mestrado Bacharel em Biologia (qualquer especialização)
+## 6         Doutorado Bacharel em Biologia (qualquer especialização)
+## 7         Doutorado Bacharel em Biologia (qualquer especialização)
+## 8         Doutorado Bacharel em Biologia (qualquer especialização)
+## 9          Mestrado Bacharel em Biologia (qualquer especialização)
+## 10         Mestrado Bacharel em Biologia (qualquer especialização)
+## # ... with 20 more rows, and 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;,
+## #   P5 &lt;chr&gt;, P6 &lt;chr&gt;, P7 &lt;chr&gt;, P8 &lt;chr&gt;, P9 &lt;chr&gt;</code></pre>
+<p>Este é só um exemplo de como podemos aplicar um <em>loop</em> para resolver uma tarefa corriqueira que fazemos. Existem outras coisas que poderiam ser úteis ao fazermos uma tarefa como essa, como criando uma coluna dizendo de onde veio cada observação (i.e., que arquivo corresponde a cada observação), mas para o momento está ótimo. Você pode usar esta mesma lógica para carregar qualquer tipo de dado: desde um <code>data.frame</code> até uma página da internet, arquivo raster e por aí vai.</p>
+</div>
 </div>
 </div>
 
