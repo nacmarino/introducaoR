@@ -30,21 +30,772 @@ h1,h2,h3,h4,h5,h6{
 
 ## A natureza dos dados
 
-* Um dado pode estar em diferentes fases de maturidade:
-    + Dados brutos (_raw data_)  
-    + Dados limpos (_tidy data_)  
-    + Dados para análise
-    + Dados dos resultados das análises
+Um dado pode estar em diferentes fases de maturidade:  
+  
+1. __Dados brutos (_raw data_):__ são os dados em sua forma mais bruta, recém tabelados, com todos os erros de digitação, unidade, e etc...  
+2. __Dados limpos (_tidy data_):__ são os dados em uma forma limpa. Aqui, os dados brutos foram checados e corrigidos, erros de digitação desfeitos, unidades transformadas e etc. Todo e qualquer dado que pode ser gerado com os dados brutos está aqui.  
+3. __Dados para análise:__ normalmente você não precisa de todos os dados que você coletou. Assim, faz mais sentido você pegar a parte dos dados limpos que te interessa e importar para onde quer que você vá fazer sua análise, ao invés de ficar com uma planilha com > 50 variáveis.  
+4. __Dados dos resultados das análises:__ após rodar uma análise você pode exportar os resultados para uma pasta fora do local onde elas foram feitas. Ao fazer isso, estes dados retornam para a etapa número 1 - você precisa ajeitar os nomes das colunas, casas decimais, ...
 
-* O que é tidy data?
+A parte mais importante destas fases é a fase de limpeza e editoração de dados (_tidying data_):  
+  
++ É aqui que tudo vai por água baixo se você não detectar erros de digitação;  
++ É aqui que você pode eliminar os erros em contas e unidades;  
++ É aqui que você pode adicionar informações sobre variáveis (e.g, transformações de variáveis);  
++ É aqui que você pode consertar os nomes das colunas;  
++ É aqui que você vai começar criando múltiplas versões de uma mesma planilha, pois não sabe se as coisas que você está manipulando, mexendo e editando fazem sentido ou estão corretas;  
++ É aqui que você mais vai perder tempo da forma mais repetitiva possível - a não ser que você use uma linguagem de programação! =]  
+
+Quando estamos fazendo a limpeza e editoração dos dados normalmente queremos fazer as seguintes ações:  
+
+1. Criar e/ou eliminar novas variáveis (normalmente, nas colunas);  
+2. Substituir valores que foram digitados errados;  
+3. Substituir palavras e expressões que estejam má digitadas ou onde hajam nomes melhores;  
+4. Modificar os nomes para as variáveis (normalmente, nas colunas);  
+5. Modificar os nomes dos níveis das variáveis (normalmente, nas linhas);  
+6. Separar a informação de uma coluna em duas ou mais;  
+7. Rearranjar a ordem das colunas;  
+8. Selecionar as colunas que vão compor o arquivo final dos dados limpos;  
+9. Passar os dados de um formato longo para um formato largo (e vice-versa);  
+10. Juntar dados que estão separados em planilhas diferentes (vimos como unir por linhas, mas podemos querer fazer o mesmo por colunas, como em uma base de dados);  
+11. Remover `NA`s;
+12. Selecionar sub-conjuntos dos dados para destinações diferentes (e.g., diferentes pedaços de _tidy data_);
+13. Fazer algumas transformações na estrutura original dos dados para criar um _tidy data_ mais condizente com o que você vai precisar na hora das análises.
+
+Nesta aula, vamos aprender como fazer tudo isso sem tocar na sua planilha de dados originais. Para tal, vamos fazer uso das funções na `base` do R, bem como das funções nos pacotes `dplyr` e `tidyr` (este dois últimos, compõem o `tidyverse`).  
 
 ## Métodos básicos para a criação e limpeza de dados
 
-criação de dados pela indexação com $, sub, gsub, make.names, tolower, toupper, paste, paste0, abbreviate, revisitando ifelse, strsplit (separate da base R), stringr, forcats
+Para começarmos a entender melhor o processo de limpeza e edição de dados, vamos carregar o conjunto de dados das enquetes, que trabalhamos nas aulas anteriores.
+
+```{r}
+# vamos carregar o pacote para poder carregar a planilha
+library(readr)
+# carregando dados
+dados <- suppressMessages(read_tsv("dados/resposta_enquetes.xls"))
+# dando uma olhada nos dados
+dados
+```
+
+Para começarmos esta tarefa de forma simples, podemos criar uma coluna contendo uma sequência de número de 1 até o máximo do número de linhas da planilha `dados`. Esta coluna vai sinalizar qual é a identidade da pessoa que respondeu ao questionário. Uma forma mais direta de criar uma coluna com uma nova variável é através da indexação pelo operado `$`.
+
+```{r}
+# criando uma coluna chamada ID como uma sequência de números que vai de 1 até o tamanho máximo que corresponde ao número de linhas em dados
+dados$Identidade <- seq(from = 1, to = nrow(dados), length.out = nrow(dados))
+# olhando esta tabela
+dados
+```
+
+Assim como criamos esta coluna, poderíamos ter criado uma coluna contendo o log, raíz quadrada de uma determina variável contínua, uma sequência de letras ou o que quer que seja. O importante aqui é que toda e qualquer transformação ou criação de variáveis para uma finalidade deve ser feita diretamente na planilha que vamos salvar posteriormente, e não de forma manual no Excel (ou outro editor) ou deixada solta como um vetor no R.
+
+Uma outra função que pode ser útil são as funções `sub` e `gsub`. Elas são usadas para substituir um padrão por outro em um vetor. Podemos usar estas funções para consertar um erro em uma palavra, por exemplo. Note que na coluna `Pergunta 4`, está escrito "Nunco" ao invés de Nunca. Podemos consertar isso com a função `sub`, por exemplo:
+
+```{r}
+# como era
+dados$`Pergunta 4`
+# como ficou
+sub(pattern = "Nunco", replacement = "Nunca", x = dados$`Pergunta 4`)
+```
+
+A diferença da função `sub` para a função `gsub` é que a primeira substitui apenas __uma__ ocorrência que bata com o padrão buscado em cada célula, enquanto a __segunda__ substitui todos os padrões que batam com o padrão buscado cada célula.
+
+```{r}
+# usando sub para substituir os u's por A
+sub(pattern = "u", replacement = "A", x = dados$`Pergunta 4`)
+# usando gsub para substituir os u's por A
+gsub(pattern = "u", replacement = "A", x = dados$`Pergunta 4`)
+```
+
+---
+
+##### Exercício 1
+
+a. Use uma dessas duas funções para modificar o conteúdo da coluna `Pergunta 4`, consertando o erro de digitação em "Nunco".
+
+---
+
+```{r echo=FALSE}
+dados$`Pergunta 4` <- sub(pattern = "Nunco", replacement = "Nunca", x = dados$`Pergunta 4`)
+```
+
+Outra coisa que podemos (e devemos fazer) é remover informação que parece desnecessária a partir das colunas. Por exemplo, a coluna `Pergunta 2` possui frases entre parentes, possui a extensão "em Biologia"...e muita da informação que existe nessa coluna poderia ser resumida de forma muito mais simples:
+
+```{r}
+dados$`Pergunta 2`
+```
+
+Neste último pedaço notamos que existe uma repetição grande das categorias, o que deixa as coisas meio difíceis de serem lidas (principalmente quando esta tabela crescer). Para simplificar a apresentação dela, podemos usar a função `unique`.  
+
+```{r}
+unique(dados$`Pergunta 2`)
+```
+
+Agora que podemos enxergar melhor estas três categorias, podemos mudar também o seu conteúdo: Bacharel, Licenciado, Bacharel e Licenciado! Faremos isso usando, também, a função `sub`:
+
+```{r}
+# vamos remover o " em Biologia"
+dados$`Pergunta 2` <- sub(pattern = " em Biologia", replacement = "", x = dados$`Pergunta 2`)
+# vamos remover o " no Ensino de Biologia"
+dados$`Pergunta 2` <- sub(pattern = " no Ensino de Biologia", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+Ainda temos um problema: o `(qualquer especialização)`! Vamos usar o `sub` para continuar remover este exceço de informação?
+
+```{r}
+# vamos remover o " (qualquer especialização)"
+dados$`Pergunta 2` <- sub(pattern = " (qualquer especialização)", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+Por que esta tentativa de edição não funcionou? Vamos tentar apenas o `qualquer especialização`?
+
+```{r}
+# vamos apenas o "qualquer especialização"
+dados$`Pergunta 2` <- sub(pattern = "qualquer especialização", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+Por que agora foi e antes não? Vamos tentar o parenteses `)`!
+
+```{r}
+# tentando o )
+dados$`Pergunta 2` <- sub(pattern = ")", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+E agora o outro parenteses!
+
+```{r eval=FALSE}
+# tentando o )
+dados$`Pergunta 2` <- sub(pattern = " (", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+Por que estamos recebendo uma notificação de erro?
+
+---
+
+##### Exercício 2
+
+Nos exemplos abaixo, tente entender o que está acontencendo
+
+```{r eval=FALSE}
+# A
+sub(pattern = ".", replacement = "abc", x = "abc.")
+# B
+sub(pattern = "(", replacement = ", v", x = "(viu?")
+# C
+sub(pattern = "\\", replacement = "", x = "abc\\")
+# D
+sub(pattern = "^d", replacement = "", x = "banana^d")
+# E
+sub(pattern = "$i", replacement = "", x = "$indexador")
+# F
+sub(pattern = "?", replacement = "", x = "perguntas?")
+# G
+sub(pattern = " + ", replacement = " mais ", x = "3 + 4")
+# H
+sub(pattern = " * ", replacement = " x ", x = "3 * 4")
+```
+
+---
+
+O R possui alguns padrões que ele usa para detectar expressões regulares, alguns deles são (além do "("):
+
+Expressão Regular  | Uso
+------------------ | ------
+`.`                | Corresponde a qualquer caractere
+`^`                | Um caractere que esteja no início da frase
+`$`                | Um caractere que esteja no fim da frase
+`\`                | Escape, pule um caracter (problemático)
+`?`                | 0 ou 1
+`+`                | 1 ou mais
+
+Assim, para conseguirmos editar uma célula que contenha texto e um destes caracteres devemos usar a própria expressão regular Escape `\`. Entretanto, usar apenas um `\` representa o próprio Escape; assim devemos usar dois Escapes (`\\`) para que ele funcione - por isso que é problemática, pois ela resolve o problema das expressões regulares, inclusive ela mesma!
+
+```{r}
+# tentando o )
+dados$`Pergunta 2` <- sub(pattern = " \\(", replacement = "", x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`
+```
+
+Ao usar o escape com estes caracteres de expressões regulares, podemos conseguir editar o texto de forma mais direta e limpa.
+
+---
+
+##### Exercício 3
+
+a. Remova toda a pontuação das frases as colunas `Pergunta 4`, `Pergunta 5`, `Pergunta 7`, `Pergunta 8` e `Pergunta 9` (as barras "/" não precisam ser removidas).  
+
+---
+
+```{r echo=FALSE}
+dados$`Pergunta 4` <- sub(pattern = "\\.", replacement = "", x = , dados$`Pergunta 4`)
+dados$`Pergunta 5` <- sub(pattern = "\\.", replacement = "", x = , dados$`Pergunta 5`)
+dados$`Pergunta 7` <- sub(pattern = "\\.", replacement = "", x = , dados$`Pergunta 7`)
+dados$`Pergunta 8` <- sub(pattern = "\\.", replacement = "", x = , dados$`Pergunta 8`)
+dados$`Pergunta 9` <- sub(pattern = "\\.", replacement = "", x = , dados$`Pergunta 9`)
+dados$`Pergunta 9` <- sub(pattern = "\\?", replacement = "", x = , dados$`Pergunta 9`)
+```
+
+* __Dica do R:__ é muito ruim quando fazemos erros de digitação e incluímos dois, três ou muito mais espaços. Assim como no Excel, você também pode consertar isso no R através do `sub` e `gsub`:
+
+```{r}
+sub(pattern = "  ", replacement = " ", x = "usei  dois  espaços")
+gsub(pattern = "  ", replacement = " ", x = "usei  dois  espaços")
+```
+
+---
+
+Assim como podemos editar o conteúdo interno das linhas também podemos modificar o tíulo das colunas. Na realidade, nomes de colunas com espaço, caracteres especiais, em caixa alta, texto em caixa alta e baixa e etc, podem causar erros durante a indexação e operação de algumas funções. Portanto, podemos também fazer uma edição no nome das colunas. Para isso, quatro funções podem ser bastante úteis: `tolower`, `toupper`, `make.names` e `abbreviate`.
+
+```{r}
+# nomes das colunas
+names(dados)
+# tolower faz com que todos os caracteres fiquem em caixa baixa
+tolower(names(dados))
+# toupper faz com que todos os caracteres fiquem em caixa alta
+toupper(names(dados))
+# make.names faz com que os nomes das colunas mudem para um formato mais amigável a um computador 
+make.names(names(dados))
+# e, se você achar que os nomes estão muito longos, podemos usar a função abbreviate
+abbreviate(names(dados))
+```
+
+Você também pode usar estas 4 funções no conteúdo das linhas, de forma a modificar a forma como a informação é apresentada. Por exemplo, a coluna `pergunta.2`:
+
+```{r}
+# como ela é
+dados$pergunta.2
+# como ela pode ficar
+tolower(dados$pergunta.2)
+```
+
+---
+
+##### Exercício 4
+
+a. Passe todos os nomes das colunas para caixa baixa;  
+b. Faça com que os nomes das colunas fiquem mais amigáveis a serem usados no R.  
+
+---
+
+```{r echo=FALSE}
+names(dados) <- make.names(tolower(names(dados)))
+```
+
+Apesar de termos mudado os nomes das colunas com estas funções, também poderíamos ter feito isso com as funções `paste` e `paste0`. A função `paste` junta informações em duas ou mais colunas (vetores) em um único vetor, separando esta informação por um espaço ou outro separador que voce desejar (e.g., `_`). A função `paste0` faz praticamente a mesma coisa, com a exceção de que ela não deixa espaço entre as coisas que você está juntando (a não ser que voce especifique isto na função).
+
+```{r}
+# por exemplo
+paste0("Oi,", "tudo bem?");paste("Oi,","tudo bem?")
+# tente agora - as duas funções dão um espaço entre as expressões
+paste0("Oi,", " ", "tudo bem?");paste("Oi,","tudo bem?")
+# tente agora - as duas função não dão espaço entre as expressões
+paste0("Oi,", "tudo bem?");paste("Oi,","tudo bem?", sep = "")
+```
+
+---
+
+##### Exercício 4
+
+a. Sem alterar os nomes das colunas de `dados`, faça com que as colunas de 1 a 9 passem a se chamar P1 a P9.  
+
+* Dica: você precisará usar as funções `paste` ou `paste0` e a função `seq`, além da indexação.  
+
+---
+
+Às vezes, é útil também nós fazermos uma edição em algumas colunas para separar a informação que elas dão. Por exemplo, a coluna `pergunta.3` tem a informação tanto da instituição do aluno, quanto do programa de pós-graduação. Esse é um caso em que valeria a pena separar esta informação. Para tal, podemos usar a função `strsplit`. Esta é uma função pouco palatável, mas pode ser útil para entendermos algo que veremos mais tarde.
+
+```{r}
+# essa função divide o conteúdo de uma célula com base em algum tipo de padrão, no nosso caso, a barra
+strsplit(x = dados$pergunta.3, split = "/")
+# o problema é que ele retorna uma lista
+```
+
+Essa função possui um problema crônico de diversas funções no R: como transformar uma lista para um `data.frame`? Aqueleas funções loop poderiam nos ajudar (como a função `lapply`). Mas existe uma outra forma de fazer isso de forma mais rápida (apesar de um pouco suja): a função `do.call`, que faz com que está conversão possa ser feita de forma mais direta.
+
+```{r}
+# colocando a separação da informação em um objeto
+novas_infos <- strsplit(x = dados$pergunta.3, split = "/")
+# passando esse objeto para do.call, que passará ela para o rbind.data.frame
+novas_infos <- do.call(rbind.data.frame, novas_infos)
+# para ficar melhor apresentável
+names(novas_infos) <- c("programa", "instituicao")
+# conferindo novamente
+novas_infos
+```
+
+Agora que separamos esta informação, podemos adicionar ela ao conjunto de dados original que a originou, através do `cbind.data.frame` - esta função junta dois ou mais `data.frame` através de suas colunas (__importante__: só faz sentido ser usada se estes `data.frame` tiverem a mesma ordem em suas colunas).
+
+```{r}
+# juntando informacoes
+dados <- cbind.data.frame(dados, novas_infos)
+# como separamos aquela coluna, podemos eliminar ela também
+dados <- dados[,-3]
+```
+
+Finalmente, uma função que pode sempre ser muito útil durante esta etapa da manipulação de dados é a função `ifelse`, que já vimos anteriormente.
+
+---
+
+##### Exercício 5
+
+A `pergunta.5` possui duas informações:  
+1. Se a pessoa fez ou não fez algum curso sobre o R anteriormente - ou seja, sim ou não;  
+2. O número de cursos que a pessoa já fez.  
+
+Apesar disso, estas duas informações estão confundidas na mesma coluna. Portanto, usando a função `ifelse`:  
+a. Crie uma coluna chamada `usuario`, que deve conter se este é o primeiro curso ou não que a pessoa faz sobre o R;  
+b. Modifique o valor `Nenhum` na coluna da `pergunta.5` para o valor `0`, de forma que esta coluna agora só contenha números (e não mais números e texto).  
+c. Repita o procedimento do item b para a coluna `pergunta.8`, mas substituindo o "Não se aplica" por `NA`.
+
+---
+
+```{r echo=FALSE}
+dados$usuario <- ifelse(dados$pergunta.5 == "Nenhum", "sim", "nao")
+dados$pergunta.5 <- ifelse(dados$pergunta.5 == "Nenhum", 0, dados$pergunta.5)
+dados$pergunta.8 <- ifelse(dados$pergunta.8 == "Não se aplica", NA, dados$pergunta.8)
+```
+
+---
+
+* __Dica do R:__ você pode transformar uma planilha de abundância em uma planilha de presença/ausência usando a função `ifelse`!
+
+```{r}
+# vamos carregar o pacote vegan, que têm vários dados usadas na ecologia
+library(vegan)
+# vamos carregar um conjunto de dados especifico dele: varespec
+data("varespec")
+# esse conjunto de dados possui a cobertura de espécies da vegetação em pastos
+head(varespec)
+```
+
+```{r eval=FALSE}
+# podemos transformar esta matriz de abundância em presença e ausência com o ifelse
+ifelse(test = varespec > 0, yes = 1, no = 0)
+```
+
+---
+
+Para prosseguir para a próxima etapa, sugiro carregarmos o pacote `gapminder`. Ele possui uma grande quantidade de informações diferentes sobre o produto interno bruto de diversos países do mundo, desde a década de 50. O uso deste conjunto de dados tornará a próxima etapa da aula mais didática.
+
+```{r}
+# carregando pacote
+library(gapminder)
+# visualizando conjunto de dados
+gapminder
+```
+
+---
 
 ## Métodos para simplificar a criação, limpeza e manutenção de dados
 
-2. dplyr
-3. tidyr
+Os pacotes `dplyr` e `tidyr`, criados por Hadley Wickham (cientista chefe do RStudio) facilitam e muito a limpeza, manipulação e edição de dados, pois:  
+
++ Simplificam a forma como você pensa sobre a execução de uma manipulação;  
++ São muito mais rápido do que métodos incluídos no pacote `base` do R - e você verá que o funcionamento delas é muito mais intuitivo do que funções como `subset`, `apply` e sua família de funções loop, `strsplit`, indexação para criação de variáveis, renomeação de variáveis via indexação,...
++ É intuitivo, pois as funções são baseadas em __verbos__ correspondentes às ações mais utilizadas na manipulação de dados:
+    * `rename`: renomeia as colunas da tabela;
+    * `arrange`: ordena as linhas de uma tabela de acordo com uma condição;  
+    * `select`: seleciona um conjunto de dados pelo nome, ou -  
+        + `contains`: caso contenha um conjunto de caracteres;  
+        + `matches`: caso possuam uma sequência de caracteres bata com uma sequência determinada;  
+        + `starts_with`: caso comecem com uma sequência de caracteres;  
+        + `ends_with`: caso terminem com uma sequência de caracteres determinada.  
+    * `filter`: filtra as linhas de acordo com uma ou mais condições;  
+    * `mutate`: adiciona novas variáveis à tabela;  
+    * `group_by`: agrupa observações antes de realizar opereações;    
+    * `summarise`: sumariza múltiplos valores para um único;   
+    * `n`: retorna o número de observações;
+    * `separate`: separa uma coluna em múltiplas colunas;  
+    * `spread`: transforma uma tabela do __formato longo para o formato largo__;  
+    * `gather`: transforma uma tabela do __formato largo para o formato longo__.
+
+Todas estas funções, que compõem o `tidyverse`, operam de forma bem simples: elas começam com o nome do `data.frame` e a partir daí são todos os argumentos que elas aceitam. Outro ponto importante é que elas estão sob forte _lazy evaluation_: como você já falou qual é o conjunto de dados que será manipulado, a função entende que toda e qualquer variável que você usar dentro da função só pode estar vindo daquele conjunto de dados - sem necessidade de ficar indexando as coisas o tempo todo.
+
+> A idéia geral aqui é encurtar o espaço entre o que você quer fazer e o resultado - entre pergunta e resposta.
+
+Podemos carregar os pacotes `dplyr` e `tidyr`individualmente, ou usando o pacote `tidyverse`.
+
+```{r eval=FALSE}
+library(tidyverse)
+```
+
+```{r echo=FALSE}
+suppressMessages(suppressPackageStartupMessages(library(tidyverse)))
+```
+
+### `rename`
+
+Ao invés de indexar um vetor para renomear uma coluna de um `data.frame` (ou `tibble`, no caso dos objetos convertidos pelo `tidyverse`), podemos fazer isso nome a nome.
+
+```{r}
+rename(gapminder, pais = country, continente = continent, ano = year)
+```
+
+### `arrange`
+
+Quando usamos a `base` do R, precisamos indexar o `data.frame` para que ele seja ordenado em ordem crescente ou descrevendo de acordo com uma coluna. Pelo `tidyverse`, só precisamos dizer quais colunas serão usadas para tal.
+
+```{r}
+arrange(gapminder, year, lifeExp)
+```
+
+Além disso, podemos dizer se queremos que isto seja feito em ordem crescente ou decrescente de forma muito mais simples.
+
+```{r}
+arrange(gapminder, desc(year), desc(lifeExp))
+```
+
+```{r}
+arrange(gapminder, year, desc(lifeExp))
+```
+
+### `select`
+
+Quando usamos a `base` do R, para selecionar ou modificar a ordem das colunas precisamos fazer uma indexação ou usar o argumento `select` da função `subset`. Além disso, muitas vezes essas tarefas são feitas baseando-se na posição relativa das colunas que se quer manipular - muito trabalho e confusão caso a sequência de colunas seja alterada. A função `select` do `tidyverse` resolve muito disso:
+
+```{r}
+# somente o pais, ano e gdp per capita
+select(gapminder, country, year, gdpPercap)
+```
+
+```{r}
+# apenas algumas variáveis e reordenando elas
+select(gapminder, gdpPercap, country:lifeExp)
+```
+
+```{r}
+# usando o conjunto de dados que estávamos limpando
+select(dados, contains("pergunta"))
+```
+
+---
+
+##### Exercício 6
+
+a. Remova apenas a coluna `country` de `gapminder`;
+b. Selecione as colunas `continent`, `year` e `pop`;
+c. Com o resultado da última opera, ordene as linhas de acordo com a ordem decrescente dos anos;
+d. Além de ordenar as linhas pela ordem decrescente dos anos, ordem agora também o tamanho da população.  
+
+---
+
+### `filter`
+
+Se na `base` do R você gastava muito tempo quebrando a cabeça em como extrair sub-conjuntos dos seus dados, criando sequências intermináveis e difíceis de ler, isso passa a ficar bem mais fácil com a função `filter`. Como o nome dela sugere, ela filtra uma tabela de acordo com as condições que você determina.
+
+```{r}
+# apenas os dados do Brasil
+filter(gapminder, country == "Brazil")
+```
+
+```{r}
+# dados das Americas, apenas os 20 últimos anos
+filter(gapminder, continent == "Americas", year > 1996)
+```
+
+```{r}
+# dados das Americas e Europa, apenas os 20 últimos anos
+filter(gapminder, continent == "Americas" | continent == "Europe", year > 1996)
+```
+
+---
+
+##### Exercício 7
+
+a. Quais países possuem o GDP maior do que 40000?
+d. Qual país do mundo possui a menor expectativa de vida no ano de 2007?
+b. Qual país da Europa possui o menor GDP em 2002?
+c. Qual país das Américas possui o menor GDP E a menor população?
+
+---
+
+### `mutate`
+
+Criar uma nova variável em uma tabela envolve indexação, tanto da coluna a ser criada, quanto das variáveis envolvidas na criação desta coluna. Esta função elimina esta necessidade.
+
+```{r}
+mutate(gapminder, log_gdp = log(gdpPercap))
+```
+
+```{r}
+mutate(gapminder, expectativa_arredondada = round(lifeExp, digits = 0))
+```
+
+### `group_by` + `summarise`
+
+Estas duas funções combinam melhor quando juntas. Você se lembra que quando precisava fazer cálculos de estatísticas descritivas tínhamos que usar o `apply` e todo a sua família de funções? Apesar da diversidade de funções, era sempre muito complicado lembrar todos os argumentos e ter que lidar com as diferentes formas de output. Aqui, tudo ficou mais fácil e intuitivo.
+
+```{r}
+# agrupando observações por país
+group_by(gapminder, country)
+```
+
+```{r}
+# media do gdp por país
+summarise(group_by(gapminder, country), media_gdp = mean(gdpPercap))
+```
+
+```{r}
+# media do gdp por continente por ano
+summarise(group_by(gapminder, continent, year), media_gdp = mean(gdpPercap))
+```
+
+```{r}
+# media e desvio do gdp por continente
+summarise(group_by(gapminder, continent), media_gdp = mean(gdpPercap), desvio_gdp = sd(gdpPercap))
+```
+
+---
+
+##### Exercício 9
+
+a. Qual a expectativa de vida média por continente?
+b. Qual a expectativa de vida máxima dos países Europeus?
+c. Qual a expectativa de vida mínima dos países Asiáticos e Africanos?
+
+---
+
+### The pipe operator: `%>%`
+
+As funções que acabamos de ver tornam a manipulação de dados muito mais fácil, pois reduzem muito da necessidade de criação e indexação de diversos objetos. Além disso, elas ligam diretamente a pergunta à resposta. Por outro lado, podemos acabar com códigos para a execução de uma função que podem ficar muito longos e difícil de ler (principalmente quando combinamos `group_by` e `summarise`).
+
+Por exemplo, o resultado da função abaixo dá a média do gdpPercap por Continente e país. Leríamos a função de dentro para fora como:
+1. selecione as colunas de gapminder: continente, pais e gdpPercap;
+2. agrupe estes dados por continente e país;
+3. calcule a média do gdpPercap.
+
+```{r}
+summarise(group_by(select(gapminder, country, continent, gdpPercap), continent, country), media_gdp = mean(gdpPercap))
+```
+
+Todavia, o `dplyr` também descomplica essa cascata de funções ao introduzir ao universo do ambiente o operador `pipe`: `%>%`.
+
+```{r}
+gapminder %>% 
+  select(country, continent, gdpPercap) %>% 
+  group_by(continent, country) %>% 
+  summarise(media_gdp = mean(gdpPercap))
+```
+
+```{r}
+# quantas observações de cada país?
+gapminder %>% 
+  select(country) %>% 
+  group_by(country) %>% 
+  summarise(n())
+```
+
+Note como agora ficou tudo mais fácil de ler e compreender! Por conta do _lazy evaluation_ e do `%>%`, cada função 'entende' que o objeto que ela está trabalhando é o resultado do processamento anterior.
+
+---
+
+##### Exercício 10
+
+Você se lembra dos dados que estávamos limpando?
+
+a. Quantas pessoas nunca usaram o R? (`usuario`)
+b. Quantas pessoas são mestrandas e quantas são doutorandas? (`pergunta.1`)
+c. Quanto tempo falta, em média para a defesa dos mestrandos e dos doutorandos? (`pergunta.1` e `pergunta.8`)
+
+---
+
+### `separate`
+
+Você se lembra a dificuldade que foi separarmos a coluna que continua a informação sobre a instituição e o programa de pós-graduação de cada pessoa? O pacote `tidyr` possui a função `separate`, que nos ajuda a fazer a mesma coisa, com muito mais agilidade. Para ilustrar, vamos recriar aquele "problema".
+
+---
+
+##### Exercício 11
+
+Com a planilha `dados`:
+
+a. Selecione as colunas com as informações da instituição e programa de pós-graduação, e armazene o resultado no objeto `exemplo`;  
+b. Crie uma nova coluna chamada `problema` contendo as duas informações, mas usando uma barra como separador (`/`);  
+c. Elimine as duas colunas que você havia selecionado no passo _a_.  
+
+---
+
+```{r echo=FALSE}
+exemplo <- select(dados, programa, instituicao) %>% 
+  mutate(problema = paste(programa, instituicao, sep = "/")) %>% 
+  select(-c(programa, instituicao))
+```
+
+O uso a função `separate` é bem mais simples:
+
+```{r}
+separate(data = exemplo, col = "problema", into = c("programa", "instituicao"), sep = "/")
+```
+
+---
+
+Você se lembra daquela matriz de cobertura vegetal que convertemos em uma matriz de presença/ausência? Vamos usar ela de novo, mas antes vamos transformar ela num objeto chamado `biotico`. Além disso, vamos adicionar o nome das linhas como uma nova coluna a esta tabela, usando a função `rownames_to_column`, disponível no pacote `tibble`.
+
+```{r}
+biotico <- varespec %>% 
+  rownames_to_column(var = "site")
+```
+
+---
+
+### `gather`
+
+O que estamos vendo agora é que muitas vezes é mais útil guardar as informações na forma de uma lista ou nas linhas do que nas colunas. Isso vai de encontro a algo que muitos de nós fazemos, ao tabelar dados de comunidades e outros dados biológicos. Em outras palavras, somos acostumados a usar planilhas no formato largo (__informacoes nas colunas__), ainda que muitas tarefas possam ser mais facilmente completadas quando estas planilhas estão em um formato longo (__informações nas linhas__)
+
+O pacote `tidyr` introduz duas funções que podem nos ajudar muito a fazer essas transformações: `gather` e `spread` - __juntar__ e __espalhar__, literalmente.
+
+```{r}
+# vamos transformar todas as observacoes da cobertura das espécies, que estao nas colunas em linhas
+biotico <- gather(data = biotico, key = especie, value = cobertura, Callvulg:Cladphyl)
+```
+
+Note que agora podemos usar as funções que acabamos de aprender para fazer manipular e fazer cálculos sob esta planilha de dados bióticos. Por exemplo, podemos remover todas as observações que são iguais a 0 com o `filter`.
+
+```{r}
+biotico <- filter(biotico, cobertura > 0)
+```
+
+---
+
+##### Exercício 12
+
+a. Qual a cobertura total de espécies por site?
+b. Qual a riqueza de espécies por site?
+c. Qual o site mais diverso?
+d. E qual o site com maior cobertura vegetal?
+e. Qual a espécie com maior cobertura vegetal?
+
+---
+
+### `spread`
+
+Assim como transformamos aquela matriz em uma lista, podemos transformar uma lista em uma matriz.
+
+```{r}
+bioticos <- spread(data = biotico, key = especie, value = cobertura, fill = 0)
+```
+
+E, com isso, fazer cálculos como os que já havíamos aprendido anteriormente.
+
+```{r}
+# qual a cobertura vegetal por site?
+rowSums(bioticos[,-1])
+# qual a espécie com maior cobertura
+colSums(bioticos[,-1])
+# a indexação é para remover aquela coluna que não é numérica: a identidade do site! Caso contrário, estas funções não rodariam - aí está mais uma vantagem de tentar fazer as coisas com uma planilha no formato longo
+```
+
+### Outras facilidades oferecidas pelo `dplyr` e `tidyr`
+
+O `dplyr` também oferece uma série de outras funções que podem facilitar a sua vida, como por exemplo:
+  
++ `lag`: adiciona um lag ao valores de um vetor;  
++ `lead`: adianta os valores de um vetor;  
++ `setequal` e `setdiff`: traçam a semelhança e diferença entre dois `data.frame`;  
++ `distinct`: retorna o número de observações que são totalmente distintas umas dados outras em um `data.frame` ou vetor;  
++ `drop_na`: remove todos os `NA` de uma coluna.
+
+### Outras facilidades oferecidas por outros pacotes: `stringr`
+
+O pacote `stringr` é muito útil para agilizar nossa vida ao manipular textos, ele tem uma série de funções muito úteis. Aqui, vou destacar apenas uma delas: `str_detect` e como podemos usar esta função, em conjunto com outras funções para finalizar a limpeza de dados.
+
+```{r}
+# carregando pacote
+library(stringr)
+# aqui estão os dados contendo qual foi a turma de onde partiram os dados da enquete
+dados$origem.da.informacao
+```
+
+A função `str_detect` pode ser usada como um teste lógico, para detectar uma informação e nos ajudar a tomar uma decisão. Por exemplo, se quisermos criar uma coluna com o ano de `2016` ou `2017` para a origem da turma (ao invés do nome do arquivo que originou a observação), podemos tentar detect o número `2016` no conjunto de palavras:
+
+```{r}
+# existe 2016 na palavra?
+str_detect(string = dados$origem.da.informacao, pattern = "2016")
+```
+
+Se temos um vetor com `TRUE` and `FALSE` - um teste lógico - podemos então passar essa informação para a função `ifelse` e criar uma nova coluna chamada `turma`, que contém o ano da turma que gerou as observações:
+
+```{r}
+ifelse(str_detect(string = dados$origem.da.informacao, pattern = "2016") == TRUE, "2016", "2017")
+```
+
+Podemos passar isso diretamente para a criação da nova coluna via o `pipe`:
+
+```{r}
+dados <- dados %>% 
+  mutate(turma = ifelse(str_detect(string = origem.da.informacao, pattern = "2016") == TRUE, "2016", "2017"))
+dados
+```
+
+---
+
+##### Exercício 13
+
+Usando a mesma lógica apresentada até agora, você consegue simplificar a coluna `pergunta.7`? Gostaríamos de passar:
+a. "Recomendação de outros professores" para "Professores";  
+b. "Circulação Interna Grade do PPGE/UFRJ" para "Grade Interna";  
+c. "Recomendação do Orientador" para "Orientador".
+
+---
+
+```{r echo=FALSE}
+dados <- dados %>% 
+  mutate(pergunta.7 = ifelse(str_detect(string = pergunta.7, pattern = "Recomendação de outros professores") == TRUE, 
+                             "Professores", ifelse(str_detect(string = pergunta.7, pattern = "Circulação Interna Grade do PPGE/UFRJ") == TRUE,
+                                                   "Grade Interna", ifelse(str_detect(string = pergunta.7, pattern = "Recomendação do Orientador") == TRUE, "Orientador", pergunta.7))))
+```
+
+---
+
+##### Exercício 14
+
+Já estamos quase acabando, mas precisamos organizar a tabela que estamos gerando e mudar o nome de alguma colunas. Também é uma boa idéia substituir todas as letras acentuadas pela suas versões não acentuadas (principalmente na coluna `pergunta.9`). Sugiro a ordem e modificações:
+
+1. ID = identidade;
+2. turma;
+3. usuario;
+4. programa;
+5. instuicao;
+6. Cursando = pergunta.1;
+7. Formacao = pergunta.2;
+8. "Tempo de uso" = pergunta.4;
+9.  "Qts cursos feitos" = pergunta.5;
+10. "Quem recomendou" = pergunta.7;
+11. "Prazo defesa" = pergunta.8;
+12. "Conhecimento estatistica" = pergunta.9;
+13. "á" = "a";
+14. "é" = "e";
+15. "í" = "i";
+
+---
+
+```{r echo=FALSE}
+dados <- dados %>% 
+  select(identidade, turma, usuario, programa, instituicao, pergunta.1, pergunta.2, pergunta.4, pergunta.5, pergunta.7, pergunta.8, pergunta.9) %>% 
+  rename(ID = identidade, Cursando = pergunta.1, Formacao = pergunta.2, "Tempo de uso" = pergunta.4, "Qts cursos feitos" = pergunta.5, 
+         "Quem recomendou" = pergunta.7, "Prazo defesa" = pergunta.8, "Conhecimento estatistica" = pergunta.9) %>% 
+  mutate("Conhecimento estatistica"  = sub(pattern = "á", replacement = "a", x = "Conhecimento estatistica"),
+         "Conhecimento estatistica"  = sub(pattern = "é", replacement = "e", x = "Conhecimento estatistica"),
+         "Conhecimento estatistica"  = sub(pattern = "í", replacement = "i", x = "Conhecimento estatistica")) %>% 
+  write.table(file = "dados/dados_limpos.xls", sep = "\t")
+```
+
 
 ## Base de dados relacionais
+
++ `inner_join`   
++ `left_join`  
++ `right_join`  
++ `full_join`  
++ `semi_join`  
++ `anti_join` 

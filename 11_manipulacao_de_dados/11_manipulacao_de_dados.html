@@ -202,17 +202,1521 @@ h1,h2,h3,h4,h5,h6{
 </div>
 <div id="metodos-basicos-para-a-criacao-e-limpeza-de-dados" class="section level2">
 <h2>Métodos básicos para a criação e limpeza de dados</h2>
-<p>criação de dados pela indexação com $, sub, gsub, make.names, tolower, toupper, paste, paste0, abbreviate, revisitando ifelse, strsplit (separate da base R), stringr, forcats</p>
+<p>Para começarmos a entender melhor o processo de limpeza e edição de dados, vamos carregar o conjunto de dados das enquetes, que trabalhamos nas aulas anteriores.</p>
+<pre class="r"><code># vamos carregar o pacote para poder carregar a planilha
+library(readr)
+# carregando dados
+dados &lt;- suppressMessages(read_tsv(&quot;dados/resposta_enquetes.xls&quot;))
+# dando uma olhada nos dados
+dados</code></pre>
+<pre><code>## # A tibble: 31 × 10
+##        `Pergunta 1`                                   `Pergunta 2`
+##               &lt;chr&gt;                                          &lt;chr&gt;
+## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
+## 2         Doutorado Bacharel em Biologia (qualquer especialização)
+## 3          Mestrado Bacharel em Biologia (qualquer especialização)
+## 4          Mestrado Bacharel em Biologia (qualquer especialização)
+## 5          Mestrado Bacharel em Biologia (qualquer especialização)
+## 6         Doutorado Bacharel em Biologia (qualquer especialização)
+## 7         Doutorado Bacharel em Biologia (qualquer especialização)
+## 8         Doutorado Bacharel em Biologia (qualquer especialização)
+## 9          Mestrado Bacharel em Biologia (qualquer especialização)
+## 10         Mestrado Bacharel em Biologia (qualquer especialização)
+## # ... with 21 more rows, and 8 more variables: `Pergunta 3` &lt;chr&gt;,
+## #   `Pergunta 4` &lt;chr&gt;, `Pergunta 5` &lt;chr&gt;, `Pergunta 6` &lt;chr&gt;, `Pergunta
+## #   7` &lt;chr&gt;, `Pergunta 8` &lt;chr&gt;, `Pergunta 9` &lt;chr&gt;, `Origem da
+## #   Informacao` &lt;chr&gt;</code></pre>
+<p>Para começarmos esta tarefa de forma simples, podemos criar uma coluna contendo uma sequência de número de 1 até o máximo do número de linhas da planilha <code>dados</code>. Esta coluna vai sinalizar qual é a identidade da pessoa que respondeu ao questionário. Uma forma mais direta de criar uma coluna com uma nova variável é através da indexação pelo operado <code>$</code>.</p>
+<pre class="r"><code># criando uma coluna chamada ID como uma sequência de números que vai de 1 até o tamanho máximo que corresponde ao número de linhas em dados
+dados$Identidade &lt;- seq(from = 1, to = nrow(dados), length.out = nrow(dados))
+# olhando esta tabela
+dados</code></pre>
+<pre><code>## # A tibble: 31 × 11
+##        `Pergunta 1`                                   `Pergunta 2`
+##               &lt;chr&gt;                                          &lt;chr&gt;
+## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
+## 2         Doutorado Bacharel em Biologia (qualquer especialização)
+## 3          Mestrado Bacharel em Biologia (qualquer especialização)
+## 4          Mestrado Bacharel em Biologia (qualquer especialização)
+## 5          Mestrado Bacharel em Biologia (qualquer especialização)
+## 6         Doutorado Bacharel em Biologia (qualquer especialização)
+## 7         Doutorado Bacharel em Biologia (qualquer especialização)
+## 8         Doutorado Bacharel em Biologia (qualquer especialização)
+## 9          Mestrado Bacharel em Biologia (qualquer especialização)
+## 10         Mestrado Bacharel em Biologia (qualquer especialização)
+## # ... with 21 more rows, and 9 more variables: `Pergunta 3` &lt;chr&gt;,
+## #   `Pergunta 4` &lt;chr&gt;, `Pergunta 5` &lt;chr&gt;, `Pergunta 6` &lt;chr&gt;, `Pergunta
+## #   7` &lt;chr&gt;, `Pergunta 8` &lt;chr&gt;, `Pergunta 9` &lt;chr&gt;, `Origem da
+## #   Informacao` &lt;chr&gt;, Identidade &lt;dbl&gt;</code></pre>
+<p>Assim como criamos esta coluna, poderíamos ter criado uma coluna contendo o log, raíz quadrada de uma determina variável contínua, uma sequência de letras ou o que quer que seja. O importante aqui é que toda e qualquer transformação ou criação de variáveis para uma finalidade deve ser feita diretamente na planilha que vamos salvar posteriormente, e não de forma manual no Excel (ou outro editor) ou deixada solta como um vetor no R.</p>
+<p>Uma outra função que pode ser útil são as funções <code>sub</code> e <code>gsub</code>. Elas são usadas para substituir um padrão por outro em um vetor. Podemos usar estas funções para consertar um erro em uma palavra, por exemplo. Note que na coluna <code>Pergunta 4</code>, está escrito “Nunco” ao invés de Nunca. Podemos consertar isso com a função <code>sub</code>, por exemplo:</p>
+<pre class="r"><code># como era
+dados$`Pergunta 4`</code></pre>
+<pre><code>##  [1] &quot;Nunco usou.&quot;       &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+##  [4] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+##  [7] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [10] &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunco usou.&quot;      
+## [13] &quot;Nunco usou.&quot;       &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [16] &quot;Menos de 1 ano.&quot;   &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [19] &quot;Nunca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [28] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+<pre class="r"><code># como ficou
+sub(pattern = &quot;Nunco&quot;, replacement = &quot;Nunca&quot;, x = dados$`Pergunta 4`)</code></pre>
+<pre><code>##  [1] &quot;Nunca usou.&quot;       &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+##  [4] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+##  [7] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [10] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [13] &quot;Nunca usou.&quot;       &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [16] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [19] &quot;Nunca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [28] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+<p>A diferença da função <code>sub</code> para a função <code>gsub</code> é que a primeira substitui apenas <strong>uma</strong> ocorrência que bata com o padrão buscado em cada célula, enquanto a <strong>segunda</strong> substitui todos os padrões que batam com o padrão buscado cada célula.</p>
+<pre class="r"><code># usando sub para substituir os u's por A
+sub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4`)</code></pre>
+<pre><code>##  [1] &quot;NAnco usou.&quot;       &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+##  [4] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+##  [7] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [10] &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnco usou.&quot;      
+## [13] &quot;NAnco usou.&quot;       &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [16] &quot;Menos de 1 ano.&quot;   &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [19] &quot;NAnca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
+## [25] &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [28] &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
+## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+<pre class="r"><code># usando gsub para substituir os u's por A
+gsub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4`)</code></pre>
+<pre><code>##  [1] &quot;NAnco AsoA.&quot;       &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
+##  [4] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+##  [7] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [10] &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnco AsoA.&quot;      
+## [13] &quot;NAnco AsoA.&quot;       &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
+## [16] &quot;Menos de 1 ano.&quot;   &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
+## [19] &quot;NAnca AsoA.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
+## [25] &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
+## [28] &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
+## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+<hr />
+<div id="exercicio-1" class="section level5">
+<h5>Exercício 1</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Use uma dessas duas funções para modificar o conteúdo da coluna <code>Pergunta 4</code>, consertando o erro de digitação em “Nunco”.</li>
+</ol>
+<hr />
+<p>Outra coisa que podemos (e devemos fazer) é remover informação que parece desnecessária a partir das colunas. Por exemplo, a coluna <code>Pergunta 2</code> possui frases entre parentes, possui a extensão “em Biologia”…e muita da informação que existe nessa coluna poderia ser resumida de forma muito mais simples:</p>
+<pre class="r"><code>dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [2] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [3] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [4] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [5] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [6] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [7] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [8] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+##  [9] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [10] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [11] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [12] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [13] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [14] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [15] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [16] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [17] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [18] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [19] &quot;Licenciado no Ensino de Biologia&quot;              
+## [20] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [21] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [22] &quot;Licenciado no Ensino de Biologia&quot;              
+## [23] &quot;Licenciado no Ensino de Biologia&quot;              
+## [24] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [25] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [26] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [27] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [28] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [29] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [30] &quot;Licenciado no Ensino de Biologia&quot;              
+## [31] &quot;Bacharel em Biologia (qualquer especialização)&quot;</code></pre>
+<p>Neste último pedaço notamos que existe uma repetição grande das categorias, o que deixa as coisas meio difíceis de serem lidas (principalmente quando esta tabela crescer). Para simplificar a apresentação dela, podemos usar a função <code>unique</code>.</p>
+<pre class="r"><code>unique(dados$`Pergunta 2`)</code></pre>
+<pre><code>## [1] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [2] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [3] &quot;Licenciado no Ensino de Biologia&quot;</code></pre>
+<p>Agora que podemos enxergar melhor estas três categorias, podemos mudar também o seu conteúdo: Bacharel, Licenciado, Bacharel e Licenciado! Faremos isso usando, também, a função <code>sub</code>:</p>
+<pre class="r"><code># vamos remover o &quot; em Biologia&quot;
+dados$`Pergunta 2` &lt;- sub(pattern = &quot; em Biologia&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# vamos remover o &quot; no Ensino de Biologia&quot;
+dados$`Pergunta 2` &lt;- sub(pattern = &quot; no Ensino de Biologia&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel (qualquer especialização)&quot;
+##  [2] &quot;Bacharel (qualquer especialização)&quot;
+##  [3] &quot;Bacharel (qualquer especialização)&quot;
+##  [4] &quot;Bacharel (qualquer especialização)&quot;
+##  [5] &quot;Bacharel (qualquer especialização)&quot;
+##  [6] &quot;Bacharel (qualquer especialização)&quot;
+##  [7] &quot;Bacharel (qualquer especialização)&quot;
+##  [8] &quot;Bacharel (qualquer especialização)&quot;
+##  [9] &quot;Bacharel (qualquer especialização)&quot;
+## [10] &quot;Bacharel (qualquer especialização)&quot;
+## [11] &quot;Bacharel e Licenciado&quot;             
+## [12] &quot;Bacharel (qualquer especialização)&quot;
+## [13] &quot;Bacharel (qualquer especialização)&quot;
+## [14] &quot;Bacharel (qualquer especialização)&quot;
+## [15] &quot;Bacharel (qualquer especialização)&quot;
+## [16] &quot;Bacharel (qualquer especialização)&quot;
+## [17] &quot;Bacharel (qualquer especialização)&quot;
+## [18] &quot;Bacharel (qualquer especialização)&quot;
+## [19] &quot;Licenciado&quot;                        
+## [20] &quot;Bacharel (qualquer especialização)&quot;
+## [21] &quot;Bacharel (qualquer especialização)&quot;
+## [22] &quot;Licenciado&quot;                        
+## [23] &quot;Licenciado&quot;                        
+## [24] &quot;Bacharel (qualquer especialização)&quot;
+## [25] &quot;Bacharel e Licenciado&quot;             
+## [26] &quot;Bacharel (qualquer especialização)&quot;
+## [27] &quot;Bacharel e Licenciado&quot;             
+## [28] &quot;Bacharel (qualquer especialização)&quot;
+## [29] &quot;Bacharel (qualquer especialização)&quot;
+## [30] &quot;Licenciado&quot;                        
+## [31] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
+<p>Ainda temos um problema: o <code>(qualquer especialização)</code>! Vamos usar o <code>sub</code> para continuar remover este exceço de informação?</p>
+<pre class="r"><code># vamos remover o &quot; (qualquer especialização)&quot;
+dados$`Pergunta 2` &lt;- sub(pattern = &quot; (qualquer especialização)&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel (qualquer especialização)&quot;
+##  [2] &quot;Bacharel (qualquer especialização)&quot;
+##  [3] &quot;Bacharel (qualquer especialização)&quot;
+##  [4] &quot;Bacharel (qualquer especialização)&quot;
+##  [5] &quot;Bacharel (qualquer especialização)&quot;
+##  [6] &quot;Bacharel (qualquer especialização)&quot;
+##  [7] &quot;Bacharel (qualquer especialização)&quot;
+##  [8] &quot;Bacharel (qualquer especialização)&quot;
+##  [9] &quot;Bacharel (qualquer especialização)&quot;
+## [10] &quot;Bacharel (qualquer especialização)&quot;
+## [11] &quot;Bacharel e Licenciado&quot;             
+## [12] &quot;Bacharel (qualquer especialização)&quot;
+## [13] &quot;Bacharel (qualquer especialização)&quot;
+## [14] &quot;Bacharel (qualquer especialização)&quot;
+## [15] &quot;Bacharel (qualquer especialização)&quot;
+## [16] &quot;Bacharel (qualquer especialização)&quot;
+## [17] &quot;Bacharel (qualquer especialização)&quot;
+## [18] &quot;Bacharel (qualquer especialização)&quot;
+## [19] &quot;Licenciado&quot;                        
+## [20] &quot;Bacharel (qualquer especialização)&quot;
+## [21] &quot;Bacharel (qualquer especialização)&quot;
+## [22] &quot;Licenciado&quot;                        
+## [23] &quot;Licenciado&quot;                        
+## [24] &quot;Bacharel (qualquer especialização)&quot;
+## [25] &quot;Bacharel e Licenciado&quot;             
+## [26] &quot;Bacharel (qualquer especialização)&quot;
+## [27] &quot;Bacharel e Licenciado&quot;             
+## [28] &quot;Bacharel (qualquer especialização)&quot;
+## [29] &quot;Bacharel (qualquer especialização)&quot;
+## [30] &quot;Licenciado&quot;                        
+## [31] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
+<p>Por que esta tentativa de edição não funcionou? Vamos tentar apenas o <code>qualquer especialização</code>?</p>
+<pre class="r"><code># vamos apenas o &quot;qualquer especialização&quot;
+dados$`Pergunta 2` &lt;- sub(pattern = &quot;qualquer especialização&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+##  [3] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+##  [5] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+##  [7] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+##  [9] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [11] &quot;Bacharel e Licenciado&quot; &quot;Bacharel ()&quot;          
+## [13] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [15] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [17] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [19] &quot;Licenciado&quot;            &quot;Bacharel ()&quot;          
+## [21] &quot;Bacharel ()&quot;           &quot;Licenciado&quot;           
+## [23] &quot;Licenciado&quot;            &quot;Bacharel ()&quot;          
+## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel ()&quot;          
+## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel ()&quot;          
+## [29] &quot;Bacharel ()&quot;           &quot;Licenciado&quot;           
+## [31] &quot;Bacharel ()&quot;</code></pre>
+<p>Por que agora foi e antes não? Vamos tentar o parenteses <code>)</code>!</p>
+<pre class="r"><code># tentando o )
+dados$`Pergunta 2` &lt;- sub(pattern = &quot;)&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+##  [3] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+##  [5] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+##  [7] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+##  [9] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [11] &quot;Bacharel e Licenciado&quot; &quot;Bacharel (&quot;           
+## [13] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [15] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [17] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [19] &quot;Licenciado&quot;            &quot;Bacharel (&quot;           
+## [21] &quot;Bacharel (&quot;            &quot;Licenciado&quot;           
+## [23] &quot;Licenciado&quot;            &quot;Bacharel (&quot;           
+## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel (&quot;           
+## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel (&quot;           
+## [29] &quot;Bacharel (&quot;            &quot;Licenciado&quot;           
+## [31] &quot;Bacharel (&quot;</code></pre>
+<p>E agora o outro parenteses!</p>
+<pre class="r"><code># tentando o )
+dados$`Pergunta 2` &lt;- sub(pattern = &quot; (&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<p>Por que estamos recebendo uma notificação de erro?</p>
+<hr />
+</div>
+<div id="exercicio-2" class="section level5">
+<h5>Exercício 2</h5>
+<p>Nos exemplos abaixo, tente entender o que está acontencendo</p>
+<pre class="r"><code># A
+sub(pattern = &quot;.&quot;, replacement = &quot;abc&quot;, x = &quot;abc.&quot;)
+# B
+sub(pattern = &quot;(&quot;, replacement = &quot;, v&quot;, x = &quot;(viu?&quot;)
+# C
+sub(pattern = &quot;\\&quot;, replacement = &quot;&quot;, x = &quot;abc\\&quot;)
+# D
+sub(pattern = &quot;^d&quot;, replacement = &quot;&quot;, x = &quot;banana^d&quot;)
+# E
+sub(pattern = &quot;$i&quot;, replacement = &quot;&quot;, x = &quot;$indexador&quot;)
+# F
+sub(pattern = &quot;?&quot;, replacement = &quot;&quot;, x = &quot;perguntas?&quot;)
+# G
+sub(pattern = &quot; + &quot;, replacement = &quot; mais &quot;, x = &quot;3 + 4&quot;)
+# H
+sub(pattern = &quot; * &quot;, replacement = &quot; x &quot;, x = &quot;3 * 4&quot;)</code></pre>
+<hr />
+<p>O R possui alguns padrões que ele usa para detectar expressões regulares, alguns deles são (além do “(”):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Expressão Regular</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>.</code></td>
+<td>Corresponde a qualquer caractere</td>
+</tr>
+<tr class="even">
+<td><code>^</code></td>
+<td>Um caractere que esteja no início da frase</td>
+</tr>
+<tr class="odd">
+<td><code>$</code></td>
+<td>Um caractere que esteja no fim da frase</td>
+</tr>
+<tr class="even">
+<td><code>\</code></td>
+<td>Escape, pule um caracter (problemático)</td>
+</tr>
+<tr class="odd">
+<td><code>?</code></td>
+<td>0 ou 1</td>
+</tr>
+<tr class="even">
+<td><code>+</code></td>
+<td>1 ou mais</td>
+</tr>
+</tbody>
+</table>
+<p>Assim, para conseguirmos editar uma célula que contenha texto e um destes caracteres devemos usar a própria expressão regular Escape <code>\</code>. Entretanto, usar apenas um <code>\</code> representa o próprio Escape; assim devemos usar dois Escapes (<code>\\</code>) para que ele funcione - por isso que é problemática, pois ela resolve o problema das expressões regulares, inclusive ela mesma!</p>
+<pre class="r"><code># tentando o )
+dados$`Pergunta 2` &lt;- sub(pattern = &quot; \\(&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
+# como ficou?
+dados$`Pergunta 2`</code></pre>
+<pre><code>##  [1] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+##  [3] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+##  [5] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+##  [7] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+##  [9] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [11] &quot;Bacharel e Licenciado&quot; &quot;Bacharel&quot;             
+## [13] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [15] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [17] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [19] &quot;Licenciado&quot;            &quot;Bacharel&quot;             
+## [21] &quot;Bacharel&quot;              &quot;Licenciado&quot;           
+## [23] &quot;Licenciado&quot;            &quot;Bacharel&quot;             
+## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel&quot;             
+## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel&quot;             
+## [29] &quot;Bacharel&quot;              &quot;Licenciado&quot;           
+## [31] &quot;Bacharel&quot;</code></pre>
+<p>Ao usar o escape com estes caracteres de expressões regulares, podemos conseguir editar o texto de forma mais direta e limpa.</p>
+<hr />
+</div>
+<div id="exercicio-3" class="section level5">
+<h5>Exercício 3</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Remova toda a pontuação das frases as colunas <code>Pergunta 4</code>, <code>Pergunta 5</code>, <code>Pergunta 7</code>, <code>Pergunta 8</code> e <code>Pergunta 9</code> (as barras “/” não precisam ser removidas).</li>
+</ol>
+<hr />
+<ul>
+<li><strong>Dica do R:</strong> é muito ruim quando fazemos erros de digitação e incluímos dois, três ou muito mais espaços. Assim como no Excel, você também pode consertar isso no R através do <code>sub</code> e <code>gsub</code>:</li>
+</ul>
+<pre class="r"><code>sub(pattern = &quot;  &quot;, replacement = &quot; &quot;, x = &quot;usei  dois  espaços&quot;)</code></pre>
+<pre><code>## [1] &quot;usei dois  espaços&quot;</code></pre>
+<pre class="r"><code>gsub(pattern = &quot;  &quot;, replacement = &quot; &quot;, x = &quot;usei  dois  espaços&quot;)</code></pre>
+<pre><code>## [1] &quot;usei dois espaços&quot;</code></pre>
+<hr />
+<p>Assim como podemos editar o conteúdo interno das linhas também podemos modificar o tíulo das colunas. Na realidade, nomes de colunas com espaço, caracteres especiais, em caixa alta, texto em caixa alta e baixa e etc, podem causar erros durante a indexação e operação de algumas funções. Portanto, podemos também fazer uma edição no nome das colunas. Para isso, quatro funções podem ser bastante úteis: <code>tolower</code>, <code>toupper</code>, <code>make.names</code> e <code>abbreviate</code>.</p>
+<pre class="r"><code># nomes das colunas
+names(dados)</code></pre>
+<pre><code>##  [1] &quot;Pergunta 1&quot;           &quot;Pergunta 2&quot;           &quot;Pergunta 3&quot;          
+##  [4] &quot;Pergunta 4&quot;           &quot;Pergunta 5&quot;           &quot;Pergunta 6&quot;          
+##  [7] &quot;Pergunta 7&quot;           &quot;Pergunta 8&quot;           &quot;Pergunta 9&quot;          
+## [10] &quot;Origem da Informacao&quot; &quot;Identidade&quot;</code></pre>
+<pre class="r"><code># tolower faz com que todos os caracteres fiquem em caixa baixa
+tolower(names(dados))</code></pre>
+<pre><code>##  [1] &quot;pergunta 1&quot;           &quot;pergunta 2&quot;           &quot;pergunta 3&quot;          
+##  [4] &quot;pergunta 4&quot;           &quot;pergunta 5&quot;           &quot;pergunta 6&quot;          
+##  [7] &quot;pergunta 7&quot;           &quot;pergunta 8&quot;           &quot;pergunta 9&quot;          
+## [10] &quot;origem da informacao&quot; &quot;identidade&quot;</code></pre>
+<pre class="r"><code># toupper faz com que todos os caracteres fiquem em caixa alta
+toupper(names(dados))</code></pre>
+<pre><code>##  [1] &quot;PERGUNTA 1&quot;           &quot;PERGUNTA 2&quot;           &quot;PERGUNTA 3&quot;          
+##  [4] &quot;PERGUNTA 4&quot;           &quot;PERGUNTA 5&quot;           &quot;PERGUNTA 6&quot;          
+##  [7] &quot;PERGUNTA 7&quot;           &quot;PERGUNTA 8&quot;           &quot;PERGUNTA 9&quot;          
+## [10] &quot;ORIGEM DA INFORMACAO&quot; &quot;IDENTIDADE&quot;</code></pre>
+<pre class="r"><code># make.names faz com que os nomes das colunas mudem para um formato mais amigável a um computador 
+make.names(names(dados))</code></pre>
+<pre><code>##  [1] &quot;Pergunta.1&quot;           &quot;Pergunta.2&quot;           &quot;Pergunta.3&quot;          
+##  [4] &quot;Pergunta.4&quot;           &quot;Pergunta.5&quot;           &quot;Pergunta.6&quot;          
+##  [7] &quot;Pergunta.7&quot;           &quot;Pergunta.8&quot;           &quot;Pergunta.9&quot;          
+## [10] &quot;Origem.da.Informacao&quot; &quot;Identidade&quot;</code></pre>
+<pre class="r"><code># e, se você achar que os nomes estão muito longos, podemos usar a função abbreviate
+abbreviate(names(dados))</code></pre>
+<pre><code>##           Pergunta 1           Pergunta 2           Pergunta 3 
+##               &quot;Prg1&quot;               &quot;Prg2&quot;               &quot;Prg3&quot; 
+##           Pergunta 4           Pergunta 5           Pergunta 6 
+##               &quot;Prg4&quot;               &quot;Prg5&quot;               &quot;Prg6&quot; 
+##           Pergunta 7           Pergunta 8           Pergunta 9 
+##               &quot;Prg7&quot;               &quot;Prg8&quot;               &quot;Prg9&quot; 
+## Origem da Informacao           Identidade 
+##               &quot;OrdI&quot;               &quot;Idnt&quot;</code></pre>
+<p>Você também pode usar estas 4 funções no conteúdo das linhas, de forma a modificar a forma como a informação é apresentada. Por exemplo, a coluna <code>pergunta.2</code>:</p>
+<pre class="r"><code># como ela é
+dados$pergunta.2</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: 'pergunta.2'.</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code># como ela pode ficar
+tolower(dados$pergunta.2)</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: 'pergunta.2'.</code></pre>
+<pre><code>## character(0)</code></pre>
+<hr />
+</div>
+<div id="exercicio-4" class="section level5">
+<h5>Exercício 4</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Passe todos os nomes das colunas para caixa baixa;<br />
+</li>
+<li>Faça com que os nomes das colunas fiquem mais amigáveis a serem usados no R.</li>
+</ol>
+<hr />
+<p>Apesar de termos mudado os nomes das colunas com estas funções, também poderíamos ter feito isso com as funções <code>paste</code> e <code>paste0</code>. A função <code>paste</code> junta informações em duas ou mais colunas (vetores) em um único vetor, separando esta informação por um espaço ou outro separador que voce desejar (e.g., <code>_</code>). A função <code>paste0</code> faz praticamente a mesma coisa, com a exceção de que ela não deixa espaço entre as coisas que você está juntando (a não ser que voce especifique isto na função).</p>
+<pre class="r"><code># por exemplo
+paste0(&quot;Oi,&quot;, &quot;tudo bem?&quot;);paste(&quot;Oi,&quot;,&quot;tudo bem?&quot;)</code></pre>
+<pre><code>## [1] &quot;Oi,tudo bem?&quot;</code></pre>
+<pre><code>## [1] &quot;Oi, tudo bem?&quot;</code></pre>
+<pre class="r"><code># tente agora - as duas funções dão um espaço entre as expressões
+paste0(&quot;Oi,&quot;, &quot; &quot;, &quot;tudo bem?&quot;);paste(&quot;Oi,&quot;,&quot;tudo bem?&quot;)</code></pre>
+<pre><code>## [1] &quot;Oi, tudo bem?&quot;</code></pre>
+<pre><code>## [1] &quot;Oi, tudo bem?&quot;</code></pre>
+<pre class="r"><code># tente agora - as duas função não dão espaço entre as expressões
+paste0(&quot;Oi,&quot;, &quot;tudo bem?&quot;);paste(&quot;Oi,&quot;,&quot;tudo bem?&quot;, sep = &quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;Oi,tudo bem?&quot;</code></pre>
+<pre><code>## [1] &quot;Oi,tudo bem?&quot;</code></pre>
+<hr />
+</div>
+<div id="exercicio-4-1" class="section level5">
+<h5>Exercício 4</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Sem alterar os nomes das colunas de <code>dados</code>, faça com que as colunas de 1 a 9 passem a se chamar P1 a P9.</li>
+</ol>
+<ul>
+<li>Dica: você precisará usar as funções <code>paste</code> ou <code>paste0</code> e a função <code>seq</code>, além da indexação.</li>
+</ul>
+<hr />
+<p>Às vezes, é útil também nós fazermos uma edição em algumas colunas para separar a informação que elas dão. Por exemplo, a coluna <code>pergunta.3</code> tem a informação tanto da instituição do aluno, quanto do programa de pós-graduação. Esse é um caso em que valeria a pena separar esta informação. Para tal, podemos usar a função <code>strsplit</code>. Esta é uma função pouco palatável, mas pode ser útil para entendermos algo que veremos mais tarde.</p>
+<pre class="r"><code># essa função divide o conteúdo de uma célula com base em algum tipo de padrão, no nosso caso, a barra
+strsplit(x = dados$pergunta.3, split = &quot;/&quot;)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;Ouvinte&quot;
+## 
+## [[2]]
+## [1] &quot;PPGVet&quot; &quot;UFRRJ&quot; 
+## 
+## [[3]]
+## [1] &quot;ENBT&quot; &quot;JBRJ&quot;
+## 
+## [[4]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[5]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[6]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[7]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[8]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[9]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[10]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[11]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[12]]
+## [1] &quot;Ouvinte&quot;
+## 
+## [[13]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[14]]
+## [1] &quot;PPE&quot;   &quot;COPPE&quot;
+## 
+## [[15]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[16]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[17]]
+## [1] &quot;PPE&quot;   &quot;COPPE&quot;
+## 
+## [[18]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[19]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[20]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[21]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[22]]
+## [1] &quot;PGECOL&quot; &quot;UFJF&quot;  
+## 
+## [[23]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[24]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[25]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[26]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[27]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[28]]
+## [1] &quot;EBNT&quot; &quot;JBRJ&quot;
+## 
+## [[29]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[30]]
+## [1] &quot;PPGE&quot;       &quot;UFRJ e ISS&quot;
+## 
+## [[31]]
+## [1] &quot;PPGBiofisica&quot; &quot;UFRJ&quot;</code></pre>
+<pre class="r"><code># o problema é que ele retorna uma lista</code></pre>
+<p>Essa função possui um problema crônico de diversas funções no R: como transformar uma lista para um <code>data.frame</code>? Aqueleas funções loop poderiam nos ajudar (como a função <code>lapply</code>). Mas existe uma outra forma de fazer isso de forma mais rápida (apesar de um pouco suja): a função <code>do.call</code>, que faz com que está conversão possa ser feita de forma mais direta.</p>
+<pre class="r"><code># colocando a separação da informação em um objeto
+novas_infos &lt;- strsplit(x = dados$pergunta.3, split = &quot;/&quot;)
+# passando esse objeto para do.call, que passará ela para o rbind.data.frame
+novas_infos &lt;- do.call(rbind.data.frame, novas_infos)
+# para ficar melhor apresentável
+names(novas_infos) &lt;- c(&quot;programa&quot;, &quot;instituicao&quot;)
+# conferindo novamente
+novas_infos</code></pre>
+<pre><code>##        programa instituicao
+## 1       Ouvinte     Ouvinte
+## 2        PPGVet       UFRRJ
+## 3          ENBT        JBRJ
+## 4          PPGE        UFRJ
+## 5          PPGE        UFRJ
+## 6          PPGE        UFRJ
+## 7          PPGE        UFRJ
+## 8          PPGE        UFRJ
+## 9          PPGE        UFRJ
+## 10         PPGE        UFRJ
+## 11         PPGE        UFRJ
+## 12      Ouvinte     Ouvinte
+## 13         PPGE        UFRJ
+## 14          PPE       COPPE
+## 15         PPGE        UFRJ
+## 16         PPGE        UFRJ
+## 17          PPE       COPPE
+## 18         PPGE        UFRJ
+## 19         PPGE        UFRJ
+## 20         PPGE        UFRJ
+## 21         PPGE        UFRJ
+## 22       PGECOL        UFJF
+## 23         PPGE        UFRJ
+## 24         PPGE        UFRJ
+## 25         PPGE        UFRJ
+## 26         PPGE        UFRJ
+## 27         PPGE        UFRJ
+## 28         EBNT        JBRJ
+## 29         PPGE        UFRJ
+## 30         PPGE  UFRJ e ISS
+## 31 PPGBiofisica        UFRJ</code></pre>
+<p>Agora que separamos esta informação, podemos adicionar ela ao conjunto de dados original que a originou, através do <code>cbind.data.frame</code> - esta função junta dois ou mais <code>data.frame</code> através de suas colunas (<strong>importante</strong>: só faz sentido ser usada se estes <code>data.frame</code> tiverem a mesma ordem em suas colunas).</p>
+<pre class="r"><code># juntando informacoes
+dados &lt;- cbind.data.frame(dados, novas_infos)
+# como separamos aquela coluna, podemos eliminar ela também
+dados &lt;- dados[,-3]</code></pre>
+<p>Finalmente, uma função que pode sempre ser muito útil durante esta etapa da manipulação de dados é a função <code>ifelse</code>, que já vimos anteriormente.</p>
+<hr />
+</div>
+<div id="exercicio-5" class="section level5">
+<h5>Exercício 5</h5>
+<p>A <code>pergunta.5</code> possui duas informações:<br />
+1. Se a pessoa fez ou não fez algum curso sobre o R anteriormente - ou seja, sim ou não;<br />
+2. O número de cursos que a pessoa já fez.</p>
+<p>Apesar disso, estas duas informações estão confundidas na mesma coluna. Portanto, usando a função <code>ifelse</code>:<br />
+a. Crie uma coluna chamada <code>usuario</code>, que deve conter se este é o primeiro curso ou não que a pessoa faz sobre o R;<br />
+b. Modifique o valor <code>Nenhum</code> na coluna da <code>pergunta.5</code> para o valor <code>0</code>, de forma que esta coluna agora só contenha números (e não mais números e texto).<br />
+c. Repita o procedimento do item b para a coluna <code>pergunta.8</code>, mas substituindo o “Não se aplica” por <code>NA</code>.</p>
+<hr />
+<hr />
+<ul>
+<li><strong>Dica do R:</strong> você pode transformar uma planilha de abundância em uma planilha de presença/ausência usando a função <code>ifelse</code>!</li>
+</ul>
+<pre class="r"><code># vamos carregar o pacote vegan, que têm vários dados usadas na ecologia
+library(vegan)</code></pre>
+<pre><code>## Loading required package: permute</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## This is vegan 2.4-3</code></pre>
+<pre class="r"><code># vamos carregar um conjunto de dados especifico dele: varespec
+data(&quot;varespec&quot;)
+# esse conjunto de dados possui a cobertura de espécies da vegetação em pastos
+head(varespec)</code></pre>
+<pre><code>##    Callvulg Empenigr Rhodtome Vaccmyrt Vaccviti Pinusylv Descflex Betupube
+## 18     0.55    11.13     0.00     0.00    17.80     0.07     0.00        0
+## 15     0.67     0.17     0.00     0.35    12.13     0.12     0.00        0
+## 24     0.10     1.55     0.00     0.00    13.47     0.25     0.00        0
+## 27     0.00    15.13     2.42     5.92    15.97     0.00     3.70        0
+## 23     0.00    12.68     0.00     0.00    23.73     0.03     0.00        0
+## 19     0.00     8.92     0.00     2.42    10.28     0.12     0.02        0
+##    Vacculig Diphcomp Dicrsp Dicrfusc Dicrpoly Hylosple Pleuschr Polypili
+## 18     1.60     2.07   0.00     1.62     0.00      0.0     4.67     0.02
+## 15     0.00     0.00   0.33    10.92     0.02      0.0    37.75     0.02
+## 24     0.00     0.00  23.43     0.00     1.68      0.0    32.92     0.00
+## 27     1.12     0.00   0.00     3.63     0.00      6.7    58.07     0.00
+## 23     0.00     0.00   0.00     3.42     0.02      0.0    19.42     0.02
+## 19     0.00     0.00   0.00     0.32     0.02      0.0    21.03     0.02
+##    Polyjuni Polycomm Pohlnuta Ptilcili Barbhatc Cladarbu Cladrang Cladstel
+## 18     0.13     0.00     0.13     0.12     0.00    21.73    21.47     3.50
+## 15     0.23     0.00     0.03     0.02     0.00    12.05     8.13     0.18
+## 24     0.23     0.00     0.32     0.03     0.00     3.58     5.52     0.07
+## 27     0.00     0.13     0.02     0.08     0.08     1.42     7.63     2.55
+## 23     2.12     0.00     0.17     1.80     0.02     9.08     9.22     0.05
+## 19     1.58     0.18     0.07     0.27     0.02     7.23     4.95    22.08
+##    Cladunci Cladcocc Cladcorn Cladgrac Cladfimb Cladcris Cladchlo Cladbotr
+## 18     0.30     0.18     0.23     0.25     0.25     0.23     0.00     0.00
+## 15     2.65     0.13     0.18     0.23     0.25     1.23     0.00     0.00
+## 24     8.93     0.00     0.20     0.48     0.00     0.07     0.10     0.02
+## 27     0.15     0.00     0.38     0.12     0.10     0.03     0.00     0.02
+## 23     0.73     0.08     1.42     0.50     0.17     1.78     0.05     0.05
+## 19     0.25     0.10     0.25     0.18     0.10     0.12     0.05     0.02
+##    Cladamau Cladsp Cetreric Cetrisla Flavniva Nepharct Stersp Peltapht
+## 18     0.08   0.02     0.02     0.00     0.12     0.02   0.62     0.02
+## 15     0.00   0.00     0.15     0.03     0.00     0.00   0.85     0.00
+## 24     0.00   0.00     0.78     0.12     0.00     0.00   0.03     0.00
+## 27     0.00   0.02     0.00     0.00     0.00     0.00   0.00     0.07
+## 23     0.00   0.00     0.00     0.00     0.02     0.00   1.58     0.33
+## 19     0.00   0.00     0.00     0.00     0.02     0.00   0.28     0.00
+##    Icmaeric Cladcerv Claddefo Cladphyl
+## 18        0        0     0.25        0
+## 15        0        0     1.00        0
+## 24        0        0     0.33        0
+## 27        0        0     0.15        0
+## 23        0        0     1.97        0
+## 19        0        0     0.37        0</code></pre>
+<pre class="r"><code># podemos transformar esta matriz de abundância em presença e ausência com o ifelse
+ifelse(test = varespec &gt; 0, yes = 1, no = 0)</code></pre>
+<hr />
+<p>Para prosseguir para a próxima etapa, sugiro carregarmos o pacote <code>gapminder</code>. Ele possui uma grande quantidade de informações diferentes sobre o produto interno bruto de diversos países do mundo, desde a década de 50. O uso deste conjunto de dados tornará a próxima etapa da aula mais didática.</p>
+<pre class="r"><code># carregando pacote
+library(gapminder)
+# visualizando conjunto de dados
+gapminder</code></pre>
+<pre><code>## # A tibble: 1,704 × 6
+##        country continent  year lifeExp      pop gdpPercap
+##         &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1  Afghanistan      Asia  1952  28.801  8425333  779.4453
+## 2  Afghanistan      Asia  1957  30.332  9240934  820.8530
+## 3  Afghanistan      Asia  1962  31.997 10267083  853.1007
+## 4  Afghanistan      Asia  1967  34.020 11537966  836.1971
+## 5  Afghanistan      Asia  1972  36.088 13079460  739.9811
+## 6  Afghanistan      Asia  1977  38.438 14880372  786.1134
+## 7  Afghanistan      Asia  1982  39.854 12881816  978.0114
+## 8  Afghanistan      Asia  1987  40.822 13867957  852.3959
+## 9  Afghanistan      Asia  1992  41.674 16317921  649.3414
+## 10 Afghanistan      Asia  1997  41.763 22227415  635.3414
+## # ... with 1,694 more rows</code></pre>
+<hr />
+</div>
 </div>
 <div id="metodos-para-simplificar-a-criacao-limpeza-e-manutencao-de-dados" class="section level2">
 <h2>Métodos para simplificar a criação, limpeza e manutenção de dados</h2>
-<ol start="2" style="list-style-type: decimal">
-<li>dplyr</li>
-<li>tidyr</li>
+<p>Os pacotes <code>dplyr</code> e <code>tidyr</code>, criados por Hadley Wickham (cientista chefe do RStudio) facilitam e muito a limpeza, manipulação e edição de dados, pois:</p>
+<ul>
+<li>Simplificam a forma como você pensa sobre a execução de uma manipulação;<br />
+</li>
+<li>São muito mais rápido do que métodos incluídos no pacote <code>base</code> do R - e você verá que o funcionamento delas é muito mais intuitivo do que funções como <code>subset</code>, <code>apply</code> e sua família de funções loop, <code>strsplit</code>, indexação para criação de variáveis, renomeação de variáveis via indexação,…</li>
+<li>É intuitivo, pois as funções são baseadas em <strong>verbos</strong> correspondentes às ações mais utilizadas na manipulação de dados:
+<ul>
+<li><code>rename</code>: renomeia as colunas da tabela;</li>
+<li><code>arrange</code>: ordena as linhas de uma tabela de acordo com uma condição;<br />
+</li>
+<li><code>select</code>: seleciona um conjunto de dados pelo nome, ou -
+<ul>
+<li><code>contains</code>: caso contenha um conjunto de caracteres;<br />
+</li>
+<li><code>matches</code>: caso possuam uma sequência de caracteres bata com uma sequência determinada;<br />
+</li>
+<li><code>starts_with</code>: caso comecem com uma sequência de caracteres;<br />
+</li>
+<li><code>ends_with</code>: caso terminem com uma sequência de caracteres determinada.<br />
+</li>
+</ul></li>
+<li><code>filter</code>: filtra as linhas de acordo com uma ou mais condições;<br />
+</li>
+<li><code>mutate</code>: adiciona novas variáveis à tabela;<br />
+</li>
+<li><code>group_by</code>: agrupa observações antes de realizar opereações;<br />
+</li>
+<li><code>summarise</code>: sumariza múltiplos valores para um único;<br />
+</li>
+<li><code>n</code>: retorna o número de observações;</li>
+<li><code>separate</code>: separa uma coluna em múltiplas colunas;<br />
+</li>
+<li><code>spread</code>: transforma uma tabela do <strong>formato longo para o formato largo</strong>;<br />
+</li>
+<li><code>gather</code>: transforma uma tabela do <strong>formato largo para o formato longo</strong>.</li>
+</ul></li>
+</ul>
+<p>Todas estas funções, que compõem o <code>tidyverse</code>, operam de forma bem simples: elas começam com o nome do <code>data.frame</code> e a partir daí são todos os argumentos que elas aceitam. Outro ponto importante é que elas estão sob forte <em>lazy evaluation</em>: como você já falou qual é o conjunto de dados que será manipulado, a função entende que toda e qualquer variável que você usar dentro da função só pode estar vindo daquele conjunto de dados - sem necessidade de ficar indexando as coisas o tempo todo.</p>
+<blockquote>
+<p>A idéia geral aqui é encurtar o espaço entre o que você quer fazer e o resultado - entre pergunta e resposta.</p>
+</blockquote>
+<p>Podemos carregar os pacotes <code>dplyr</code> e <code>tidyr</code>individualmente, ou usando o pacote <code>tidyverse</code>.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<div id="rename" class="section level3">
+<h3><code>rename</code></h3>
+<p>Ao invés de indexar um vetor para renomear uma coluna de um <code>data.frame</code> (ou <code>tibble</code>, no caso dos objetos convertidos pelo <code>tidyverse</code>), podemos fazer isso nome a nome.</p>
+<pre class="r"><code>rename(gapminder, pais = country, continente = continent, ano = year)</code></pre>
+<pre><code>## # A tibble: 1,704 × 6
+##           pais continente   ano lifeExp      pop gdpPercap
+##         &lt;fctr&gt;     &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1  Afghanistan       Asia  1952  28.801  8425333  779.4453
+## 2  Afghanistan       Asia  1957  30.332  9240934  820.8530
+## 3  Afghanistan       Asia  1962  31.997 10267083  853.1007
+## 4  Afghanistan       Asia  1967  34.020 11537966  836.1971
+## 5  Afghanistan       Asia  1972  36.088 13079460  739.9811
+## 6  Afghanistan       Asia  1977  38.438 14880372  786.1134
+## 7  Afghanistan       Asia  1982  39.854 12881816  978.0114
+## 8  Afghanistan       Asia  1987  40.822 13867957  852.3959
+## 9  Afghanistan       Asia  1992  41.674 16317921  649.3414
+## 10 Afghanistan       Asia  1997  41.763 22227415  635.3414
+## # ... with 1,694 more rows</code></pre>
+</div>
+<div id="arrange" class="section level3">
+<h3><code>arrange</code></h3>
+<p>Quando usamos a <code>base</code> do R, precisamos indexar o <code>data.frame</code> para que ele seja ordenado em ordem crescente ou descrevendo de acordo com uma coluna. Pelo <code>tidyverse</code>, só precisamos dizer quais colunas serão usadas para tal.</p>
+<pre class="r"><code>arrange(gapminder, year, lifeExp)</code></pre>
+<pre><code>## # A tibble: 1,704 × 6
+##          country continent  year lifeExp     pop gdpPercap
+##           &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;
+## 1    Afghanistan      Asia  1952  28.801 8425333  779.4453
+## 2         Gambia    Africa  1952  30.000  284320  485.2307
+## 3         Angola    Africa  1952  30.015 4232095 3520.6103
+## 4   Sierra Leone    Africa  1952  30.331 2143249  879.7877
+## 5     Mozambique    Africa  1952  31.286 6446316  468.5260
+## 6   Burkina Faso    Africa  1952  31.975 4469979  543.2552
+## 7  Guinea-Bissau    Africa  1952  32.500  580653  299.8503
+## 8    Yemen, Rep.      Asia  1952  32.548 4963829  781.7176
+## 9        Somalia    Africa  1952  32.978 2526994 1135.7498
+## 10        Guinea    Africa  1952  33.609 2664249  510.1965
+## # ... with 1,694 more rows</code></pre>
+<p>Além disso, podemos dizer se queremos que isto seja feito em ordem crescente ou decrescente de forma muito mais simples.</p>
+<pre class="r"><code>arrange(gapminder, desc(year), desc(lifeExp))</code></pre>
+<pre><code>## # A tibble: 1,704 × 6
+##             country continent  year lifeExp       pop gdpPercap
+##              &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+## 1             Japan      Asia  2007  82.603 127467972  31656.07
+## 2  Hong Kong, China      Asia  2007  82.208   6980412  39724.98
+## 3           Iceland    Europe  2007  81.757    301931  36180.79
+## 4       Switzerland    Europe  2007  81.701   7554661  37506.42
+## 5         Australia   Oceania  2007  81.235  20434176  34435.37
+## 6             Spain    Europe  2007  80.941  40448191  28821.06
+## 7            Sweden    Europe  2007  80.884   9031088  33859.75
+## 8            Israel      Asia  2007  80.745   6426679  25523.28
+## 9            France    Europe  2007  80.657  61083916  30470.02
+## 10           Canada  Americas  2007  80.653  33390141  36319.24
+## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code>arrange(gapminder, year, desc(lifeExp))</code></pre>
+<pre><code>## # A tibble: 1,704 × 6
+##           country continent  year lifeExp      pop gdpPercap
+##            &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1          Norway    Europe  1952   72.67  3327728 10095.422
+## 2         Iceland    Europe  1952   72.49   147962  7267.688
+## 3     Netherlands    Europe  1952   72.13 10381988  8941.572
+## 4          Sweden    Europe  1952   71.86  7124673  8527.845
+## 5         Denmark    Europe  1952   70.78  4334000  9692.385
+## 6     Switzerland    Europe  1952   69.62  4815000 14734.233
+## 7     New Zealand   Oceania  1952   69.39  1994794 10556.576
+## 8  United Kingdom    Europe  1952   69.18 50430000  9979.508
+## 9       Australia   Oceania  1952   69.12  8691212 10039.596
+## 10         Canada  Americas  1952   68.75 14785584 11367.161
+## # ... with 1,694 more rows</code></pre>
+</div>
+<div id="select" class="section level3">
+<h3><code>select</code></h3>
+<p>Quando usamos a <code>base</code> do R, para selecionar ou modificar a ordem das colunas precisamos fazer uma indexação ou usar o argumento <code>select</code> da função <code>subset</code>. Além disso, muitas vezes essas tarefas são feitas baseando-se na posição relativa das colunas que se quer manipular - muito trabalho e confusão caso a sequência de colunas seja alterada. A função <code>select</code> do <code>tidyverse</code> resolve muito disso:</p>
+<pre class="r"><code># somente o pais, ano e gdp per capita
+select(gapminder, country, year, gdpPercap)</code></pre>
+<pre><code>## # A tibble: 1,704 × 3
+##        country  year gdpPercap
+##         &lt;fctr&gt; &lt;int&gt;     &lt;dbl&gt;
+## 1  Afghanistan  1952  779.4453
+## 2  Afghanistan  1957  820.8530
+## 3  Afghanistan  1962  853.1007
+## 4  Afghanistan  1967  836.1971
+## 5  Afghanistan  1972  739.9811
+## 6  Afghanistan  1977  786.1134
+## 7  Afghanistan  1982  978.0114
+## 8  Afghanistan  1987  852.3959
+## 9  Afghanistan  1992  649.3414
+## 10 Afghanistan  1997  635.3414
+## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code># apenas algumas variáveis e reordenando elas
+select(gapminder, gdpPercap, country:lifeExp)</code></pre>
+<pre><code>## # A tibble: 1,704 × 5
+##    gdpPercap     country continent  year lifeExp
+##        &lt;dbl&gt;      &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;
+## 1   779.4453 Afghanistan      Asia  1952  28.801
+## 2   820.8530 Afghanistan      Asia  1957  30.332
+## 3   853.1007 Afghanistan      Asia  1962  31.997
+## 4   836.1971 Afghanistan      Asia  1967  34.020
+## 5   739.9811 Afghanistan      Asia  1972  36.088
+## 6   786.1134 Afghanistan      Asia  1977  38.438
+## 7   978.0114 Afghanistan      Asia  1982  39.854
+## 8   852.3959 Afghanistan      Asia  1987  40.822
+## 9   649.3414 Afghanistan      Asia  1992  41.674
+## 10  635.3414 Afghanistan      Asia  1997  41.763
+## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code># usando o conjunto de dados que estávamos limpando
+select(dados, contains(&quot;pergunta&quot;))</code></pre>
+<pre><code>##          pergunta.1            pergunta.2       pergunta.4 pergunta.5
+## 1  Tentar Doutorado              Bacharel       Nunca usou          0
+## 2         Doutorado              Bacharel       Nunca usou          0
+## 3          Mestrado              Bacharel   Menos de 1 ano          3
+## 4          Mestrado              Bacharel   Menos de 1 ano          1
+## 5          Mestrado              Bacharel   Menos de 1 ano          0
+## 6         Doutorado              Bacharel   Menos de 1 ano          0
+## 7         Doutorado              Bacharel   Menos de 1 ano          0
+## 8         Doutorado              Bacharel   Menos de 1 ano          0
+## 9          Mestrado              Bacharel   Menos de 1 ano          1
+## 10         Mestrado              Bacharel       Nunca usou          0
+## 11         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 12  Tentar Mestrado              Bacharel       Nunca usou          0
+## 13         Mestrado              Bacharel       Nunca usou          0
+## 14         Mestrado              Bacharel       Nunca usou          0
+## 15         Mestrado              Bacharel   Menos de 1 ano          0
+## 16         Mestrado              Bacharel   Menos de 1 ano          1
+## 17        Doutorado              Bacharel       Nunca usou          0
+## 18        Doutorado              Bacharel   Menos de 1 ano          1
+## 19         Mestrado            Licenciado       Nunca usou          2
+## 20        Doutorado              Bacharel Entre 1 e 2 anos          2
+## 21         Mestrado              Bacharel Entre 1 e 2 anos          0
+## 22         Mestrado            Licenciado   Menos de 1 ano          2
+## 23         Mestrado            Licenciado   Menos de 1 ano          0
+## 24         Mestrado              Bacharel       Nunca usou          0
+## 25         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 26         Mestrado              Bacharel       Nunca usou          0
+## 27        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
+## 28        Doutorado              Bacharel       Nunca usou          0
+## 29         Mestrado              Bacharel   Menos de 1 ano          1
+## 30         Mestrado            Licenciado       Nunca usou          0
+## 31         Mestrado              Bacharel   Menos de 1 ano          1
+##                                                                                                           pergunta.6
+## 1                                                                                                             Nenhum
+## 2                                                                                                             Nenhum
+## 3                                                                                     Coursera, IPÊ/ESCAS, ENBT/JBRJ
+## 4  Curso Presencial não listado, grátis (marcar &quot;Outro&quot; e adicionar nome nos comentários). Outro: Stirling, Escócia.
+## 5                                                                                                             Nenhum
+## 6                                                                                                             Nenhum
+## 7                                                                                                             Nenhum
+## 8                                                                                                             Nenhum
+## 9                                                                                                           Coursera
+## 10                                                                                                            Nenhum
+## 11                                                                                                            Nenhum
+## 12                                                                                                            Nenhum
+## 13                                                                                                            Nenhum
+## 14                                                                                                            Nenhum
+## 15                                                                                                            Nenhum
+## 16                                                                                               Bioestatística/UFBA
+## 17                                                                                                            Nenhum
+## 18        Curso Presencial não listado, grátis (marcar &quot;Outro&quot; e adicionar nome nos comentários). Outro: Inglaterra.
+## 19                                                                             Delineamento e Ecologia de Populações
+## 20                          IPÊ/ESCAS, Modelagem Estatística - Pós Graduação de Biologia Computacional e de Sistemas
+## 21                                                                                                              &lt;NA&gt;
+## 22                                                                                Curso PGECOL/UFJF, Introdução ao R
+## 23                                                                                                           Nenhum.
+## 24                                                                                                              &lt;NA&gt;
+## 25                                                                                                           Nenhum.
+## 26                                                                                                           Nenhum.
+## 27                                                                                                           Nenhum.
+## 28                                                                                                           Nenhum.
+## 29                                                                                                          DataCamp
+## 30                                                                                                          DataCamp
+## 31                                                                                      Curso Interno no Laboratório
+##                               pergunta.7 pergunta.8          pergunta.9
+## 1     Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
+## 2                                 Amigos          6                &lt;NA&gt;
+## 3                                 Amigos          4                &lt;NA&gt;
+## 4  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 5  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 6  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 7                                 Amigos          6                &lt;NA&gt;
+## 8  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 9  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 10 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 11 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 12 Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
+## 13 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 14                                Amigos          4                &lt;NA&gt;
+## 15 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 16 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 17                                Amigos          8                &lt;NA&gt;
+## 18 Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
+## 19 Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
+## 20 Circulação Interna Grade do PPGE/UFRJ          8              Básico
+## 21 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 22                                Amigos          2              Básico
+## 23 Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
+## 24            Recomendação do Orientador          2          Rudimentar
+## 25 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 26 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 27 Circulação Interna Grade do PPGE/UFRJ          6              Básico
+## 28 Circulação Interna Grade do PPGE/UFRJ          7              Básico
+## 29    Recomendação de outros professores          3          Rudimentar
+## 30 Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
+## 31    Recomendação de outros professores          2       Intermediário</code></pre>
+<hr />
+<div id="exercicio-6" class="section level5">
+<h5>Exercício 6</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Remova apenas a coluna <code>country</code> de <code>gapminder</code>;</li>
+<li>Selecione as colunas <code>continent</code>, <code>year</code> e <code>pop</code>;</li>
+<li>Com o resultado da última opera, ordene as linhas de acordo com a ordem decrescente dos anos;</li>
+<li>Além de ordenar as linhas pela ordem decrescente dos anos, ordem agora também o tamanho da população.</li>
 </ol>
+<hr />
+</div>
+</div>
+<div id="filter" class="section level3">
+<h3><code>filter</code></h3>
+<p>Se na <code>base</code> do R você gastava muito tempo quebrando a cabeça em como extrair sub-conjuntos dos seus dados, criando sequências intermináveis e difíceis de ler, isso passa a ficar bem mais fácil com a função <code>filter</code>. Como o nome dela sugere, ela filtra uma tabela de acordo com as condições que você determina.</p>
+<pre class="r"><code># apenas os dados do Brasil
+filter(gapminder, country == &quot;Brazil&quot;)</code></pre>
+<pre><code>## # A tibble: 12 × 6
+##    country continent  year lifeExp       pop gdpPercap
+##     &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+## 1   Brazil  Americas  1952  50.917  56602560  2108.944
+## 2   Brazil  Americas  1957  53.285  65551171  2487.366
+## 3   Brazil  Americas  1962  55.665  76039390  3336.586
+## 4   Brazil  Americas  1967  57.632  88049823  3429.864
+## 5   Brazil  Americas  1972  59.504 100840058  4985.711
+## 6   Brazil  Americas  1977  61.489 114313951  6660.119
+## 7   Brazil  Americas  1982  63.336 128962939  7030.836
+## 8   Brazil  Americas  1987  65.205 142938076  7807.096
+## 9   Brazil  Americas  1992  67.057 155975974  6950.283
+## 10  Brazil  Americas  1997  69.388 168546719  7957.981
+## 11  Brazil  Americas  2002  71.006 179914212  8131.213
+## 12  Brazil  Americas  2007  72.390 190010647  9065.801</code></pre>
+<pre class="r"><code># dados das Americas, apenas os 20 últimos anos
+filter(gapminder, continent == &quot;Americas&quot;, year &gt; 1996)</code></pre>
+<pre><code>## # A tibble: 75 × 6
+##      country continent  year lifeExp       pop gdpPercap
+##       &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+## 1  Argentina  Americas  1997  73.275  36203463 10967.282
+## 2  Argentina  Americas  2002  74.340  38331121  8797.641
+## 3  Argentina  Americas  2007  75.320  40301927 12779.380
+## 4    Bolivia  Americas  1997  62.050   7693188  3326.143
+## 5    Bolivia  Americas  2002  63.883   8445134  3413.263
+## 6    Bolivia  Americas  2007  65.554   9119152  3822.137
+## 7     Brazil  Americas  1997  69.388 168546719  7957.981
+## 8     Brazil  Americas  2002  71.006 179914212  8131.213
+## 9     Brazil  Americas  2007  72.390 190010647  9065.801
+## 10    Canada  Americas  1997  78.610  30305843 28954.926
+## # ... with 65 more rows</code></pre>
+<pre class="r"><code># dados das Americas e Europa, apenas os 20 últimos anos
+filter(gapminder, continent == &quot;Americas&quot; | continent == &quot;Europe&quot;, year &gt; 1996)</code></pre>
+<pre><code>## # A tibble: 165 × 6
+##      country continent  year lifeExp      pop gdpPercap
+##       &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1    Albania    Europe  1997  72.950  3428038  3193.055
+## 2    Albania    Europe  2002  75.651  3508512  4604.212
+## 3    Albania    Europe  2007  76.423  3600523  5937.030
+## 4  Argentina  Americas  1997  73.275 36203463 10967.282
+## 5  Argentina  Americas  2002  74.340 38331121  8797.641
+## 6  Argentina  Americas  2007  75.320 40301927 12779.380
+## 7    Austria    Europe  1997  77.510  8069876 29095.921
+## 8    Austria    Europe  2002  78.980  8148312 32417.608
+## 9    Austria    Europe  2007  79.829  8199783 36126.493
+## 10   Belgium    Europe  1997  77.530 10199787 27561.197
+## # ... with 155 more rows</code></pre>
+<hr />
+<div id="exercicio-7" class="section level5">
+<h5>Exercício 7</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Quais países possuem o GDP maior do que 40000?</li>
+<li>Qual país do mundo possui a menor expectativa de vida no ano de 2007?</li>
+<li>Qual país da Europa possui o menor GDP em 2002?</li>
+<li>Qual país das Américas possui o menor GDP E a menor população?</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="mutate" class="section level3">
+<h3><code>mutate</code></h3>
+<p>Criar uma nova variável em uma tabela envolve indexação, tanto da coluna a ser criada, quanto das variáveis envolvidas na criação desta coluna. Esta função elimina esta necessidade.</p>
+<pre class="r"><code>mutate(gapminder, log_gdp = log(gdpPercap))</code></pre>
+<pre><code>## # A tibble: 1,704 × 7
+##        country continent  year lifeExp      pop gdpPercap  log_gdp
+##         &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1  Afghanistan      Asia  1952  28.801  8425333  779.4453 6.658583
+## 2  Afghanistan      Asia  1957  30.332  9240934  820.8530 6.710344
+## 3  Afghanistan      Asia  1962  31.997 10267083  853.1007 6.748878
+## 4  Afghanistan      Asia  1967  34.020 11537966  836.1971 6.728864
+## 5  Afghanistan      Asia  1972  36.088 13079460  739.9811 6.606625
+## 6  Afghanistan      Asia  1977  38.438 14880372  786.1134 6.667101
+## 7  Afghanistan      Asia  1982  39.854 12881816  978.0114 6.885521
+## 8  Afghanistan      Asia  1987  40.822 13867957  852.3959 6.748051
+## 9  Afghanistan      Asia  1992  41.674 16317921  649.3414 6.475959
+## 10 Afghanistan      Asia  1997  41.763 22227415  635.3414 6.454162
+## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code>mutate(gapminder, expectativa_arredondada = round(lifeExp, digits = 0))</code></pre>
+<pre><code>## # A tibble: 1,704 × 7
+##        country continent  year lifeExp      pop gdpPercap
+##         &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1  Afghanistan      Asia  1952  28.801  8425333  779.4453
+## 2  Afghanistan      Asia  1957  30.332  9240934  820.8530
+## 3  Afghanistan      Asia  1962  31.997 10267083  853.1007
+## 4  Afghanistan      Asia  1967  34.020 11537966  836.1971
+## 5  Afghanistan      Asia  1972  36.088 13079460  739.9811
+## 6  Afghanistan      Asia  1977  38.438 14880372  786.1134
+## 7  Afghanistan      Asia  1982  39.854 12881816  978.0114
+## 8  Afghanistan      Asia  1987  40.822 13867957  852.3959
+## 9  Afghanistan      Asia  1992  41.674 16317921  649.3414
+## 10 Afghanistan      Asia  1997  41.763 22227415  635.3414
+## # ... with 1,694 more rows, and 1 more variables:
+## #   expectativa_arredondada &lt;dbl&gt;</code></pre>
+</div>
+<div id="group_by-summarise" class="section level3">
+<h3><code>group_by</code> + <code>summarise</code></h3>
+<p>Estas duas funções combinam melhor quando juntas. Você se lembra que quando precisava fazer cálculos de estatísticas descritivas tínhamos que usar o <code>apply</code> e todo a sua família de funções? Apesar da diversidade de funções, era sempre muito complicado lembrar todos os argumentos e ter que lidar com as diferentes formas de output. Aqui, tudo ficou mais fácil e intuitivo.</p>
+<pre class="r"><code># agrupando observações por país
+group_by(gapminder, country)</code></pre>
+<pre><code>## Source: local data frame [1,704 x 6]
+## Groups: country [142]
+## 
+##        country continent  year lifeExp      pop gdpPercap
+##         &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+## 1  Afghanistan      Asia  1952  28.801  8425333  779.4453
+## 2  Afghanistan      Asia  1957  30.332  9240934  820.8530
+## 3  Afghanistan      Asia  1962  31.997 10267083  853.1007
+## 4  Afghanistan      Asia  1967  34.020 11537966  836.1971
+## 5  Afghanistan      Asia  1972  36.088 13079460  739.9811
+## 6  Afghanistan      Asia  1977  38.438 14880372  786.1134
+## 7  Afghanistan      Asia  1982  39.854 12881816  978.0114
+## 8  Afghanistan      Asia  1987  40.822 13867957  852.3959
+## 9  Afghanistan      Asia  1992  41.674 16317921  649.3414
+## 10 Afghanistan      Asia  1997  41.763 22227415  635.3414
+## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code># media do gdp por país
+summarise(group_by(gapminder, country), media_gdp = mean(gdpPercap))</code></pre>
+<pre><code>## # A tibble: 142 × 2
+##        country  media_gdp
+##         &lt;fctr&gt;      &lt;dbl&gt;
+## 1  Afghanistan   802.6746
+## 2      Albania  3255.3666
+## 3      Algeria  4426.0260
+## 4       Angola  3607.1005
+## 5    Argentina  8955.5538
+## 6    Australia 19980.5956
+## 7      Austria 20411.9163
+## 8      Bahrain 18077.6639
+## 9   Bangladesh   817.5588
+## 10     Belgium 19900.7581
+## # ... with 132 more rows</code></pre>
+<pre class="r"><code># media do gdp por continente por ano
+summarise(group_by(gapminder, continent, year), media_gdp = mean(gdpPercap))</code></pre>
+<pre><code>## Source: local data frame [60 x 3]
+## Groups: continent [?]
+## 
+##    continent  year media_gdp
+##       &lt;fctr&gt; &lt;int&gt;     &lt;dbl&gt;
+## 1     Africa  1952  1252.572
+## 2     Africa  1957  1385.236
+## 3     Africa  1962  1598.079
+## 4     Africa  1967  2050.364
+## 5     Africa  1972  2339.616
+## 6     Africa  1977  2585.939
+## 7     Africa  1982  2481.593
+## 8     Africa  1987  2282.669
+## 9     Africa  1992  2281.810
+## 10    Africa  1997  2378.760
+## # ... with 50 more rows</code></pre>
+<pre class="r"><code># media e desvio do gdp por continente
+summarise(group_by(gapminder, continent), media_gdp = mean(gdpPercap), desvio_gdp = sd(gdpPercap))</code></pre>
+<pre><code>## # A tibble: 5 × 3
+##   continent media_gdp desvio_gdp
+##      &lt;fctr&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1    Africa  2193.755   2827.930
+## 2  Americas  7136.110   6396.764
+## 3      Asia  7902.150  14045.373
+## 4    Europe 14469.476   9355.213
+## 5   Oceania 18621.609   6358.983</code></pre>
+<hr />
+<div id="exercicio-9" class="section level5">
+<h5>Exercício 9</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Qual a expectativa de vida média por continente?</li>
+<li>Qual a expectativa de vida máxima dos países Europeus?</li>
+<li>Qual a expectativa de vida mínima dos países Asiáticos e Africanos?</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="the-pipe-operator" class="section level3">
+<h3>The pipe operator: <code>%&gt;%</code></h3>
+<p>As funções que acabamos de ver tornam a manipulação de dados muito mais fácil, pois reduzem muito da necessidade de criação e indexação de diversos objetos. Além disso, elas ligam diretamente a pergunta à resposta. Por outro lado, podemos acabar com códigos para a execução de uma função que podem ficar muito longos e difícil de ler (principalmente quando combinamos <code>group_by</code> e <code>summarise</code>).</p>
+<p>Por exemplo, o resultado da função abaixo dá a média do gdpPercap por Continente e país. Leríamos a função de dentro para fora como: 1. selecione as colunas de gapminder: continente, pais e gdpPercap; 2. agrupe estes dados por continente e país; 3. calcule a média do gdpPercap.</p>
+<pre class="r"><code>summarise(group_by(select(gapminder, country, continent, gdpPercap), continent, country), media_gdp = mean(gdpPercap))</code></pre>
+<pre><code>## Source: local data frame [142 x 3]
+## Groups: continent [?]
+## 
+##    continent                  country media_gdp
+##       &lt;fctr&gt;                   &lt;fctr&gt;     &lt;dbl&gt;
+## 1     Africa                  Algeria 4426.0260
+## 2     Africa                   Angola 3607.1005
+## 3     Africa                    Benin 1155.3951
+## 4     Africa                 Botswana 5031.5036
+## 5     Africa             Burkina Faso  843.9907
+## 6     Africa                  Burundi  471.6630
+## 7     Africa                 Cameroon 1774.6342
+## 8     Africa Central African Republic  958.7847
+## 9     Africa                     Chad 1165.4537
+## 10    Africa                  Comoros 1314.3803
+## # ... with 132 more rows</code></pre>
+<p>Todavia, o <code>dplyr</code> também descomplica essa cascata de funções ao introduzir ao universo do ambiente o operador <code>pipe</code>: <code>%&gt;%</code>.</p>
+<pre class="r"><code>gapminder %&gt;% 
+  select(country, continent, gdpPercap) %&gt;% 
+  group_by(continent, country) %&gt;% 
+  summarise(media_gdp = mean(gdpPercap))</code></pre>
+<pre><code>## Source: local data frame [142 x 3]
+## Groups: continent [?]
+## 
+##    continent                  country media_gdp
+##       &lt;fctr&gt;                   &lt;fctr&gt;     &lt;dbl&gt;
+## 1     Africa                  Algeria 4426.0260
+## 2     Africa                   Angola 3607.1005
+## 3     Africa                    Benin 1155.3951
+## 4     Africa                 Botswana 5031.5036
+## 5     Africa             Burkina Faso  843.9907
+## 6     Africa                  Burundi  471.6630
+## 7     Africa                 Cameroon 1774.6342
+## 8     Africa Central African Republic  958.7847
+## 9     Africa                     Chad 1165.4537
+## 10    Africa                  Comoros 1314.3803
+## # ... with 132 more rows</code></pre>
+<pre class="r"><code># quantas observações de cada país?
+gapminder %&gt;% 
+  select(country) %&gt;% 
+  group_by(country) %&gt;% 
+  summarise(n())</code></pre>
+<pre><code>## # A tibble: 142 × 2
+##        country `n()`
+##         &lt;fctr&gt; &lt;int&gt;
+## 1  Afghanistan    12
+## 2      Albania    12
+## 3      Algeria    12
+## 4       Angola    12
+## 5    Argentina    12
+## 6    Australia    12
+## 7      Austria    12
+## 8      Bahrain    12
+## 9   Bangladesh    12
+## 10     Belgium    12
+## # ... with 132 more rows</code></pre>
+<p>Note como agora ficou tudo mais fácil de ler e compreender! Por conta do <em>lazy evaluation</em> e do <code>%&gt;%</code>, cada função ‘entende’ que o objeto que ela está trabalhando é o resultado do processamento anterior.</p>
+<hr />
+<div id="exercicio-10" class="section level5">
+<h5>Exercício 10</h5>
+<p>Você se lembra dos dados que estávamos limpando?</p>
+<ol style="list-style-type: lower-alpha">
+<li>Quantas pessoas nunca usaram o R? (<code>usuario</code>)</li>
+<li>Quantas pessoas são mestrandas e quantas são doutorandas? (<code>pergunta.1</code>)</li>
+<li>Quanto tempo falta, em média para a defesa dos mestrandos e dos doutorandos? (<code>pergunta.1</code> e <code>pergunta.8</code>)</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="separate" class="section level3">
+<h3><code>separate</code></h3>
+<p>Você se lembra a dificuldade que foi separarmos a coluna que continua a informação sobre a instituição e o programa de pós-graduação de cada pessoa? O pacote <code>tidyr</code> possui a função <code>separate</code>, que nos ajuda a fazer a mesma coisa, com muito mais agilidade. Para ilustrar, vamos recriar aquele “problema”.</p>
+<hr />
+<div id="exercicio-11" class="section level5">
+<h5>Exercício 11</h5>
+<p>Com a planilha <code>dados</code>:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Selecione as colunas com as informações da instituição e programa de pós-graduação, e armazene o resultado no objeto <code>exemplo</code>;<br />
+</li>
+<li>Crie uma nova coluna chamada <code>problema</code> contendo as duas informações, mas usando uma barra como separador (<code>/</code>);<br />
+</li>
+<li>Elimine as duas colunas que você havia selecionado no passo <em>a</em>.</li>
+</ol>
+<hr />
+<p>O uso a função <code>separate</code> é bem mais simples:</p>
+<pre class="r"><code>separate(data = exemplo, col = &quot;problema&quot;, into = c(&quot;programa&quot;, &quot;instituicao&quot;), sep = &quot;/&quot;)</code></pre>
+<pre><code>##        programa instituicao
+## 1       Ouvinte     Ouvinte
+## 2        PPGVet       UFRRJ
+## 3          ENBT        JBRJ
+## 4          PPGE        UFRJ
+## 5          PPGE        UFRJ
+## 6          PPGE        UFRJ
+## 7          PPGE        UFRJ
+## 8          PPGE        UFRJ
+## 9          PPGE        UFRJ
+## 10         PPGE        UFRJ
+## 11         PPGE        UFRJ
+## 12      Ouvinte     Ouvinte
+## 13         PPGE        UFRJ
+## 14          PPE       COPPE
+## 15         PPGE        UFRJ
+## 16         PPGE        UFRJ
+## 17          PPE       COPPE
+## 18         PPGE        UFRJ
+## 19         PPGE        UFRJ
+## 20         PPGE        UFRJ
+## 21         PPGE        UFRJ
+## 22       PGECOL        UFJF
+## 23         PPGE        UFRJ
+## 24         PPGE        UFRJ
+## 25         PPGE        UFRJ
+## 26         PPGE        UFRJ
+## 27         PPGE        UFRJ
+## 28         EBNT        JBRJ
+## 29         PPGE        UFRJ
+## 30         PPGE  UFRJ e ISS
+## 31 PPGBiofisica        UFRJ</code></pre>
+<hr />
+<p>Você se lembra daquela matriz de cobertura vegetal que convertemos em uma matriz de presença/ausência? Vamos usar ela de novo, mas antes vamos transformar ela num objeto chamado <code>biotico</code>. Além disso, vamos adicionar o nome das linhas como uma nova coluna a esta tabela, usando a função <code>rownames_to_column</code>, disponível no pacote <code>tibble</code>.</p>
+<pre class="r"><code>biotico &lt;- varespec %&gt;% 
+  rownames_to_column(var = &quot;site&quot;)</code></pre>
+<hr />
+</div>
+</div>
+<div id="gather" class="section level3">
+<h3><code>gather</code></h3>
+<p>O que estamos vendo agora é que muitas vezes é mais útil guardar as informações na forma de uma lista ou nas linhas do que nas colunas. Isso vai de encontro a algo que muitos de nós fazemos, ao tabelar dados de comunidades e outros dados biológicos. Em outras palavras, somos acostumados a usar planilhas no formato largo (<strong>informacoes nas colunas</strong>), ainda que muitas tarefas possam ser mais facilmente completadas quando estas planilhas estão em um formato longo (<strong>informações nas linhas</strong>)</p>
+<p>O pacote <code>tidyr</code> introduz duas funções que podem nos ajudar muito a fazer essas transformações: <code>gather</code> e <code>spread</code> - <strong>juntar</strong> e <strong>espalhar</strong>, literalmente.</p>
+<pre class="r"><code># vamos transformar todas as observacoes da cobertura das espécies, que estao nas colunas em linhas
+biotico &lt;- gather(data = biotico, key = especie, value = cobertura, Callvulg:Cladphyl)</code></pre>
+<p>Note que agora podemos usar as funções que acabamos de aprender para fazer manipular e fazer cálculos sob esta planilha de dados bióticos. Por exemplo, podemos remover todas as observações que são iguais a 0 com o <code>filter</code>.</p>
+<pre class="r"><code>biotico &lt;- filter(biotico, cobertura &gt; 0)</code></pre>
+<hr />
+<div id="exercicio-12" class="section level5">
+<h5>Exercício 12</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Qual a cobertura total de espécies por site?</li>
+<li>Qual a riqueza de espécies por site?</li>
+<li>Qual o site mais diverso?</li>
+<li>E qual o site com maior cobertura vegetal?</li>
+<li>Qual a espécie com maior cobertura vegetal?</li>
+</ol>
+<hr />
+</div>
+</div>
+<div id="spread" class="section level3">
+<h3><code>spread</code></h3>
+<p>Assim como transformamos aquela matriz em uma lista, podemos transformar uma lista em uma matriz.</p>
+<pre class="r"><code>bioticos &lt;- spread(data = biotico, key = especie, value = cobertura, fill = 0)</code></pre>
+<p>E, com isso, fazer cálculos como os que já havíamos aprendido anteriormente.</p>
+<pre class="r"><code># qual a cobertura vegetal por site?
+rowSums(bioticos[,-1])</code></pre>
+<pre><code>##      1      2      3      4      5      6      7      8      9     10 
+## 122.37 112.84 119.80 101.89  81.65  89.82  88.52  89.20  81.27 119.13 
+##     11     12     13     14     15     16     17     18     19     20 
+##  64.11  99.17 109.76  90.46  94.21  94.06 125.61 110.70 106.67  84.83 
+##     21     22     23     24 
+##  94.77 110.90 103.38 122.60</code></pre>
+<pre class="r"><code># qual a espécie com maior cobertura
+colSums(bioticos[,-1])</code></pre>
+<pre><code>## Barbhatc Betupube Callvulg Cetreric Cetrisla Cladamau Cladarbu Cladbotr 
+##     3.19     0.29    45.07     3.60     2.03     0.14   255.05     0.47 
+## Cladcerv Cladchlo Cladcocc Cladcorn Cladcris Claddefo Cladfimb Cladgrac 
+##     0.10     1.16     2.79     6.22     7.47    10.23     3.96     5.14 
+## Cladphyl Cladrang   Cladsp Cladstel Cladunci Descflex Dicrfusc Dicrpoly 
+##     0.80   388.71     0.52   486.71    56.28     5.60   113.52     6.06 
+##   Dicrsp Diphcomp Empenigr Flavniva Hylosple Icmaeric Nepharct Peltapht 
+##    40.50     3.24   151.99    11.85    18.04     0.22     5.26     0.76 
+## Pinusylv Pleuschr Pohlnuta Polycomm Polyjuni Polypili Ptilcili Rhodtome 
+##     4.11   377.97     2.62     0.71    13.85     0.61    14.01     8.39 
+##   Stersp Vaccmyrt Vacculig Vaccviti 
+##    17.52    50.71    15.22   275.03</code></pre>
+<pre class="r"><code># a indexação é para remover aquela coluna que não é numérica: a identidade do site! Caso contrário, estas funções não rodariam - aí está mais uma vantagem de tentar fazer as coisas com uma planilha no formato longo</code></pre>
+</div>
+<div id="outras-facilidades-oferecidas-pelo-dplyr-e-tidyr" class="section level3">
+<h3>Outras facilidades oferecidas pelo <code>dplyr</code> e <code>tidyr</code></h3>
+<p>O <code>dplyr</code> também oferece uma série de outras funções que podem facilitar a sua vida, como por exemplo:</p>
+<ul>
+<li><code>lag</code>: adiciona um lag ao valores de um vetor;<br />
+</li>
+<li><code>lead</code>: adianta os valores de um vetor;<br />
+</li>
+<li><code>setequal</code> e <code>setdiff</code>: traçam a semelhança e diferença entre dois <code>data.frame</code>;<br />
+</li>
+<li><code>distinct</code>: retorna o número de observações que são totalmente distintas umas dados outras em um <code>data.frame</code> ou vetor;<br />
+</li>
+<li><code>drop_na</code>: remove todos os <code>NA</code> de uma coluna.</li>
+</ul>
+</div>
+<div id="outras-facilidades-oferecidas-por-outros-pacotes-stringr" class="section level3">
+<h3>Outras facilidades oferecidas por outros pacotes: <code>stringr</code></h3>
+<p>O pacote <code>stringr</code> é muito útil para agilizar nossa vida ao manipular textos, ele tem uma série de funções muito úteis. Aqui, vou destacar apenas uma delas: <code>str_detect</code> e como podemos usar esta função, em conjunto com outras funções para finalizar a limpeza de dados.</p>
+<pre class="r"><code># carregando pacote
+library(stringr)
+# aqui estão os dados contendo qual foi a turma de onde partiram os dados da enquete
+dados$origem.da.informacao</code></pre>
+<pre><code>##  [1] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+##  [4] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+##  [7] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+## [10] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+## [13] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+## [16] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
+## [19] &quot;2017_1.xlsx&quot;        &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;      
+## [22] &quot;2017_12.xlsx&quot;       &quot;2017_13.xlsx&quot;       &quot;2017_2.xlsx&quot;       
+## [25] &quot;2017_3.xlsx&quot;        &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;       
+## [28] &quot;2017_6.xlsx&quot;        &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;       
+## [31] &quot;2017_9.xlsx&quot;</code></pre>
+<p>A função <code>str_detect</code> pode ser usada como um teste lógico, para detectar uma informação e nos ajudar a tomar uma decisão. Por exemplo, se quisermos criar uma coluna com o ano de <code>2016</code> ou <code>2017</code> para a origem da turma (ao invés do nome do arquivo que originou a observação), podemos tentar detect o número <code>2016</code> no conjunto de palavras:</p>
+<pre class="r"><code># existe 2016 na palavra?
+str_detect(string = dados$origem.da.informacao, pattern = &quot;2016&quot;)</code></pre>
+<pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
+## [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE
+## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<p>Se temos um vetor com <code>TRUE</code> and <code>FALSE</code> - um teste lógico - podemos então passar essa informação para a função <code>ifelse</code> e criar uma nova coluna chamada <code>turma</code>, que contém o ano da turma que gerou as observações:</p>
+<pre class="r"><code>ifelse(str_detect(string = dados$origem.da.informacao, pattern = &quot;2016&quot;) == TRUE, &quot;2016&quot;, &quot;2017&quot;)</code></pre>
+<pre><code>##  [1] &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot;
+## [11] &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2017&quot; &quot;2017&quot;
+## [21] &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot;
+## [31] &quot;2017&quot;</code></pre>
+<p>Podemos passar isso diretamente para a criação da nova coluna via o <code>pipe</code>:</p>
+<pre class="r"><code>dados &lt;- dados %&gt;% 
+  mutate(turma = ifelse(str_detect(string = origem.da.informacao, pattern = &quot;2016&quot;) == TRUE, &quot;2016&quot;, &quot;2017&quot;))
+dados</code></pre>
+<pre><code>##          pergunta.1            pergunta.2       pergunta.4 pergunta.5
+## 1  Tentar Doutorado              Bacharel       Nunca usou          0
+## 2         Doutorado              Bacharel       Nunca usou          0
+## 3          Mestrado              Bacharel   Menos de 1 ano          3
+## 4          Mestrado              Bacharel   Menos de 1 ano          1
+## 5          Mestrado              Bacharel   Menos de 1 ano          0
+## 6         Doutorado              Bacharel   Menos de 1 ano          0
+## 7         Doutorado              Bacharel   Menos de 1 ano          0
+## 8         Doutorado              Bacharel   Menos de 1 ano          0
+## 9          Mestrado              Bacharel   Menos de 1 ano          1
+## 10         Mestrado              Bacharel       Nunca usou          0
+## 11         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 12  Tentar Mestrado              Bacharel       Nunca usou          0
+## 13         Mestrado              Bacharel       Nunca usou          0
+## 14         Mestrado              Bacharel       Nunca usou          0
+## 15         Mestrado              Bacharel   Menos de 1 ano          0
+## 16         Mestrado              Bacharel   Menos de 1 ano          1
+## 17        Doutorado              Bacharel       Nunca usou          0
+## 18        Doutorado              Bacharel   Menos de 1 ano          1
+## 19         Mestrado            Licenciado       Nunca usou          2
+## 20        Doutorado              Bacharel Entre 1 e 2 anos          2
+## 21         Mestrado              Bacharel Entre 1 e 2 anos          0
+## 22         Mestrado            Licenciado   Menos de 1 ano          2
+## 23         Mestrado            Licenciado   Menos de 1 ano          0
+## 24         Mestrado              Bacharel       Nunca usou          0
+## 25         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 26         Mestrado              Bacharel       Nunca usou          0
+## 27        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
+## 28        Doutorado              Bacharel       Nunca usou          0
+## 29         Mestrado              Bacharel   Menos de 1 ano          1
+## 30         Mestrado            Licenciado       Nunca usou          0
+## 31         Mestrado              Bacharel   Menos de 1 ano          1
+##                                                                                                           pergunta.6
+## 1                                                                                                             Nenhum
+## 2                                                                                                             Nenhum
+## 3                                                                                     Coursera, IPÊ/ESCAS, ENBT/JBRJ
+## 4  Curso Presencial não listado, grátis (marcar &quot;Outro&quot; e adicionar nome nos comentários). Outro: Stirling, Escócia.
+## 5                                                                                                             Nenhum
+## 6                                                                                                             Nenhum
+## 7                                                                                                             Nenhum
+## 8                                                                                                             Nenhum
+## 9                                                                                                           Coursera
+## 10                                                                                                            Nenhum
+## 11                                                                                                            Nenhum
+## 12                                                                                                            Nenhum
+## 13                                                                                                            Nenhum
+## 14                                                                                                            Nenhum
+## 15                                                                                                            Nenhum
+## 16                                                                                               Bioestatística/UFBA
+## 17                                                                                                            Nenhum
+## 18        Curso Presencial não listado, grátis (marcar &quot;Outro&quot; e adicionar nome nos comentários). Outro: Inglaterra.
+## 19                                                                             Delineamento e Ecologia de Populações
+## 20                          IPÊ/ESCAS, Modelagem Estatística - Pós Graduação de Biologia Computacional e de Sistemas
+## 21                                                                                                              &lt;NA&gt;
+## 22                                                                                Curso PGECOL/UFJF, Introdução ao R
+## 23                                                                                                           Nenhum.
+## 24                                                                                                              &lt;NA&gt;
+## 25                                                                                                           Nenhum.
+## 26                                                                                                           Nenhum.
+## 27                                                                                                           Nenhum.
+## 28                                                                                                           Nenhum.
+## 29                                                                                                          DataCamp
+## 30                                                                                                          DataCamp
+## 31                                                                                      Curso Interno no Laboratório
+##                               pergunta.7 pergunta.8          pergunta.9
+## 1     Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
+## 2                                 Amigos          6                &lt;NA&gt;
+## 3                                 Amigos          4                &lt;NA&gt;
+## 4  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 5  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 6  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 7                                 Amigos          6                &lt;NA&gt;
+## 8  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 9  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 10 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 11 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 12 Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
+## 13 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 14                                Amigos          4                &lt;NA&gt;
+## 15 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 16 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 17                                Amigos          8                &lt;NA&gt;
+## 18 Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
+## 19 Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
+## 20 Circulação Interna Grade do PPGE/UFRJ          8              Básico
+## 21 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 22                                Amigos          2              Básico
+## 23 Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
+## 24            Recomendação do Orientador          2          Rudimentar
+## 25 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 26 Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 27 Circulação Interna Grade do PPGE/UFRJ          6              Básico
+## 28 Circulação Interna Grade do PPGE/UFRJ          7              Básico
+## 29    Recomendação de outros professores          3          Rudimentar
+## 30 Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
+## 31    Recomendação de outros professores          2       Intermediário
+##    origem.da.informacao identidade     programa instituicao usuario turma
+## 1    01_turma_2016.xlsx          1      Ouvinte     Ouvinte     sim  2016
+## 2    01_turma_2016.xlsx          2       PPGVet       UFRRJ     sim  2016
+## 3    01_turma_2016.xlsx          3         ENBT        JBRJ     nao  2016
+## 4    01_turma_2016.xlsx          4         PPGE        UFRJ     nao  2016
+## 5    01_turma_2016.xlsx          5         PPGE        UFRJ     sim  2016
+## 6    01_turma_2016.xlsx          6         PPGE        UFRJ     sim  2016
+## 7    01_turma_2016.xlsx          7         PPGE        UFRJ     sim  2016
+## 8    01_turma_2016.xlsx          8         PPGE        UFRJ     sim  2016
+## 9    01_turma_2016.xlsx          9         PPGE        UFRJ     nao  2016
+## 10   01_turma_2016.xlsx         10         PPGE        UFRJ     sim  2016
+## 11   01_turma_2016.xlsx         11         PPGE        UFRJ     sim  2016
+## 12   01_turma_2016.xlsx         12      Ouvinte     Ouvinte     sim  2016
+## 13   01_turma_2016.xlsx         13         PPGE        UFRJ     sim  2016
+## 14   01_turma_2016.xlsx         14          PPE       COPPE     sim  2016
+## 15   01_turma_2016.xlsx         15         PPGE        UFRJ     sim  2016
+## 16   01_turma_2016.xlsx         16         PPGE        UFRJ     nao  2016
+## 17   01_turma_2016.xlsx         17          PPE       COPPE     sim  2016
+## 18   01_turma_2016.xlsx         18         PPGE        UFRJ     nao  2016
+## 19          2017_1.xlsx         19         PPGE        UFRJ     nao  2017
+## 20         2017_10.xlsx         20         PPGE        UFRJ     nao  2017
+## 21         2017_11.xlsx         21         PPGE        UFRJ     sim  2017
+## 22         2017_12.xlsx         22       PGECOL        UFJF     nao  2017
+## 23         2017_13.xlsx         23         PPGE        UFRJ     sim  2017
+## 24          2017_2.xlsx         24         PPGE        UFRJ     sim  2017
+## 25          2017_3.xlsx         25         PPGE        UFRJ     sim  2017
+## 26          2017_4.xlsx         26         PPGE        UFRJ     sim  2017
+## 27          2017_5.xlsx         27         PPGE        UFRJ     sim  2017
+## 28          2017_6.xlsx         28         EBNT        JBRJ     sim  2017
+## 29          2017_7.xlsx         29         PPGE        UFRJ     nao  2017
+## 30          2017_8.xlsx         30         PPGE  UFRJ e ISS     sim  2017
+## 31          2017_9.xlsx         31 PPGBiofisica        UFRJ     nao  2017</code></pre>
+<hr />
+<div id="exercicio-13" class="section level5">
+<h5>Exercício 13</h5>
+<p>Usando a mesma lógica apresentada até agora, você consegue simplificar a coluna <code>pergunta.7</code>? Gostaríamos de passar: a. “Recomendação de outros professores” para “Professores”;<br />
+b. “Circulação Interna Grade do PPGE/UFRJ” para “Grade Interna”;<br />
+c. “Recomendação do Orientador” para “Orientador”.</p>
+<hr />
+<hr />
+</div>
+<div id="exercicio-14" class="section level5">
+<h5>Exercício 14</h5>
+<p>Já estamos quase acabando, mas precisamos organizar a tabela que estamos gerando e mudar o nome de alguma colunas. Também é uma boa idéia substituir todas as letras acentuadas pela suas versões não acentuadas (principalmente na coluna <code>pergunta.9</code>). Sugiro a ordem e modificações:</p>
+<ol style="list-style-type: decimal">
+<li>ID = identidade;</li>
+<li>turma;</li>
+<li>usuario;</li>
+<li>programa;</li>
+<li>instuicao;</li>
+<li>Cursando = pergunta.1;</li>
+<li>Formacao = pergunta.2;</li>
+<li>“Tempo de uso” = pergunta.4;</li>
+<li>“Qts cursos feitos” = pergunta.5;</li>
+<li>“Quem recomendou” = pergunta.7;</li>
+<li>“Prazo defesa” = pergunta.8;</li>
+<li>“Conhecimento estatistica” = pergunta.9;</li>
+<li>“á” = “a”;</li>
+<li>“é” = “e”;</li>
+<li>“í” = “i”;</li>
+</ol>
+<hr />
+</div>
+</div>
 </div>
 <div id="base-de-dados-relacionais" class="section level2">
 <h2>Base de dados relacionais</h2>
+<ul>
+<li><code>inner_join</code><br />
+</li>
+<li><code>left_join</code><br />
+</li>
+<li><code>right_join</code><br />
+</li>
+<li><code>full_join</code><br />
+</li>
+<li><code>semi_join</code><br />
+</li>
+<li><code>anti_join</code></li>
+</ul>
 </div>
 </div>
 
