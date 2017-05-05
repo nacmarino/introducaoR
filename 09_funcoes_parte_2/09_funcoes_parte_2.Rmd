@@ -23,9 +23,9 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Criando sequências de números aleatórios
-2. Funções - Parte 2: criando suas próprias funções
-3. Funções "loop"
+1. Criando sequências de números aleatórios;
+2. Funções - Parte 2: criando suas próprias funções;
+3. Controladores de Fluxo.
 
 ## Criando sequências de números aleatórios
 
@@ -37,6 +37,6 @@ h1,h2,h3,h4,h5,h6{
 ## Funções - Parte 2: criando suas próprias funções
 
 
-## Funcoes "loop"
+## Controladores de Fluxo
 
 for, while,...
