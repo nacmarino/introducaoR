@@ -48,21 +48,28 @@ h1,h2,h3,h4,h5,h6{
 pi
 ```
 
-* Para isso, o R usa dois tipos de Scoping:
-    1. __Lexical scoping:__ usa um nome já existente para realizar uma algo; após ter realizado este algo, o nome continua existindo bem como o resultado da tarefa/ação;
-        + Determina __onde__ procurar pelos __valores__ de um __nome__.
-        + Por exemplo, o `pi` é um __nome__ que existe no universo interno do R. Toda vez que você digitar `pi` e pedir para rodar este comando, o R sabe onde buscar essa informação e o que te mostrar.
-        
-    2. __Dynamic scoping:__ uma informação genérica é fornecida a um nome, o qual é usado para realizar algo; após este algo ter sido realizado, apenas o resultado da tarefa/ação existe. 
-        + Determina __quando__ procurar pelos __valores__ de um __nome__.
-        + Por exemplo, se você digitar algumas funções pedem argumentos específicos que, se você determinar fora do uso da função, não terão uso algum; todavia, usado no contexto da função, vão te retornar um resultado de interesse.
+* Exstem dois tipos principais de Scoping rules:
+
+    1. __Dynamic scoping:__ se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
+        + Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;
+    2. __Lexical scoping:__ quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
+        + Ou a variável é determinada em algum ponto da sessão ou ela não é;
+        + Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.
+        + A busca começa do ambiente global e corre do último ao primeiro ambiente "aberto".
+
+```{r}
+# todos os ambientes carregados na sessão que estamos operando
+search()
+```
 
 * Consequências:
     + Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;
     + Todo objeto criado é salvo no ambiente da sessão;
     + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
     + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
-    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais (__ou seja, podem haver mensagens de erro ao sobre-escrever funções__).
+    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+    
+* O R usa o __Lexical scoping__.
     
 ## Tipos de Argumentos
 

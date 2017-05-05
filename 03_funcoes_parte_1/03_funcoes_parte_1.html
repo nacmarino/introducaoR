@@ -172,27 +172,35 @@ h1,h2,h3,h4,h5,h6{
 <pre class="r"><code>pi</code></pre>
 <pre><code>## [1] 3.141593</code></pre>
 <ul>
-<li>Para isso, o R usa dois tipos de Scoping:
+<li><p>Exstem dois tipos principais de Scoping rules:</p>
 <ol style="list-style-type: decimal">
-<li><strong>Lexical scoping:</strong> usa um nome já existente para realizar uma algo; após ter realizado este algo, o nome continua existindo bem como o resultado da tarefa/ação;
+<li><strong>Dynamic scoping:</strong> se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
 <ul>
-<li>Determina <strong>onde</strong> procurar pelos <strong>valores</strong> de um <strong>nome</strong>.</li>
-<li>Por exemplo, o <code>pi</code> é um <strong>nome</strong> que existe no universo interno do R. Toda vez que você digitar <code>pi</code> e pedir para rodar este comando, o R sabe onde buscar essa informação e o que te mostrar.</li>
+<li>Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;</li>
 </ul></li>
-<li><strong>Dynamic scoping:</strong> uma informação genérica é fornecida a um nome, o qual é usado para realizar algo; após este algo ter sido realizado, apenas o resultado da tarefa/ação existe.
+<li><strong>Lexical scoping:</strong> quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
 <ul>
-<li>Determina <strong>quando</strong> procurar pelos <strong>valores</strong> de um <strong>nome</strong>.</li>
-<li>Por exemplo, se você digitar algumas funções pedem argumentos específicos que, se você determinar fora do uso da função, não terão uso algum; todavia, usado no contexto da função, vão te retornar um resultado de interesse.</li>
+<li>Ou a variável é determinada em algum ponto da sessão ou ela não é;</li>
+<li>Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.</li>
+<li>A busca começa do ambiente global e corre do último ao primeiro ambiente “aberto”.</li>
 </ul></li>
 </ol></li>
+</ul>
+<pre class="r"><code># todos os ambientes carregados na sessão que estamos operando
+search()</code></pre>
+<pre><code>## [1] &quot;.GlobalEnv&quot;        &quot;package:stats&quot;     &quot;package:graphics&quot; 
+## [4] &quot;package:grDevices&quot; &quot;package:utils&quot;     &quot;package:datasets&quot; 
+## [7] &quot;package:methods&quot;   &quot;Autoloads&quot;         &quot;package:base&quot;</code></pre>
+<ul>
 <li>Consequências:
 <ul>
 <li>Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;</li>
 <li>Todo objeto criado é salvo no ambiente da sessão;</li>
 <li>Cada objeto criado ocupa um espaço e ‘come’ poder de processamento;</li>
 <li>Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;</li>
-<li>Sobre-escrever o nome de uma função com um objeto <em>não</em> apaga a função, apenas faz com que o seu uso necessite de operadores especiais (<strong>ou seja, podem haver mensagens de erro ao sobre-escrever funções</strong>).</li>
+<li>Sobre-escrever o nome de uma função com um objeto <em>não</em> apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.</li>
 </ul></li>
+<li>O R usa o <strong>Lexical scoping</strong>.</li>
 </ul>
 </div>
 <div id="tipos-de-argumentos" class="section level2">
