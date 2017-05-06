@@ -786,16 +786,111 @@ dados <- dados %>%
          "Quem recomendou" = pergunta.7, "Prazo defesa" = pergunta.8, "Conhecimento estatistica" = pergunta.9) %>% 
   mutate("Conhecimento estatistica"  = sub(pattern = "á", replacement = "a", x = "Conhecimento estatistica"),
          "Conhecimento estatistica"  = sub(pattern = "é", replacement = "e", x = "Conhecimento estatistica"),
-         "Conhecimento estatistica"  = sub(pattern = "í", replacement = "i", x = "Conhecimento estatistica")) %>% 
-  write.table(file = "dados/dados_limpos.xls", sep = "\t")
+         "Conhecimento estatistica"  = sub(pattern = "í", replacement = "i", x = "Conhecimento estatistica"))
 ```
 
+Agora que já ajeitamos e limpamos este conjunto de dados, podemos salvar ele para criar gráficos, fazer outras manipulações, rodar análises e etc. 
+
+```{r}
+write.table(x = dados, file = "dados/dados_limpos.xls", sep = "\t")
+```
 
 ## Base de dados relacionais
 
-+ `inner_join`   
-+ `left_join`  
-+ `right_join`  
-+ `full_join`  
-+ `semi_join`  
-+ `anti_join` 
+Quando estamos trabalhando com um conjunto de dados, normalmente pensamos em manter todas as informações juntas em um único arquivo. Por um lado, isso nos ajuda a saber onde está um determinado dado que podemos vir a necessitar. Por outro lado, nem todo dado pode ser incluído da mesma forma em uma tabela:
+* Dados das características das espécies _vs_ dados da abundância das espécies;
+* Dados abióticos _vs_ dados bióticos;
+* Dados das coordenadas amostradas _vs_ dados dos arquivos de mapas;
+* Dados necessários para o cálculo de uma variável composta (e.g., vazão de um rio, emissão de CO~[2]~, dados para o cálculo de alcalinidade da água);
+* ...
+
+Nestes casos, podemos pensar em separar cada conjunto de dados em diferentes tabelas de acordo com a sua natureza, e usar uma característica em comum entre estas tabelas para que possamos casar as informações posteriormente. Este tipo de linha de raciocínio é àquela usada para construirmos e usarmos uma base de dados relacional. Para entendermos melhor o que é isso, vamos criar três conjunto de dados: `abioticos`, `bioticos` e `traits`.
+
+```{r}
+# dados abioticos
+abioticos <- data_frame(site = c("site1", "site2", "site3", "site4", "site5"),
+                        var1 = rpois(n = 5, lambda = 100),
+                        var2 = c("A", "A", "B", "B", "C"))
+
+# dados bioticos
+bioticos <- data_frame(site = c("site1", "site2", "site3", "site4", "site6"),
+           sp1 = rnbinom(n = 5, size = 2, mu = 10),
+           sp2 = rnbinom(n = 5, size = 1, mu = 10),
+           sp3 = rnbinom(n = 5, size = 0.2, mu = 10),
+           sp4 = rnbinom(n = 5, size = 0.5, mu = 10))
+
+# traits
+traits <- data_frame(especie = paste0("sp",1:4),
+                     trait1 = c("pequeno", "pequeno", "medio", "grande"),
+                     trait2 = c("predador", "herbivoro", "herbivoro", "predador"),
+                     trait3 = c(33, 35, 39, 20))
+
+```
+
+Quais são os elementos que estas três tabelas compartilham em comum?  
+1. a tabela `abioticos` compartilha o nome do site com a tabela `bioticos`;  
+2. a tabela `bioticos` compartilha os nomes das espécies (nas colunas) com a tabela `traits` (nas linhas).  
+
+Nós podemos usar estas características em comum para fazermos operações que juntem as três tabelas ou duas delas por vez. Estas funções estão listadas abaixo:
+
+* `inner_join`: combina pares de observações sempre que existir uma informação (__chave__) em comum, __mantendo as observações que apareçam em abas as tabelas - informações não compartilhadas são excluídas__:  
+
+```{r}
+inner_join(x = abioticos, y = bioticos, by = "site")
+```
+  
+Existem funções também que fazem o __outer join__: combinam duas tabelas, __mantendo observações que apareçam em pelo menos uma tabela__. São três funções que seguem este tipo:  
+  
++ `left_join`: mantém todas as observações da planilha da esquerda (`x`), completando as observações faltantes da planilha da direita (`y`) com `NA`.  
+    
+```{r}
+left_join(x = abioticos, y = bioticos, by = "site")
+```    
+  
++ `right_join`: mantém todas as observações da planilha da direta (`y`), completando as observações faltantes da planilha da esquerda (`x`) com `NA`.  
+  
+```{r}
+right_join(x = abioticos, y = bioticos, by = "site")
+```      
+    
++ `full_join`: mantém todas as observações da planilha da esquerda (`x`) e da direta (`y`), completando as observações faltantes das duas planilhas com `NA`
+
+```{r}
+full_join(x = abioticos, y = bioticos, by = "site")
+```   
+
+Existe também uma outra forma de realizar esta junção entre tabelas, através de um __filtering join__: combinam duas tabelas, __mantendo as observações e variáveis que apareçam em uma única tabela__. Neste sentido, podemos compreender o nome _filtering_, pois são funções que funcionam como o _filter_ (apenas as linhas que cumprem com uma condição são mantidas). São duas funções que seguem este tipo: 
+  
++ `semi_join`: compara duas planilhas e remove as observações que são únicas à planilha da esquerda (`x`):  
+  
+```{r}
+semi_join(x = abioticos, y = bioticos, by = "site")
+```
+
++ `anti_join`: compara duas planilhas e retorna apenas as observações que são únicas à planilha da esquerda (`x`) 
+
+```{r}
+anti_join(x = abioticos, y = bioticos, by = "site")
+```
+
+Estas funções são muito úteis para trabalharmos com bases de dados relacionais, e também ao realizarmos operações durante a análise de dados que requerem filtrar uma planilha de acordo com informações em outra planilha. Se combinadas com as demais funções do `dplyr` e do `tidyr`, elas tornam a manipulação de dados diretamente no R muito mais fácil do que se tivéssemos que fazer tudo manualmente.
+
+* __Dica do R:__ existem três coisas que podem ser úteis ao seu favor ao usar estas funções de dados relacionais:  
+    + Se você não especificar o valor de `by`, a função vai buscar qual é a coluna com nome similar é compartilhada entre elas (pode dar muito certo ou muito errado).  
+    + Você pode especificar mais de uma coluna em `by`.
+    + O 'encontro' entre as linhas correspondentes ocorre mesmo que elas estejam desalinhadas entre as planilhas. Isto é, e.g., se as linhas da planilha `x` estiverem em uma ordem diferente daquelas da planilha `y`, a função é capaz de fazer o casamento de forma correta. Isto não aconteceria se, por exemplo, você usasse a função `cbind` ou `cbind.data.frame`.
+
+---
+
+##### Exercício 15
+
+Você percebeu que não mexemos na planilha `traits`? Vamos fazer isso agora. Com os conhecimentos adquiridos aqui:
+
+a. Junte as informacoes da planilha `abioticos` com àquelas da planilha `bioticos`, e guarde isto em um objeto;
+b. Transforme este objeto do formato largo para o formato longo, e guarde esta operação em outro objeto;
+c. Vamos adicionar as informacoes de `traits` ao objeto que você acabou de criar?  
+d. Qual a abundância total de espécies por site?
+e. Qual a abundância total de espécies predadoras?
+f. Qual a abundância total de espécies de tamanho de corpo pequeno por site?
+
+---

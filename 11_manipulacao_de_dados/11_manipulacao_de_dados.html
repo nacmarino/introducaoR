@@ -1699,24 +1699,130 @@ c. “Recomendação do Orientador” para “Orientador”.</p>
 <li>“í” = “i”;</li>
 </ol>
 <hr />
+<p>Agora que já ajeitamos e limpamos este conjunto de dados, podemos salvar ele para criar gráficos, fazer outras manipulações, rodar análises e etc.</p>
+<pre class="r"><code>write.table(x = dados, file = &quot;dados/dados_limpos.xls&quot;, sep = &quot;\t&quot;)</code></pre>
 </div>
 </div>
 </div>
 <div id="base-de-dados-relacionais" class="section level2">
 <h2>Base de dados relacionais</h2>
+<p>Quando estamos trabalhando com um conjunto de dados, normalmente pensamos em manter todas as informações juntas em um único arquivo. Por um lado, isso nos ajuda a saber onde está um determinado dado que podemos vir a necessitar. Por outro lado, nem todo dado pode ser incluído da mesma forma em uma tabela: * Dados das características das espécies <em>vs</em> dados da abundância das espécies; * Dados abióticos <em>vs</em> dados bióticos; * Dados das coordenadas amostradas <em>vs</em> dados dos arquivos de mapas; * Dados necessários para o cálculo de uma variável composta (e.g., vazão de um rio, emissão de CO<sub>[2]</sub>, dados para o cálculo de alcalinidade da água); * …</p>
+<p>Nestes casos, podemos pensar em separar cada conjunto de dados em diferentes tabelas de acordo com a sua natureza, e usar uma característica em comum entre estas tabelas para que possamos casar as informações posteriormente. Este tipo de linha de raciocínio é àquela usada para construirmos e usarmos uma base de dados relacional. Para entendermos melhor o que é isso, vamos criar três conjunto de dados: <code>abioticos</code>, <code>bioticos</code> e <code>traits</code>.</p>
+<pre class="r"><code># dados abioticos
+abioticos &lt;- data_frame(site = c(&quot;site1&quot;, &quot;site2&quot;, &quot;site3&quot;, &quot;site4&quot;, &quot;site5&quot;),
+                        var1 = rpois(n = 5, lambda = 100),
+                        var2 = c(&quot;A&quot;, &quot;A&quot;, &quot;B&quot;, &quot;B&quot;, &quot;C&quot;))
+
+# dados bioticos
+bioticos &lt;- data_frame(site = c(&quot;site1&quot;, &quot;site2&quot;, &quot;site3&quot;, &quot;site4&quot;, &quot;site6&quot;),
+           sp1 = rnbinom(n = 5, size = 2, mu = 10),
+           sp2 = rnbinom(n = 5, size = 1, mu = 10),
+           sp3 = rnbinom(n = 5, size = 0.2, mu = 10),
+           sp4 = rnbinom(n = 5, size = 0.5, mu = 10))
+
+# traits
+traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
+                     trait1 = c(&quot;pequeno&quot;, &quot;pequeno&quot;, &quot;medio&quot;, &quot;grande&quot;),
+                     trait2 = c(&quot;predador&quot;, &quot;herbivoro&quot;, &quot;herbivoro&quot;, &quot;predador&quot;),
+                     trait3 = c(33, 35, 39, 20))</code></pre>
+<p>Quais são os elementos que estas três tabelas compartilham em comum?<br />
+1. a tabela <code>abioticos</code> compartilha o nome do site com a tabela <code>bioticos</code>;<br />
+2. a tabela <code>bioticos</code> compartilha os nomes das espécies (nas colunas) com a tabela <code>traits</code> (nas linhas).</p>
+<p>Nós podemos usar estas características em comum para fazermos operações que juntem as três tabelas ou duas delas por vez. Estas funções estão listadas abaixo:</p>
 <ul>
-<li><code>inner_join</code><br />
-</li>
-<li><code>left_join</code><br />
-</li>
-<li><code>right_join</code><br />
-</li>
-<li><code>full_join</code><br />
-</li>
-<li><code>semi_join</code><br />
-</li>
-<li><code>anti_join</code></li>
+<li><code>inner_join</code>: combina pares de observações sempre que existir uma informação (<strong>chave</strong>) em comum, <strong>mantendo as observações que apareçam em abas as tabelas - informações não compartilhadas são excluídas</strong>:</li>
 </ul>
+<pre class="r"><code>inner_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 4 × 7
+##    site  var1  var2   sp1   sp2   sp3   sp4
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 site1   102     A     1     9     0     2
+## 2 site2   115     A     4     2     9     6
+## 3 site3    98     B    14     3     1    25
+## 4 site4    92     B     6     7     0    28</code></pre>
+<p>Existem funções também que fazem o <strong>outer join</strong>: combinam duas tabelas, <strong>mantendo observações que apareçam em pelo menos uma tabela</strong>. São três funções que seguem este tipo:</p>
+<ul>
+<li><code>left_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>), completando as observações faltantes da planilha da direita (<code>y</code>) com <code>NA</code>.</li>
+</ul>
+<pre class="r"><code>left_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 5 × 7
+##    site  var1  var2   sp1   sp2   sp3   sp4
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 site1   102     A     1     9     0     2
+## 2 site2   115     A     4     2     9     6
+## 3 site3    98     B    14     3     1    25
+## 4 site4    92     B     6     7     0    28
+## 5 site5   108     C    NA    NA    NA    NA</code></pre>
+<ul>
+<li><code>right_join</code>: mantém todas as observações da planilha da direta (<code>y</code>), completando as observações faltantes da planilha da esquerda (<code>x</code>) com <code>NA</code>.</li>
+</ul>
+<pre class="r"><code>right_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 5 × 7
+##    site  var1  var2   sp1   sp2   sp3   sp4
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 site1   102     A     1     9     0     2
+## 2 site2   115     A     4     2     9     6
+## 3 site3    98     B    14     3     1    25
+## 4 site4    92     B     6     7     0    28
+## 5 site6    NA  &lt;NA&gt;     6     1     1     0</code></pre>
+<ul>
+<li><code>full_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>) e da direta (<code>y</code>), completando as observações faltantes das duas planilhas com <code>NA</code></li>
+</ul>
+<pre class="r"><code>full_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##    site  var1  var2   sp1   sp2   sp3   sp4
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 site1   102     A     1     9     0     2
+## 2 site2   115     A     4     2     9     6
+## 3 site3    98     B    14     3     1    25
+## 4 site4    92     B     6     7     0    28
+## 5 site5   108     C    NA    NA    NA    NA
+## 6 site6    NA  &lt;NA&gt;     6     1     1     0</code></pre>
+<p>Existe também uma outra forma de realizar esta junção entre tabelas, através de um <strong>filtering join</strong>: combinam duas tabelas, <strong>mantendo as observações e variáveis que apareçam em uma única tabela</strong>. Neste sentido, podemos compreender o nome <em>filtering</em>, pois são funções que funcionam como o <em>filter</em> (apenas as linhas que cumprem com uma condição são mantidas). São duas funções que seguem este tipo:</p>
+<ul>
+<li><code>semi_join</code>: compara duas planilhas e remove as observações que são únicas à planilha da esquerda (<code>x</code>):</li>
+</ul>
+<pre class="r"><code>semi_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 4 × 3
+##    site  var1  var2
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
+## 1 site1   102     A
+## 2 site2   115     A
+## 3 site3    98     B
+## 4 site4    92     B</code></pre>
+<ul>
+<li><code>anti_join</code>: compara duas planilhas e retorna apenas as observações que são únicas à planilha da esquerda (<code>x</code>)</li>
+</ul>
+<pre class="r"><code>anti_join(x = abioticos, y = bioticos, by = &quot;site&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 3
+##    site  var1  var2
+##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
+## 1 site5   108     C</code></pre>
+<p>Estas funções são muito úteis para trabalharmos com bases de dados relacionais, e também ao realizarmos operações durante a análise de dados que requerem filtrar uma planilha de acordo com informações em outra planilha. Se combinadas com as demais funções do <code>dplyr</code> e do <code>tidyr</code>, elas tornam a manipulação de dados diretamente no R muito mais fácil do que se tivéssemos que fazer tudo manualmente.</p>
+<ul>
+<li><strong>Dica do R:</strong> existem três coisas que podem ser úteis ao seu favor ao usar estas funções de dados relacionais:
+<ul>
+<li>Se você não especificar o valor de <code>by</code>, a função vai buscar qual é a coluna com nome similar é compartilhada entre elas (pode dar muito certo ou muito errado).<br />
+</li>
+<li>Você pode especificar mais de uma coluna em <code>by</code>.</li>
+<li>O ‘encontro’ entre as linhas correspondentes ocorre mesmo que elas estejam desalinhadas entre as planilhas. Isto é, e.g., se as linhas da planilha <code>x</code> estiverem em uma ordem diferente daquelas da planilha <code>y</code>, a função é capaz de fazer o casamento de forma correta. Isto não aconteceria se, por exemplo, você usasse a função <code>cbind</code> ou <code>cbind.data.frame</code>.</li>
+</ul></li>
+</ul>
+<hr />
+<div id="exercicio-15" class="section level5">
+<h5>Exercício 15</h5>
+<p>Você percebeu que não mexemos na planilha <code>traits</code>? Vamos fazer isso agora. Com os conhecimentos adquiridos aqui:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Junte as informacoes da planilha <code>abioticos</code> com àquelas da planilha <code>bioticos</code>, e guarde isto em um objeto;</li>
+<li>Transforme este objeto do formato largo para o formato longo, e guarde esta operação em outro objeto;</li>
+<li>Vamos adicionar as informacoes de <code>traits</code> ao objeto que você acabou de criar?<br />
+</li>
+<li>Qual a abundância total de espécies por site?</li>
+<li>Qual a abundância total de espécies predadoras?</li>
+<li>Qual a abundância total de espécies de tamanho de corpo pequeno por site?</li>
+</ol>
+<hr />
+</div>
 </div>
 </div>
 
