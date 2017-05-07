@@ -5,3 +5,25 @@ author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. Reproducible Research;  
+2. Controle de Versão;  
+3. Introdução ao GitHub;  
+4. `rmarkdown`.  
