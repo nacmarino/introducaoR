@@ -1,0 +1,125 @@
+---
+title: "Introdução a Mapas no R"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. O que está aula é e o que ela não é!;
+2. Utilizando o conteúdo do R para gerar mapas simples;
+3. Usando informações da internet para criar mapas simples;
+4. Criando mapas simples a partir de arquivos raster;
+
+## O que está aula é e o que ela não é!
+
+```{r eval=FALSE}
+library(ggplot2)
+library(RgoogleMaps)
+library(raster)
+library(maptools)
+library(ggmap)
+library(rgdal)
+library(maps)
+library(ggalt)
+```
+
+## Utilizando o conteúdo do R para gerar mapas simples
+
+mapa <- borders("world", regions = "Brazil", fill = "grey70", colour = "black")
+
+brazil <- ggplot() + mapa + theme_bw() + xlab("Longitude (decimals)") + ylab("Latitude (decimals)") + 
+  theme(panel.border = element_blank(), panel.grid.major = element_line(colour = "grey80"), panel.grid.minor = element_blank())
+brazil
+
+
+## Usando informações da internet para criar mapas simples
+
+geocode("Parque Jurubatiba", source = "google")
+
+---
+
+bwg_map <- get_map(location = c(-70, -20), source = "stamen",
+                   maptype = "watercolor", zoom = 3)
+
+final_map <- bwg_map +
+  map_borders +
+  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
+             shape = 20, colour = "black", size = 3) + 
+  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
+             colour = "red", shape = 20, size = 2) +
+  theme(panel.border = element_blank(),
+        axis.title = element_blank(),
+        axis.text  = element_blank(),
+        axis.ticks = element_blank(),
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+---
+
+macae <- get_map(location = c(lon = -41.44299, lat = -22.17327), source = "stamen", maptype = "toner", zoom = 11)
+plot(macae)
+
+---
+
+# lots of visual options, just like google maps: maptype = c("roadmap", "mobile",
+# "satellite", "terrain", "hybrid", "mapmaker-roadmap", "mapmaker-hybrid")
+GetMap(center = c(-23, -44), zoom = 5, maptype = "terrain",
+                    size = c(240, 200), markers = <funcao>,
+                    destfile = "BWG Map/brazil.png")
+                    
+## Criando mapas simples a partir de arquivos raster
+
+brazil_1 <- readShapeSpatial("Layers/BRA_adm/BRA_adm1.shp")
+rio_state_1 <- subset(brazil_1, brazil_1@data$NAME_1 == "Rio de Janeiro")
+
+rio1 <- fortify(rio_state_1)
+
+rio <- ggplot() + geom_polygon(data = rio1, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
+rio
+
+---
+
+brazil_2 <- readShapeSpatial("Layers/BRA_adm/BRA_adm2.shp")
+rio_state_2 <- subset(brazil_2, brazil_2@data$NAME_1 == "Rio de Janeiro")
+
+rio2 <- fortify(rio_state_2)
+
+rio_bound <- ggplot() + geom_polygon(data = rio2, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
+rio_bound
+
+---
+
+brazil_3 <- readShapeSpatial("Layers/BRA_adm/BRA_adm3.shp")
+rio_state_3 <- subset(brazil_3, brazil_3@data$NAME_1 == "Rio de Janeiro")
+
+rio3 <- fortify(rio_state_3)
+
+rio_full <- ggplot() + geom_polygon(data = rio3, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
+rio_full
+
+---
+
+rio_city <- subset(rio_state_2, rio_state_2@data$NAME_2 == "Rio de Janeiro") #based on rio_bound
+rio4 <- fortify(rio_city)
+
+rio_bound + geom_polygon(data = rio4, aes(x = long, y = lat, group = group), colour = "black", fill = "yellow")
+
+---
+
