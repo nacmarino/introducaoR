@@ -489,17 +489,77 @@ figura +
 
 ---
 
-O `ggplot2` pode interagir com os outros pacotes que compõem o `tidyverse`. Por exemplo, podemos 
+O `ggplot2` pode interagir com os outros pacotes que compõem o `tidyverse`. Isto é muito útil, pois reduz ainda mais a distância entre a pergunta e a resposta. Por exemplo: como variou o produto interno bruto per capita no Brasil ao longo dos anos?
 
-FALAR SOBRE A INTERAÇÃO COM O DPLYR - GRAFICO DE BARRAS COM E SEM DPLYR, TESTAR O FILTER!
+```{r}
+# dados do GDP para o Brasil
+dados_brasil <- gapminder %>% 
+  filter(country == "Brazil") %>% 
+  select(year, gdpPercap)
 
-EXERCICIO: MONTAR FIGURAS DESCREVENDO OS PADRÕES GERAIS OBTIDOS NA LIMPEZA DAQUELES DADOS ANTERIORES!
+# criando figura para mostrar relação
+ggplot(data = dados_brasil, mapping = aes(x = year, y = gdpPercap)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  meu_tema
+```
 
-FALAR SOBRE COMO SALVAR UM GRÁFICO DO GGPLOT
+Podemos aproveitar essa integração para criar variáveis antes de criarmos a figura:
 
-SE DER TEMPO: GGMAP E CRIANDO CORES!
+```{r}
+# dados do GDP para o Brasil
+dados_brasil <- gapminder %>% 
+  filter(country == "Brazil") %>% 
+  mutate(log_populacao = log10(pop))
 
-## Mais sobre o ggplot2
+# criando figura para mostrar relação
+ggplot(data = dados_brasil, mapping = aes(x = year, y = gdpPercap, size = log_populacao, fill = lifeExp)) +
+  geom_point(shape = 21) +
+  geom_smooth(method = "lm") +
+  meu_tema
+```
+
+Entretanto, fazer parte do `tidyverse` traz também a vantagem de integrarmos toda a manipulação de dados com a criação da figura através do operador `pipe` - sem a necessidade de dizer qual o conjunto de dados estamos trabalhando:
+
+```{r}
+gapminder %>% 
+  filter(country == "Brazil") %>% 
+  mutate(log_populacao = log10(pop)) %>% 
+  ggplot(mapping = aes(x = year, y = gdpPercap, size = log_populacao, fill = lifeExp)) +
+  geom_point(shape = 21) +
+  geom_smooth(method = "lm") +
+  meu_tema
+```
+
+Dessa forma, fazer gráficos usando o `ggplot2` e as demais ferramentas do `tidyverse` não é só mais intuitivo, mas muito mais prático do que se usarmos as funções da `base` do R. 
+
+---
+
+##### Exercício 6
+
+Gráficos de barra e erro padrão da média (ou gráficos de ponto e intervalos de confiança de 95%) são duas coisas muito comuns que nós, ecólogos gostamos de fazer. Vamos praticar a manipulação de dados com a criação de figuras de forma integrada com o operador `pipe` usando o conjunto de dados das enquetes, que limpamos anteriormente (todas as perguntas devem ser respondidas com gráficos). Note que em cada uma das tarefas, é necessário: ajustar o `theme`, ajustar os eixos x e y (limits, expand, títulos, breaks) e customizar as cores/shape das barras e/ou pontos.
+
+a. Carregue o conjunto de dados limpos das enquetes, que limpamos na aula anterior - ele está no diretório `11_manipulacao_de_dados`, no sub-diretorio `dados` e recebeu o nome de `dados_limpos.xls`. Caso você queira, renomeie os nomes das colunas para que fique mais fácil fazer as operações a seguir.  
+b. Quantas pessoas já fizeram esta disciplina? (__dica:__ `geom_bar`)  
+c. Quantas pessoas fizeram esta disciplina em cada um dos anos que ela foi ofertada? (__dica:__ `geom_bar`)  
+d. Quantas pessoas que fizeram esta disciplina já haviam usado o R? (__dica:__ `geom_bar`)  
+e. Este padrão parece diferir entre esta turma e a anterior?  
+f. Quantos cursos em média (e o erro padrão da média) cada aluno já havia feito antes de prestar esta disciplina (apresente o gráfico como um ponto e o erro padrão da média como linhas; __dica:__ `geom_point` e `geom_errorbar`)?  
+g. Para os alunos que não são ouvintes da disciplina, qual o prazo médio para a defesa? Separe os alunos entre estudantes de mestrado e de doutorado, use um gráfico de barras e apresente o intervalo de confiança de 95% (__dica:__ `geom_bar` e `geom_errorbar`).  
+
+---
+
+Na aula do `plot` na `base` do função R, vimos que para termos uma figura de alta qualidade não devemos usar a opção `Export` na aba `Plot`. Lá, vimos que podemos usar as funções `pdf`, `tiff` e `jpeg` (por exemplo) para gerar e salvar o gráfico de alta qualidade em nosso computador.
+
+O `ggplot2` possui uma função especial para isso: a função `ggsave`. Esta função elimina a necessidade de usar uma função em especial para cada formato de arquivo que você quer usar, pois você determina diretamente nela o tipo de extensão do arquivo gerado e todas as demais informações.  
+
+```{r eval=FALSE}
+ggsave(filename = "figuras/exemplo.pdf", plot = figura, width = 15, height = 10, dpi = 200)
+```
+
+* __Dica do R:__ para gráficos com mais de um painel, você pode usar as funções nos pacotes `grid` e `grid.Extra` para juntar os múltiplos painéis, e depois usar as funções do pacote `base` ou o `ggsave` para salvá-las.
+
+## Mais sobre o `ggplot2`
 
 * No livro _ggplot2_: http://ggplot2.org/book/;  
 * No site: http://ggplot2.tidyverse.org/reference/;  
