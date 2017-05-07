@@ -751,8 +751,10 @@ c. "Recomendação do Orientador" para "Orientador".
 ```{r echo=FALSE}
 dados <- dados %>% 
   mutate(pergunta.7 = ifelse(str_detect(string = pergunta.7, pattern = "Recomendação de outros professores") == TRUE, 
-                             "Professores", ifelse(str_detect(string = pergunta.7, pattern = "Circulação Interna Grade do PPGE/UFRJ") == TRUE,
-                                                   "Grade Interna", ifelse(str_detect(string = pergunta.7, pattern = "Recomendação do Orientador") == TRUE, "Orientador", pergunta.7))))
+                             "Professores", 
+                             ifelse(str_detect(string = pergunta.7, pattern = "Circulação Interna Grade do PPGE/UFRJ") == TRUE,
+                                                   "Grade Interna", 
+                                    ifelse(str_detect(string = pergunta.7, pattern = "Recomendação do Orientador") == TRUE, "Orientador", pergunta.7))))
 ```
 
 ---
@@ -781,12 +783,15 @@ Já estamos quase acabando, mas precisamos organizar a tabela que estamos gerand
 
 ```{r echo=FALSE}
 dados <- dados %>% 
-  select(identidade, turma, usuario, programa, instituicao, pergunta.1, pergunta.2, pergunta.4, pergunta.5, pergunta.7, pergunta.8, pergunta.9) %>% 
-  rename(ID = identidade, Cursando = pergunta.1, Formacao = pergunta.2, "Tempo de uso" = pergunta.4, "Qts cursos feitos" = pergunta.5, 
-         "Quem recomendou" = pergunta.7, "Prazo defesa" = pergunta.8, "Conhecimento estatistica" = pergunta.9) %>% 
-  mutate("Conhecimento estatistica"  = sub(pattern = "á", replacement = "a", x = "Conhecimento estatistica"),
-         "Conhecimento estatistica"  = sub(pattern = "é", replacement = "e", x = "Conhecimento estatistica"),
-         "Conhecimento estatistica"  = sub(pattern = "í", replacement = "i", x = "Conhecimento estatistica"))
+  select(identidade, turma, usuario, programa, instituicao, pergunta.1, pergunta.2, 
+         pergunta.4, pergunta.5, pergunta.7, pergunta.8, pergunta.9) %>% 
+  mutate(pergunta.9 = sub(pattern = "á", replacement = "a", x = pergunta.9),
+         pergunta.9 = sub(pattern = "é", replacement = "e", x = pergunta.9),
+         pergunta.9  = sub(pattern = "í", replacement = "i", x = pergunta.9)) %>% 
+  rename(ID = identidade, Cursando = pergunta.1, Formacao = pergunta.2, 
+         "Tempo de uso" = pergunta.4, "Qts cursos feitos" = pergunta.5, 
+         "Quem recomendou" = pergunta.7, "Prazo defesa" = pergunta.8,
+         "Conhecimento estatistica" = pergunta.9)
 ```
 
 Agora que já ajeitamos e limpamos este conjunto de dados, podemos salvar ele para criar gráficos, fazer outras manipulações, rodar análises e etc. 
