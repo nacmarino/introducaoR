@@ -1700,7 +1700,7 @@ c. “Recomendação do Orientador” para “Orientador”.</p>
 </ol>
 <hr />
 <p>Agora que já ajeitamos e limpamos este conjunto de dados, podemos salvar ele para criar gráficos, fazer outras manipulações, rodar análises e etc.</p>
-<pre class="r"><code>write.table(x = dados, file = &quot;dados/dados_limpos.xls&quot;, sep = &quot;\t&quot;)</code></pre>
+<pre class="r"><code>write.table(x = dados, file = &quot;dados/dados_limpos.xls&quot;, sep = &quot;\t&quot;, row.names = FALSE)</code></pre>
 </div>
 </div>
 </div>
@@ -1736,10 +1736,10 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 4 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1   102     A     1     9     0     2
-## 2 site2   115     A     4     2     9     6
-## 3 site3    98     B    14     3     1    25
-## 4 site4    92     B     6     7     0    28</code></pre>
+## 1 site1    91     A    10     5     0     4
+## 2 site2   112     A     9    22     0    32
+## 3 site3   107     B     7    11     8     1
+## 4 site4    90     B     1    50     1     1</code></pre>
 <p>Existem funções também que fazem o <strong>outer join</strong>: combinam duas tabelas, <strong>mantendo observações que apareçam em pelo menos uma tabela</strong>. São três funções que seguem este tipo:</p>
 <ul>
 <li><code>left_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>), completando as observações faltantes da planilha da direita (<code>y</code>) com <code>NA</code>.</li>
@@ -1748,11 +1748,11 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 5 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1   102     A     1     9     0     2
-## 2 site2   115     A     4     2     9     6
-## 3 site3    98     B    14     3     1    25
-## 4 site4    92     B     6     7     0    28
-## 5 site5   108     C    NA    NA    NA    NA</code></pre>
+## 1 site1    91     A    10     5     0     4
+## 2 site2   112     A     9    22     0    32
+## 3 site3   107     B     7    11     8     1
+## 4 site4    90     B     1    50     1     1
+## 5 site5    91     C    NA    NA    NA    NA</code></pre>
 <ul>
 <li><code>right_join</code>: mantém todas as observações da planilha da direta (<code>y</code>), completando as observações faltantes da planilha da esquerda (<code>x</code>) com <code>NA</code>.</li>
 </ul>
@@ -1760,11 +1760,11 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 5 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1   102     A     1     9     0     2
-## 2 site2   115     A     4     2     9     6
-## 3 site3    98     B    14     3     1    25
-## 4 site4    92     B     6     7     0    28
-## 5 site6    NA  &lt;NA&gt;     6     1     1     0</code></pre>
+## 1 site1    91     A    10     5     0     4
+## 2 site2   112     A     9    22     0    32
+## 3 site3   107     B     7    11     8     1
+## 4 site4    90     B     1    50     1     1
+## 5 site6    NA  &lt;NA&gt;     4    17    20     0</code></pre>
 <ul>
 <li><code>full_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>) e da direta (<code>y</code>), completando as observações faltantes das duas planilhas com <code>NA</code></li>
 </ul>
@@ -1772,12 +1772,12 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 6 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1   102     A     1     9     0     2
-## 2 site2   115     A     4     2     9     6
-## 3 site3    98     B    14     3     1    25
-## 4 site4    92     B     6     7     0    28
-## 5 site5   108     C    NA    NA    NA    NA
-## 6 site6    NA  &lt;NA&gt;     6     1     1     0</code></pre>
+## 1 site1    91     A    10     5     0     4
+## 2 site2   112     A     9    22     0    32
+## 3 site3   107     B     7    11     8     1
+## 4 site4    90     B     1    50     1     1
+## 5 site5    91     C    NA    NA    NA    NA
+## 6 site6    NA  &lt;NA&gt;     4    17    20     0</code></pre>
 <p>Existe também uma outra forma de realizar esta junção entre tabelas, através de um <strong>filtering join</strong>: combinam duas tabelas, <strong>mantendo as observações e variáveis que apareçam em uma única tabela</strong>. Neste sentido, podemos compreender o nome <em>filtering</em>, pois são funções que funcionam como o <em>filter</em> (apenas as linhas que cumprem com uma condição são mantidas). São duas funções que seguem este tipo:</p>
 <ul>
 <li><code>semi_join</code>: compara duas planilhas e remove as observações que são únicas à planilha da esquerda (<code>x</code>):</li>
@@ -1786,10 +1786,10 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 4 × 3
 ##    site  var1  var2
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
-## 1 site1   102     A
-## 2 site2   115     A
-## 3 site3    98     B
-## 4 site4    92     B</code></pre>
+## 1 site1    91     A
+## 2 site2   112     A
+## 3 site3   107     B
+## 4 site4    90     B</code></pre>
 <ul>
 <li><code>anti_join</code>: compara duas planilhas e retorna apenas as observações que são únicas à planilha da esquerda (<code>x</code>)</li>
 </ul>
@@ -1797,7 +1797,7 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 1 × 3
 ##    site  var1  var2
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
-## 1 site5   108     C</code></pre>
+## 1 site5    91     C</code></pre>
 <p>Estas funções são muito úteis para trabalharmos com bases de dados relacionais, e também ao realizarmos operações durante a análise de dados que requerem filtrar uma planilha de acordo com informações em outra planilha. Se combinadas com as demais funções do <code>dplyr</code> e do <code>tidyr</code>, elas tornam a manipulação de dados diretamente no R muito mais fácil do que se tivéssemos que fazer tudo manualmente.</p>
 <ul>
 <li><strong>Dica do R:</strong> existem três coisas que podem ser úteis ao seu favor ao usar estas funções de dados relacionais:

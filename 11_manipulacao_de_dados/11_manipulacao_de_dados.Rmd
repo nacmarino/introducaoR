@@ -792,7 +792,7 @@ dados <- dados %>%
 Agora que já ajeitamos e limpamos este conjunto de dados, podemos salvar ele para criar gráficos, fazer outras manipulações, rodar análises e etc. 
 
 ```{r}
-write.table(x = dados, file = "dados/dados_limpos.xls", sep = "\t")
+write.table(x = dados, file = "dados/dados_limpos.xls", sep = "\t", row.names = FALSE)
 ```
 
 ## Base de dados relacionais
