@@ -20,11 +20,12 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Importando dados;
-2. Carregando pacotes;
-3. Importando dados a usando o pacote `readr`;
-4. Importando dados a usando o pacote `readxl`;
-5. Exportando dados.
+1. Importanto dados;  
+2. Importando dados via a `base` do R;  
+3. Carregando pacotes;  
+4. Importando dados a usando o pacote `readr`;  
+5. Importando dados a usando o pacote `readxl`;  
+6. Exportando dados.  
 
 ## Importando dados
 
@@ -52,7 +53,18 @@ h1,h2,h3,h4,h5,h6{
 
 > Tabelar os dados de forma correta é reduzir drasticamente as chances de ter um erro ao carregar uma planilha de dados.
 
-## Importando dados via a base do R
+### Caminhos absolutos _vs_ caminhos relativos: outra fonte de erros
+
+Uma coisa que começará a ficar muito clara a partir deste ponto é o quão importante é usarmos um __caminho relativo__ para nos referirmos a um arquivo salvo no nosso HD, ao invés do __caminho absoluto__.  
+
+* __Caminho absoluto:__ é aquele que determina a localização de um arquivo a ser importado ou exportado desde a raiz do seu computador.  
+* __Caminho relativo:__ é aquele que determina a localização de um arquivo a ser importado ou exportado a partir do diretório de trabalho.  
+
+Muitas vezes, temos um erro ao importar ou exportar um arquivo pois confundimos um caminho absoluto com um caminho relativo. Apesar de parecer mais vantajoso trabalhar com um caminho absoluto, na realidade a melhor opção é __sempre__ trabalharmos com caminhos relativos pois caso você esteja operando o mesmo script em outro computador, o caminho absoluto não será mais válido (já que o nome do usuário, diretórios e etc vão diferir). Isto prejudica e muito a reprodutibilidade de um script por outro pesquisador ou por você mesmo no futuro. Além disso, o próprio fato de você ter que escrever um caminho absoluto muito extenso já é fonte possível de erros e de perda de tempo.
+
+Portanto, toda vez que você iniciar o R, você pode ter acesso ao seu diretório de trabalho através da função `getwd()`, e poderá modificar o seu diretório de trabalho através do `setwd(<novo_diretorio>)`. Uma tática para usar um caminho relativo então é sempre usar o `setwd` para dizer ao R que tudo que você precisará será encontrado a partir de um diretório. Todavia, esta ainda não é a solução ideal. O melhor que você pode fazer é criar um __projeto__ no RStudio e sempre que você for trabalhar nos scripts daquele projeto, carregar o projeto e começar a trabalhar. 
+
+## Importando dados via a `base` do R
 
 * Pela `base` do R, podemos usar as funções `read.csv` para a leitura de dados separados por vírgula (extensão .csv).
 
@@ -179,7 +191,7 @@ suppressWarnings(read.table(file = "dados/exemplo.txt", header = TRUE, skip = 5)
 * Algumas funções não mostram tudo o que podem fazer! Por conta do ritmo de desenvolvimento e, até mesmo da utilidade em nível basal de certas funções em um pacote, algumas funções são escondidas do usuário. Para ter acesso a elas, basta usar:
     + `nome_do_pacote:::nome_da_funcao`
 
-## Importanto dados com o pacote readr
+## Importanto dados com o pacote `readr`
 
 * Outra opção é carregar seus dados com o pacote `readr`;
 
@@ -208,7 +220,7 @@ args(read_delim)
 read_delim(file = "dados/lista_de_presenca.csv", delim = ";")
 ```
 
-## Importanto dados com o pacote readxl
+## Importanto dados com o pacote `readxl`
 
 * Muitas vezes, nossos dados não estão no formato .txt e nem no formato .csv, mas sim em .xls ou .xlsx;
 * O pacote `readxl` tem duas funções úteis para lermos dados com esta estrutura:
@@ -267,3 +279,5 @@ e. Leia estes dois arquivos a partir do seu HD.
 ---
 
 > __Importante:__ nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!
+
+> Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!

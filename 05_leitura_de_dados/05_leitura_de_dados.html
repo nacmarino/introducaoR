@@ -138,10 +138,16 @@ h1,h2,h3,h4,h5,h6{
 <div id="elementos-da-aula" class="section level1">
 <h1>Elementos da Aula</h1>
 <ol style="list-style-type: decimal">
-<li>Importando dados;</li>
-<li>Carregando pacotes;</li>
-<li>Importando dados a usando o pacote <code>readr</code>;</li>
-<li>Importando dados a usando o pacote <code>readxl</code>;</li>
+<li>Importanto dados;<br />
+</li>
+<li>Importando dados via a <code>base</code> do R;<br />
+</li>
+<li>Carregando pacotes;<br />
+</li>
+<li>Importando dados a usando o pacote <code>readr</code>;<br />
+</li>
+<li>Importando dados a usando o pacote <code>readxl</code>;<br />
+</li>
 <li>Exportando dados.</li>
 </ol>
 <div id="importando-dados" class="section level2">
@@ -182,9 +188,20 @@ h1,h2,h3,h4,h5,h6{
 <blockquote>
 <p>Tabelar os dados de forma correta é reduzir drasticamente as chances de ter um erro ao carregar uma planilha de dados.</p>
 </blockquote>
+<div id="caminhos-absolutos-vs-caminhos-relativos-outra-fonte-de-erros" class="section level3">
+<h3>Caminhos absolutos <em>vs</em> caminhos relativos: outra fonte de erros</h3>
+<p>Uma coisa que começará a ficar muito clara a partir deste ponto é o quão importante é usarmos um <strong>caminho relativo</strong> para nos referirmos a um arquivo salvo no nosso HD, ao invés do <strong>caminho absoluto</strong>.</p>
+<ul>
+<li><strong>Caminho absoluto:</strong> é aquele que determina a localização de um arquivo a ser importado ou exportado desde a raiz do seu computador.<br />
+</li>
+<li><strong>Caminho relativo:</strong> é aquele que determina a localização de um arquivo a ser importado ou exportado a partir do diretório de trabalho.</li>
+</ul>
+<p>Muitas vezes, temos um erro ao importar ou exportar um arquivo pois confundimos um caminho absoluto com um caminho relativo. Apesar de parecer mais vantajoso trabalhar com um caminho absoluto, na realidade a melhor opção é <strong>sempre</strong> trabalharmos com caminhos relativos pois caso você esteja operando o mesmo script em outro computador, o caminho absoluto não será mais válido (já que o nome do usuário, diretórios e etc vão diferir). Isto prejudica e muito a reprodutibilidade de um script por outro pesquisador ou por você mesmo no futuro. Além disso, o próprio fato de você ter que escrever um caminho absoluto muito extenso já é fonte possível de erros e de perda de tempo.</p>
+<p>Portanto, toda vez que você iniciar o R, você pode ter acesso ao seu diretório de trabalho através da função <code>getwd()</code>, e poderá modificar o seu diretório de trabalho através do <code>setwd(&lt;novo_diretorio&gt;)</code>. Uma tática para usar um caminho relativo então é sempre usar o <code>setwd</code> para dizer ao R que tudo que você precisará será encontrado a partir de um diretório. Todavia, esta ainda não é a solução ideal. O melhor que você pode fazer é criar um <strong>projeto</strong> no RStudio e sempre que você for trabalhar nos scripts daquele projeto, carregar o projeto e começar a trabalhar.</p>
+</div>
 </div>
 <div id="importando-dados-via-a-base-do-r" class="section level2">
-<h2>Importando dados via a base do R</h2>
+<h2>Importando dados via a <code>base</code> do R</h2>
 <ul>
 <li>Pela <code>base</code> do R, podemos usar as funções <code>read.csv</code> para a leitura de dados separados por vírgula (extensão .csv).</li>
 </ul>
@@ -543,7 +560,7 @@ suppressWarnings(read.table(file = &quot;dados/exemplo.txt&quot;, header = TRUE,
 </ul>
 </div>
 <div id="importanto-dados-com-o-pacote-readr" class="section level2">
-<h2>Importanto dados com o pacote readr</h2>
+<h2>Importanto dados com o pacote <code>readr</code></h2>
 <ul>
 <li>Outra opção é carregar seus dados com o pacote <code>readr</code>;</li>
 </ul>
@@ -610,7 +627,7 @@ suppressWarnings(read.table(file = &quot;dados/exemplo.txt&quot;, header = TRUE,
 ## #   #1` &lt;chr&gt;, horario &lt;dbl&gt;, semana &lt;chr&gt;, local &lt;chr&gt;</code></pre>
 </div>
 <div id="importanto-dados-com-o-pacote-readxl" class="section level2">
-<h2>Importanto dados com o pacote readxl</h2>
+<h2>Importanto dados com o pacote <code>readxl</code></h2>
 <ul>
 <li>Muitas vezes, nossos dados não estão no formato .txt e nem no formato .csv, mas sim em .xls ou .xlsx;</li>
 <li>O pacote <code>readxl</code> tem duas funções úteis para lermos dados com esta estrutura:
@@ -707,6 +724,9 @@ write_delim(x = arquivo, path = &quot;dados/teste.xls&quot;, delim = &quot;\t&qu
 <hr />
 <blockquote>
 <p><strong>Importante:</strong> nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!</p>
+</blockquote>
+<blockquote>
+<p>Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!</p>
 </blockquote>
 </div>
 </div>
