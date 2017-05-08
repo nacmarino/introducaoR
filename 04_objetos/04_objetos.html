@@ -211,7 +211,7 @@ asin(x = 0.8)</code></pre>
 <li>O R também já tem valores de certas constantes dentro de seu ambiente:</li>
 </ul>
 <pre class="r"><code># pi
-pi</code></pre>
+pi </code></pre>
 <pre><code>## [1] 3.141593</code></pre>
 <pre class="r"><code># letras do alfabeto
 letters</code></pre>
@@ -231,6 +231,27 @@ month.name</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Qual a raiz quadrada do arcoseno de 0.43?</li>
 </ol>
+<pre class="r"><code># uma forma
+sqrt(x = (asin(0.43)))</code></pre>
+<pre><code>## [1] 0.6667029</code></pre>
+<pre class="r"><code> # outra forma
+sqrt(asin(0.43))</code></pre>
+<pre><code>## [1] 0.6667029</code></pre>
+<pre class="r"><code># + # outra forma
+asin(0.43)  </code></pre>
+<pre><code>## [1] 0.4444928</code></pre>
+<pre class="r"><code>sqrt(0.4444928)</code></pre>
+<pre><code>## [1] 0.6667029</code></pre>
+<pre class="r"><code># mais uma forma
+sqrt(x = asin(x = 0.43)) </code></pre>
+<pre><code>## [1] 0.6667029</code></pre>
+<pre class="r"><code># mais uma forma
+asin(x = 0.43)</code></pre>
+<pre><code>## [1] 0.4444928</code></pre>
+<pre class="r"><code>asin &lt;- asin(x = 0.43)
+sqrt(asin)</code></pre>
+<pre><code>## [1] 0.6667029</code></pre>
+<pre class="r"><code>rm(asin)</code></pre>
 <hr />
 </div>
 </div>
@@ -263,8 +284,10 @@ resultado = 5 + 5</code></pre>
 <li>Calcule o resultado da operação da multiplicação de 5 por 6;</li>
 <li>Armazene o resultado desta operação em um objeto chamado <code>resultado</code>;</li>
 <li>Sem olhar, qual o valor armazenado no objeto <code>resultado</code>?</li>
-<li>Por que isto aconteceu?</li>
+<li>Por que o valor de <code>resultado</code> mudou?</li>
 </ol>
+<pre class="r"><code>(resultado &lt;- 5 * 6)</code></pre>
+<pre><code>## [1] 30</code></pre>
 <hr />
 </div>
 <div id="exercicio-3" class="section level5">
@@ -273,8 +296,16 @@ resultado = 5 + 5</code></pre>
 <li>Divida o objeto <code>resultado</code> pela raiz quadrada de 9;</li>
 <li>Armazene o resultado desta operação em um objeto chamado <code>resultado</code>;</li>
 <li>Sem olhar, qual o valor armazenado no objeto <code>resultado</code>?</li>
-<li>Por que isto aconteceu?</li>
+<li>O valor encontado bateu com as suas expectativas? Por que?</li>
 </ol>
+<pre class="r"><code># esperado
+resultado/sqrt(9)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code># similar
+arco_seno &lt;- asin(x = 0.50)
+esperado &lt;- sqrt(x = arco_seno)
+esperado</code></pre>
+<pre><code>## [1] 0.7236013</code></pre>
 <hr />
 </div>
 </div>
@@ -286,6 +317,8 @@ resultado = 5 + 5</code></pre>
 </ul>
 <pre class="r"><code>class(x = 5)</code></pre>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
+<pre class="r"><code>class(x = &quot;Ola!&quot;)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
 <ul>
 <li>Ou tentar diferentes tipos:</li>
 </ul>
@@ -304,6 +337,8 @@ is.character(x = &quot;Ola!&quot;)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Pergunte ao R se o número 5 é um número inteiro.</li>
 </ol>
+<pre class="r"><code>is.integer(x = 5)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
 <hr />
 <pre class="r"><code># o número 5 é inteiro?
 is.integer(x = 5) </code></pre>
@@ -364,6 +399,16 @@ is.factor(x = 5)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Faça com que o número 5 seja entendido como um fator.</li>
 </ol>
+<pre class="r"><code># sempre que tiver &quot;as.&quot; estamos coagindo um valor a assumir aquela classe
+nome &lt;- as.factor(x = 5)
+is.factor(x = 5)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>is.factor(x = as.factor(x = 5))</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.factor(x = nome)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>as.numeric(as.character(x = as.factor(x = 5)))</code></pre>
+<pre><code>## [1] 5</code></pre>
 <hr />
 </div>
 </div>
@@ -399,6 +444,9 @@ is.vector(x = idade)</code></pre>
 <ul>
 <li><strong>Dica:</strong> ao utilizar qualquer palavra ou criar um vetor que contenha palavras, você precisa usar as aspas em cada palavra, para que o R entenda que aquilo é uma palavra, caso contrário ele vai procurar um objeto que contenha aquele nome no ambiente global.</li>
 </ul>
+<pre class="r"><code>frutas &lt;- c(&quot;banana&quot;, &quot;melão&quot;, &quot;morango&quot;)
+frutas</code></pre>
+<pre><code>## [1] &quot;banana&quot;  &quot;melão&quot;   &quot;morango&quot;</code></pre>
 <hr />
 </div>
 <div id="exercicio-7" class="section level5">
@@ -408,6 +456,20 @@ is.vector(x = idade)</code></pre>
 <li>O objeto criado é um vetor?</li>
 <li>Sem olhar, qual a classe do objeto criado?</li>
 </ol>
+<pre class="r"><code># passo a
+conjunto &lt;- c(frutas, idade)
+conjunto</code></pre>
+<pre><code>## [1] &quot;banana&quot;  &quot;melão&quot;   &quot;morango&quot; &quot;27&quot;      &quot;24&quot;      &quot;22&quot;      &quot;29&quot;     
+## [8] &quot;23&quot;      &quot;22&quot;</code></pre>
+<pre class="r"><code># passo b
+is.vector(conjunto)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code># passo c
+class(x = conjunto)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code># exemplo de vetor com elementos de múltiplas classes
+class(x = c(&quot;agora&quot;, 3, TRUE))</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
 <hr />
 <ul>
 <li>Ou seja:
@@ -422,7 +484,8 @@ is.vector(x = idade)</code></pre>
 vector(length = 10)</code></pre>
 <pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
 <pre class="r"><code># criar um vetor vazio
-teste &lt;- vector()</code></pre>
+vector()</code></pre>
+<pre><code>## logical(0)</code></pre>
 </div>
 </div>
 <div id="matriz" class="section level2">
@@ -472,10 +535,14 @@ altura &lt;- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
 <div id="exercicio-8" class="section level5">
 <h5>Exercício 8</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;</li>
-<li>Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;</li>
-<li>O que aconteceu à matriz quando criamos a matriz com idades e nomes?</li>
-<li>Por que isso acontenceu?</li>
+<li>Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;<br />
+</li>
+<li>Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;<br />
+</li>
+<li>O que aconteceu à matriz quando criamos a matriz com idades e nomes?<br />
+</li>
+<li>Por que isso acontenceu?<br />
+</li>
 <li>O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?</li>
 </ol>
 <ul>
@@ -545,9 +612,12 @@ logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 <div id="exercicio-9" class="section level5">
 <h5>Exercício 9</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Crie dois vetores com uma informação que você desejar;</li>
-<li>Crie uma matriz contendo a informação destes dois vetores;</li>
-<li>Crie um Data Frame contendo a informação destes dois vetores;</li>
+<li>Crie dois vetores com uma informação que você desejar;<br />
+</li>
+<li>Crie uma matriz contendo a informação destes dois vetores;<br />
+</li>
+<li>Crie um Data Frame contendo a informação destes dois vetores;<br />
+</li>
 <li>Coloque tudo isto em uma lista.</li>
 </ol>
 <hr />
@@ -567,8 +637,10 @@ logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 <div id="exercicio-10" class="section level5">
 <h5>Exercício 10</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Repita o passo “c” do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.</li>
-<li>Qual função é a melhor para o caso acima?</li>
+<li>Repita o passo “c” do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.<br />
+</li>
+<li>Qual função é a melhor para o caso acima?<br />
+</li>
 <li>Por que?</li>
 </ol>
 </div>
