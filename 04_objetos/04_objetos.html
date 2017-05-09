@@ -486,6 +486,47 @@ vector(length = 10)</code></pre>
 <pre class="r"><code># criar um vetor vazio
 vector()</code></pre>
 <pre><code>## logical(0)</code></pre>
+<p>Continuando de onde paramos:</p>
+<ol style="list-style-type: lower-alpha">
+<li>Crie o vetor <code>frutas</code>;</li>
+</ol>
+<pre class="r"><code># criando o vetor
+frutas &lt;- c(&quot;uva&quot;, &quot;melancia&quot;, &quot;kiwi&quot;, &quot;uva&quot;, &quot;melancia&quot;, &quot;kiwi&quot;, &quot;banana&quot;, &quot;laranja&quot;, &quot;maçã&quot;,
+             &quot;banana&quot;, &quot;laranja&quot;, &quot;maçã&quot;)
+# vetor de frutas
+frutas</code></pre>
+<pre><code>##  [1] &quot;uva&quot;      &quot;melancia&quot; &quot;kiwi&quot;     &quot;uva&quot;      &quot;melancia&quot; &quot;kiwi&quot;    
+##  [7] &quot;banana&quot;   &quot;laranja&quot;  &quot;maçã&quot;     &quot;banana&quot;   &quot;laranja&quot;  &quot;maçã&quot;</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Vetores <em>vs</em> fatores;</li>
+</ol>
+<pre class="r"><code># classe do objeto
+class(frutas)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code># tipo de objeto
+is.vector(frutas)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code># coerção a um fator
+exemplo &lt;- as.factor(x = frutas)
+# vetor de fatores
+exemplo</code></pre>
+<pre><code>##  [1] uva      melancia kiwi     uva      melancia kiwi     banana  
+##  [8] laranja  maçã     banana   laranja  maçã    
+## Levels: banana kiwi laranja maçã melancia uva</code></pre>
+<pre class="r"><code># qual a classe de exemplo?
+class(exemplo)</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Crie o vetor <code>idade</code>;</li>
+</ol>
+<pre class="r"><code>idade &lt;- c(27, 22, 29, 24, 26, 23)</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Juntando vetores.</li>
+</ol>
+<pre class="r"><code>c(idade, frutas)</code></pre>
+<pre><code>##  [1] &quot;27&quot;       &quot;22&quot;       &quot;29&quot;       &quot;24&quot;       &quot;26&quot;       &quot;23&quot;      
+##  [7] &quot;uva&quot;      &quot;melancia&quot; &quot;kiwi&quot;     &quot;uva&quot;      &quot;melancia&quot; &quot;kiwi&quot;    
+## [13] &quot;banana&quot;   &quot;laranja&quot;  &quot;maçã&quot;     &quot;banana&quot;   &quot;laranja&quot;  &quot;maçã&quot;</code></pre>
 </div>
 </div>
 <div id="matriz" class="section level2">
@@ -495,56 +536,103 @@ vector()</code></pre>
 <li>A matriz pode ser criada a partir de um vetor, determinando quantas linhas e quantas colunas ela deve assumir.</li>
 <li>Uma matriz pode ser preenchida por linhas (<code>byrow = TRUE</code>) ou por colunas (<code>byrow = FALSE</code>)</li>
 </ul>
-<pre class="r"><code># criando uma matriz sendo preenchida por linhas
-matrix(data = idade, nrow = 2, ncol = 3, byrow = TRUE)</code></pre>
-<pre><code>##      [,1] [,2] [,3]
-## [1,]   27   24   22
-## [2,]   29   23   22</code></pre>
-<pre class="r"><code># criando uma matriz sendo preenchida por colunas
-matrix(data = idade, nrow = 2, ncol = 3, byrow = FALSE)</code></pre>
-<pre><code>##      [,1] [,2] [,3]
-## [1,]   27   22   23
-## [2,]   24   29   22</code></pre>
 <pre class="r"><code># criando uma matriz contendo apenas uma coluna
 matrix(data = idade)</code></pre>
 <pre><code>##      [,1]
 ## [1,]   27
-## [2,]   24
-## [3,]   22
-## [4,]   29
-## [5,]   23
-## [6,]   22</code></pre>
+## [2,]   22
+## [3,]   29
+## [4,]   24
+## [5,]   26
+## [6,]   23</code></pre>
+<pre class="r"><code># criando uma matriz sendo preenchida por linhas
+matrix(data = idade, nrow = 2, ncol = 3, byrow = TRUE)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]   27   22   29
+## [2,]   24   26   23</code></pre>
+<pre class="r"><code># criando uma matriz sendo preenchida por colunas
+matrix(data = idade, nrow = 2, ncol = 3, byrow = FALSE)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]   27   29   26
+## [2,]   22   24   23</code></pre>
 <ul>
 <li>Você também pode montar uma matriz a partir de dois ou mais vetores:</li>
 </ul>
 <pre class="r"><code># observando o vetor idade
 idade</code></pre>
-<pre><code>## [1] 27 24 22 29 23 22</code></pre>
+<pre><code>## [1] 27 22 29 24 26 23</code></pre>
 <pre class="r"><code># criando um vetor com alturas, do mesmo comprimento que idade
 altura &lt;- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
-# criando uma matriz com a idade e a altura
+# observando vetor
+altura</code></pre>
+<pre><code>## [1] 1.75 1.56 1.67 1.70 1.62 1.77</code></pre>
+<pre class="r"><code># criando uma matriz com a idade e a altura
 (informacoes &lt;- matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE))</code></pre>
 <pre><code>##      [,1] [,2]
 ## [1,]   27 1.75
-## [2,]   24 1.56
-## [3,]   22 1.67
-## [4,]   29 1.70
-## [5,]   23 1.62
-## [6,]   22 1.77</code></pre>
+## [2,]   22 1.56
+## [3,]   29 1.67
+## [4,]   24 1.70
+## [5,]   26 1.62
+## [6,]   23 1.77</code></pre>
+<pre class="r"><code># observando resultado
+informacoes</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   27 1.75
+## [2,]   22 1.56
+## [3,]   29 1.67
+## [4,]   24 1.70
+## [5,]   26 1.62
+## [6,]   23 1.77</code></pre>
+<pre class="r"><code># descobrindo o comprimento de um vetor
+length(idade)</code></pre>
+<pre><code>## [1] 6</code></pre>
 <hr />
 <div id="exercicio-8" class="section level5">
 <h5>Exercício 8</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;<br />
-</li>
-<li>Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;<br />
-</li>
-<li>O que aconteceu à matriz quando criamos a matriz com idades e nomes?<br />
-</li>
-<li>Por que isso acontenceu?<br />
-</li>
-<li>O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?</li>
+<li>Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;</li>
 </ol>
+<pre class="r"><code>nomes &lt;- c(&quot;romullo&quot;, &quot;yamile&quot;, &quot;viviane&quot;, &quot;adriana&quot;, &quot;pedro&quot;, &quot;rodrigo&quot;)</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;</li>
+</ol>
+<pre class="r"><code># uma forma de criar uma matrix
+info2 &lt;- matrix(data = c(nomes, idade), nrow = 6, ncol = 2, byrow = FALSE);info2</code></pre>
+<pre><code>##      [,1]      [,2]
+## [1,] &quot;romullo&quot; &quot;27&quot;
+## [2,] &quot;yamile&quot;  &quot;22&quot;
+## [3,] &quot;viviane&quot; &quot;29&quot;
+## [4,] &quot;adriana&quot; &quot;24&quot;
+## [5,] &quot;pedro&quot;   &quot;26&quot;
+## [6,] &quot;rodrigo&quot; &quot;23&quot;</code></pre>
+<pre class="r"><code># outra forma
+conjuntinho &lt;- c(idade, nomes)
+matrix(data = conjuntinho, nrow = 6, ncol = 2, byrow = FALSE)</code></pre>
+<pre><code>##      [,1] [,2]     
+## [1,] &quot;27&quot; &quot;romullo&quot;
+## [2,] &quot;22&quot; &quot;yamile&quot; 
+## [3,] &quot;29&quot; &quot;viviane&quot;
+## [4,] &quot;24&quot; &quot;adriana&quot;
+## [5,] &quot;26&quot; &quot;pedro&quot;  
+## [6,] &quot;23&quot; &quot;rodrigo&quot;</code></pre>
+<pre class="r"><code># mais uma forma
+matrix(data = c(nomes, idade), nrow = length(idade), ncol = 2, byrow = FALSE)</code></pre>
+<pre><code>##      [,1]      [,2]
+## [1,] &quot;romullo&quot; &quot;27&quot;
+## [2,] &quot;yamile&quot;  &quot;22&quot;
+## [3,] &quot;viviane&quot; &quot;29&quot;
+## [4,] &quot;adriana&quot; &quot;24&quot;
+## [5,] &quot;pedro&quot;   &quot;26&quot;
+## [6,] &quot;rodrigo&quot; &quot;23&quot;</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>O que aconteceu à matriz quando criamos a matriz com idades e nomes?</p></li>
+<li><p>Por que isso acontenceu?</p></li>
+<li><p>O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?</p></li>
+</ol>
+<pre class="r"><code>as.numeric(x = info2)</code></pre>
+<pre><code>## Warning: NAs introduzidos por coerção</code></pre>
+<pre><code>##  [1] NA NA NA NA NA NA 27 22 29 24 26 23</code></pre>
 <ul>
 <li>Ou seja:
 <ul>
@@ -571,11 +659,11 @@ anos &lt;- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 <pre><code>## [[1]]
 ##      [,1] [,2]
 ## [1,]   27 1.75
-## [2,]   24 1.56
-## [3,]   22 1.67
-## [4,]   29 1.70
-## [5,]   23 1.62
-## [6,]   22 1.77
+## [2,]   22 1.56
+## [3,]   29 1.67
+## [4,]   24 1.70
+## [5,]   26 1.62
+## [6,]   23 1.77
 ## 
 ## [[2]]
 ## [1] &quot;morango&quot; &quot;banana&quot;  &quot;maca&quot;    &quot;laranja&quot;
@@ -585,6 +673,87 @@ anos &lt;- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 <ul>
 <li>Uma lista pode ser muito útil para armazenarmos informações de diferentes tipos, mas não facilita muito o uso destes dados e, tampouco, salvar os dados que estão dentro delas.</li>
 </ul>
+<hr />
+<div id="exercicio-extra" class="section level5">
+<h5>Exercício Extra</h5>
+<ol style="list-style-type: lower-alpha">
+<li>Crie uma lista com duas sub-listas: uma com os nomes das linhas e outra com os nomes de colunas;<br />
+</li>
+<li>Adicione esta lista ao <code>dimnames</code> da <code>matrix</code> informações.</li>
+</ol>
+<pre class="r"><code># exemplo de lista
+list(c(1, 2, 3, 4, 5, 6), c(&quot;idade&quot;, &quot;altura&quot;))</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3 4 5 6
+## 
+## [[2]]
+## [1] &quot;idade&quot;  &quot;altura&quot;</code></pre>
+<pre class="r"><code># matrix que haviamos criado
+informacoes</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]   27 1.75
+## [2,]   22 1.56
+## [3,]   29 1.67
+## [4,]   24 1.70
+## [5,]   26 1.62
+## [6,]   23 1.77</code></pre>
+<pre class="r"><code># colocando a lista em um objeto
+(dimensoes &lt;- list(c(1, 2, 3, 4, 5, 6), c(&quot;idade&quot;, &quot;altura&quot;)))</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3 4 5 6
+## 
+## [[2]]
+## [1] &quot;idade&quot;  &quot;altura&quot;</code></pre>
+<pre class="r"><code># adicionando nomes as linhas e colunas 
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)</code></pre>
+<pre><code>##   idade altura
+## 1    27   1.75
+## 2    22   1.56
+## 3    29   1.67
+## 4    24   1.70
+## 5    26   1.62
+## 6    23   1.77</code></pre>
+<pre class="r"><code># o que estamos fazendo?
+nome_das_linhas &lt;- c(1,2,3,4,5,6)
+nomes_das_colunas &lt;- c(&quot;idade&quot;, &quot;altura&quot;)
+# combinando tudo em uma lista
+(dimensoes &lt;- list(nome_das_linhas, nomes_das_colunas))</code></pre>
+<pre><code>## [[1]]
+## [1] 1 2 3 4 5 6
+## 
+## [[2]]
+## [1] &quot;idade&quot;  &quot;altura&quot;</code></pre>
+<pre class="r"><code># observando a matriz
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)</code></pre>
+<pre><code>##   idade altura
+## 1    27   1.75
+## 2    22   1.56
+## 3    29   1.67
+## 4    24   1.70
+## 5    26   1.62
+## 6    23   1.77</code></pre>
+<pre class="r"><code># transformando a numeração das linhas em nomes das pessoas
+(dimensoes &lt;- list(nomes, c(&quot;idade&quot;, &quot;altura&quot;)))</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;romullo&quot; &quot;yamile&quot;  &quot;viviane&quot; &quot;adriana&quot; &quot;pedro&quot;   &quot;rodrigo&quot;
+## 
+## [[2]]
+## [1] &quot;idade&quot;  &quot;altura&quot;</code></pre>
+<pre class="r"><code># observando a matriz
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE,
+       dimnames = dimensoes)</code></pre>
+<pre><code>##         idade altura
+## romullo    27   1.75
+## yamile     22   1.56
+## viviane    29   1.67
+## adriana    24   1.70
+## pedro      26   1.62
+## rodrigo    23   1.77</code></pre>
+<pre class="r"><code># tamanho da matriz
+dim(informacoes)</code></pre>
+<pre><code>## [1] 6 2</code></pre>
+<hr />
+</div>
 </div>
 <div id="data-frame" class="section level2">
 <h2>Data Frame</h2>
@@ -597,14 +766,22 @@ nomes &lt;- c(&quot;Joana&quot;, &quot;Joao&quot;, &quot;Maria&quot;, &quot;Mari
 # um vetor lógico
 logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 # um data frame
-(dados &lt;- data.frame(idade, nomes, logico))</code></pre>
+dados &lt;- data.frame(idade, nomes, logico)
+# vendo o data.frame
+dados</code></pre>
 <pre><code>##   idade    nomes logico
 ## 1    27    Joana   TRUE
-## 2    24     Joao  FALSE
-## 3    22    Maria   TRUE
-## 4    29    Mario   TRUE
-## 5    23   Joelma  FALSE
-## 6    22 Ximbinha   TRUE</code></pre>
+## 2    22     Joao  FALSE
+## 3    29    Maria   TRUE
+## 4    24    Mario   TRUE
+## 5    26   Joelma  FALSE
+## 6    23 Ximbinha   TRUE</code></pre>
+<pre class="r"><code># desvendando o data.frame
+str(dados)</code></pre>
+<pre><code>## 'data.frame':    6 obs. of  3 variables:
+##  $ idade : num  27 22 29 24 26 23
+##  $ nomes : Factor w/ 6 levels &quot;Joana&quot;,&quot;Joao&quot;,..: 1 2 4 5 3 6
+##  $ logico: logi  TRUE FALSE TRUE TRUE FALSE TRUE</code></pre>
 <ul>
 <li>Ou seja, um <code>data.frame</code> pode ser visto como um objeto no qual cada coluna é um vetor (elementos pertencem a um único tipo de objeto) e cada linha é uma lista (cada elemento pertence a tipos de objetos diferentes).</li>
 </ul>
@@ -612,14 +789,69 @@ logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 <div id="exercicio-9" class="section level5">
 <h5>Exercício 9</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Crie dois vetores com uma informação que você desejar;<br />
-</li>
-<li>Crie uma matriz contendo a informação destes dois vetores;<br />
-</li>
-<li>Crie um Data Frame contendo a informação destes dois vetores;<br />
-</li>
-<li>Coloque tudo isto em uma lista.</li>
+<li>Crie dois vetores com uma informação que você desejar;</li>
 </ol>
+<pre class="r"><code>vetor1 &lt;- c(&quot;amarelo&quot;, &quot;rosa&quot;, &quot;vermelho&quot;)
+vetor2 &lt;- c(&quot;apito&quot;, &quot;copo&quot;, &quot;garrafa&quot;)</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Crie uma matriz contendo a informação destes dois vetores;</li>
+</ol>
+<pre class="r"><code>matriz &lt;- matrix(data = c(vetor1, vetor2), nrow = 3, byrow = FALSE)
+matriz</code></pre>
+<pre><code>##      [,1]       [,2]     
+## [1,] &quot;amarelo&quot;  &quot;apito&quot;  
+## [2,] &quot;rosa&quot;     &quot;copo&quot;   
+## [3,] &quot;vermelho&quot; &quot;garrafa&quot;</code></pre>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Crie um Data Frame contendo a informação destes dois vetores;</li>
+</ol>
+<pre class="r"><code>exemplo &lt;- data.frame(vetor1, vetor2)
+exemplo</code></pre>
+<pre><code>##     vetor1  vetor2
+## 1  amarelo   apito
+## 2     rosa    copo
+## 3 vermelho garrafa</code></pre>
+<pre class="r"><code># preciso especificar o objeto que vai pras colunas?
+data.frame(c(&quot;vermelho&quot;, &quot;rosa&quot;, &quot;amarelo&quot;), c(&quot;apito&quot;, &quot;copo&quot;, &quot;garrafa&quot;))</code></pre>
+<pre><code>##   c..vermelho....rosa....amarelo.. c..apito....copo....garrafa..
+## 1                         vermelho                         apito
+## 2                             rosa                          copo
+## 3                          amarelo                       garrafa</code></pre>
+<pre class="r"><code># outra forma
+data.frame(cores = c(&quot;vermelho&quot;, &quot;rosa&quot;, &quot;amarelo&quot;), objetos = c(&quot;apito&quot;, &quot;copo&quot;, &quot;garrafa&quot;))</code></pre>
+<pre><code>##      cores objetos
+## 1 vermelho   apito
+## 2     rosa    copo
+## 3  amarelo garrafa</code></pre>
+<pre class="r"><code># e se os vetores não forem de mesmo tamanho?
+data.frame(cores = c(&quot;vermelho&quot;, &quot;rosa&quot;,&quot;amarelo&quot;, &quot;azul&quot;), 
+           objetos = c(&quot;apito&quot;, &quot;copo&quot;, &quot;garrafa&quot;, NA))</code></pre>
+<pre><code>##      cores objetos
+## 1 vermelho   apito
+## 2     rosa    copo
+## 3  amarelo garrafa
+## 4     azul    &lt;NA&gt;</code></pre>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Coloque tudo isto em uma lista (pelo menos a <code>matrix</code> e o <code>data.frame</code>).</li>
+</ol>
+<pre class="r"><code>list(vetor1, vetor2, matriz, exemplo)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;amarelo&quot;  &quot;rosa&quot;     &quot;vermelho&quot;
+## 
+## [[2]]
+## [1] &quot;apito&quot;   &quot;copo&quot;    &quot;garrafa&quot;
+## 
+## [[3]]
+##      [,1]       [,2]     
+## [1,] &quot;amarelo&quot;  &quot;apito&quot;  
+## [2,] &quot;rosa&quot;     &quot;copo&quot;   
+## [3,] &quot;vermelho&quot; &quot;garrafa&quot;
+## 
+## [[4]]
+##     vetor1  vetor2
+## 1  amarelo   apito
+## 2     rosa    copo
+## 3 vermelho garrafa</code></pre>
 <hr />
 </div>
 </div>
@@ -643,6 +875,44 @@ logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 </li>
 <li>Por que?</li>
 </ol>
+<pre class="r"><code>cbind.data.frame(vetor1, vetor2)</code></pre>
+<pre><code>##     vetor1  vetor2
+## 1  amarelo   apito
+## 2     rosa    copo
+## 3 vermelho garrafa</code></pre>
+<hr />
+<p>Você pode coagir uma <code>matrix</code> a se tornar um <code>data.frame</code> e vice-verse, do mesmo jeito que você coage todos os outros objetos.</p>
+<pre class="r"><code># coagindo a um data.frame
+as.data.frame(informacoes)</code></pre>
+<pre><code>##   V1   V2
+## 1 27 1.75
+## 2 22 1.56
+## 3 29 1.67
+## 4 24 1.70
+## 5 26 1.62
+## 6 23 1.77</code></pre>
+<pre class="r"><code># coagindo a uma matrix
+as.matrix.data.frame(dados)</code></pre>
+<pre><code>##      idade nomes      logico 
+## [1,] &quot;27&quot;  &quot;Joana&quot;    &quot; TRUE&quot;
+## [2,] &quot;22&quot;  &quot;Joao&quot;     &quot;FALSE&quot;
+## [3,] &quot;29&quot;  &quot;Maria&quot;    &quot; TRUE&quot;
+## [4,] &quot;24&quot;  &quot;Mario&quot;    &quot; TRUE&quot;
+## [5,] &quot;26&quot;  &quot;Joelma&quot;   &quot;FALSE&quot;
+## [6,] &quot;23&quot;  &quot;Ximbinha&quot; &quot; TRUE&quot;</code></pre>
+<p>Você pode associar <code>cbind.data.frame</code> e <code>rbind.data.frame</code> para adicionar informações a um <code>data.frame</code>.</p>
+<pre class="r"><code>rbind.data.frame(dados, c(30, &quot;Anderson&quot;, TRUE))</code></pre>
+<pre><code>## Warning in `[&lt;-.factor`(`*tmp*`, ri, value = &quot;Anderson&quot;): invalid factor
+## level, NA generated</code></pre>
+<pre><code>##   idade    nomes logico
+## 1    27    Joana   TRUE
+## 2    22     Joao  FALSE
+## 3    29    Maria   TRUE
+## 4    24    Mario   TRUE
+## 5    26   Joelma  FALSE
+## 6    23 Ximbinha   TRUE
+## 7    30     &lt;NA&gt;   TRUE</code></pre>
+<hr />
 </div>
 </div>
 <div id="um-atalho-para-determinar-o-tipo-e-classe-dos-elementos-de-um-objeto" class="section level2">
@@ -653,17 +923,17 @@ logico &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 </ul>
 <pre class="r"><code># qual a estrutura do objeto 'informacoes'?
 str(object = informacoes)</code></pre>
-<pre><code>##  num [1:6, 1:2] 27 24 22 29 23 22 1.75 1.56 1.67 1.7 ...</code></pre>
+<pre><code>##  num [1:6, 1:2] 27 22 29 24 26 23 1.75 1.56 1.67 1.7 ...</code></pre>
 <pre class="r"><code># qual a estrutura do objeto 'coisas'?
 str(object = coisas)</code></pre>
 <pre><code>## List of 3
-##  $ : num [1:6, 1:2] 27 24 22 29 23 22 1.75 1.56 1.67 1.7 ...
+##  $ : num [1:6, 1:2] 27 22 29 24 26 23 1.75 1.56 1.67 1.7 ...
 ##  $ : chr [1:4] &quot;morango&quot; &quot;banana&quot; &quot;maca&quot; &quot;laranja&quot;
 ##  $ : num [1:11] 1987 1990 1993 1996 1999 ...</code></pre>
 <pre class="r"><code># qual a estrutura do objeto 'dados'?
 str(object = dados)</code></pre>
 <pre><code>## 'data.frame':    6 obs. of  3 variables:
-##  $ idade : num  27 24 22 29 23 22
+##  $ idade : num  27 22 29 24 26 23
 ##  $ nomes : Factor w/ 6 levels &quot;Joana&quot;,&quot;Joao&quot;,..: 1 2 4 5 3 6
 ##  $ logico: logi  TRUE FALSE TRUE TRUE FALSE TRUE</code></pre>
 <ul>
@@ -679,11 +949,14 @@ str(object = dados)</code></pre>
 <ul>
 <li>Por padrão, o R ordena os níveis de um fator em ordem alfabética e/ou do menor para o maior.</li>
 </ul>
-<pre class="r"><code>(letras &lt;- factor(x = c(&quot;Alto&quot;, &quot;Médio&quot;, &quot;Baixo&quot;)))</code></pre>
+<pre class="r"><code>#exemplos
+letras &lt;- factor(x = c(&quot;Alto&quot;, &quot;Médio&quot;, &quot;Baixo&quot;))
+letras</code></pre>
 <pre><code>## [1] Alto  Médio Baixo
 ## Levels: Alto Baixo Médio</code></pre>
-<pre class="r"><code>(numeros &lt;- factor(x = c(2, 4, 6)))</code></pre>
-<pre><code>## [1] 2 4 6
+<pre class="r"><code>numeros &lt;- factor(x = c(6, 4, 2))
+numeros</code></pre>
+<pre><code>## [1] 6 4 2
 ## Levels: 2 4 6</code></pre>
 <ul>
 <li>Entretanto, às vezes, faz mais sentido ordenar os fatores de acordo com algum tipo de lógica ou sequência desejada. Para tal, podemos determinar diretamente qual a ordem dos níveis do fator:</li>
@@ -693,9 +966,34 @@ ordered(x = letras, c(&quot;Baixo&quot;, &quot;Médio&quot;, &quot;Alto&quot;))<
 <pre><code>## [1] Alto  Médio Baixo
 ## Levels: Baixo &lt; Médio &lt; Alto</code></pre>
 <pre class="r"><code># ou através da própria função factor, através do argumento 'ordered'
-factor(x = c(2, 4, 6), ordered = TRUE)</code></pre>
-<pre><code>## [1] 2 4 6
-## Levels: 2 &lt; 4 &lt; 6</code></pre>
+factor(x = c(6, 4, 2, 10, 1), ordered = TRUE)</code></pre>
+<pre><code>## [1] 6  4  2  10 1 
+## Levels: 1 &lt; 2 &lt; 4 &lt; 6 &lt; 10</code></pre>
+<pre class="r"><code># através da função ordered
+ordered(x = c(6, 4, 2, 10, 1), c(4, 2, 10, 1, 6))</code></pre>
+<pre><code>## [1] 6  4  2  10 1 
+## Levels: 4 &lt; 2 &lt; 10 &lt; 1 &lt; 6</code></pre>
+<pre class="r"><code># adicionando um nível do fator que não está originalmente lá
+factor(x = nomes, levels = c(&quot;Joana&quot;, &quot;Joao&quot;,&quot;Maria&quot;,
+                             &quot;Mario&quot;, &quot;Joelma&quot;, &quot;Ximbinha&quot;, &quot;Anderson&quot;))</code></pre>
+<pre><code>## [1] Joana    Joao     Maria    Mario    Joelma   Ximbinha
+## Levels: Joana Joao Maria Mario Joelma Ximbinha Anderson</code></pre>
+<pre class="r"><code># modificando a sequência de fatores - sem assumir fatores ordenados
+factor(x = frutas, levels = c(&quot;maca&quot;, &quot;laranja&quot;, &quot;banana&quot;, &quot;morango&quot;))</code></pre>
+<pre><code>## [1] morango banana  maca    laranja
+## Levels: maca laranja banana morango</code></pre>
+<hr />
+<div id="exercicio-extra-1" class="section level5">
+<h5>Exercício Extra</h5>
+<p>Crie um vetor e faça com que ele seja um fator ordenado, de forma personalizada.</p>
+<pre class="r"><code># criando vetor
+vetor1 &lt;- c(&quot;quadrado&quot;, &quot;triangulo&quot;, &quot;circulo&quot;)
+# ordenando
+ordered(x = vetor1, c(&quot;circulo&quot;, &quot;triangulo&quot;, &quot;quadrado&quot;))</code></pre>
+<pre><code>## [1] quadrado  triangulo circulo  
+## Levels: circulo &lt; triangulo &lt; quadrado</code></pre>
+<hr />
+</div>
 </div>
 </div>
 

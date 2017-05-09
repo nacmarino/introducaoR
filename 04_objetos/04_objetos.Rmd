@@ -348,6 +348,45 @@ vector(length = 10)
 vector()
 ```
 
+Continuando de onde paramos:
+
+a. Crie o vetor `frutas`;  
+
+```{r}
+# criando o vetor
+frutas <- c("uva", "melancia", "kiwi", "uva", "melancia", "kiwi", "banana", "laranja", "maçã",
+             "banana", "laranja", "maçã")
+# vetor de frutas
+frutas
+```
+
+b. Vetores _vs_ fatores;  
+
+```{r}
+# classe do objeto
+class(frutas)
+# tipo de objeto
+is.vector(frutas)
+# coerção a um fator
+exemplo <- as.factor(x = frutas)
+# vetor de fatores
+exemplo
+# qual a classe de exemplo?
+class(exemplo)
+```
+
+c. Crie o vetor `idade`;  
+
+```{r}
+idade <- c(27, 22, 29, 24, 26, 23)
+```
+
+d. Juntando vetores.
+
+```{r}
+c(idade, frutas)
+```
+
 ## Matriz
 
 * Um conjunto de vetores pode ser organizado dentro de uma matriz, criada a partir da função `matrix`.
@@ -355,12 +394,12 @@ vector()
 * Uma matriz pode ser preenchida por linhas (`byrow = TRUE`) ou por colunas (`byrow = FALSE`)
 
 ```{r}
+# criando uma matriz contendo apenas uma coluna
+matrix(data = idade)
 # criando uma matriz sendo preenchida por linhas
 matrix(data = idade, nrow = 2, ncol = 3, byrow = TRUE)
 # criando uma matriz sendo preenchida por colunas
 matrix(data = idade, nrow = 2, ncol = 3, byrow = FALSE)
-# criando uma matriz contendo apenas uma coluna
-matrix(data = idade)
 ```
 
 * Você também pode montar uma matriz a partir de dois ou mais vetores:
@@ -370,8 +409,14 @@ matrix(data = idade)
 idade
 # criando um vetor com alturas, do mesmo comprimento que idade
 altura <- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
+# observando vetor
+altura
 # criando uma matriz com a idade e a altura
 (informacoes <- matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE))
+# observando resultado
+informacoes
+# descobrindo o comprimento de um vetor
+length(idade)
 ```
 
 ---
@@ -379,10 +424,32 @@ altura <- c(1.75, 1.56, 1.67, 1.70, 1.62, 1.77)
 ##### Exercício 8
 
 a. Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;  
+
+```{r}
+nomes <- c("romullo", "yamile", "viviane", "adriana", "pedro", "rodrigo")
+```
+  
 b. Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;  
-c. O que aconteceu à matriz quando criamos a matriz com idades e nomes?  
+ 
+```{r}
+# uma forma de criar uma matrix
+info2 <- matrix(data = c(nomes, idade), nrow = 6, ncol = 2, byrow = FALSE);info2
+# outra forma
+conjuntinho <- c(idade, nomes)
+matrix(data = conjuntinho, nrow = 6, ncol = 2, byrow = FALSE)
+# mais uma forma
+matrix(data = c(nomes, idade), nrow = length(idade), ncol = 2, byrow = FALSE)
+```
+
+c. O que aconteceu à matriz quando criamos a matriz com idades e nomes?
+
 d. Por que isso acontenceu?  
+
 e. O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?  
+
+```{r}
+as.numeric(x = info2)
+```
 
 * Ou seja:
     + Uma matriz pode armazenar objetos de apenas um tipo: ou todos os objetos são numéricos, ou são todos caracteres, ou são todos lógicos, e etc.
@@ -407,6 +474,44 @@ anos <- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 
 * Uma lista pode ser muito útil para armazenarmos informações de diferentes tipos, mas não facilita muito o uso destes dados e, tampouco, salvar os dados que estão dentro delas.
 
+---
+
+##### Exercício Extra
+
+a. Crie uma lista com duas sub-listas: uma com os nomes das linhas e outra com os nomes de colunas;  
+b. Adicione esta lista ao `dimnames` da `matrix` informações.  
+
+```{r}
+# exemplo de lista
+list(c(1, 2, 3, 4, 5, 6), c("idade", "altura"))
+# matrix que haviamos criado
+informacoes
+     
+# colocando a lista em um objeto
+(dimensoes <- list(c(1, 2, 3, 4, 5, 6), c("idade", "altura")))
+# adicionando nomes as linhas e colunas 
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)
+
+# o que estamos fazendo?
+nome_das_linhas <- c(1,2,3,4,5,6)
+nomes_das_colunas <- c("idade", "altura")
+# combinando tudo em uma lista
+(dimensoes <- list(nome_das_linhas, nomes_das_colunas))
+# observando a matriz
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)
+
+# transformando a numeração das linhas em nomes das pessoas
+(dimensoes <- list(nomes, c("idade", "altura")))
+# observando a matriz
+matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE,
+       dimnames = dimensoes)
+
+# tamanho da matriz
+dim(informacoes)
+```
+
+---
+
 ## Data Frame
 
 * O tipo de objeto mais utilizado por nós é o data frame, criado pela função `data.frame`.
@@ -418,7 +523,11 @@ nomes <- c("Joana", "Joao", "Maria", "Mario", "Joelma", "Ximbinha")
 # um vetor lógico
 logico <- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 # um data frame
-(dados <- data.frame(idade, nomes, logico))
+dados <- data.frame(idade, nomes, logico)
+# vendo o data.frame
+dados
+# desvendando o data.frame
+str(dados)
 ```
 
 * Ou seja, um `data.frame` pode ser visto como um objeto no qual cada coluna é um vetor (elementos pertencem a um único tipo de objeto) e cada linha é uma lista (cada elemento pertence a tipos de objetos diferentes).
@@ -428,9 +537,39 @@ logico <- c(TRUE, FALSE, TRUE, TRUE, FALSE, TRUE)
 ##### Exercício 9
 
 a. Crie dois vetores com uma informação que você desejar;  
+  
+```{r}
+vetor1 <- c("amarelo", "rosa", "vermelho")
+vetor2 <- c("apito", "copo", "garrafa")
+```
+  
 b. Crie uma matriz contendo a informação destes dois vetores;  
+  
+```{r}
+matriz <- matrix(data = c(vetor1, vetor2), nrow = 3, byrow = FALSE)
+matriz
+```
+  
 c. Crie um Data Frame contendo a informação destes dois vetores;  
-d. Coloque tudo isto em uma lista.  
+  
+```{r}
+exemplo <- data.frame(vetor1, vetor2)
+exemplo
+
+# preciso especificar o objeto que vai pras colunas?
+data.frame(c("vermelho", "rosa", "amarelo"), c("apito", "copo", "garrafa"))
+# outra forma
+data.frame(cores = c("vermelho", "rosa", "amarelo"), objetos = c("apito", "copo", "garrafa"))
+# e se os vetores não forem de mesmo tamanho?
+data.frame(cores = c("vermelho", "rosa","amarelo", "azul"), 
+           objetos = c("apito", "copo", "garrafa", NA))
+```
+  
+d. Coloque tudo isto em uma lista (pelo menos a `matrix` e o `data.frame`).  
+
+```{r}
+list(vetor1, vetor2, matriz, exemplo)
+```
 
 ---
 
@@ -448,6 +587,29 @@ d. Coloque tudo isto em uma lista.
 a. Repita o passo "c" do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.  
 b. Qual função é a melhor para o caso acima?  
 c. Por que?  
+
+```{r}
+cbind.data.frame(vetor1, vetor2)
+```
+
+---
+
+Você pode coagir uma `matrix` a se tornar um `data.frame` e vice-verse, do mesmo jeito que você coage todos os outros objetos.
+
+```{r}
+# coagindo a um data.frame
+as.data.frame(informacoes)
+# coagindo a uma matrix
+as.matrix.data.frame(dados)
+```
+
+Você pode associar `cbind.data.frame` e `rbind.data.frame` para adicionar informações a um `data.frame`.
+
+```{r}
+rbind.data.frame(dados, c(30, "Anderson", TRUE))
+```
+
+---
 
 ## Um atalho para determinar o tipo e classe dos elementos de um objeto
 
@@ -472,8 +634,12 @@ str(object = dados)
 * Por padrão, o R ordena os níveis de um fator em ordem alfabética e/ou do menor para o maior.
 
 ```{r}
-(letras <- factor(x = c("Alto", "Médio", "Baixo")))
-(numeros <- factor(x = c(2, 4, 6)))
+#exemplos
+letras <- factor(x = c("Alto", "Médio", "Baixo"))
+letras
+
+numeros <- factor(x = c(6, 4, 2))
+numeros
 ```
 
 * Entretanto, às vezes, faz mais sentido ordenar os fatores de acordo com algum tipo de lógica ou sequência desejada. Para tal, podemos determinar diretamente qual a ordem dos níveis do fator:
@@ -482,5 +648,30 @@ str(object = dados)
 # através da função ordered
 ordered(x = letras, c("Baixo", "Médio", "Alto"))
 # ou através da própria função factor, através do argumento 'ordered'
-factor(x = c(2, 4, 6), ordered = TRUE)
+factor(x = c(6, 4, 2, 10, 1), ordered = TRUE)
+# através da função ordered
+ordered(x = c(6, 4, 2, 10, 1), c(4, 2, 10, 1, 6))
 ```
+
+```{r}
+# adicionando um nível do fator que não está originalmente lá
+factor(x = nomes, levels = c("Joana", "Joao","Maria",
+                             "Mario", "Joelma", "Ximbinha", "Anderson"))
+# modificando a sequência de fatores - sem assumir fatores ordenados
+factor(x = frutas, levels = c("maca", "laranja", "banana", "morango"))
+```
+
+---
+
+##### Exercício Extra
+
+Crie um vetor e faça com que ele seja um fator ordenado, de forma personalizada.  
+
+```{r}
+# criando vetor
+vetor1 <- c("quadrado", "triangulo", "circulo")
+# ordenando
+ordered(x = vetor1, c("circulo", "triangulo", "quadrado"))
+```
+
+---
