@@ -138,7 +138,7 @@ h1,h2,h3,h4,h5,h6{
 <div id="elementos-da-aula" class="section level1">
 <h1>Elementos da Aula</h1>
 <ol style="list-style-type: decimal">
-<li>Importanto dados;<br />
+<li>Importando dados;<br />
 </li>
 <li>Importando dados via a <code>base</code> do R;<br />
 </li>
@@ -388,15 +388,15 @@ h1,h2,h3,h4,h5,h6{
 <ul>
 <li>Podemos também ter acesso à características específicas deste conjunto de dados, como o número de linhas e colunas:</li>
 </ul>
+<pre class="r"><code># numero de dimensoes da planilha (linhas e dados)
+dim(dados)</code></pre>
+<pre><code>## [1] 532  22</code></pre>
 <pre class="r"><code># numero de colunas
 ncol(dados)</code></pre>
 <pre><code>## [1] 22</code></pre>
 <pre class="r"><code># numero de linhas
 nrow(dados)</code></pre>
 <pre><code>## [1] 532</code></pre>
-<pre class="r"><code># numero de dimensoes da planilha (linhas e dados)
-dim(dados)</code></pre>
-<pre><code>## [1] 532  22</code></pre>
 <ul>
 <li>E também podemos verificar os nomes das linhas e colunas.</li>
 </ul>
@@ -469,7 +469,7 @@ rownames(dados)</code></pre>
 </ul>
 <pre class="r"><code># nomes das colunas do data.frame dados
 # outra forma de ver isso: nome dos vetores que compõem o data.frame dados
-names(dados)</code></pre>
+names(x = dados)</code></pre>
 <pre><code>##  [1] &quot;id&quot;                      &quot;formacao_ouvinte&quot;       
 ##  [3] &quot;origem_ouvinte&quot;          &quot;instituicao_ouvinte&quot;    
 ##  [5] &quot;laboratorio_ouvinte&quot;     &quot;data&quot;                   
@@ -525,6 +525,8 @@ dimnames(matriz)</code></pre>
 <li>Você conseguiu carregar este arquivo? Se não, por que?</li>
 <li>Como consertar este possível ‘Erro’?</li>
 </ol>
+<pre class="r"><code># solucao corretar
+read.table(file = &quot;05_leitura_de_dados/dados/exemplo.txt&quot;, header = TRUE, skip = 5)</code></pre>
 <hr />
 <ul>
 <li>Uma forma de carregar o arquivo <code>exemplo.txt</code> é:</li>

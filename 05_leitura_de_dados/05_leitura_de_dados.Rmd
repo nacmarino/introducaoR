@@ -20,7 +20,7 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Importanto dados;  
+1. Importando dados;  
 2. Importando dados via a `base` do R;  
 3. Carregando pacotes;  
 4. Importando dados a usando o pacote `readr`;  
@@ -115,12 +115,12 @@ str(dados)
 * Podemos também ter acesso à características específicas deste conjunto de dados, como o número de linhas e colunas:
 
 ```{r}
+# numero de dimensoes da planilha (linhas e dados)
+dim(dados)
 # numero de colunas
 ncol(dados)
 # numero de linhas
 nrow(dados)
-# numero de dimensoes da planilha (linhas e dados)
-dim(dados)
 ```
 
 * E também podemos verificar os nomes das linhas e colunas.
@@ -136,7 +136,7 @@ rownames(dados)
 ```{r}
 # nomes das colunas do data.frame dados
 # outra forma de ver isso: nome dos vetores que compõem o data.frame dados
-names(dados)
+names(x = dados)
 ```
 
 * Atenção: ao contrário de um data.frame, uma matriz possui nomes às suas dimensões!
@@ -168,6 +168,11 @@ args(read.table)
 a. Use a função `read.table` para ler o arquivo `exemplo.txt`.
 b. Você conseguiu carregar este arquivo? Se não, por que?
 c. Como consertar este possível 'Erro'?
+
+```{r eval=FALSE}
+# solucao corretar
+read.table(file = "05_leitura_de_dados/dados/exemplo.txt", header = TRUE, skip = 5)
+```
 
 ---
 
