@@ -181,11 +181,22 @@ suppressPackageStartupMessages(library(rasterVis))
 # plotando figura
 gplot(bio1) +
   geom_tile(aes(fill = value)) +
-  scale_fill_gradient(low = 'blue', high = 'red') +
+  scale_fill_gradient(low = 'blue2', high = 'firebrick1') +
   coord_equal()
 ```
 
+---
 
+##### Exercício 3
+
+a. Carregue o arquivo _raster_ `bio12.bil`, que corresponde aos dados da precipitação anual média.  
+b. Extraia as coordenadas de uma localidade de sua escolha.  
+c. Determine a precipitação anual média para a localidade de sua escolha.
+d. Crie e customize um gráfico utilizando este arquivo _raster_.
+
+---
+
+Além de arquivos _raster_, podemos carregar _shapefiles_ no R, através da função `readShapeSpatial` do pacote `maptools` (ou variantes: `readShapeLines`, `readShapePoints`, `readShapePoly`). Por exemplo:
 
 brazil_1 <- readShapeSpatial("Layers/BRA_adm/BRA_adm1.shp")
 rio_state_1 <- subset(brazil_1, brazil_1@data$NAME_1 == "Rio de Janeiro")
