@@ -21,70 +21,171 @@ h1,h2,h3,h4,h5,h6{
 }
 </style>
 
-# Elementos da Aula
+# Elementos da Aula (baseada na aula da Dra. Andrea Sanchez Tapia/2016) + atualizações minhas
 
 1. O que está aula é e o que ela não é!;
 2. Utilizando o conteúdo do R para gerar mapas simples;
-3. Usando informações da internet para criar mapas simples;
-4. Criando mapas simples a partir de arquivos raster;
+3. Criando mapas simples a partir de arquivos raster;
+4. Usando informações da interação com a internet para criar mapas simples.
 
 ## O que está aula é e o que ela não é!
 
-```{r eval=FALSE}
-library(ggplot2)
-library(RgoogleMaps)
-library(raster)
-library(maptools)
-library(ggmap)
-library(rgdal)
-library(maps)
-library(ggalt)
-```
+O R possui uma ampla capacidade e versatilidade para a execução de praticamente qualquer tarefa - inclusive para a criação e edição de mapas. É possível usar o R e toda a sua funcionalidade de forma muito similar àquela de programa como o ArcGIS. No entanto, este não será o nosso objetivo aqui, mas sim apresentar a funcionalidade mais básica possível do R para a criação de mapas (principalmente aqueles que sempre queremos adicionar em uma dissertação, tese ou manuscrito).
+
+Existe uma diversidade enorme de material e sites na internet com material sobre a confecção de mapas no R. Sugiro dar uma olhada de forma mais detalhada no material gerado pela Dra. Andrea Sanchez Tapia para este mesmo curso em 2016 (`99_cursos_anteriores/09_Rmaps`) e/ou nos sites listados abaixo:
+
+* R Special Interest Group on using Geographical data and Mapping: https://stat.ethz.ch/mailman/listinfo/r-sig-geo  
+* TaskView: Analysis of Spatial Data: https://cran.r-project.org/web/views/Spatial.html  
+* Lovelace, R., & Cheshire, J. (2014). Introduction to visualising spatial data in R. National Centre for Research Methods Working Papers, 14(03). Retrieved from https://github.com/Robinlovelace/Creating-maps-in-R
+* Kahle & Wickham 2012 - ggmaps: https://dl.dropboxusercontent.com/u/24648660/ggmap%20useR%202012.pdf  
+* Kim Gilbert http://www.zoology.ubc.ca/~kgilbert/mysite/Miscellaneous_files/R_MakingMaps.pdf  
+* Kevin Johnson http://www.kevjohnson.org/making-maps-in-r/  
+* Santiago Begueria. Mapping with ggplot2: hexbin maps. http://santiago.begueria.es/2016/04/mapping-with-ggplot2-hexbin-maps/  
+* http://geog.uoregon.edu/GeogR/topics/maps01.html  
+* A função para acrescentar escala em ggplot2: http://editerna.free.fr/wp/?p=76  
+
+Alguns pacotes úteis para a confecção de mapas no R são:
+
+* `RgoogleMaps`: baixar mapas do Google;    
+* `raster`: pacote para a criação e manipulação de arquivos raster;    
+* `maptools`: ler ESRI shapefiles;  
+* `rgdal`;  
+* `maps`: mapas simples, eixos, escalas e cidades;  
+* `mapdata`: base de dados WorldHires e rios;  
+* `rworldmap`: outra base de dados de mapas do mundo; 
+* `ggplot2`;  
+* `ggmap`: mapas customizados, open street maps e outras funcionalidades de mapas para o `ggplot2`;  
+* `ggalt`: outras funcionalidades para a customização de mapas e escalas;  
+* `rasterVis`: para facilitar a integração de arquivos raster com o `ggplot2`;  
+* ...
 
 ## Utilizando o conteúdo do R para gerar mapas simples
 
-mapa <- borders("world", regions = "Brazil", fill = "grey70", colour = "black")
+O pacote `maps` pode plotar mapas simples através de dados existentes no próprio pacote:
 
-brazil <- ggplot() + mapa + theme_bw() + xlab("Longitude (decimals)") + ylab("Latitude (decimals)") + 
-  theme(panel.border = element_blank(), panel.grid.major = element_line(colour = "grey80"), panel.grid.minor = element_blank())
-brazil
+```{r}
+# carregando pacotes
+library(maps) # plotagem genérica de mapas
+library(mapdata) # base de dados worldHires
+# plotando o mapa do Brasil
+map(database = "worldHires", regions = "Brazil")
+```
 
+Você pode adicionar a projeção dos outros países no espaço disponível:
 
-## Usando informações da internet para criar mapas simples
+```{r}
+map(database = "worldHires", regions = "Brazil")
+map(add = TRUE)
+```
 
-geocode("Parque Jurubatiba", source = "google")
+Adicionando os eixos de longitude e latitude:
+
+```{r}
+map(database = "worldHires", regions = "Brazil")
+map(add = TRUE)
+map.axes()
+```
+
+Adicionando escala ao mapa e uma linha para representar o Equador:
+
+```{r}
+map(database = "worldHires", regions = "Brazil")
+map(add = TRUE)
+map.axes()
+map.scale(ratio = FALSE, cex = 0.7)
+abline(h = 0, lty = 2)
+```
+
+Você também pode plotar os pontos correspondentes às cidades ao mapa usando a função:
+
+```{r}
+map(database = "worldHires", regions = "Brazil")
+map(add = TRUE)
+map.axes()
+map.scale(ratio = FALSE, cex = 0.7)
+abline(h = 0, lty = 2)
+map.cities(country = "Brazil", minpop = 1000000, pch = 19, cex = 1.2)
+```
 
 ---
 
-bwg_map <- get_map(location = c(-70, -20), source = "stamen",
-                   maptype = "watercolor", zoom = 3)
+##### Exercício 1
 
-final_map <- bwg_map +
-  map_borders +
-  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
-             shape = 20, colour = "black", size = 3) + 
-  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
-             colour = "red", shape = 20, size = 2) +
-  theme(panel.border = element_blank(),
-        axis.title = element_blank(),
-        axis.text  = element_blank(),
-        axis.ticks = element_blank(),
-        plot.margin = unit(c(0,0,0,0), "cm"))
+Modifique as opções apresentadas anteriormente para explorar as opções gráficas disponíveis nas funções utilizadas.
 
 ---
 
-macae <- get_map(location = c(lon = -41.44299, lat = -22.17327), source = "stamen", maptype = "toner", zoom = 11)
-plot(macae)
+Uma outra opção para criar mapas com base nos dados já existentes nos pacotes do R é através do `ggplot2`, através da função `borders`. A função `borders` (do `ggplot2`) funciona de forma similar àquela do pacote `maps`.
+
+```{r}
+# carregando o ggplot2
+suppressPackageStartupMessages(library(ggplot2))
+```
 
 ---
 
-# lots of visual options, just like google maps: maptype = c("roadmap", "mobile",
-# "satellite", "terrain", "hybrid", "mapmaker-roadmap", "mapmaker-hybrid")
-GetMap(center = c(-23, -44), zoom = 5, maptype = "terrain",
-                    size = c(240, 200), markers = <funcao>,
-                    destfile = "BWG Map/brazil.png")
-                    
-## Criando mapas simples a partir de arquivos raster
+##### Exercício 2
+
+Utilize a função `borders` do pacote `ggplot2` para criar um mapa editado do Brasil.
+
+---
+
+## Criando mapas simples a partir de rasters e shapefiles
+
+Como vimos alguns dos pacotes disponíveis no R já oferecem mapas embutidos em suas funções. Todavia, muitas destas funções e seus mapas não satisfazem totalmente algumas das necessidades que alguns podem ter - e outros não satisfazem nem um pouco. Na realidade, na maior parte das vezes, é mais útil termos um conjunto de __shapefiles__ ou de __rasters__ a partir dos quais vamos conseguir construir os mapas que de fatos queremos.
+
+Você pode encontrar arquivos para a confecção de mapas em:
+
+* __Shapefiles:__ pontos, linhas e polígonos (e.g., cidades, rios, estados...)
+    - do Brasil: ftp://geoftp.ibge.gov.br/mapas_interativos/
+    - do mundo: DIVA_GIS project http://www.diva-gis.org/Data e por país: http://www.diva-gis.org/gdata
+    - Global Administrative Areas http://gadm.org (você pode baixar estes dados diretamente do R através da função `raster::getData`)
+    - Google!  
+
+* __Rasters:__ superfícies contínuas, reticuladas (grids), com diferentes tamanhos de pixel.
+    - modelos digitais de elevação: http://eros.usgs.gov/
+    - clima: Worldclim http://www.worldclim.org/ (você pode baixar estes dados diretamente através da função `raster::getData`)
+
+A função `raster::getData` é particularmente útil para baixarmos os _rasters_ e _shapefiles_ diretamente de base de dados online. Não vamos fazer o download de um conjunto de _rasters_ aqui pois necessitamos que a internet esteja totalmente funcional; todavia, podemos observar um raster que já foi baixado a partir do "worldclim" abaixo:
+
+```{r}
+# carregando o pacote raster
+suppressPackageStartupMessages(library(raster))
+# carregando o arquivo de raster do worldclim
+bio1 <- raster("layers/bio1.bil")
+# plotando o raster
+plot(bio1, xlab = "Longitude", ylab = "Latitude", main = "Temperature Média do Ar (x 10 ºC)")
+```
+
+Você pode descobrir as coordenadas de uma localidade usando a função `ggmap::geocode`, como se estivesse fazendo uma busca nos mapas do Google.
+
+```{r}
+# carregando pacote
+suppressPackageStartupMessages(library(ggmap))
+# quais as coordenadas da ilha do fundão?
+geocode(location = "Ilha do Fundão")
+```
+
+Você pode extrair os dados das coordenadas de um objeto do tipo raster usando a função `raster::extract`, que pede um objeto _raster_ `x` e uma matriz ou `data.frame` como um objeto `y`:
+
+```{r}
+# temperatura média anual do ar na ilha do fundão (x 10ºC)
+extract(x = bio1, y = cbind(-43.2259, -22.86269))
+```
+
+Para facilitar a manipulação de arquivos com formato _raster_, você pode usar o pacote `rasterVis` e a função `gplot` para plotar o arquivo _raster_ utilizando as funções do `ggplot`.
+
+```{r}
+# carregando pacote
+suppressPackageStartupMessages(library(rasterVis))
+# plotando figura
+gplot(bio1) +
+  geom_tile(aes(fill = value)) +
+  scale_fill_gradient(low = 'blue', high = 'red') +
+  coord_equal()
+```
+
+
 
 brazil_1 <- readShapeSpatial("Layers/BRA_adm/BRA_adm1.shp")
 rio_state_1 <- subset(brazil_1, brazil_1@data$NAME_1 == "Rio de Janeiro")
@@ -123,3 +224,41 @@ rio_bound + geom_polygon(data = rio4, aes(x = long, y = lat, group = group), col
 
 ---
 
+
+## Usando informações da interação com a internet para criar mapas simples
+
+geocode("Parque Jurubatiba", source = "google")
+
+---
+
+bwg_map <- get_map(location = c(-70, -20), source = "stamen",
+                   maptype = "watercolor", zoom = 3)
+
+final_map <- bwg_map +
+  map_borders +
+  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
+             shape = 20, colour = "black", size = 3) + 
+  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
+             colour = "red", shape = 20, size = 2) +
+  theme(panel.border = element_blank(),
+        axis.title = element_blank(),
+        axis.text  = element_blank(),
+        axis.ticks = element_blank(),
+        plot.margin = unit(c(0,0,0,0), "cm"))
+
+---
+
+macae <- get_map(location = c(lon = -41.44299, lat = -22.17327), source = "stamen", maptype = "toner", zoom = 11)
+plot(macae)
+
+---
+
+# lots of visual options, just like google maps: maptype = c("roadmap", "mobile",
+# "satellite", "terrain", "hybrid", "mapmaker-roadmap", "mapmaker-hybrid")
+GetMap(center = c(-23, -44), zoom = 5, maptype = "terrain",
+                    size = c(240, 200), markers = <funcao>,
+                    destfile = "BWG Map/brazil.png")
+
+---
+
+GetData
