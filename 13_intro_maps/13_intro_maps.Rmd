@@ -196,80 +196,139 @@ d. Crie e customize um gráfico utilizando este arquivo _raster_.
 
 ---
 
-Além de arquivos _raster_, podemos carregar _shapefiles_ no R, através da função `readShapeSpatial` do pacote `maptools` (ou variantes: `readShapeLines`, `readShapePoints`, `readShapePoly`). Por exemplo:
+Além de arquivos _raster_, podemos carregar _shapefiles_ no R através da função `readShapeSpatial` do pacote `maptools` (ou variantes: `readShapeLines`, `readShapePoints`, `readShapePoly`). Por exemplo:
 
-brazil_1 <- readShapeSpatial("Layers/BRA_adm/BRA_adm1.shp")
-rio_state_1 <- subset(brazil_1, brazil_1@data$NAME_1 == "Rio de Janeiro")
+```{r warning=FALSE, message=FALSE}
+# carregando pacote
+library(maptools)
+# carregando o shapefile
+brasil <- readShapeSpatial("layers/BRA_adm/BRA_adm3.shp")
+```
 
-rio1 <- fortify(rio_state_1)
+O _shapefile_ é um objeto que também pode ser manipulado e plotado individualmente!
 
-rio <- ggplot() + geom_polygon(data = rio1, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
-rio
+```{r}
+# somente as dez primeiras linhas
+brasil@data[1:10,]
+```
+
+
+```{r}
+# cortando o shapefile para o estado
+estado_rio <- subset(brasil, brasil@data$NAME_1 == "Rio de Janeiro")
+# observando o shapefile
+estado_rio@data[1:10,]
+# cortando o shapefile para a cidade
+cidade_rio <- subset(brasil, brasil@data$NAME_2 == "Rio de Janeiro")
+# observando o shapefile
+cidade_rio@data
+```
+
+Nós podemos plotar estes objetos através da função da `plot`: 
+
+```{r}
+# mapa do estado
+plot(estado_rio)
+# mapa da cidade
+plot(cidade_rio)
+```
+
+No entanto, podemos também transformar estes _shapefiles_ em um `data.frame` e fazermos as figuras no `ggplot2`, através da função `fortify`.  
+
+```{r}
+# criando um objeto do tipo data.frame para o pais
+pais <- fortify(brasil)
+# observando o objeto
+head(pais)
+# criando um objeto do tipo data.frame para o estado
+estado <- fortify(estado_rio)
+# observado o objeto
+head(estado)
+# criando um objeto do tipo data.frame para a cidade
+cidade <- fortify(cidade_rio)
+# observando o objeto
+head(cidade)
+```
+
+```{r}
+# um mapa do estado do Rio de Janeiro
+ggplot() + 
+  geom_polygon(data = estado, aes(x = long, y = lat, group = group, fill = id), colour = "black", show.legend = FALSE) +
+  coord_equal()
+```
+
+
+```{r}
+# um mapa para a cidade do Rio de Janeiro
+ggplot() + 
+  geom_polygon(data = cidade, aes(x = long, y = lat, group = group, fill = id), colour = "black", show.legend = FALSE) +
+  coord_equal()
+```
+
+Esta transformação com a função `fortify`, no entanto, não é sempre necessária!
+
+```{r}
+ggplot() + 
+  geom_polygon(data = estado_rio, aes(x = long, y = lat, group = group, fill = id), colour = "black", show.legend = FALSE) +
+  coord_equal()
+```
 
 ---
 
-brazil_2 <- readShapeSpatial("Layers/BRA_adm/BRA_adm2.shp")
-rio_state_2 <- subset(brazil_2, brazil_2@data$NAME_1 == "Rio de Janeiro")
+##### Exercício 4
 
-rio2 <- fortify(rio_state_2)
-
-rio_bound <- ggplot() + geom_polygon(data = rio2, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
-rio_bound
+Carregue este _shapefile_ do Brasil, e:  
+* Crie um mapa do Estado do Rio de Janeiro, mas adicione cor somente à cidade do Rio de Janeiro;  
+* Crie um mapa da Cidade do Rio de Janeiro, mas adicione cor somente ao seu Bairro/Região (ou então escolha um bairro ou região à sua escolha caso você não more na cidade do Rio de Janeiro).  
 
 ---
-
-brazil_3 <- readShapeSpatial("Layers/BRA_adm/BRA_adm3.shp")
-rio_state_3 <- subset(brazil_3, brazil_3@data$NAME_1 == "Rio de Janeiro")
-
-rio3 <- fortify(rio_state_3)
-
-rio_full <- ggplot() + geom_polygon(data = rio3, aes(x = long, y = lat, group = group), colour = "black", fill = "white")
-rio_full
-
----
-
-rio_city <- subset(rio_state_2, rio_state_2@data$NAME_2 == "Rio de Janeiro") #based on rio_bound
-rio4 <- fortify(rio_city)
-
-rio_bound + geom_polygon(data = rio4, aes(x = long, y = lat, group = group), colour = "black", fill = "yellow")
-
----
-
 
 ## Usando informações da interação com a internet para criar mapas simples
 
-geocode("Parque Jurubatiba", source = "google")
+Além de termos a opção de baixar arquivos dos tipos _raster_ e _shapefiles_, nós também temos a opção de fazer o download de arquivos e mapas diretamente da internet, e projetarmos informações sobre eles. Muitas das funções que fazem isto estão no pacote `ggmap`.
 
----
+* Argumento `source`:  
+    + `google`;  
+    + `osm`;  
+    + `stamen`;  
+    + `cloudmade`.  
+* Argumento `maptype`:  
+    + `terrain`;  
+    + `toner`;  
+    + `watercolor`;  
+    + `satellite`;  
+    + `roadmap`;  
+    + `hybrid`;  
+    + ...  
+    
+```{r message=FALSE}
+fundao <- get_map(location = c(lon = -43.2259, lat = -22.85769), source = "stamen", maptype = "watercolor", zoom = 14)
+plot(fundao)
+```
 
-bwg_map <- get_map(location = c(-70, -20), source = "stamen",
-                   maptype = "watercolor", zoom = 3)
+```{r message=FALSE}
+rio <- get_map(location = c(lon = -43.1729, lat = -22.90685), source = "stamen", maptype = "toner", zoom = 12)
+plot(rio)
+```
 
-final_map <- bwg_map +
-  map_borders +
-  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
-             shape = 20, colour = "black", size = 3) + 
-  geom_point(mapping = aes(x = longitude, y = latitude), data = sites, 
-             colour = "red", shape = 20, size = 2) +
-  theme(panel.border = element_blank(),
-        axis.title = element_blank(),
-        axis.text  = element_blank(),
-        axis.ticks = element_blank(),
-        plot.margin = unit(c(0,0,0,0), "cm"))
+```{r message=FALSE}
+rio <- get_map(location = c(lon = -43.1729, lat = -22.90685), source = "google", maptype = "satellite", zoom = 14)
+plot(rio)
+```
 
----
+Uma outra opção para conseguir mapas da internet está no pacote `RgoogleMaps`, através da função `GetMap`
 
-macae <- get_map(location = c(lon = -41.44299, lat = -22.17327), source = "stamen", maptype = "toner", zoom = 11)
-plot(macae)
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+rio_terreno <- GetMap(center = c(-22.92, -43.35), zoom = 11, maptype = "terrain", RETURNIMAGE = TRUE)
+PlotOnStaticMap(rio_terreno)
+```
 
----
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+rio_mobile <- GetMap(center = c(-22.92, -43.35), zoom = 11, maptype = "mobile", RETURNIMAGE = TRUE)
+PlotOnStaticMap(rio_mobile)
+```
 
-# lots of visual options, just like google maps: maptype = c("roadmap", "mobile",
-# "satellite", "terrain", "hybrid", "mapmaker-roadmap", "mapmaker-hybrid")
-GetMap(center = c(-23, -44), zoom = 5, maptype = "terrain",
-                    size = c(240, 200), markers = <funcao>,
-                    destfile = "BWG Map/brazil.png")
-
----
-
-GetData
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+rio_hybrid <- GetMap(center = c(-22.92, -43.35), zoom = 11, maptype = "hybrid", RETURNIMAGE = TRUE)
+PlotOnStaticMap(rio_hybrid)
+```
