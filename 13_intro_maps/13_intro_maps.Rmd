@@ -332,3 +332,5 @@ PlotOnStaticMap(rio_mobile)
 rio_hybrid <- GetMap(center = c(-22.92, -43.35), zoom = 11, maptype = "hybrid", RETURNIMAGE = TRUE)
 PlotOnStaticMap(rio_hybrid)
 ```
+
+Por fim, o R pode fazer muitas das coisas que você faria no ArcGis...existe muito material online e eu te encorajo a ir lá e buscar mais dessas informações para facilitar a sua vida ao fazer manipulações em mapas.
