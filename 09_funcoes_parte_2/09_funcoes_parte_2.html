@@ -717,9 +717,10 @@ for (val in x) {
 <pre class="r"><code>list.files(path = &quot;../97_enquete/&quot;)</code></pre>
 <pre><code>##  [1] &quot;00_perguntas.xlsx&quot;  &quot;01_turma_2016.xlsx&quot; &quot;2017_1.xlsx&quot;       
 ##  [4] &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;       &quot;2017_12.xlsx&quot;      
-##  [7] &quot;2017_13.xlsx&quot;       &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;       
-## [10] &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;       
-## [13] &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
+##  [7] &quot;2017_13.xlsx&quot;       &quot;2017_14.xlsx&quot;       &quot;2017_15.xlsx&quot;      
+## [10] &quot;2017_16.xlsx&quot;       &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;       
+## [13] &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;       
+## [16] &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
 <p>Esta pasta contém um arquivo <code>.xlsx</code> com o título das perguntas que eu fiz para vocês (<code>00_perguntas.xlsx</code>), uma arquivo contendo todas as respostas dos alunos da turma do ano passado (<code>01_turma_2016.xlsx</code>) e vários outros arquivos com as respostas individuais de cada um de vocês. Como podemos juntar isso?</p>
 <p>Repare que todas as 13 planilhas com as respostas dos alunos são iguais: contém o mesmo número de colunas, o mesmo título para cada coluna, os mesmos tipos de resposta em cada coluna…isto é muito útil ao organizarmos uma planilha de dados, principalmente se eles têm a mesma origem, descrevem as mesmas coisas e, um dia, você vai querer juntar eles de alguma forma.</p>
 <p>Para poder juntar estas planilhas diferentes, podemos usar um controlador de fluxo do tipo <code>for</code>, que vai ler um arquivo, ler um segundo arquivo, juntar com o primeiro, ler o terceiro arquivo, juntar com o primeiro e segundo, e por aí vai. Caso você se lembre do exemplo da sequência Fibonacci, nós <em>iniciamos</em> a tarefa do <em>loop</em> fora dele pois queríamos que todo o resto da tarefa seguisse a informação primaria que nós demos - aqui faremos o mesmo, lendo um arquivo antes de iniciar o <em>loop</em> e os demais dentro do <em>loop</em>.</p>
@@ -728,9 +729,10 @@ for (val in x) {
 (arquivos &lt;- list.files(path = &quot;../97_enquete/&quot;))</code></pre>
 <pre><code>##  [1] &quot;00_perguntas.xlsx&quot;  &quot;01_turma_2016.xlsx&quot; &quot;2017_1.xlsx&quot;       
 ##  [4] &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;       &quot;2017_12.xlsx&quot;      
-##  [7] &quot;2017_13.xlsx&quot;       &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;       
-## [10] &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;       
-## [13] &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
+##  [7] &quot;2017_13.xlsx&quot;       &quot;2017_14.xlsx&quot;       &quot;2017_15.xlsx&quot;      
+## [10] &quot;2017_16.xlsx&quot;       &quot;2017_2.xlsx&quot;        &quot;2017_3.xlsx&quot;       
+## [13] &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;        &quot;2017_6.xlsx&quot;       
+## [16] &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;        &quot;2017_9.xlsx&quot;</code></pre>
 <pre class="r"><code># eliminando o primeiro elemento do vetor, que não é do nosso interesse - ele tem outro formato e conteudo
 arquivos &lt;- arquivos[-1]</code></pre>
 <p>O que acabamos de fazer exatamento no último passo foi sobre-escrever o objeto <code>arquivos</code>, dizendo que ele terá o mesmo nome, mas será o <code>arquivos</code> original com a exceção do primeiro elemento (<code>00_perguntas.xlsx</code>). Agora, você se lembra como carregamos um dado com extensão <code>.xlsx</code>? Vamos carregar apenas o arquivo <code>01_turma_2016.xlsx</code>.</p>
@@ -764,7 +766,7 @@ paste0(&quot;Vamos abrir: &quot;, arquivos[3])</code></pre>
 <pre><code>## [1] &quot;Vamos abrir: 2017_10.xlsx&quot;</code></pre>
 <pre class="r"><code># outro teste
 paste0(&quot;Será que vai funcionar? Vamos tentar abrir: &quot;, arquivos[10])</code></pre>
-<pre><code>## [1] &quot;Será que vai funcionar? Vamos tentar abrir: 2017_5.xlsx&quot;</code></pre>
+<pre><code>## [1] &quot;Será que vai funcionar? Vamos tentar abrir: 2017_2.xlsx&quot;</code></pre>
 <hr />
 </div>
 <div id="exercicio-13" class="section level5">
@@ -814,7 +816,7 @@ for(i in 2:length(arquivos)) {
 }
 # observando novamente a planilha de dados
 dados</code></pre>
-<pre><code>## # A tibble: 31 × 9
+<pre><code>## # A tibble: 34 × 9
 ##                  P1                                             P2
 ## *             &lt;chr&gt;                                          &lt;chr&gt;
 ## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
@@ -827,7 +829,7 @@ dados</code></pre>
 ## 8         Doutorado Bacharel em Biologia (qualquer especialização)
 ## 9          Mestrado Bacharel em Biologia (qualquer especialização)
 ## 10         Mestrado Bacharel em Biologia (qualquer especialização)
-## # ... with 21 more rows, and 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;,
+## # ... with 24 more rows, and 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;,
 ## #   P5 &lt;chr&gt;, P6 &lt;chr&gt;, P7 &lt;chr&gt;, P8 &lt;chr&gt;, P9 &lt;chr&gt;</code></pre>
 <p>Este é só um exemplo de como podemos aplicar um <em>loop</em> para resolver uma tarefa corriqueira que fazemos. Existem outras coisas que poderiam ser úteis ao fazermos uma tarefa como essa, como criando uma coluna dizendo de onde veio cada observação (i.e., que arquivo corresponde a cada observação), mas para o momento está ótimo. Você pode usar esta mesma lógica para carregar qualquer tipo de dado: desde um <code>data.frame</code> até uma página da internet, arquivo raster e por aí vai.</p>
 </div>
