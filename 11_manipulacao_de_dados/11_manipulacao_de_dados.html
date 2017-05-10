@@ -209,7 +209,7 @@ library(readr)
 dados &lt;- suppressMessages(read_tsv(&quot;dados/resposta_enquetes.xls&quot;))
 # dando uma olhada nos dados
 dados</code></pre>
-<pre><code>## # A tibble: 31 × 10
+<pre><code>## # A tibble: 34 × 10
 ##        `Pergunta 1`                                   `Pergunta 2`
 ##               &lt;chr&gt;                                          &lt;chr&gt;
 ## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
@@ -222,7 +222,7 @@ dados</code></pre>
 ## 8         Doutorado Bacharel em Biologia (qualquer especialização)
 ## 9          Mestrado Bacharel em Biologia (qualquer especialização)
 ## 10         Mestrado Bacharel em Biologia (qualquer especialização)
-## # ... with 21 more rows, and 8 more variables: `Pergunta 3` &lt;chr&gt;,
+## # ... with 24 more rows, and 8 more variables: `Pergunta 3` &lt;chr&gt;,
 ## #   `Pergunta 4` &lt;chr&gt;, `Pergunta 5` &lt;chr&gt;, `Pergunta 6` &lt;chr&gt;, `Pergunta
 ## #   7` &lt;chr&gt;, `Pergunta 8` &lt;chr&gt;, `Pergunta 9` &lt;chr&gt;, `Origem da
 ## #   Informacao` &lt;chr&gt;</code></pre>
@@ -231,7 +231,7 @@ dados</code></pre>
 dados$Identidade &lt;- seq(from = 1, to = nrow(dados), length.out = nrow(dados))
 # olhando esta tabela
 dados</code></pre>
-<pre><code>## # A tibble: 31 × 11
+<pre><code>## # A tibble: 34 × 11
 ##        `Pergunta 1`                                   `Pergunta 2`
 ##               &lt;chr&gt;                                          &lt;chr&gt;
 ## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
@@ -244,7 +244,7 @@ dados</code></pre>
 ## 8         Doutorado Bacharel em Biologia (qualquer especialização)
 ## 9          Mestrado Bacharel em Biologia (qualquer especialização)
 ## 10         Mestrado Bacharel em Biologia (qualquer especialização)
-## # ... with 21 more rows, and 9 more variables: `Pergunta 3` &lt;chr&gt;,
+## # ... with 24 more rows, and 9 more variables: `Pergunta 3` &lt;chr&gt;,
 ## #   `Pergunta 4` &lt;chr&gt;, `Pergunta 5` &lt;chr&gt;, `Pergunta 6` &lt;chr&gt;, `Pergunta
 ## #   7` &lt;chr&gt;, `Pergunta 8` &lt;chr&gt;, `Pergunta 9` &lt;chr&gt;, `Origem da
 ## #   Informacao` &lt;chr&gt;, Identidade &lt;dbl&gt;</code></pre>
@@ -259,10 +259,11 @@ dados$`Pergunta 4`</code></pre>
 ## [13] &quot;Nunco usou.&quot;       &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [16] &quot;Menos de 1 ano.&quot;   &quot;Nunco usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [19] &quot;Nunca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
-## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
-## [25] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
-## [28] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
-## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [28] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [31] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [34] &quot;Menos de 1 ano.&quot;</code></pre>
 <pre class="r"><code># como ficou
 sub(pattern = &quot;Nunco&quot;, replacement = &quot;Nunca&quot;, x = dados$`Pergunta 4`)</code></pre>
 <pre><code>##  [1] &quot;Nunca usou.&quot;       &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
@@ -272,10 +273,11 @@ sub(pattern = &quot;Nunco&quot;, replacement = &quot;Nunca&quot;, x = dados$`Per
 ## [13] &quot;Nunca usou.&quot;       &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [16] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [19] &quot;Nunca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
-## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
-## [25] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
-## [28] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
-## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [28] &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [31] &quot;Nunca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;Nunca usou.&quot;      
+## [34] &quot;Menos de 1 ano.&quot;</code></pre>
 <p>A diferença da função <code>sub</code> para a função <code>gsub</code> é que a primeira substitui apenas <strong>uma</strong> ocorrência que bata com o padrão buscado em cada célula, enquanto a <strong>segunda</strong> substitui todos os padrões que batam com o padrão buscado cada célula.</p>
 <pre class="r"><code># usando sub para substituir os u's por A
 sub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4`)</code></pre>
@@ -286,10 +288,11 @@ sub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4`
 ## [13] &quot;NAnco usou.&quot;       &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [16] &quot;Menos de 1 ano.&quot;   &quot;NAnco usou.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [19] &quot;NAnca usou.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
-## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
-## [25] &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;  
-## [28] &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
-## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
+## [28] &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;  
+## [31] &quot;NAnca usou.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca usou.&quot;      
+## [34] &quot;Menos de 1 ano.&quot;</code></pre>
 <pre class="r"><code># usando gsub para substituir os u's por A
 gsub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4`)</code></pre>
 <pre><code>##  [1] &quot;NAnco AsoA.&quot;       &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
@@ -299,10 +302,11 @@ gsub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4
 ## [13] &quot;NAnco AsoA.&quot;       &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [16] &quot;Menos de 1 ano.&quot;   &quot;NAnco AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
 ## [19] &quot;NAnca AsoA.&quot;       &quot;Entre 1 e 2 anos.&quot; &quot;Entre 1 e 2 anos.&quot;
-## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
-## [25] &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
-## [28] &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
-## [31] &quot;Menos de 1 ano.&quot;</code></pre>
+## [22] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;  
+## [25] &quot;Menos de 1 ano.&quot;   &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
+## [28] &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;  
+## [31] &quot;NAnca AsoA.&quot;       &quot;Menos de 1 ano.&quot;   &quot;NAnca AsoA.&quot;      
+## [34] &quot;Menos de 1 ano.&quot;</code></pre>
 <hr />
 <div id="exercicio-1" class="section level5">
 <h5>Exercício 1</h5>
@@ -336,13 +340,16 @@ gsub(pattern = &quot;u&quot;, replacement = &quot;A&quot;, x = dados$`Pergunta 4
 ## [22] &quot;Licenciado no Ensino de Biologia&quot;              
 ## [23] &quot;Licenciado no Ensino de Biologia&quot;              
 ## [24] &quot;Bacharel em Biologia (qualquer especialização)&quot;
-## [25] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [25] &quot;Bacharel em Biologia (qualquer especialização)&quot;
 ## [26] &quot;Bacharel em Biologia (qualquer especialização)&quot;
-## [27] &quot;Bacharel e Licenciado em Biologia&quot;             
-## [28] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [27] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [28] &quot;Bacharel e Licenciado em Biologia&quot;             
 ## [29] &quot;Bacharel em Biologia (qualquer especialização)&quot;
-## [30] &quot;Licenciado no Ensino de Biologia&quot;              
-## [31] &quot;Bacharel em Biologia (qualquer especialização)&quot;</code></pre>
+## [30] &quot;Bacharel e Licenciado em Biologia&quot;             
+## [31] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [32] &quot;Bacharel em Biologia (qualquer especialização)&quot;
+## [33] &quot;Licenciado no Ensino de Biologia&quot;              
+## [34] &quot;Bacharel em Biologia (qualquer especialização)&quot;</code></pre>
 <p>Neste último pedaço notamos que existe uma repetição grande das categorias, o que deixa as coisas meio difíceis de serem lidas (principalmente quando esta tabela crescer). Para simplificar a apresentação dela, podemos usar a função <code>unique</code>.</p>
 <pre class="r"><code>unique(dados$`Pergunta 2`)</code></pre>
 <pre><code>## [1] &quot;Bacharel em Biologia (qualquer especialização)&quot;
@@ -379,13 +386,16 @@ dados$`Pergunta 2`</code></pre>
 ## [22] &quot;Licenciado&quot;                        
 ## [23] &quot;Licenciado&quot;                        
 ## [24] &quot;Bacharel (qualquer especialização)&quot;
-## [25] &quot;Bacharel e Licenciado&quot;             
+## [25] &quot;Bacharel (qualquer especialização)&quot;
 ## [26] &quot;Bacharel (qualquer especialização)&quot;
-## [27] &quot;Bacharel e Licenciado&quot;             
-## [28] &quot;Bacharel (qualquer especialização)&quot;
+## [27] &quot;Bacharel (qualquer especialização)&quot;
+## [28] &quot;Bacharel e Licenciado&quot;             
 ## [29] &quot;Bacharel (qualquer especialização)&quot;
-## [30] &quot;Licenciado&quot;                        
-## [31] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
+## [30] &quot;Bacharel e Licenciado&quot;             
+## [31] &quot;Bacharel (qualquer especialização)&quot;
+## [32] &quot;Bacharel (qualquer especialização)&quot;
+## [33] &quot;Licenciado&quot;                        
+## [34] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
 <p>Ainda temos um problema: o <code>(qualquer especialização)</code>! Vamos usar o <code>sub</code> para continuar remover este exceço de informação?</p>
 <pre class="r"><code># vamos remover o &quot; (qualquer especialização)&quot;
 dados$`Pergunta 2` &lt;- sub(pattern = &quot; (qualquer especialização)&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
@@ -415,13 +425,16 @@ dados$`Pergunta 2`</code></pre>
 ## [22] &quot;Licenciado&quot;                        
 ## [23] &quot;Licenciado&quot;                        
 ## [24] &quot;Bacharel (qualquer especialização)&quot;
-## [25] &quot;Bacharel e Licenciado&quot;             
+## [25] &quot;Bacharel (qualquer especialização)&quot;
 ## [26] &quot;Bacharel (qualquer especialização)&quot;
-## [27] &quot;Bacharel e Licenciado&quot;             
-## [28] &quot;Bacharel (qualquer especialização)&quot;
+## [27] &quot;Bacharel (qualquer especialização)&quot;
+## [28] &quot;Bacharel e Licenciado&quot;             
 ## [29] &quot;Bacharel (qualquer especialização)&quot;
-## [30] &quot;Licenciado&quot;                        
-## [31] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
+## [30] &quot;Bacharel e Licenciado&quot;             
+## [31] &quot;Bacharel (qualquer especialização)&quot;
+## [32] &quot;Bacharel (qualquer especialização)&quot;
+## [33] &quot;Licenciado&quot;                        
+## [34] &quot;Bacharel (qualquer especialização)&quot;</code></pre>
 <p>Por que esta tentativa de edição não funcionou? Vamos tentar apenas o <code>qualquer especialização</code>?</p>
 <pre class="r"><code># vamos apenas o &quot;qualquer especialização&quot;
 dados$`Pergunta 2` &lt;- sub(pattern = &quot;qualquer especialização&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
@@ -439,10 +452,11 @@ dados$`Pergunta 2`</code></pre>
 ## [19] &quot;Licenciado&quot;            &quot;Bacharel ()&quot;          
 ## [21] &quot;Bacharel ()&quot;           &quot;Licenciado&quot;           
 ## [23] &quot;Licenciado&quot;            &quot;Bacharel ()&quot;          
-## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel ()&quot;          
-## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel ()&quot;          
-## [29] &quot;Bacharel ()&quot;           &quot;Licenciado&quot;           
-## [31] &quot;Bacharel ()&quot;</code></pre>
+## [25] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [27] &quot;Bacharel ()&quot;           &quot;Bacharel e Licenciado&quot;
+## [29] &quot;Bacharel ()&quot;           &quot;Bacharel e Licenciado&quot;
+## [31] &quot;Bacharel ()&quot;           &quot;Bacharel ()&quot;          
+## [33] &quot;Licenciado&quot;            &quot;Bacharel ()&quot;</code></pre>
 <p>Por que agora foi e antes não? Vamos tentar o parenteses <code>)</code>!</p>
 <pre class="r"><code># tentando o )
 dados$`Pergunta 2` &lt;- sub(pattern = &quot;)&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
@@ -460,10 +474,11 @@ dados$`Pergunta 2`</code></pre>
 ## [19] &quot;Licenciado&quot;            &quot;Bacharel (&quot;           
 ## [21] &quot;Bacharel (&quot;            &quot;Licenciado&quot;           
 ## [23] &quot;Licenciado&quot;            &quot;Bacharel (&quot;           
-## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel (&quot;           
-## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel (&quot;           
-## [29] &quot;Bacharel (&quot;            &quot;Licenciado&quot;           
-## [31] &quot;Bacharel (&quot;</code></pre>
+## [25] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [27] &quot;Bacharel (&quot;            &quot;Bacharel e Licenciado&quot;
+## [29] &quot;Bacharel (&quot;            &quot;Bacharel e Licenciado&quot;
+## [31] &quot;Bacharel (&quot;            &quot;Bacharel (&quot;           
+## [33] &quot;Licenciado&quot;            &quot;Bacharel (&quot;</code></pre>
 <p>E agora o outro parenteses!</p>
 <pre class="r"><code># tentando o )
 dados$`Pergunta 2` &lt;- sub(pattern = &quot; (&quot;, replacement = &quot;&quot;, x = dados$`Pergunta 2`)
@@ -544,10 +559,11 @@ dados$`Pergunta 2`</code></pre>
 ## [19] &quot;Licenciado&quot;            &quot;Bacharel&quot;             
 ## [21] &quot;Bacharel&quot;              &quot;Licenciado&quot;           
 ## [23] &quot;Licenciado&quot;            &quot;Bacharel&quot;             
-## [25] &quot;Bacharel e Licenciado&quot; &quot;Bacharel&quot;             
-## [27] &quot;Bacharel e Licenciado&quot; &quot;Bacharel&quot;             
-## [29] &quot;Bacharel&quot;              &quot;Licenciado&quot;           
-## [31] &quot;Bacharel&quot;</code></pre>
+## [25] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [27] &quot;Bacharel&quot;              &quot;Bacharel e Licenciado&quot;
+## [29] &quot;Bacharel&quot;              &quot;Bacharel e Licenciado&quot;
+## [31] &quot;Bacharel&quot;              &quot;Bacharel&quot;             
+## [33] &quot;Licenciado&quot;            &quot;Bacharel&quot;</code></pre>
 <p>Ao usar o escape com estes caracteres de expressões regulares, podemos conseguir editar o texto de forma mais direta e limpa.</p>
 <hr />
 </div>
@@ -728,15 +744,24 @@ strsplit(x = dados$pergunta.3, split = &quot;/&quot;)</code></pre>
 ## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
 ## 
 ## [[28]]
-## [1] &quot;EBNT&quot; &quot;JBRJ&quot;
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
 ## 
 ## [[29]]
 ## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
 ## 
 ## [[30]]
-## [1] &quot;PPGE&quot;       &quot;UFRJ e ISS&quot;
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
 ## 
 ## [[31]]
+## [1] &quot;EBNT&quot; &quot;JBRJ&quot;
+## 
+## [[32]]
+## [1] &quot;PPGE&quot; &quot;UFRJ&quot;
+## 
+## [[33]]
+## [1] &quot;PPGE&quot;       &quot;UFRJ e ISS&quot;
+## 
+## [[34]]
 ## [1] &quot;PPGBiofisica&quot; &quot;UFRJ&quot;</code></pre>
 <pre class="r"><code># o problema é que ele retorna uma lista</code></pre>
 <p>Essa função possui um problema crônico de diversas funções no R: como transformar uma lista para um <code>data.frame</code>? Aqueleas funções loop poderiam nos ajudar (como a função <code>lapply</code>). Mas existe uma outra forma de fazer isso de forma mais rápida (apesar de um pouco suja): a função <code>do.call</code>, que faz com que está conversão possa ser feita de forma mais direta.</p>
@@ -776,10 +801,13 @@ novas_infos</code></pre>
 ## 25         PPGE        UFRJ
 ## 26         PPGE        UFRJ
 ## 27         PPGE        UFRJ
-## 28         EBNT        JBRJ
+## 28         PPGE        UFRJ
 ## 29         PPGE        UFRJ
-## 30         PPGE  UFRJ e ISS
-## 31 PPGBiofisica        UFRJ</code></pre>
+## 30         PPGE        UFRJ
+## 31         EBNT        JBRJ
+## 32         PPGE        UFRJ
+## 33         PPGE  UFRJ e ISS
+## 34 PPGBiofisica        UFRJ</code></pre>
 <p>Agora que separamos esta informação, podemos adicionar ela ao conjunto de dados original que a originou, através do <code>cbind.data.frame</code> - esta função junta dois ou mais <code>data.frame</code> através de suas colunas (<strong>importante</strong>: só faz sentido ser usada se estes <code>data.frame</code> tiverem a mesma ordem em suas colunas).</p>
 <pre class="r"><code># juntando informacoes
 dados &lt;- cbind.data.frame(dados, novas_infos)
@@ -1053,14 +1081,17 @@ select(dados, contains(&quot;pergunta&quot;))</code></pre>
 ## 21         Mestrado              Bacharel Entre 1 e 2 anos          0
 ## 22         Mestrado            Licenciado   Menos de 1 ano          2
 ## 23         Mestrado            Licenciado   Menos de 1 ano          0
-## 24         Mestrado              Bacharel       Nunca usou          0
-## 25         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
-## 26         Mestrado              Bacharel       Nunca usou          0
-## 27        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
-## 28        Doutorado              Bacharel       Nunca usou          0
-## 29         Mestrado              Bacharel   Menos de 1 ano          1
-## 30         Mestrado            Licenciado       Nunca usou          0
-## 31         Mestrado              Bacharel   Menos de 1 ano          1
+## 24         Mestrado              Bacharel   Menos de 1 ano          0
+## 25         Mestrado              Bacharel   Menos de 1 ano          0
+## 26        Doutorado              Bacharel   Menos de 1 ano          0
+## 27         Mestrado              Bacharel       Nunca usou          0
+## 28         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 29         Mestrado              Bacharel       Nunca usou          0
+## 30        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
+## 31        Doutorado              Bacharel       Nunca usou          0
+## 32         Mestrado              Bacharel   Menos de 1 ano          1
+## 33         Mestrado            Licenciado       Nunca usou          0
+## 34         Mestrado              Bacharel   Menos de 1 ano          1
 ##                                                                                                           pergunta.6
 ## 1                                                                                                             Nenhum
 ## 2                                                                                                             Nenhum
@@ -1085,46 +1116,52 @@ select(dados, contains(&quot;pergunta&quot;))</code></pre>
 ## 21                                                                                                              &lt;NA&gt;
 ## 22                                                                                Curso PGECOL/UFJF, Introdução ao R
 ## 23                                                                                                           Nenhum.
-## 24                                                                                                              &lt;NA&gt;
+## 24                                                                                                           Nenhum.
 ## 25                                                                                                           Nenhum.
 ## 26                                                                                                           Nenhum.
-## 27                                                                                                           Nenhum.
+## 27                                                                                                              &lt;NA&gt;
 ## 28                                                                                                           Nenhum.
-## 29                                                                                                          DataCamp
-## 30                                                                                                          DataCamp
-## 31                                                                                      Curso Interno no Laboratório
-##                               pergunta.7 pergunta.8          pergunta.9
-## 1     Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
-## 2                                 Amigos          6                &lt;NA&gt;
-## 3                                 Amigos          4                &lt;NA&gt;
-## 4  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 5  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 6  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
-## 7                                 Amigos          6                &lt;NA&gt;
-## 8  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
-## 9  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 10 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 11 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 12 Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
-## 13 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 14                                Amigos          4                &lt;NA&gt;
-## 15 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 16 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 17                                Amigos          8                &lt;NA&gt;
-## 18 Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
-## 19 Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
-## 20 Circulação Interna Grade do PPGE/UFRJ          8              Básico
-## 21 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 22                                Amigos          2              Básico
-## 23 Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
-## 24            Recomendação do Orientador          2          Rudimentar
-## 25 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 26 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 27 Circulação Interna Grade do PPGE/UFRJ          6              Básico
-## 28 Circulação Interna Grade do PPGE/UFRJ          7              Básico
-## 29    Recomendação de outros professores          3          Rudimentar
-## 30 Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
-## 31    Recomendação de outros professores          2       Intermediário</code></pre>
+## 29                                                                                                           Nenhum.
+## 30                                                                                                           Nenhum.
+## 31                                                                                                           Nenhum.
+## 32                                                                                                          DataCamp
+## 33                                                                                                          DataCamp
+## 34                                                                                      Curso Interno no Laboratório
+##                                  pergunta.7 pergunta.8          pergunta.9
+## 1        Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
+## 2                                    Amigos          6                &lt;NA&gt;
+## 3                                    Amigos          4                &lt;NA&gt;
+## 4     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 5     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 6     Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 7                                    Amigos          6                &lt;NA&gt;
+## 8     Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 9     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 10    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 11    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 12    Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
+## 13    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 14                                   Amigos          4                &lt;NA&gt;
+## 15    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 16    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 17                                   Amigos          8                &lt;NA&gt;
+## 18    Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
+## 19    Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
+## 20    Circulação Interna Grade do PPGE/UFRJ          8              Básico
+## 21    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 22                                   Amigos          2              Básico
+## 23    Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
+## 24    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 25    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 26 Divulgação externa da grade do PPGE/UFRJ          6          Rudimentar
+## 27               Recomendação do Orientador          2          Rudimentar
+## 28    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 29    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 30    Circulação Interna Grade do PPGE/UFRJ          6              Básico
+## 31    Circulação Interna Grade do PPGE/UFRJ          7              Básico
+## 32       Recomendação de outros professores          3          Rudimentar
+## 33    Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
+## 34       Recomendação de outros professores          2       Intermediário</code></pre>
 <hr />
 <div id="exercicio-6" class="section level5">
 <h5>Exercício 6</h5>
@@ -1431,10 +1468,13 @@ gapminder %&gt;%
 ## 25         PPGE        UFRJ
 ## 26         PPGE        UFRJ
 ## 27         PPGE        UFRJ
-## 28         EBNT        JBRJ
+## 28         PPGE        UFRJ
 ## 29         PPGE        UFRJ
-## 30         PPGE  UFRJ e ISS
-## 31 PPGBiofisica        UFRJ</code></pre>
+## 30         PPGE        UFRJ
+## 31         EBNT        JBRJ
+## 32         PPGE        UFRJ
+## 33         PPGE  UFRJ e ISS
+## 34 PPGBiofisica        UFRJ</code></pre>
 <hr />
 <p>Você se lembra daquela matriz de cobertura vegetal que convertemos em uma matriz de presença/ausência? Vamos usar ela de novo, mas antes vamos transformar ela num objeto chamado <code>biotico</code>. Além disso, vamos adicionar o nome das linhas como uma nova coluna a esta tabela, usando a função <code>rownames_to_column</code>, disponível no pacote <code>tibble</code>.</p>
 <pre class="r"><code>biotico &lt;- varespec %&gt;% 
@@ -1521,22 +1561,24 @@ dados$origem.da.informacao</code></pre>
 ## [13] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
 ## [16] &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot; &quot;01_turma_2016.xlsx&quot;
 ## [19] &quot;2017_1.xlsx&quot;        &quot;2017_10.xlsx&quot;       &quot;2017_11.xlsx&quot;      
-## [22] &quot;2017_12.xlsx&quot;       &quot;2017_13.xlsx&quot;       &quot;2017_2.xlsx&quot;       
-## [25] &quot;2017_3.xlsx&quot;        &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;       
-## [28] &quot;2017_6.xlsx&quot;        &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;       
-## [31] &quot;2017_9.xlsx&quot;</code></pre>
+## [22] &quot;2017_12.xlsx&quot;       &quot;2017_13.xlsx&quot;       &quot;2017_14.xlsx&quot;      
+## [25] &quot;2017_15.xlsx&quot;       &quot;2017_16.xlsx&quot;       &quot;2017_2.xlsx&quot;       
+## [28] &quot;2017_3.xlsx&quot;        &quot;2017_4.xlsx&quot;        &quot;2017_5.xlsx&quot;       
+## [31] &quot;2017_6.xlsx&quot;        &quot;2017_7.xlsx&quot;        &quot;2017_8.xlsx&quot;       
+## [34] &quot;2017_9.xlsx&quot;</code></pre>
 <p>A função <code>str_detect</code> pode ser usada como um teste lógico, para detectar uma informação e nos ajudar a tomar uma decisão. Por exemplo, se quisermos criar uma coluna com o ano de <code>2016</code> ou <code>2017</code> para a origem da turma (ao invés do nome do arquivo que originou a observação), podemos tentar detect o número <code>2016</code> no conjunto de palavras:</p>
 <pre class="r"><code># existe 2016 na palavra?
 str_detect(string = dados$origem.da.informacao, pattern = &quot;2016&quot;)</code></pre>
 <pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE
 ## [12]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE
-## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [34] FALSE</code></pre>
 <p>Se temos um vetor com <code>TRUE</code> and <code>FALSE</code> - um teste lógico - podemos então passar essa informação para a função <code>ifelse</code> e criar uma nova coluna chamada <code>turma</code>, que contém o ano da turma que gerou as observações:</p>
 <pre class="r"><code>ifelse(str_detect(string = dados$origem.da.informacao, pattern = &quot;2016&quot;) == TRUE, &quot;2016&quot;, &quot;2017&quot;)</code></pre>
 <pre><code>##  [1] &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot;
 ## [11] &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2016&quot; &quot;2017&quot; &quot;2017&quot;
 ## [21] &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot;
-## [31] &quot;2017&quot;</code></pre>
+## [31] &quot;2017&quot; &quot;2017&quot; &quot;2017&quot; &quot;2017&quot;</code></pre>
 <p>Podemos passar isso diretamente para a criação da nova coluna via o <code>pipe</code>:</p>
 <pre class="r"><code>dados &lt;- dados %&gt;% 
   mutate(turma = ifelse(str_detect(string = origem.da.informacao, pattern = &quot;2016&quot;) == TRUE, &quot;2016&quot;, &quot;2017&quot;))
@@ -1565,14 +1607,17 @@ dados</code></pre>
 ## 21         Mestrado              Bacharel Entre 1 e 2 anos          0
 ## 22         Mestrado            Licenciado   Menos de 1 ano          2
 ## 23         Mestrado            Licenciado   Menos de 1 ano          0
-## 24         Mestrado              Bacharel       Nunca usou          0
-## 25         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
-## 26         Mestrado              Bacharel       Nunca usou          0
-## 27        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
-## 28        Doutorado              Bacharel       Nunca usou          0
-## 29         Mestrado              Bacharel   Menos de 1 ano          1
-## 30         Mestrado            Licenciado       Nunca usou          0
-## 31         Mestrado              Bacharel   Menos de 1 ano          1
+## 24         Mestrado              Bacharel   Menos de 1 ano          0
+## 25         Mestrado              Bacharel   Menos de 1 ano          0
+## 26        Doutorado              Bacharel   Menos de 1 ano          0
+## 27         Mestrado              Bacharel       Nunca usou          0
+## 28         Mestrado Bacharel e Licenciado   Menos de 1 ano          0
+## 29         Mestrado              Bacharel       Nunca usou          0
+## 30        Doutorado Bacharel e Licenciado   Menos de 1 ano          0
+## 31        Doutorado              Bacharel       Nunca usou          0
+## 32         Mestrado              Bacharel   Menos de 1 ano          1
+## 33         Mestrado            Licenciado       Nunca usou          0
+## 34         Mestrado              Bacharel   Menos de 1 ano          1
 ##                                                                                                           pergunta.6
 ## 1                                                                                                             Nenhum
 ## 2                                                                                                             Nenhum
@@ -1597,46 +1642,52 @@ dados</code></pre>
 ## 21                                                                                                              &lt;NA&gt;
 ## 22                                                                                Curso PGECOL/UFJF, Introdução ao R
 ## 23                                                                                                           Nenhum.
-## 24                                                                                                              &lt;NA&gt;
+## 24                                                                                                           Nenhum.
 ## 25                                                                                                           Nenhum.
 ## 26                                                                                                           Nenhum.
-## 27                                                                                                           Nenhum.
+## 27                                                                                                              &lt;NA&gt;
 ## 28                                                                                                           Nenhum.
-## 29                                                                                                          DataCamp
-## 30                                                                                                          DataCamp
-## 31                                                                                      Curso Interno no Laboratório
-##                               pergunta.7 pergunta.8          pergunta.9
-## 1     Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
-## 2                                 Amigos          6                &lt;NA&gt;
-## 3                                 Amigos          4                &lt;NA&gt;
-## 4  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 5  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 6  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
-## 7                                 Amigos          6                &lt;NA&gt;
-## 8  Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
-## 9  Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 10 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 11 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 12 Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
-## 13 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 14                                Amigos          4                &lt;NA&gt;
-## 15 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 16 Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
-## 17                                Amigos          8                &lt;NA&gt;
-## 18 Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
-## 19 Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
-## 20 Circulação Interna Grade do PPGE/UFRJ          8              Básico
-## 21 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 22                                Amigos          2              Básico
-## 23 Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
-## 24            Recomendação do Orientador          2          Rudimentar
-## 25 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 26 Circulação Interna Grade do PPGE/UFRJ          4              Básico
-## 27 Circulação Interna Grade do PPGE/UFRJ          6              Básico
-## 28 Circulação Interna Grade do PPGE/UFRJ          7              Básico
-## 29    Recomendação de outros professores          3          Rudimentar
-## 30 Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
-## 31    Recomendação de outros professores          2       Intermediário
+## 29                                                                                                           Nenhum.
+## 30                                                                                                           Nenhum.
+## 31                                                                                                           Nenhum.
+## 32                                                                                                          DataCamp
+## 33                                                                                                          DataCamp
+## 34                                                                                      Curso Interno no Laboratório
+##                                  pergunta.7 pergunta.8          pergunta.9
+## 1        Recomendação de outros professores       &lt;NA&gt;                &lt;NA&gt;
+## 2                                    Amigos          6                &lt;NA&gt;
+## 3                                    Amigos          4                &lt;NA&gt;
+## 4     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 5     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 6     Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 7                                    Amigos          6                &lt;NA&gt;
+## 8     Circulação Interna Grade do PPGE/UFRJ          6                &lt;NA&gt;
+## 9     Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 10    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 11    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 12    Circulação Interna Grade do PPGE/UFRJ       &lt;NA&gt;                &lt;NA&gt;
+## 13    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 14                                   Amigos          4                &lt;NA&gt;
+## 15    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 16    Circulação Interna Grade do PPGE/UFRJ          4                &lt;NA&gt;
+## 17                                   Amigos          8                &lt;NA&gt;
+## 18    Circulação Interna Grade do PPGE/UFRJ          8                &lt;NA&gt;
+## 19    Circulação Interna Grade do PPGE/UFRJ          4          Rudimentar
+## 20    Circulação Interna Grade do PPGE/UFRJ          8              Básico
+## 21    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 22                                   Amigos          2              Básico
+## 23    Circulação Interna Grade do PPGE/UFRJ          3          Rudimentar
+## 24    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 25    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 26 Divulgação externa da grade do PPGE/UFRJ          6          Rudimentar
+## 27               Recomendação do Orientador          2          Rudimentar
+## 28    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 29    Circulação Interna Grade do PPGE/UFRJ          4              Básico
+## 30    Circulação Interna Grade do PPGE/UFRJ          6              Básico
+## 31    Circulação Interna Grade do PPGE/UFRJ          7              Básico
+## 32       Recomendação de outros professores          3          Rudimentar
+## 33    Circulação Interna Grade do PPGE/UFRJ          4 O que é estatística
+## 34       Recomendação de outros professores          2       Intermediário
 ##    origem.da.informacao identidade     programa instituicao usuario turma
 ## 1    01_turma_2016.xlsx          1      Ouvinte     Ouvinte     sim  2016
 ## 2    01_turma_2016.xlsx          2       PPGVet       UFRRJ     sim  2016
@@ -1661,14 +1712,17 @@ dados</code></pre>
 ## 21         2017_11.xlsx         21         PPGE        UFRJ     sim  2017
 ## 22         2017_12.xlsx         22       PGECOL        UFJF     nao  2017
 ## 23         2017_13.xlsx         23         PPGE        UFRJ     sim  2017
-## 24          2017_2.xlsx         24         PPGE        UFRJ     sim  2017
-## 25          2017_3.xlsx         25         PPGE        UFRJ     sim  2017
-## 26          2017_4.xlsx         26         PPGE        UFRJ     sim  2017
-## 27          2017_5.xlsx         27         PPGE        UFRJ     sim  2017
-## 28          2017_6.xlsx         28         EBNT        JBRJ     sim  2017
-## 29          2017_7.xlsx         29         PPGE        UFRJ     nao  2017
-## 30          2017_8.xlsx         30         PPGE  UFRJ e ISS     sim  2017
-## 31          2017_9.xlsx         31 PPGBiofisica        UFRJ     nao  2017</code></pre>
+## 24         2017_14.xlsx         24         PPGE        UFRJ     sim  2017
+## 25         2017_15.xlsx         25         PPGE        UFRJ     sim  2017
+## 26         2017_16.xlsx         26         PPGE        UFRJ     sim  2017
+## 27          2017_2.xlsx         27         PPGE        UFRJ     sim  2017
+## 28          2017_3.xlsx         28         PPGE        UFRJ     sim  2017
+## 29          2017_4.xlsx         29         PPGE        UFRJ     sim  2017
+## 30          2017_5.xlsx         30         PPGE        UFRJ     sim  2017
+## 31          2017_6.xlsx         31         EBNT        JBRJ     sim  2017
+## 32          2017_7.xlsx         32         PPGE        UFRJ     nao  2017
+## 33          2017_8.xlsx         33         PPGE  UFRJ e ISS     sim  2017
+## 34          2017_9.xlsx         34 PPGBiofisica        UFRJ     nao  2017</code></pre>
 <hr />
 <div id="exercicio-13" class="section level5">
 <h5>Exercício 13</h5>
@@ -1746,10 +1800,10 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 4 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1    91     A     1     1     0    34
-## 2 site2   108     A     8     5    37     3
-## 3 site3    78     B     3     2    10    21
-## 4 site4    95     B     5    20     0     8</code></pre>
+## 1 site1   114     A     4     6     0    15
+## 2 site2   101     A    14     9     0    12
+## 3 site3    96     B     8    12    10     5
+## 4 site4   100     B    14     0     6    43</code></pre>
 <p>Existem funções também que fazem o <strong>outer join</strong>: combinam duas tabelas, <strong>mantendo observações que apareçam em pelo menos uma tabela</strong>. São três funções que seguem este tipo:</p>
 <ul>
 <li><code>left_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>), completando as observações faltantes da planilha da direita (<code>y</code>) com <code>NA</code>.</li>
@@ -1758,11 +1812,11 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 5 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1    91     A     1     1     0    34
-## 2 site2   108     A     8     5    37     3
-## 3 site3    78     B     3     2    10    21
-## 4 site4    95     B     5    20     0     8
-## 5 site5   113     C    NA    NA    NA    NA</code></pre>
+## 1 site1   114     A     4     6     0    15
+## 2 site2   101     A    14     9     0    12
+## 3 site3    96     B     8    12    10     5
+## 4 site4   100     B    14     0     6    43
+## 5 site5    96     C    NA    NA    NA    NA</code></pre>
 <ul>
 <li><code>right_join</code>: mantém todas as observações da planilha da direta (<code>y</code>), completando as observações faltantes da planilha da esquerda (<code>x</code>) com <code>NA</code>.</li>
 </ul>
@@ -1770,11 +1824,11 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 5 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1    91     A     1     1     0    34
-## 2 site2   108     A     8     5    37     3
-## 3 site3    78     B     3     2    10    21
-## 4 site4    95     B     5    20     0     8
-## 5 site6    NA  &lt;NA&gt;    12     3     0     0</code></pre>
+## 1 site1   114     A     4     6     0    15
+## 2 site2   101     A    14     9     0    12
+## 3 site3    96     B     8    12    10     5
+## 4 site4   100     B    14     0     6    43
+## 5 site6    NA  &lt;NA&gt;    14     7     2    77</code></pre>
 <ul>
 <li><code>full_join</code>: mantém todas as observações da planilha da esquerda (<code>x</code>) e da direta (<code>y</code>), completando as observações faltantes das duas planilhas com <code>NA</code></li>
 </ul>
@@ -1782,12 +1836,12 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 6 × 7
 ##    site  var1  var2   sp1   sp2   sp3   sp4
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-## 1 site1    91     A     1     1     0    34
-## 2 site2   108     A     8     5    37     3
-## 3 site3    78     B     3     2    10    21
-## 4 site4    95     B     5    20     0     8
-## 5 site5   113     C    NA    NA    NA    NA
-## 6 site6    NA  &lt;NA&gt;    12     3     0     0</code></pre>
+## 1 site1   114     A     4     6     0    15
+## 2 site2   101     A    14     9     0    12
+## 3 site3    96     B     8    12    10     5
+## 4 site4   100     B    14     0     6    43
+## 5 site5    96     C    NA    NA    NA    NA
+## 6 site6    NA  &lt;NA&gt;    14     7     2    77</code></pre>
 <p>Existe também uma outra forma de realizar esta junção entre tabelas, através de um <strong>filtering join</strong>: combinam duas tabelas, <strong>mantendo as observações e variáveis que apareçam em uma única tabela</strong>. Neste sentido, podemos compreender o nome <em>filtering</em>, pois são funções que funcionam como o <em>filter</em> (apenas as linhas que cumprem com uma condição são mantidas). São duas funções que seguem este tipo:</p>
 <ul>
 <li><code>semi_join</code>: compara duas planilhas e remove as observações que são únicas à planilha da esquerda (<code>x</code>):</li>
@@ -1796,10 +1850,10 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 4 × 3
 ##    site  var1  var2
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
-## 1 site1    91     A
-## 2 site2   108     A
-## 3 site3    78     B
-## 4 site4    95     B</code></pre>
+## 1 site1   114     A
+## 2 site2   101     A
+## 3 site3    96     B
+## 4 site4   100     B</code></pre>
 <ul>
 <li><code>anti_join</code>: compara duas planilhas e retorna apenas as observações que são únicas à planilha da esquerda (<code>x</code>)</li>
 </ul>
@@ -1807,7 +1861,7 @@ traits &lt;- data_frame(especie = paste0(&quot;sp&quot;,1:4),
 <pre><code>## # A tibble: 1 × 3
 ##    site  var1  var2
 ##   &lt;chr&gt; &lt;int&gt; &lt;chr&gt;
-## 1 site5   113     C</code></pre>
+## 1 site5    96     C</code></pre>
 <p>Estas funções são muito úteis para trabalharmos com bases de dados relacionais, e também ao realizarmos operações durante a análise de dados que requerem filtrar uma planilha de acordo com informações em outra planilha. Se combinadas com as demais funções do <code>dplyr</code> e do <code>tidyr</code>, elas tornam a manipulação de dados diretamente no R muito mais fácil do que se tivéssemos que fazer tudo manualmente.</p>
 <ul>
 <li><strong>Dica do R:</strong> existem três coisas que podem ser úteis ao seu favor ao usar estas funções de dados relacionais:
