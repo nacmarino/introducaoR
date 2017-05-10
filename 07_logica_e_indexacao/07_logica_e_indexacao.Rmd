@@ -100,9 +100,13 @@ c. Qual a explicação para isso?
 
 ```{r}
 # criando o vetor
-(vetor1 <- seq(from = 1, to = 34, length.out = 50))
-# arredondand os valores
-(vetor1 <- round(x = vetor1, digits = 1))
+vetor1 <- seq(from = 1, to = 34, length.out = 50)
+# olhando o vetor
+vetor1
+# arredondando os valores
+vetor1 <- round(x = vetor1, digits = 1)
+# observando os valores
+vetor1
 ```
 
 * Assim como podemos testar se um elemento atende a uma determina condição, também podemos testar _quais elementos de um vetor atendem a uma determinada condição_.
@@ -118,7 +122,7 @@ vetor1 <= 10
 
 ```{r}
 # criando uma sequência de letras "A" e "B"
-letras <- rep(c("A", "B"), each = 25)
+letras <- rep(c("A", "B", "C"), each = 25)
 # quais das letras são iguais a A
 letras == "A"
 # quais das letras não são iguais a A
@@ -131,6 +135,11 @@ letras != "B"
 
 a. Quais elementos do `vetor1` são menores do que 10 e maiores do que 25?
 b. Quais elementos do `vetor1` são maiores de 15 (inclusive) ou menores do que 3?
+
+```{r}
+vetor1 < 10 & vetor1 > 25
+ifelse(vetor1 < 10 & vetor1 > 25, vetor1[], no = "")
+```
 
 ---
 

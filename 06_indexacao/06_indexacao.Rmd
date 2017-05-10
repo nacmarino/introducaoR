@@ -50,9 +50,9 @@ seq(from = 1, to = 10, length.out = 20)
 
 ```{r}
 # repetir a sequência 1, 2, 3, 4 duas vezes
-rep(x = c(1, 2, 3, 4, 5), 2)
+rep(x = c(1, 2, 3, 4, 5), 10)
 # repetir duas vezes em sequência cada elemento do vetor 1, 2, 3, 4 
-rep(x = c(1, 2, 3, 4, 5), each = 2)
+rep(x = c(1, 2, 3, 4, 5), each = 10)
 ```
 
 * Outra forma de fazer isso é através da utilização do operador ":" entre valores: tudo o que está no intervalo x:y (x a y) deve ser impresso.
@@ -62,12 +62,15 @@ rep(x = c(1, 2, 3, 4, 5), each = 2)
 1:10
 # cria uma sequência de 23 a 51
 23:51
+# tente essa
+50:1
 ```
 
 * Podemos criar um vetor utilizando este operador.
 
 ```{r}
-(vetor1 <- 1:100)
+vetor1 <- 1:100
+vetor1
 ```
 
 * Nós podemos determinar o tamanho de um vetor (assim como o número de colunas em um `data.frame`) através da função `length`.
@@ -80,14 +83,14 @@ length(vetor1)
 
 ##### Exercício 1
 
-a. Crie dois vetores de mesmo comprimento:
-    + Um deles deve ser feito através através da indexação;
-    + O outro deve ser criado através da função `seq`.
+a. Crie dois vetores:  
+    + Um pelo operador `:`;  
+    + Outro com a função `seq`.  
 b. Junte estes dois vetores em um único vetor, com o nome do objeto de `vetores`;
 c. Qual o comprimento do vetor?
-d. Crie um vetor com as letras "A" e "B", em sequência, cada uma repetida metade das vezes do comprimento total dos vetores;
-e. Junte três dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
-f. Qual o comprimento do data.frame? O que este comprimento representa?
+d. Crie um vetor com as letras "A" e "B", em sequência (comprimento = soma do comprimento dos dois vetores criados em a);
+e. Junte dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
+f. Qual o comprimento do data.frame `dados`? O que este comprimento representa?
 
 ---
 
@@ -101,7 +104,7 @@ vetor2 <- seq(from = 0, to = 100, length.out = 34)
 # juntando os dois vetores em um só
 vetores <- c(vetor1, vetor2)
 # criando vetor de letras
-letras <- rep(c("A", "B"), each = 17)
+letras <- rep(c("A", "B"), 34)
 # juntando os dois vetores em um data.frame
 dados <- data.frame(vetor1, vetor2, letras)
 ```
@@ -137,6 +140,8 @@ dados <- data.frame(vetor1, vetor2, letras)
 * Por exemplo, se quisermos extrair o 16o. elemento do `vetor2`, podemos usar:
 
 ```{r}
+vetor2 <- seq(from = 0, to = 100, length.out = 34)
+vetor2
 vetor2[16]
 ```
 
@@ -164,6 +169,7 @@ vetor2[numeros]
 ```{r}
 numeros <- c(1, 5, 7, 9)
 vetor2[numeros]
+vetor2[c(1, 5, 7, 9)]
 ```
 
 ---
@@ -174,7 +180,6 @@ a. Utilizando o `vetor2`, faça uma indexação que retorne:
     1. Os cinco primeiros elementos;
     2. Os elementos nas posições 10, 12, 14, 16, 18 e 20;
     3. Os cinco primeiros elementos e os elementos entre as posições 20 e 30;
-    4. Apenas os elementos em posição par.
 
 ---
 
@@ -192,13 +197,20 @@ vetor2[-numeros]
 
 ```{r}
 vetor2[-c(1:20)]
+# tambem funciona
+vetor2[-(1:20)]
+vetor2[-1:-20]
 ```
 
 ---
 
 ##### Exercício 3
 
-a. Exclua todos os elementos em posição ímpar do `vetor2`.  
+a. Exclua todos os elementos de 1 a 10 e de 22 a 26 do `vetor2`.  
+
+```{r}
+vetor2[-c(1:10, 22:26)]
+```
 
 ---
 
@@ -213,11 +225,11 @@ a. Exclua todos os elementos em posição ímpar do `vetor2`.
 # apenas a primeira linha do data.frame dados
 dados[1,]
 # apenas a primeira coluna do data.frame dados
-dados[,1]
+dados[,3]
 # apenas o elemento da primeira linha e primeira coluna do data.frame dados
-dados[1,1]
+dados[2,3]
 # podemos usar o operar [[]] para indexar as colunas de um data.frame
-dados[[3]]
+dados[[2]]
 ```
 
 ---
@@ -226,20 +238,21 @@ dados[[3]]
 
 a. Usando o data.frame `dados`:
     1. Selecione as linhas de número 3, 12, 18 e 25, retendo todas as colunas;
-    2. Selecione apenas as colunas 2 e 3, linhas 20 a 30;
-    3. Selecione toda colunas, mas apenas as linhas pares;
-    4. Elimine apenas a coluna 3;
-    5. Elimine as linhas 15 a 30.
+    2. Selecione todas as colunas, mas apenas as linhas pares;
+    3. Elimine apenas a coluna 2;
+    4. Elimine as linhas 15 a 30.
 
 ---
 
-* Também podemos indexar um conjunto de dados em um `data.frame` através do nome da coluna ou da sub-lista.
+* Também podemos indexar um conjunto de dados em um `data.frame` através do nome da coluna.
 
 ```{r}
 dados[, c("vetor2", "letras")]
+# igual
+dados[,2:3]
 ```
 
-* Outra forma de indexar uma coluna de um `data.frame` é através do indexador `$`.
+* Outra forma de indexar uma coluna de um `data.frame` é através do operador `$`.
 
 ```{r}
 dados$letras
@@ -278,4 +291,4 @@ lista[[2]][,c(2:3)]
 
 ##### Exercício 5
 
-a. Selecione os elementos nas posições pares do objeto na primeira sub-lista de `lista`.
+a. Selecione os elementos nas posições pares (linhas) do objeto na primeira sub-lista de `lista`.

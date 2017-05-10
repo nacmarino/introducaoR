@@ -169,11 +169,13 @@ seq(from = 1, to = 10, length.out = 20)</code></pre>
 <li>Também podemos pedir ao R para que repita uma sequência de valores através da função <code>rep</code>.</li>
 </ul>
 <pre class="r"><code># repetir a sequência 1, 2, 3, 4 duas vezes
-rep(x = c(1, 2, 3, 4, 5), 2)</code></pre>
-<pre><code>##  [1] 1 2 3 4 5 1 2 3 4 5</code></pre>
+rep(x = c(1, 2, 3, 4, 5), 10)</code></pre>
+<pre><code>##  [1] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5
+## [36] 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5</code></pre>
 <pre class="r"><code># repetir duas vezes em sequência cada elemento do vetor 1, 2, 3, 4 
-rep(x = c(1, 2, 3, 4, 5), each = 2)</code></pre>
-<pre><code>##  [1] 1 1 2 2 3 3 4 4 5 5</code></pre>
+rep(x = c(1, 2, 3, 4, 5), each = 10)</code></pre>
+<pre><code>##  [1] 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3 3 3 3 3 3 4 4 4 4 4
+## [36] 4 4 4 4 4 5 5 5 5 5 5 5 5 5 5</code></pre>
 <ul>
 <li>Outra forma de fazer isso é através da utilização do operador “:” entre valores: tudo o que está no intervalo x:y (x a y) deve ser impresso.</li>
 </ul>
@@ -184,10 +186,16 @@ rep(x = c(1, 2, 3, 4, 5), each = 2)</code></pre>
 23:51</code></pre>
 <pre><code>##  [1] 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45
 ## [24] 46 47 48 49 50 51</code></pre>
+<pre class="r"><code># tente essa
+50:1</code></pre>
+<pre><code>##  [1] 50 49 48 47 46 45 44 43 42 41 40 39 38 37 36 35 34 33 32 31 30 29 28
+## [24] 27 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5
+## [47]  4  3  2  1</code></pre>
 <ul>
 <li>Podemos criar um vetor utilizando este operador.</li>
 </ul>
-<pre class="r"><code>(vetor1 &lt;- 1:100)</code></pre>
+<pre class="r"><code>vetor1 &lt;- 1:100
+vetor1</code></pre>
 <pre><code>##   [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17
 ##  [18]  18  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34
 ##  [35]  35  36  37  38  39  40  41  42  43  44  45  46  47  48  49  50  51
@@ -203,16 +211,18 @@ rep(x = c(1, 2, 3, 4, 5), each = 2)</code></pre>
 <div id="exercicio-1" class="section level5">
 <h5>Exercício 1</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Crie dois vetores de mesmo comprimento:
+<li>Crie dois vetores:
 <ul>
-<li>Um deles deve ser feito através através da indexação;</li>
-<li>O outro deve ser criado através da função <code>seq</code>.</li>
+<li>Um pelo operador <code>:</code>;<br />
+</li>
+<li>Outro com a função <code>seq</code>.<br />
+</li>
 </ul></li>
 <li>Junte estes dois vetores em um único vetor, com o nome do objeto de <code>vetores</code>;</li>
 <li>Qual o comprimento do vetor?</li>
-<li>Crie um vetor com as letras “A” e “B”, em sequência, cada uma repetida metade das vezes do comprimento total dos vetores;</li>
-<li>Junte três dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto <code>dados</code>;</li>
-<li>Qual o comprimento do data.frame? O que este comprimento representa?</li>
+<li>Crie um vetor com as letras “A” e “B”, em sequência (comprimento = soma do comprimento dos dois vetores criados em a);</li>
+<li>Junte dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto <code>dados</code>;</li>
+<li>Qual o comprimento do data.frame <code>dados</code>? O que este comprimento representa?</li>
 </ol>
 <hr />
 <ul>
@@ -225,7 +235,7 @@ vetor2 &lt;- seq(from = 0, to = 100, length.out = 34)
 # juntando os dois vetores em um só
 vetores &lt;- c(vetor1, vetor2)
 # criando vetor de letras
-letras &lt;- rep(c(&quot;A&quot;, &quot;B&quot;), each = 17)
+letras &lt;- rep(c(&quot;A&quot;, &quot;B&quot;), 34)
 # juntando os dois vetores em um data.frame
 dados &lt;- data.frame(vetor1, vetor2, letras)</code></pre>
 <ul>
@@ -276,6 +286,14 @@ dados &lt;- data.frame(vetor1, vetor2, letras)</code></pre>
 <ul>
 <li>Por exemplo, se quisermos extrair o 16o. elemento do <code>vetor2</code>, podemos usar:</li>
 </ul>
+<pre class="r"><code>vetor2 &lt;- seq(from = 0, to = 100, length.out = 34)
+vetor2</code></pre>
+<pre><code>##  [1]   0.000000   3.030303   6.060606   9.090909  12.121212  15.151515
+##  [7]  18.181818  21.212121  24.242424  27.272727  30.303030  33.333333
+## [13]  36.363636  39.393939  42.424242  45.454545  48.484848  51.515152
+## [19]  54.545455  57.575758  60.606061  63.636364  66.666667  69.696970
+## [25]  72.727273  75.757576  78.787879  81.818182  84.848485  87.878788
+## [31]  90.909091  93.939394  96.969697 100.000000</code></pre>
 <pre class="r"><code>vetor2[16]</code></pre>
 <pre><code>## [1] 45.45455</code></pre>
 <ul>
@@ -304,6 +322,8 @@ vetor2[numeros]</code></pre>
 <pre class="r"><code>numeros &lt;- c(1, 5, 7, 9)
 vetor2[numeros]</code></pre>
 <pre><code>## [1]  0.00000 12.12121 18.18182 24.24242</code></pre>
+<pre class="r"><code>vetor2[c(1, 5, 7, 9)]</code></pre>
+<pre><code>## [1]  0.00000 12.12121 18.18182 24.24242</code></pre>
 <hr />
 <div id="exercicio-2" class="section level5">
 <h5>Exercício 2</h5>
@@ -313,7 +333,6 @@ vetor2[numeros]</code></pre>
 <li>Os cinco primeiros elementos;</li>
 <li>Os elementos nas posições 10, 12, 14, 16, 18 e 20;</li>
 <li>Os cinco primeiros elementos e os elementos entre as posições 20 e 30;</li>
-<li>Apenas os elementos em posição par.</li>
 </ol></li>
 </ol>
 <hr />
@@ -343,13 +362,24 @@ numeros # vetor que criamos anteriormente</code></pre>
 <pre class="r"><code>vetor2[-c(1:20)]</code></pre>
 <pre><code>##  [1]  60.60606  63.63636  66.66667  69.69697  72.72727  75.75758  78.78788
 ##  [8]  81.81818  84.84848  87.87879  90.90909  93.93939  96.96970 100.00000</code></pre>
+<pre class="r"><code># tambem funciona
+vetor2[-(1:20)]</code></pre>
+<pre><code>##  [1]  60.60606  63.63636  66.66667  69.69697  72.72727  75.75758  78.78788
+##  [8]  81.81818  84.84848  87.87879  90.90909  93.93939  96.96970 100.00000</code></pre>
+<pre class="r"><code>vetor2[-1:-20]</code></pre>
+<pre><code>##  [1]  60.60606  63.63636  66.66667  69.69697  72.72727  75.75758  78.78788
+##  [8]  81.81818  84.84848  87.87879  90.90909  93.93939  96.96970 100.00000</code></pre>
 <hr />
 </div>
 <div id="exercicio-3" class="section level5">
 <h5>Exercício 3</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Exclua todos os elementos em posição ímpar do <code>vetor2</code>.</li>
+<li>Exclua todos os elementos de 1 a 10 e de 22 a 26 do <code>vetor2</code>.</li>
 </ol>
+<pre class="r"><code>vetor2[-c(1:10, 22:26)]</code></pre>
+<pre><code>##  [1]  30.30303  33.33333  36.36364  39.39394  42.42424  45.45455  48.48485
+##  [8]  51.51515  54.54545  57.57576  60.60606  78.78788  81.81818  84.84848
+## [15]  87.87879  90.90909  93.93939  96.96970 100.00000</code></pre>
 <hr />
 </div>
 </div>
@@ -368,16 +398,28 @@ dados[1,]</code></pre>
 <pre><code>##   vetor1 vetor2 letras
 ## 1      1      0      A</code></pre>
 <pre class="r"><code># apenas a primeira coluna do data.frame dados
-dados[,1]</code></pre>
-<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
-## [24] 24 25 26 27 28 29 30 31 32 33 34</code></pre>
-<pre class="r"><code># apenas o elemento da primeira linha e primeira coluna do data.frame dados
-dados[1,1]</code></pre>
-<pre><code>## [1] 1</code></pre>
-<pre class="r"><code># podemos usar o operar [[]] para indexar as colunas de um data.frame
-dados[[3]]</code></pre>
-<pre><code>##  [1] A A A A A A A A A A A A A A A A A B B B B B B B B B B B B B B B B B
+dados[,3]</code></pre>
+<pre><code>##  [1] A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A
+## [36] B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B
 ## Levels: A B</code></pre>
+<pre class="r"><code># apenas o elemento da primeira linha e primeira coluna do data.frame dados
+dados[2,3]</code></pre>
+<pre><code>## [1] B
+## Levels: A B</code></pre>
+<pre class="r"><code># podemos usar o operar [[]] para indexar as colunas de um data.frame
+dados[[2]]</code></pre>
+<pre><code>##  [1]   0.000000   3.030303   6.060606   9.090909  12.121212  15.151515
+##  [7]  18.181818  21.212121  24.242424  27.272727  30.303030  33.333333
+## [13]  36.363636  39.393939  42.424242  45.454545  48.484848  51.515152
+## [19]  54.545455  57.575758  60.606061  63.636364  66.666667  69.696970
+## [25]  72.727273  75.757576  78.787879  81.818182  84.848485  87.878788
+## [31]  90.909091  93.939394  96.969697 100.000000   0.000000   3.030303
+## [37]   6.060606   9.090909  12.121212  15.151515  18.181818  21.212121
+## [43]  24.242424  27.272727  30.303030  33.333333  36.363636  39.393939
+## [49]  42.424242  45.454545  48.484848  51.515152  54.545455  57.575758
+## [55]  60.606061  63.636364  66.666667  69.696970  72.727273  75.757576
+## [61]  78.787879  81.818182  84.848485  87.878788  90.909091  93.939394
+## [67]  96.969697 100.000000</code></pre>
 <hr />
 <div id="exercicio-4" class="section level5">
 <h5>Exercício 4</h5>
@@ -385,57 +427,162 @@ dados[[3]]</code></pre>
 <li>Usando o data.frame <code>dados</code>:
 <ol style="list-style-type: decimal">
 <li>Selecione as linhas de número 3, 12, 18 e 25, retendo todas as colunas;</li>
-<li>Selecione apenas as colunas 2 e 3, linhas 20 a 30;</li>
-<li>Selecione toda colunas, mas apenas as linhas pares;</li>
-<li>Elimine apenas a coluna 3;</li>
+<li>Selecione todas as colunas, mas apenas as linhas pares;</li>
+<li>Elimine apenas a coluna 2;</li>
 <li>Elimine as linhas 15 a 30.</li>
 </ol></li>
 </ol>
 <hr />
 <ul>
-<li>Também podemos indexar um conjunto de dados em um <code>data.frame</code> através do nome da coluna ou da sub-lista.</li>
+<li>Também podemos indexar um conjunto de dados em um <code>data.frame</code> através do nome da coluna.</li>
 </ul>
 <pre class="r"><code>dados[, c(&quot;vetor2&quot;, &quot;letras&quot;)]</code></pre>
 <pre><code>##        vetor2 letras
 ## 1    0.000000      A
-## 2    3.030303      A
+## 2    3.030303      B
 ## 3    6.060606      A
-## 4    9.090909      A
+## 4    9.090909      B
 ## 5   12.121212      A
-## 6   15.151515      A
+## 6   15.151515      B
 ## 7   18.181818      A
-## 8   21.212121      A
+## 8   21.212121      B
 ## 9   24.242424      A
-## 10  27.272727      A
+## 10  27.272727      B
 ## 11  30.303030      A
-## 12  33.333333      A
+## 12  33.333333      B
 ## 13  36.363636      A
-## 14  39.393939      A
+## 14  39.393939      B
 ## 15  42.424242      A
-## 16  45.454545      A
+## 16  45.454545      B
 ## 17  48.484848      A
 ## 18  51.515152      B
-## 19  54.545455      B
+## 19  54.545455      A
 ## 20  57.575758      B
-## 21  60.606061      B
+## 21  60.606061      A
 ## 22  63.636364      B
-## 23  66.666667      B
+## 23  66.666667      A
 ## 24  69.696970      B
-## 25  72.727273      B
+## 25  72.727273      A
 ## 26  75.757576      B
-## 27  78.787879      B
+## 27  78.787879      A
 ## 28  81.818182      B
-## 29  84.848485      B
+## 29  84.848485      A
 ## 30  87.878788      B
-## 31  90.909091      B
+## 31  90.909091      A
 ## 32  93.939394      B
-## 33  96.969697      B
-## 34 100.000000      B</code></pre>
+## 33  96.969697      A
+## 34 100.000000      B
+## 35   0.000000      A
+## 36   3.030303      B
+## 37   6.060606      A
+## 38   9.090909      B
+## 39  12.121212      A
+## 40  15.151515      B
+## 41  18.181818      A
+## 42  21.212121      B
+## 43  24.242424      A
+## 44  27.272727      B
+## 45  30.303030      A
+## 46  33.333333      B
+## 47  36.363636      A
+## 48  39.393939      B
+## 49  42.424242      A
+## 50  45.454545      B
+## 51  48.484848      A
+## 52  51.515152      B
+## 53  54.545455      A
+## 54  57.575758      B
+## 55  60.606061      A
+## 56  63.636364      B
+## 57  66.666667      A
+## 58  69.696970      B
+## 59  72.727273      A
+## 60  75.757576      B
+## 61  78.787879      A
+## 62  81.818182      B
+## 63  84.848485      A
+## 64  87.878788      B
+## 65  90.909091      A
+## 66  93.939394      B
+## 67  96.969697      A
+## 68 100.000000      B</code></pre>
+<pre class="r"><code># igual
+dados[,2:3]</code></pre>
+<pre><code>##        vetor2 letras
+## 1    0.000000      A
+## 2    3.030303      B
+## 3    6.060606      A
+## 4    9.090909      B
+## 5   12.121212      A
+## 6   15.151515      B
+## 7   18.181818      A
+## 8   21.212121      B
+## 9   24.242424      A
+## 10  27.272727      B
+## 11  30.303030      A
+## 12  33.333333      B
+## 13  36.363636      A
+## 14  39.393939      B
+## 15  42.424242      A
+## 16  45.454545      B
+## 17  48.484848      A
+## 18  51.515152      B
+## 19  54.545455      A
+## 20  57.575758      B
+## 21  60.606061      A
+## 22  63.636364      B
+## 23  66.666667      A
+## 24  69.696970      B
+## 25  72.727273      A
+## 26  75.757576      B
+## 27  78.787879      A
+## 28  81.818182      B
+## 29  84.848485      A
+## 30  87.878788      B
+## 31  90.909091      A
+## 32  93.939394      B
+## 33  96.969697      A
+## 34 100.000000      B
+## 35   0.000000      A
+## 36   3.030303      B
+## 37   6.060606      A
+## 38   9.090909      B
+## 39  12.121212      A
+## 40  15.151515      B
+## 41  18.181818      A
+## 42  21.212121      B
+## 43  24.242424      A
+## 44  27.272727      B
+## 45  30.303030      A
+## 46  33.333333      B
+## 47  36.363636      A
+## 48  39.393939      B
+## 49  42.424242      A
+## 50  45.454545      B
+## 51  48.484848      A
+## 52  51.515152      B
+## 53  54.545455      A
+## 54  57.575758      B
+## 55  60.606061      A
+## 56  63.636364      B
+## 57  66.666667      A
+## 58  69.696970      B
+## 59  72.727273      A
+## 60  75.757576      B
+## 61  78.787879      A
+## 62  81.818182      B
+## 63  84.848485      A
+## 64  87.878788      B
+## 65  90.909091      A
+## 66  93.939394      B
+## 67  96.969697      A
+## 68 100.000000      B</code></pre>
 <ul>
-<li>Outra forma de indexar uma coluna de um <code>data.frame</code> é através do indexador <code>$</code>.</li>
+<li>Outra forma de indexar uma coluna de um <code>data.frame</code> é através do operador <code>$</code>.</li>
 </ul>
 <pre class="r"><code>dados$letras</code></pre>
-<pre><code>##  [1] A A A A A A A A A A A A A A A A A B B B B B B B B B B B B B B B B B
+<pre><code>##  [1] A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A
+## [36] B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B A B
 ## Levels: A B</code></pre>
 <ul>
 <li><strong>Dica do RStudio:</strong> ao tentar indexar um objeto através do uso do <code>$</code>, digite o nome do objeto, adicione o <code>$</code> e pressione <code>Tab</code> - todos os elementos que compõem a estrutura daquele elemento estarão disponíveis.</li>
@@ -462,39 +609,73 @@ lista</code></pre>
 ## [[2]]
 ##    vetor1     vetor2 letras
 ## 1       1   0.000000      A
-## 2       2   3.030303      A
+## 2       2   3.030303      B
 ## 3       3   6.060606      A
-## 4       4   9.090909      A
+## 4       4   9.090909      B
 ## 5       5  12.121212      A
-## 6       6  15.151515      A
+## 6       6  15.151515      B
 ## 7       7  18.181818      A
-## 8       8  21.212121      A
+## 8       8  21.212121      B
 ## 9       9  24.242424      A
-## 10     10  27.272727      A
+## 10     10  27.272727      B
 ## 11     11  30.303030      A
-## 12     12  33.333333      A
+## 12     12  33.333333      B
 ## 13     13  36.363636      A
-## 14     14  39.393939      A
+## 14     14  39.393939      B
 ## 15     15  42.424242      A
-## 16     16  45.454545      A
+## 16     16  45.454545      B
 ## 17     17  48.484848      A
 ## 18     18  51.515152      B
-## 19     19  54.545455      B
+## 19     19  54.545455      A
 ## 20     20  57.575758      B
-## 21     21  60.606061      B
+## 21     21  60.606061      A
 ## 22     22  63.636364      B
-## 23     23  66.666667      B
+## 23     23  66.666667      A
 ## 24     24  69.696970      B
-## 25     25  72.727273      B
+## 25     25  72.727273      A
 ## 26     26  75.757576      B
-## 27     27  78.787879      B
+## 27     27  78.787879      A
 ## 28     28  81.818182      B
-## 29     29  84.848485      B
+## 29     29  84.848485      A
 ## 30     30  87.878788      B
-## 31     31  90.909091      B
+## 31     31  90.909091      A
 ## 32     32  93.939394      B
-## 33     33  96.969697      B
-## 34     34 100.000000      B</code></pre>
+## 33     33  96.969697      A
+## 34     34 100.000000      B
+## 35      1   0.000000      A
+## 36      2   3.030303      B
+## 37      3   6.060606      A
+## 38      4   9.090909      B
+## 39      5  12.121212      A
+## 40      6  15.151515      B
+## 41      7  18.181818      A
+## 42      8  21.212121      B
+## 43      9  24.242424      A
+## 44     10  27.272727      B
+## 45     11  30.303030      A
+## 46     12  33.333333      B
+## 47     13  36.363636      A
+## 48     14  39.393939      B
+## 49     15  42.424242      A
+## 50     16  45.454545      B
+## 51     17  48.484848      A
+## 52     18  51.515152      B
+## 53     19  54.545455      A
+## 54     20  57.575758      B
+## 55     21  60.606061      A
+## 56     22  63.636364      B
+## 57     23  66.666667      A
+## 58     24  69.696970      B
+## 59     25  72.727273      A
+## 60     26  75.757576      B
+## 61     27  78.787879      A
+## 62     28  81.818182      B
+## 63     29  84.848485      A
+## 64     30  87.878788      B
+## 65     31  90.909091      A
+## 66     32  93.939394      B
+## 67     33  96.969697      A
+## 68     34 100.000000      B</code></pre>
 <ul>
 <li>Note que os elementos da lista são marcados como <code>[[1]]</code> e <code>[[2]]</code>, respectivamente.</li>
 </ul>
@@ -510,39 +691,73 @@ lista[[1]]</code></pre>
 lista[[2]]</code></pre>
 <pre><code>##    vetor1     vetor2 letras
 ## 1       1   0.000000      A
-## 2       2   3.030303      A
+## 2       2   3.030303      B
 ## 3       3   6.060606      A
-## 4       4   9.090909      A
+## 4       4   9.090909      B
 ## 5       5  12.121212      A
-## 6       6  15.151515      A
+## 6       6  15.151515      B
 ## 7       7  18.181818      A
-## 8       8  21.212121      A
+## 8       8  21.212121      B
 ## 9       9  24.242424      A
-## 10     10  27.272727      A
+## 10     10  27.272727      B
 ## 11     11  30.303030      A
-## 12     12  33.333333      A
+## 12     12  33.333333      B
 ## 13     13  36.363636      A
-## 14     14  39.393939      A
+## 14     14  39.393939      B
 ## 15     15  42.424242      A
-## 16     16  45.454545      A
+## 16     16  45.454545      B
 ## 17     17  48.484848      A
 ## 18     18  51.515152      B
-## 19     19  54.545455      B
+## 19     19  54.545455      A
 ## 20     20  57.575758      B
-## 21     21  60.606061      B
+## 21     21  60.606061      A
 ## 22     22  63.636364      B
-## 23     23  66.666667      B
+## 23     23  66.666667      A
 ## 24     24  69.696970      B
-## 25     25  72.727273      B
+## 25     25  72.727273      A
 ## 26     26  75.757576      B
-## 27     27  78.787879      B
+## 27     27  78.787879      A
 ## 28     28  81.818182      B
-## 29     29  84.848485      B
+## 29     29  84.848485      A
 ## 30     30  87.878788      B
-## 31     31  90.909091      B
+## 31     31  90.909091      A
 ## 32     32  93.939394      B
-## 33     33  96.969697      B
-## 34     34 100.000000      B</code></pre>
+## 33     33  96.969697      A
+## 34     34 100.000000      B
+## 35      1   0.000000      A
+## 36      2   3.030303      B
+## 37      3   6.060606      A
+## 38      4   9.090909      B
+## 39      5  12.121212      A
+## 40      6  15.151515      B
+## 41      7  18.181818      A
+## 42      8  21.212121      B
+## 43      9  24.242424      A
+## 44     10  27.272727      B
+## 45     11  30.303030      A
+## 46     12  33.333333      B
+## 47     13  36.363636      A
+## 48     14  39.393939      B
+## 49     15  42.424242      A
+## 50     16  45.454545      B
+## 51     17  48.484848      A
+## 52     18  51.515152      B
+## 53     19  54.545455      A
+## 54     20  57.575758      B
+## 55     21  60.606061      A
+## 56     22  63.636364      B
+## 57     23  66.666667      A
+## 58     24  69.696970      B
+## 59     25  72.727273      A
+## 60     26  75.757576      B
+## 61     27  78.787879      A
+## 62     28  81.818182      B
+## 63     29  84.848485      A
+## 64     30  87.878788      B
+## 65     31  90.909091      A
+## 66     32  93.939394      B
+## 67     33  96.969697      A
+## 68     34 100.000000      B</code></pre>
 <ul>
 <li>Logo, se quisermos selecionar algum elemento de uma das sub-listas devemos primeiro selecionar a sub-lista para, então, selecionar o elemento.</li>
 </ul>
@@ -550,44 +765,78 @@ lista[[2]]</code></pre>
 lista[[2]][,c(2:3)]</code></pre>
 <pre><code>##        vetor2 letras
 ## 1    0.000000      A
-## 2    3.030303      A
+## 2    3.030303      B
 ## 3    6.060606      A
-## 4    9.090909      A
+## 4    9.090909      B
 ## 5   12.121212      A
-## 6   15.151515      A
+## 6   15.151515      B
 ## 7   18.181818      A
-## 8   21.212121      A
+## 8   21.212121      B
 ## 9   24.242424      A
-## 10  27.272727      A
+## 10  27.272727      B
 ## 11  30.303030      A
-## 12  33.333333      A
+## 12  33.333333      B
 ## 13  36.363636      A
-## 14  39.393939      A
+## 14  39.393939      B
 ## 15  42.424242      A
-## 16  45.454545      A
+## 16  45.454545      B
 ## 17  48.484848      A
 ## 18  51.515152      B
-## 19  54.545455      B
+## 19  54.545455      A
 ## 20  57.575758      B
-## 21  60.606061      B
+## 21  60.606061      A
 ## 22  63.636364      B
-## 23  66.666667      B
+## 23  66.666667      A
 ## 24  69.696970      B
-## 25  72.727273      B
+## 25  72.727273      A
 ## 26  75.757576      B
-## 27  78.787879      B
+## 27  78.787879      A
 ## 28  81.818182      B
-## 29  84.848485      B
+## 29  84.848485      A
 ## 30  87.878788      B
-## 31  90.909091      B
+## 31  90.909091      A
 ## 32  93.939394      B
-## 33  96.969697      B
-## 34 100.000000      B</code></pre>
+## 33  96.969697      A
+## 34 100.000000      B
+## 35   0.000000      A
+## 36   3.030303      B
+## 37   6.060606      A
+## 38   9.090909      B
+## 39  12.121212      A
+## 40  15.151515      B
+## 41  18.181818      A
+## 42  21.212121      B
+## 43  24.242424      A
+## 44  27.272727      B
+## 45  30.303030      A
+## 46  33.333333      B
+## 47  36.363636      A
+## 48  39.393939      B
+## 49  42.424242      A
+## 50  45.454545      B
+## 51  48.484848      A
+## 52  51.515152      B
+## 53  54.545455      A
+## 54  57.575758      B
+## 55  60.606061      A
+## 56  63.636364      B
+## 57  66.666667      A
+## 58  69.696970      B
+## 59  72.727273      A
+## 60  75.757576      B
+## 61  78.787879      A
+## 62  81.818182      B
+## 63  84.848485      A
+## 64  87.878788      B
+## 65  90.909091      A
+## 66  93.939394      B
+## 67  96.969697      A
+## 68 100.000000      B</code></pre>
 <hr />
 <div id="exercicio-5" class="section level5">
 <h5>Exercício 5</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Selecione os elementos nas posições pares do objeto na primeira sub-lista de <code>lista</code>.</li>
+<li>Selecione os elementos nas posições pares (linhas) do objeto na primeira sub-lista de <code>lista</code>.</li>
 </ol>
 </div>
 </div>
