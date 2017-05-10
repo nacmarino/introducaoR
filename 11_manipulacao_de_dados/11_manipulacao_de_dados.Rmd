@@ -781,7 +781,7 @@ Já estamos quase acabando, mas precisamos organizar a tabela que estamos gerand
 
 ---
 
-```{r echo=FALSE}
+```{r}
 dados <- dados %>% 
   select(identidade, turma, usuario, programa, instituicao, pergunta.1, pergunta.2, 
          pergunta.4, pergunta.5, pergunta.7, pergunta.8, pergunta.9) %>% 
