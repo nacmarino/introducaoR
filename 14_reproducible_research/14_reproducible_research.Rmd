@@ -27,3 +27,89 @@ h1,h2,h3,h4,h5,h6{
 2. Controle de Versão;  
 3. Introdução ao GitHub;  
 4. `rmarkdown`.  
+
+---
+
+## Reproducible Research
+
+> __O que é *reproducible* research?__
+
+Para alguns, é um termo que representa o fato de todo o achado a partir de um código e um dado poder ser reproduzido de forma identica caso este código e dado esteja disponível. Para outros, a definição é mais ampla, e envolve a noção de que que qualquer cientista usando os mesmos métodos pode chegar a resultados similares e fazer as mesmas inferências sobre um resultado já publicado - __é o coração da ciência__.
+
+---
+
+* Quais os elementos de um trabalho reprodutível (baseado em Ihle et al, 2017, Behav Ecol)?  
+1. __Reliability (Confiabilidade):__ o pesquisador testou uma hipótese de forma objetiva (é o padrão de ouro);  
+    + _Falta de Confiabilidade_: falha em conduzir a pesquisa de acordo com o plano documentado.  
+  
+2. __Reproducibility (Reprodutibilidade):__ dada a mesma questão, dados brutos e métodos, alguém com mesmo conhecimento deve chegar na conclusão;  
+    + _Falta de Reprodutibilidade_: falha em garantir que reconduzir o mesmo projeto vai resultar no mesmo achado.   
+  
+3. __Replicability (Replicabilidade):__ validação de um experimento e/ou achado através de repetições em estudos independentes.    
+    + _Falta de Replicabilidade_: baixa probabilidade de que estudos independentes chegarem ao mesmo resultado.  
+    
+---
+
+Apesar de parecer fantástico, a ideia de que estamos em uma crise de reprodutibilidade não é algo tão distante assim...
+
+<center><img src="figures/baker_penny_2016_nature.png" height="400px"></img></center>  
+_Fonte: Baker & Penny, 2016, Nature, Is there a reproducibility crisis?_
+
+---
+
+Como identificar se o seu trabalho está sendo afetado pela crise de reprodutibilidade (baseado em Ihle et al, 2017, Behav Ecol)?   
+  
+1. __Confiabilidade - você já...__  
+    a. tornou o nome das suas amostras não identificável de forma que você não saiba o que esperar delas?  
+    b. pediu para uma pessoa que não sabe nada sobre a sua hipótese coletar os dados (ou te ajudar)?  
+    c. continuou amostrando sabendo que existia um resultado nulo, de forma a aumentar o seu poder estatístico, e não reportou esta decisão a posteriori?  
+    d. reformulou uma hipótese baseado no que você encontrou, e apresentou o achado não esperado 'fingindo' que você já predizia ele desde o começo (_HARKing - Hypothesis After Results Are Known_)?
+    e. reportou somente as medidas de interesse e deixou de fora outros que você testou?  
+    f. excluiu outliers baseado na significância dos seus resultados antes e depois da exclusão?  
+    g. excluiu, incluiu e transformou covariáveis para achar o melhor modelo, mas só reportou o modelo final?  
+    
+2. __Reprodutibilidade - você já...__  
+    h. passou um tempão reprocessando e reanalisando os dados sem ser capaz de demonstrar para você ou outrém se todos os passos do processamento e análise foram identicos ao da vez anterior?  
+    i. achou um erro nos seus resultados sem saber de onde ele veio?  
+    j. perdeu parte dos dados ou notas sobre como processar os dados e obter outras variáveis de interesse?  
+    k. esqueceu qual análise você já havia feito?
+    l. teve dificuldade de responder estas questões para um revisor, amigo e/ou colaborador?
+  
+3. __Replicabilidade - você já...__  
+    m. baseou todo um projeto em um achado sem poder saber se ele é válido na realidade?  
+    n. foi incapaz de replicar um estudo publicado anteriormente (inclusive, conceitualmente)?  
+    o. não conseguiu provar que um trabalho este sujeito ao viés de confirmação?  
+
+---
+
+> __Pseudoscience (Richard P. Feynman):__ ciência que não é ciência...segue os métodos, segue a forma, mas não chega a lugar algum, não gera leis e nem predições (e.g., a metáfora das pistas de avião; controvérsias alimentares; controvérsias sobre comportamento; controvérsias sobre o funcionamento das coisas).   
+
+E tem jeito?
+
+<center><img src="figures/barba_2016_science.png" height="400px"></img></center>  
+_Fonte: Barba, 2016, Science, The hard road to reproducibility?_
+
+<center><img src="figures/ihle_2017_behav_ecol.png" height="400px"></img></center>  
+_Fonte: Ihle et al, 2017, Behav Ecol, Striving for transparent and credible research - practical guidelines for behavioral ecologists_
+
+Reprodutibilidade é um hábito que pode ser adquirido e, uma vez que você começa a praticar, não tem mais como parar.  
+
+> Ninguém nasce sabendo a importância dessas coisas, e tão pouco começa a carreira acadêmica sendo treinado em uma carreira de reprodutibilidade. É preciso que nós falemos mais sobre isso, com nossos colaboradores, amigos, amigos de laboratório, orientadores,...é só através do treinamento e da capacitação das pessoas é que nós vamos conseguir fazer melhor.  
+
+* Pequenos hábitos que fazem a diferença:
+    + habito1  
+    + habito2  
+    + habito3  
+    + habito4  
+    + habito5  
+
+## Controle de Versão;
+
+
+
+## Introdução ao GitHub;
+
+
+
+## `rmarkdown`
+
