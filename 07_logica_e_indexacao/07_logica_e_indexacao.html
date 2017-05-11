@@ -262,7 +262,9 @@ h1,h2,h3,h4,h5,h6{
 <li>Vamos criar um vetor de comprimento 50, contendo uma sequência de números de 1 a 34, e usar a função <code>round</code> para arredondar os valores para 1 casa decimal.</li>
 </ul>
 <pre class="r"><code># criando o vetor
-(vetor1 &lt;- seq(from = 1, to = 34, length.out = 50))</code></pre>
+vetor1 &lt;- seq(from = 1, to = 34, length.out = 50)
+# olhando o vetor
+vetor1</code></pre>
 <pre><code>##  [1]  1.000000  1.673469  2.346939  3.020408  3.693878  4.367347  5.040816
 ##  [8]  5.714286  6.387755  7.061224  7.734694  8.408163  9.081633  9.755102
 ## [15] 10.428571 11.102041 11.775510 12.448980 13.122449 13.795918 14.469388
@@ -271,8 +273,10 @@ h1,h2,h3,h4,h5,h6{
 ## [36] 24.571429 25.244898 25.918367 26.591837 27.265306 27.938776 28.612245
 ## [43] 29.285714 29.959184 30.632653 31.306122 31.979592 32.653061 33.326531
 ## [50] 34.000000</code></pre>
-<pre class="r"><code># arredondand os valores
-(vetor1 &lt;- round(x = vetor1, digits = 1))</code></pre>
+<pre class="r"><code># arredondando os valores
+vetor1 &lt;- round(x = vetor1, digits = 1)
+# observando os valores
+vetor1</code></pre>
 <pre><code>##  [1]  1.0  1.7  2.3  3.0  3.7  4.4  5.0  5.7  6.4  7.1  7.7  8.4  9.1  9.8
 ## [15] 10.4 11.1 11.8 12.4 13.1 13.8 14.5 15.1 15.8 16.5 17.2 17.8 18.5 19.2
 ## [29] 19.9 20.5 21.2 21.9 22.6 23.2 23.9 24.6 25.2 25.9 26.6 27.3 27.9 28.6
@@ -320,6 +324,16 @@ letras != &quot;B&quot;</code></pre>
 <li>Quais elementos do <code>vetor1</code> são menores do que 10 e maiores do que 25?</li>
 <li>Quais elementos do <code>vetor1</code> são maiores de 15 (inclusive) ou menores do que 3?</li>
 </ol>
+<pre class="r"><code>vetor1 &lt; 10 &amp; vetor1 &gt; 25</code></pre>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [12] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [23] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [34] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [45] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>ifelse(vetor1 &lt; 10 &amp; vetor1 &gt; 25, vetor1[], no = &quot;&quot;)</code></pre>
+<pre><code>##  [1] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;
+## [24] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;
+## [47] &quot;&quot; &quot;&quot; &quot;&quot; &quot;&quot;</code></pre>
 <hr />
 <ul>
 <li>Uma coisa importante a se notar é que ao fazermos estes testes, <strong>o resultado retornado é um vetor</strong>.</li>
@@ -374,7 +388,7 @@ vetor1[exemplo == &quot;B&quot;]</code></pre>
 <li>Crie um vetor de número de 1 a 100 e guarde este vetor em um objeto.</li>
 <li>Crie um segundo vetor com duas categorias: “impar” e “par” (nesta ordem), e guarde em um objeto.</li>
 <li>Faça com que os valores “impar” e “par” sejam repetidos 50 vezes, de forma intercalada (“impar”, “par”, “impar”, “par”, …); guarde isso em um objeto.</li>
-<li>Indexe o vetor criado no passo “a” de forma que somente os números <strong>pares</strong> sejam apresentados.</li>
+<li>Indexe o vetor criado no passo “a” de forma que somente os números em posição <strong>par</strong> sejam apresentados.</li>
 </ol>
 <ul>
 <li>O que este último exercício nos mostra é que podemos usar condições relacionadas a um vetor para indexar valores em um outro vetor. Isto é um passo importante para entendermos as operações condicionais em um <code>data.frame</code>.</li>
@@ -449,13 +463,8 @@ dados$letras</code></pre>
 <li>Note que, em todos os casos, ao usarmos o operador <code>$</code> estamos indexando uma coluna e tendo como resultado um <em>vetor</em>.</li>
 </ul>
 <pre class="r"><code># um teste lógico para saber quais das observacoes corresponde ao país &quot;Brasil&quot;
-(condicao_brasil &lt;- dados$paises == &quot;Brasil&quot;)</code></pre>
-<pre><code>##  [1]  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE
-## [12] FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE
-## [23] FALSE FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
-## [34] FALSE FALSE  TRUE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE
-## [45] FALSE  TRUE FALSE FALSE FALSE FALSE</code></pre>
-<pre class="r"><code># se quiséssemos indexar o vetor paises dentro do data.frame...
+condicao_brasil &lt;- dados$paises == &quot;Brasil&quot;
+# se quiséssemos indexar o vetor paises dentro do data.frame...
 dados$paises[condicao_brasil]</code></pre>
 <pre><code>##  [1] Brasil Brasil Brasil Brasil Brasil Brasil Brasil Brasil Brasil Brasil
 ## Levels: Brasil Jamaica Togo Trinidad Uruguai</code></pre>
@@ -496,9 +505,99 @@ dados[dados$paises == &quot;Brasil&quot;, c(2,3)]</code></pre>
 <div id="exercicio-4" class="section level5">
 <h5>Exercício 4</h5>
 <ol style="list-style-type: lower-alpha">
-<li>Indexe todas as linhas de <code>dados</code> cujo valor de <code>vetor1</code> seja maior 30 (inclusive);</li>
+<li>Indexe todas as linhas de <code>dados</code> cujo valor da coluna <code>vetor1</code> seja maior 30 (inclusive);</li>
 <li>Indexe todas as linhas de <code>dados</code> que correspondam à letra “B”, mas removendo a coluna países.</li>
 </ol>
+<pre class="r"><code>dados[dados$vetor1 &gt;= 30, ]</code></pre>
+<pre><code>##      paises vetor1 letras
+## 44  Uruguai   30.0      B
+## 45 Trinidad   30.6      B
+## 46   Brasil   31.3      B
+## 47     Togo   32.0      B
+## 48  Jamaica   32.7      B
+## 49  Uruguai   33.3      B
+## 50 Trinidad   34.0      B</code></pre>
+<pre class="r"><code>dados[dados$letras == &quot;B&quot;, -1]</code></pre>
+<pre><code>##    vetor1 letras
+## 26   17.8      B
+## 27   18.5      B
+## 28   19.2      B
+## 29   19.9      B
+## 30   20.5      B
+## 31   21.2      B
+## 32   21.9      B
+## 33   22.6      B
+## 34   23.2      B
+## 35   23.9      B
+## 36   24.6      B
+## 37   25.2      B
+## 38   25.9      B
+## 39   26.6      B
+## 40   27.3      B
+## 41   27.9      B
+## 42   28.6      B
+## 43   29.3      B
+## 44   30.0      B
+## 45   30.6      B
+## 46   31.3      B
+## 47   32.0      B
+## 48   32.7      B
+## 49   33.3      B
+## 50   34.0      B</code></pre>
+<pre class="r"><code>dados[dados$letras == &quot;B&quot;, c(2,3)]</code></pre>
+<pre><code>##    vetor1 letras
+## 26   17.8      B
+## 27   18.5      B
+## 28   19.2      B
+## 29   19.9      B
+## 30   20.5      B
+## 31   21.2      B
+## 32   21.9      B
+## 33   22.6      B
+## 34   23.2      B
+## 35   23.9      B
+## 36   24.6      B
+## 37   25.2      B
+## 38   25.9      B
+## 39   26.6      B
+## 40   27.3      B
+## 41   27.9      B
+## 42   28.6      B
+## 43   29.3      B
+## 44   30.0      B
+## 45   30.6      B
+## 46   31.3      B
+## 47   32.0      B
+## 48   32.7      B
+## 49   33.3      B
+## 50   34.0      B</code></pre>
+<pre class="r"><code>dados[dados$letras == &quot;B&quot;, c(&quot;vetor1&quot;, &quot;letras&quot;)]</code></pre>
+<pre><code>##    vetor1 letras
+## 26   17.8      B
+## 27   18.5      B
+## 28   19.2      B
+## 29   19.9      B
+## 30   20.5      B
+## 31   21.2      B
+## 32   21.9      B
+## 33   22.6      B
+## 34   23.2      B
+## 35   23.9      B
+## 36   24.6      B
+## 37   25.2      B
+## 38   25.9      B
+## 39   26.6      B
+## 40   27.3      B
+## 41   27.9      B
+## 42   28.6      B
+## 43   29.3      B
+## 44   30.0      B
+## 45   30.6      B
+## 46   31.3      B
+## 47   32.0      B
+## 48   32.7      B
+## 49   33.3      B
+## 50   34.0      B</code></pre>
 <hr />
 <ul>
 <li>Podemos extender o uso da indexação para mais de uma condição:</li>
@@ -620,8 +719,8 @@ dados[dados$paises %in% c(&quot;Brasil&quot;,&quot;Togo&quot;), ]</code></pre>
 <li>Vamos usar uma tabela de dados que já existe no seu R: <code>mtcars</code>.</li>
 <li>Com ela, retenha todas as colunas cujas linhas pertençam aos carros de 6 cilindros;</li>
 <li>Agora, retenha todas as linhas de carros cuja hp sejam maiores que 90 E o consumo de combustível (“mpg”) seja menor do que 19;</li>
-<li>Retenha todos os carros que tenham 4 ou 5 marchas e cujo mph seja maior do que 30;</li>
-<li>Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg seja menor do que 20 e que tenha 6 cilindros.</li>
+<li>Retenha todos os carros que tenham 4 ou 5 marchas e cujo mpg seja maior do que 30;</li>
+<li>Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg sejam menor do que 20 e que tenham 6 cilindros.</li>
 </ol>
 <hr />
 <ul>
@@ -676,40 +775,40 @@ subset(x = mtcars, mpg &gt; 20 &amp; hp &lt; 100, select = c(mpg, cyl, hp))</cod
 <ul>
 <li>Através desta função, também podemos usar o operador <code>:</code> para selecionar colunas que estejam em sequência em um <code>data.frame</code>:</li>
 </ul>
-<pre class="r"><code>subset(x = mtcars, select = mpg:hp)</code></pre>
-<pre><code>##                      mpg cyl  disp  hp
-## Mazda RX4           21.0   6 160.0 110
-## Mazda RX4 Wag       21.0   6 160.0 110
-## Datsun 710          22.8   4 108.0  93
-## Hornet 4 Drive      21.4   6 258.0 110
-## Hornet Sportabout   18.7   8 360.0 175
-## Valiant             18.1   6 225.0 105
-## Duster 360          14.3   8 360.0 245
-## Merc 240D           24.4   4 146.7  62
-## Merc 230            22.8   4 140.8  95
-## Merc 280            19.2   6 167.6 123
-## Merc 280C           17.8   6 167.6 123
-## Merc 450SE          16.4   8 275.8 180
-## Merc 450SL          17.3   8 275.8 180
-## Merc 450SLC         15.2   8 275.8 180
-## Cadillac Fleetwood  10.4   8 472.0 205
-## Lincoln Continental 10.4   8 460.0 215
-## Chrysler Imperial   14.7   8 440.0 230
-## Fiat 128            32.4   4  78.7  66
-## Honda Civic         30.4   4  75.7  52
-## Toyota Corolla      33.9   4  71.1  65
-## Toyota Corona       21.5   4 120.1  97
-## Dodge Challenger    15.5   8 318.0 150
-## AMC Javelin         15.2   8 304.0 150
-## Camaro Z28          13.3   8 350.0 245
-## Pontiac Firebird    19.2   8 400.0 175
-## Fiat X1-9           27.3   4  79.0  66
-## Porsche 914-2       26.0   4 120.3  91
-## Lotus Europa        30.4   4  95.1 113
-## Ford Pantera L      15.8   8 351.0 264
-## Ferrari Dino        19.7   6 145.0 175
-## Maserati Bora       15.0   8 301.0 335
-## Volvo 142E          21.4   4 121.0 109</code></pre>
+<pre class="r"><code>subset(x = mtcars, select = c(mpg:disp, am:carb))</code></pre>
+<pre><code>##                      mpg cyl  disp am gear carb
+## Mazda RX4           21.0   6 160.0  1    4    4
+## Mazda RX4 Wag       21.0   6 160.0  1    4    4
+## Datsun 710          22.8   4 108.0  1    4    1
+## Hornet 4 Drive      21.4   6 258.0  0    3    1
+## Hornet Sportabout   18.7   8 360.0  0    3    2
+## Valiant             18.1   6 225.0  0    3    1
+## Duster 360          14.3   8 360.0  0    3    4
+## Merc 240D           24.4   4 146.7  0    4    2
+## Merc 230            22.8   4 140.8  0    4    2
+## Merc 280            19.2   6 167.6  0    4    4
+## Merc 280C           17.8   6 167.6  0    4    4
+## Merc 450SE          16.4   8 275.8  0    3    3
+## Merc 450SL          17.3   8 275.8  0    3    3
+## Merc 450SLC         15.2   8 275.8  0    3    3
+## Cadillac Fleetwood  10.4   8 472.0  0    3    4
+## Lincoln Continental 10.4   8 460.0  0    3    4
+## Chrysler Imperial   14.7   8 440.0  0    3    4
+## Fiat 128            32.4   4  78.7  1    4    1
+## Honda Civic         30.4   4  75.7  1    4    2
+## Toyota Corolla      33.9   4  71.1  1    4    1
+## Toyota Corona       21.5   4 120.1  0    3    1
+## Dodge Challenger    15.5   8 318.0  0    3    2
+## AMC Javelin         15.2   8 304.0  0    3    2
+## Camaro Z28          13.3   8 350.0  0    3    4
+## Pontiac Firebird    19.2   8 400.0  0    3    2
+## Fiat X1-9           27.3   4  79.0  1    4    1
+## Porsche 914-2       26.0   4 120.3  1    5    2
+## Lotus Europa        30.4   4  95.1  1    5    2
+## Ford Pantera L      15.8   8 351.0  1    5    4
+## Ferrari Dino        19.7   6 145.0  1    5    6
+## Maserati Bora       15.0   8 301.0  1    5    8
+## Volvo 142E          21.4   4 121.0  1    4    2</code></pre>
 <ul>
 <li>E até reordenar as colunas:</li>
 </ul>
@@ -755,9 +854,9 @@ subset(x = mtcars, mpg &gt; 20 &amp; hp &lt; 100, select = c(mpg, cyl, hp))</cod
 <li>Usando o conjunto de dados <code>iris</code> e a função <code>subset</code>:
 <ol style="list-style-type: lower-alpha">
 <li>retenha todas as observações da espécie “setosa”;</li>
-<li>remova as observações cujo comprimento da sépala é menor do que 5 (inclusive);</li>
-<li>retenha as observações das espécies “setosa” e “virgina”;</li>
-<li>retenha as observações das espécies “setosa” e “virgina”, cuja largura da pétala seja maior do que 0.3.</li>
+<li>remova as observações cujo comprimento da sépala (length) é menor do que 5 (inclusive);</li>
+<li>retenha as observações das espécies “setosa” e “virginica”;</li>
+<li>retenha as observações das espécies “setosa” e “virginica”, cuja largura da pétala (width) seja maior do que 0.3.</li>
 </ol></li>
 </ul>
 <hr />
@@ -798,14 +897,8 @@ is.na(vetor5) # existe um valor na segunda posição que não está disponível<
 <li>Você pode remover linhas de um <code>data.frame</code> que contenham <code>NA</code> através da indexação e do teste lógico, como já vimos anteriormente:</li>
 </ul>
 <pre class="r"><code># crindo uma tabela que contenha um NA
-(exemplo &lt;- data.frame(foo1 = c(2, 7, NA, 3, 9), foo2 = c(&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;)))</code></pre>
-<pre><code>##   foo1 foo2
-## 1    2    A
-## 2    7    B
-## 3   NA    A
-## 4    3    B
-## 5    9    A</code></pre>
-<pre class="r"><code># onde está o NA?
+exemplo &lt;- data.frame(foo1 = c(2, 7, NA, 3, 9), foo2 = c(&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;))
+# onde está o NA?
 is.na(exemplo)</code></pre>
 <pre><code>##       foo1  foo2
 ## [1,] FALSE FALSE
@@ -869,11 +962,224 @@ which(vetor1 &gt;= 25)</code></pre>
 <li>Usando o conjunto de dados <code>iris</code>:
 <ol style="list-style-type: lower-alpha">
 <li>Em que linha está o valor mínimo da largura da sépala?</li>
-<li>Em que linhas está o valor máximo do comprimento da pétala?</li>
+<li>Em que linha está o valor máximo do comprimento da pétala?</li>
 <li>Em que linhas estão as observações que correspondem à espécie “virginica”?</li>
-<li>Usando a função <code>which</code>, retorne um <code>data.frame</code> que contenha apenas as linhas com observações da espécie “versicolor”.</li>
+<li>Usando a função <code>which</code>, filtre apenas as linhas com observações da espécie “versicolor”.</li>
 </ol></li>
 </ul>
+<pre class="r"><code># forma 1
+queridinha &lt;- which(iris$Species == &quot;versicolor&quot;)
+iris[queridinha, ]</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor</code></pre>
+<pre class="r"><code># forma 2
+iris[iris$Species == &quot;versicolor&quot;, ]</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor</code></pre>
+<pre class="r"><code># forma 3
+subset(x = iris, Species == &quot;versicolor&quot;)</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor</code></pre>
+<pre class="r"><code># forma 4
+iris[which(iris$Species == &quot;versicolor&quot;), ]</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 51           7.0         3.2          4.7         1.4 versicolor
+## 52           6.4         3.2          4.5         1.5 versicolor
+## 53           6.9         3.1          4.9         1.5 versicolor
+## 54           5.5         2.3          4.0         1.3 versicolor
+## 55           6.5         2.8          4.6         1.5 versicolor
+## 56           5.7         2.8          4.5         1.3 versicolor
+## 57           6.3         3.3          4.7         1.6 versicolor
+## 58           4.9         2.4          3.3         1.0 versicolor
+## 59           6.6         2.9          4.6         1.3 versicolor
+## 60           5.2         2.7          3.9         1.4 versicolor
+## 61           5.0         2.0          3.5         1.0 versicolor
+## 62           5.9         3.0          4.2         1.5 versicolor
+## 63           6.0         2.2          4.0         1.0 versicolor
+## 64           6.1         2.9          4.7         1.4 versicolor
+## 65           5.6         2.9          3.6         1.3 versicolor
+## 66           6.7         3.1          4.4         1.4 versicolor
+## 67           5.6         3.0          4.5         1.5 versicolor
+## 68           5.8         2.7          4.1         1.0 versicolor
+## 69           6.2         2.2          4.5         1.5 versicolor
+## 70           5.6         2.5          3.9         1.1 versicolor
+## 71           5.9         3.2          4.8         1.8 versicolor
+## 72           6.1         2.8          4.0         1.3 versicolor
+## 73           6.3         2.5          4.9         1.5 versicolor
+## 74           6.1         2.8          4.7         1.2 versicolor
+## 75           6.4         2.9          4.3         1.3 versicolor
+## 76           6.6         3.0          4.4         1.4 versicolor
+## 77           6.8         2.8          4.8         1.4 versicolor
+## 78           6.7         3.0          5.0         1.7 versicolor
+## 79           6.0         2.9          4.5         1.5 versicolor
+## 80           5.7         2.6          3.5         1.0 versicolor
+## 81           5.5         2.4          3.8         1.1 versicolor
+## 82           5.5         2.4          3.7         1.0 versicolor
+## 83           5.8         2.7          3.9         1.2 versicolor
+## 84           6.0         2.7          5.1         1.6 versicolor
+## 85           5.4         3.0          4.5         1.5 versicolor
+## 86           6.0         3.4          4.5         1.6 versicolor
+## 87           6.7         3.1          4.7         1.5 versicolor
+## 88           6.3         2.3          4.4         1.3 versicolor
+## 89           5.6         3.0          4.1         1.3 versicolor
+## 90           5.5         2.5          4.0         1.3 versicolor
+## 91           5.5         2.6          4.4         1.2 versicolor
+## 92           6.1         3.0          4.6         1.4 versicolor
+## 93           5.8         2.6          4.0         1.2 versicolor
+## 94           5.0         2.3          3.3         1.0 versicolor
+## 95           5.6         2.7          4.2         1.3 versicolor
+## 96           5.7         3.0          4.2         1.2 versicolor
+## 97           5.7         2.9          4.2         1.3 versicolor
+## 98           6.2         2.9          4.3         1.3 versicolor
+## 99           5.1         2.5          3.0         1.1 versicolor
+## 100          5.7         2.8          4.1         1.3 versicolor</code></pre>
 <hr />
 <ul>
 <li>Também podemos usar a função <code>which</code> para determinarmos qual a posição dos elementos compartilhados por dois vetores.</li>

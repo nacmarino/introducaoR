@@ -122,7 +122,7 @@ vetor1 <= 10
 
 ```{r}
 # criando uma sequência de letras "A" e "B"
-letras <- rep(c("A", "B", "C"), each = 25)
+letras <- rep(c("A", "B"), each = 25)
 # quais das letras são iguais a A
 letras == "A"
 # quais das letras não são iguais a A
@@ -189,7 +189,7 @@ vetor1[exemplo == "B"]
 a. Crie um vetor de número de 1 a 100 e guarde este vetor em um objeto.
 b. Crie um segundo vetor com duas categorias: "impar" e "par" (nesta ordem), e guarde em um objeto.
 c. Faça com que os valores "impar" e "par" sejam repetidos 50 vezes, de forma intercalada ("impar", "par", "impar", "par", ...); guarde isso em um objeto.
-d. Indexe o vetor criado no passo "a" de forma que somente os números __pares__ sejam apresentados.
+d. Indexe o vetor criado no passo "a" de forma que somente os números em posição __par__ sejam apresentados.
 
 * O que este último exercício nos mostra é que podemos usar condições relacionadas a um vetor para indexar valores em um outro vetor. Isto é um passo importante para entendermos as operações condicionais em um `data.frame`.
 
@@ -232,7 +232,7 @@ dados$letras
 
 ```{r}
 # um teste lógico para saber quais das observacoes corresponde ao país "Brasil"
-(condicao_brasil <- dados$paises == "Brasil")
+condicao_brasil <- dados$paises == "Brasil"
 # se quiséssemos indexar o vetor paises dentro do data.frame...
 dados$paises[condicao_brasil]
 ```
@@ -253,8 +253,15 @@ dados[dados$paises == "Brasil", c(2,3)]
 
 ##### Exercício 4
 
-a. Indexe todas as linhas de `dados` cujo valor de `vetor1` seja maior 30 (inclusive);
+a. Indexe todas as linhas de `dados` cujo valor da coluna `vetor1` seja maior 30 (inclusive);
 b. Indexe todas as linhas de `dados` que correspondam à letra "B", mas removendo a coluna países.
+
+```{r}
+dados[dados$vetor1 >= 30, ]
+dados[dados$letras == "B", -1]
+dados[dados$letras == "B", c(2,3)]
+dados[dados$letras == "B", c("vetor1", "letras")]
+```
 
 ---
 
@@ -294,8 +301,8 @@ dados[dados$paises %in% c("Brasil","Togo"), ]
 a. Vamos usar uma tabela de dados que já existe no seu R: `mtcars`.
 b. Com ela, retenha todas as colunas cujas linhas pertençam aos carros de 6 cilindros;
 c. Agora, retenha todas as linhas de carros cuja hp sejam maiores que 90 E o consumo de combustível ("mpg") seja menor do que 19;
-d. Retenha todos os carros que tenham 4 ou 5 marchas e cujo mph seja maior do que 30;
-e. Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg seja menor do que 20 e que tenha 6 cilindros.
+d. Retenha todos os carros que tenham 4 ou 5 marchas e cujo mpg seja maior do que 30;
+e. Por fim, retenha todas as linhas de carros cujo hp seja maior do 100, cujo mpg sejam menor do que 20 e que tenham 6 cilindros.
 
 --- 
 
@@ -316,7 +323,7 @@ subset(x = mtcars, mpg > 20 & hp < 100, select = c(mpg, cyl, hp))
 * Através desta função, também podemos usar o operador `:` para selecionar colunas que estejam em sequência em um `data.frame`:
 
 ```{r}
-subset(x = mtcars, select = mpg:hp)
+subset(x = mtcars, select = c(mpg:disp, am:carb))
 ```
 
 * E até reordenar as colunas:
@@ -331,9 +338,9 @@ subset(x = mtcars, select = c(cyl, hp, mpg, disp))
 
 * Usando o conjunto de dados `iris` e a função `subset`:
     a. retenha todas as observações da espécie "setosa";
-    b. remova as observações cujo comprimento da sépala é menor do que 5 (inclusive);
-    c. retenha as observações das espécies "setosa" e "virgina";
-    d. retenha as observações das espécies "setosa" e "virgina", cuja largura da pétala seja maior do que 0.3.
+    b. remova as observações cujo comprimento da sépala (length) é menor do que 5 (inclusive);
+    c. retenha as observações das espécies "setosa" e "virginica";
+    d. retenha as observações das espécies "setosa" e "virginica", cuja largura da pétala (width) seja maior do que 0.3.
 
 ---
 
@@ -370,7 +377,7 @@ is.nan(vetor5) # este valor na segunda posição é um NaN
 
 ```{r}
 # crindo uma tabela que contenha um NA
-(exemplo <- data.frame(foo1 = c(2, 7, NA, 3, 9), foo2 = c("A", "B", "A", "B", "A")))
+exemplo <- data.frame(foo1 = c(2, 7, NA, 3, 9), foo2 = c("A", "B", "A", "B", "A"))
 # onde está o NA?
 is.na(exemplo)
 # retendo a linha que contenha o NA
@@ -411,15 +418,32 @@ which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") == "Joana")
 which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") != "Joana")
 ```
 
+
 ---
 
 ##### Exercício 7
 
 * Usando o conjunto de dados `iris`:
     a. Em que linha está o valor mínimo da largura da sépala?
-    b. Em que linhas está o valor máximo do comprimento da pétala?
+    b. Em que linha está o valor máximo do comprimento da pétala?
     c. Em que linhas estão as observações que correspondem à espécie "virginica"?
-    d. Usando a função `which`, retorne um `data.frame` que contenha apenas as linhas com observações da espécie "versicolor".  
+    d. Usando a função `which`, filtre apenas as linhas com observações da espécie "versicolor".  
+
+```{r}
+# forma 1
+queridinha <- which(iris$Species == "versicolor")
+iris[queridinha, ]
+
+# forma 2
+iris[iris$Species == "versicolor", ]
+
+# forma 3
+subset(x = iris, Species == "versicolor")
+
+# forma 4
+iris[which(iris$Species == "versicolor"), ]
+```
+
 
 ---
 
