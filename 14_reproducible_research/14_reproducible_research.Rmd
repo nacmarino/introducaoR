@@ -97,19 +97,89 @@ Reprodutibilidade é um hábito que pode ser adquirido e, uma vez que você come
 > Ninguém nasce sabendo a importância dessas coisas, e tão pouco começa a carreira acadêmica sendo treinado em uma carreira de reprodutibilidade. É preciso que nós falemos mais sobre isso, com nossos colaboradores, amigos, amigos de laboratório, orientadores,...é só através do treinamento e da capacitação das pessoas é que nós vamos conseguir fazer melhor.  
 
 * Pequenos hábitos que fazem a diferença:
-    + habito1  
-    + habito2  
-    + habito3  
-    + habito4  
-    + habito5  
+    + antes de iniciar o seu projeto de pesquisa, descreva as suas hipóteses e/ou objetivos, crie ilustrações mostrando qual é o resultado esperado que você está buscado;  
+    + anote TUDO o que você fizer e ver de forma padronizada: confeccione cadernos de campo padrão, crie um livro de protocolos,...   
+    + tabele os seus dados com atenção, cheque de forma dupla se você não está esquecendo de tabelar alguma informação e/ou procure saber com os seus colaboradores e origem da ausência de dados;  
+    + documente todas as etapas da análise de dados - decisões, escolhas, lógica e caminhos;    
+    + use um script para limpar seus dados e realizar todo e qualquer tipo de manipulação;  
+    + use caminhos relativos;  
+    + use uma ferramenta de controle de versão;  
+    + ...
 
-## Controle de Versão;
+---
 
+## Controle de Versão
 
+> A reposta curta: é um programa que acompanha as mudanças feitas em arquivos específicos ao longo do tempo, e mantém um registor de todas as versões anteriores daqueles arquivos.
 
-## Introdução ao GitHub;
+Quando estamos tabelando um dado, escrevendo um código, gerando os resultados de uma análise ou escrevendo um documento, muitas vezes vamos nos deparar com alguns causos:  
+  
+1. manter um arquivo de cópia de cada passo que tomamos ao escrever ou editar algo, só para garantir que temos aquele arquivo original salvo;  
+2. ideias relâmpago e dias _intensos_, em que você vai ficar indo e vindo o tempo todo no que você está trabalhando, mas no final do dia vai querer algo similar ao que você gerou lá no início;  
+3. ao compartilhar um código, dado ou outro arquivo com alguém, as pessoas podem fazer edições e não te indicar exatamente o que mudaram OU indicar e você ter que fazer a conferência entre versões manualmente.  
 
+---
 
+Uma forma de lidar com estes (e outros) causos de forma mais fácil é através do uso de um __sistema de controle versão__ (para mais informações, ver: Blischak et al, 2016, PLOS Comp Biol, A quick introduction to version control with Git and GitHub).
+
+> Um sistema de controle de versão permite que você mantenha um registro de cada mudança que você fez em um código, dado ou arquivo (desde que ele seja 'lido' linha-a-linha). Com isto, você tem a opção de reverter uma mudança que você fez a partir de alguma versão do seu trabalho, além de escrever mensagens para si próprio cada vez que você faz uma destas alterações e faz o controle da versão. Assim, qualquer pessoa que olhe o histórico de desenvolvimento da tarefa consegue entender a lógica que você usou em cada passo do processo criativo. Além disso, um sistema de controle de versão facilita o trabalho colaborativo, uma vez que também permite que seus colaboradores possam incorporar suas próprias contribuições à tarefa diretamente em seu código/dado/arquivo em formato original - e se você não gostar, sabe exatamente onde e quem fez a edição, e pode reverter ela.
+
+Então, com um sistema de controle de versão:  
+  
+a. você mantém registro de todas as etapas do processo;  
+b. pode retornar a qualquer ponto do histórico de um arquivo;  
+c. pode deixar mensagens para você mesmo e outros que indicam a lógico do processo criativo;  
+d. colaborações são adicionadas diretamente à tarefa.  
+
+---
+
+Existem vários sistemas de controle de versão, sendo um dos mais conhecidos o __Git__:  
+  
+* Instalação: https://git-scm.com  
+* Video de tutorial de Instalação (Windows): https://www.youtube.com/watch?v=uBH9yspZpK0  
+* Video de tutorial de Instalação (Mac): https://www.youtube.com/watch?v=LK0vMt_lEbQ  
+* Video de mais um tutorial de instalação: https://www.youtube.com/watch?v=J_Clau1bYco  
+* Uma lição do Software Carpentru sobre Git: https://swcarpentry.github.io/git-novice/  
+* Fazendo o Git e o RStudio conversarem: https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN
+
+--- 
+
+__Como funciona este sistema de controle de versão?__
+
+Após a instalação e configuração do sistema de controle de versão, podemos prosseguir para entender as etapas do processo, que estão sumarizadas abaixo.  
+
+Você começa usando o sistema de controle de versão iniciando um __repositório__ (`git init`) - local onde ficam todos os arquivos que estão sendo acompanhados e têm seu histórico de mudanças armazenado.
+
+Ao criarmos um repositório vazio, precisamos adicionar os arquivos que estarão sob o processo de controle de versão (`git add`). Uma vez que tenhamos adicionado estes arquivos ao processo de controle de versão, dizemos que o arquivo foi movido __staged__ - isto é, movemos o arquivo para  a __staging area__, local em que os arquivos são colocados para serem "fotografados" pelo sistema de controle de versão. Após este último passo, nós temos que "fotografar" o(s) arquivo(s) através do processo de __commit__ (`git commit`) - é a partir desse ponto que a "fotografia" do(s) arquivo(s) é registrada. 
+
+Logo, cada vez que você faz uma alteração em um arquivo, você adiciona este arquivo à area de "fotografia" (__stage__) e "fotografa" a versão do arquivo (__commit__). Além disso, cada versão que você "fotografa" (__commit__) um arquivo, você pode usar uma pequena mensagem descrevendo o que aquela "fotografia" representa. Note também que cada vez que cada "fotografia" dos arquivos que foram para o __commit__ recebem um "número de identidade", que pode ser usado para explorar o histórico e reverter mudanças feitas para cada um daquele momentos.
+
+Assim, toda vez que você fizer uma alteração e salvar um arquivo, o controle de versão vai te indicar que existe uma alteração naquele documento. Você pode __stage__ o documento, então "fotografar" (__commit__) ele e continuar trabalhando, repetindo indefinidamente o processo. Note, no entanto, que aqui só estamos realizando e salvando o processo de controle de versão no nosso próprio computador.  
+
+<center><img src="figures/blischak_2016_plos_comp_biol_1.png" height="600px"></img></center>  
+
+<center><img src="figures/blischak_2016_plos_comp_biol_2.png" height="600px"></img></center>  
+_Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
+  
+* Para observarmos e praticarmos este processo, de forma virtual, podemos usar este tutorial: https://try.github.io/levels/1/challenges/1  
+
+## Introdução ao GitHub
+
+1. O que é?  
+2. Quais as vantagens?  
+3. Etapas para além do controle de versão padrão;  
+4. Por onde fazer tudo?  
+5. Links para a instalação.  
+
+<center><img src="figures/blischak_2016_plos_comp_biol_3.png" height="600px"></img></center>  
+_Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
+
+<center><img src="figures/blischak_2016_plos_comp_biol_4.png" height="600px"></img></center>  
+_Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
 
 ## `rmarkdown`
 
+1. O que é?  
+2. Qual a filosofia?  
+3. O que você pode criar?  
+4. Como usar o rmarkdown?  
