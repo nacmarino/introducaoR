@@ -23,14 +23,14 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Reproducible Research;  
-2. Controle de Versão;  
-3. Introdução ao GitHub;  
-4. `rmarkdown`.  
+1. Reproducible Research: [ir](#anchor1);  
+2. Controle de Versão: [ir](#anchor2);  
+3. Introdução ao GitHub: [ir](#anchor3);  
+4. R Markdown: [ir](#anchor4).  
 
 ---
 
-## Reproducible Research
+## Reproducible Research {#anchor1}
 
 > __O que é *reproducible* research?__
 
@@ -108,7 +108,7 @@ Reprodutibilidade é um hábito que pode ser adquirido e, uma vez que você come
 
 ---
 
-## Controle de Versão
+## Controle de Versão {#anchor2}
 
 > A reposta curta: é um programa que acompanha as mudanças feitas em arquivos específicos ao longo do tempo, e mantém um registor de todas as versões anteriores daqueles arquivos.
 
@@ -163,28 +163,67 @@ _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction t
   
 * Para observarmos e praticarmos este processo, de forma virtual, podemos usar este tutorial: https://try.github.io/levels/1/challenges/1  
 
-## Introdução ao GitHub
+## Introdução ao GitHub {#anchor3}
 
-O que é?  
+O GitHub é um serviço de hospedagem para repositórios que estão sob controle de versão. Você pode fazer o _upload_ do seu repositório para uma conta pessoal na internet, o que facilita o seu próprio acesso e de seus colaboradores ao projeto de trabalho.  
 
-Quais as vantagens?  
+* Quais as vantagens?  
+a. É um _backup_ virtual dos seus arquivos, que está disponível na "nuvem" (similar ao Dropbox);  
+b. Além da funcionalidade similar ao Dropbox, também permite que você faça o controle de versão, eliminando muito dos problemas de usar o Dropbox;  
+c. Facilita o trabalho colaborativo entre colaboradores e com outros pesquisadores em todo o mundo;  
+d. Você pode ter repositórios públicos e privados (necessário pagar, mas...);  
+e. ...  
 
-Etapas para além do controle de versão padrão;  
+Após cadastrar a sua conta no GitHub, o processo de controle de versão ganha mais alguns elementos e etapas. Em primeiro lugar, assim como você adicionou um grupo de arquivos a um repositório local (__origin__), você precisa copiar este respositório para um repositório remoto (__remote__; `git remote add`), que fica hospedado no servido do GitHub. Aqui, também precisamos adicionar (__add__) e __commit__ cada alteração feita em um arquivo, para que o controle de versão se torne efetivo. Entretanto, as mudanças que você faz no seu repositório __origin__ precisam ser enviada para o repositório remote (__remote__). Para tal, você "empurra" (__push__; `git push`) os seus arquivos e __commits__ para o repositório remoto. Note que voccê não precisa empurrar estes arquivos toda vez que você faz um __commit__ - você pode ir trabalhando e, no momento que julgar oportuno, "empurrar" tudo de uma vez para o repositório remoto.
   
 <center><img src="figures/blischak_2016_plos_comp_biol_3.png" height="600px"></img></center>  
 _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
 
+Além de criar repositórios remotos sob tudo o que acontece em seu repositório local, você também pode criar cópias dos repositórios públicos de outras pessoas (e de repositórios privados compartilhados com você). Quando fazemos isso, estamos abrindo um ramo do repositório original (`fork`), que é um cópia identica de tudo o que já aconteceu com aquele repositório, e colocando ele em nosso repositório remoto. Uma vez que criamos este `fork`, podemos clonar o repositório para o nosso repositório local (__clone__; `git clone`). Assim, podemos fazer um trabalho, contribuir, alterar os arquivos e tudo o mais, fazer nossos __commits__, "empurrar" tudo de volta ao repositório remoto e criar um pedido de fusão com o repositório original (`pull request`).  
+
+Assim, fechamos um ciclo de criar um sistema mais colaborativo e transparente para a manipulação e manutenção de dados, além de facilitar a colaboração entre diferentes pesquisadores.  
+
 <center><img src="figures/blischak_2016_plos_comp_biol_4.png" height="600px"></img></center>  
 _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
 
-Links para a instalação.  
+* Links úteis:
+    + Repositórios privados grátis para estudantes e o ensino: https://education.github.com  
+    + Interface gráfica, mais amigável: https://desktop.github.com  
 
-Repositórios privados grátis: https://education.github.com
-Interface gráfica: https://desktop.github.com
+---
 
-## `rmarkdown`
+## R markdown {#anchor4}
 
-1. O que é?  
-2. Qual a filosofia?  
-3. O que você pode criar?  
-4. Como usar o rmarkdown?  
+* __O que é?__  
+
+> O Markdown é uma ferramenta de conversão de texto para HTML usado por escritores da internet. O Markdown te permite que você leia e escreva documentos de forma fácil, e então converta o resultado em um arquivo XHTML (ou HTML) estruturalmente válido (John Gruber, criador do Markdown).
+
+* As principais vantagens de escrever em Markdown são:  
+    + Te permite focar em escrever, ao invés de formatar;  
+    + Elementos para formatação são mínimos, mas intuitivos;  
+    + Fácil de coverter para outros formatos de documento, dado o uso de algumas ferramentas;
+    + Pode ser integrado à outras linguagens de programação.  
+
+* Assim, o __R Markdown__ é uma integração das funcionalidades do __Markdown__ com o código do __R__:  
+    + Documentos contém pedaços "vivos" de código do R;  
+    + O código do R é avaliado, rodado e adicionado ao processo de criação do arquivo final;  
+    + Resultados do processamento são apresentados diretamente no documento.  
+    
+> Ou seja, se você está lendo um arquivo feito em R Markdown, e pode ver todo o código do R sendo usado e gerando resultados, é porque o script que gerou aquele documento é totalmente funcional e não apresenta defeitos de processamento.  
+
+* Para usar o R Markdown aqui, você só precisa ter instalado os pacotes `knitr` e `markdown`:  
+    + `knitr`: converte o texto escrito no arquivo markdown; 
+    + `markdown`: converte o arquivo markdown em vários tipos de formato.  
+
+* O que você pode criar em Markdown?  
+    + páginas HTML;  
+    + arquivos de PDF;  
+    + apresentações de slide;  
+    + arquivos com extensão de uso do Word;  
+    + slides interativos;  
+    + ...
+    
+* Como escrever:  
+    + ```Help -> Markdown Quick Reference```: guia básico
+    + ```Help -> Cheatsheets -> R Markdown Cheat Sheet```: guia completo 
+    + ```Help -> Cheatsheets -> R Markdown Reference Guide```: guia aprofundado
