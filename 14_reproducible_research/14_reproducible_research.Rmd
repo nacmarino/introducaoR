@@ -222,6 +222,8 @@ _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction t
     + arquivos com extensão de uso do Word;  
     + slides interativos;  
     + ...
+
+> Vantagem: ótimo para produzir documentos padronizados, documentos precisem apresentar certas informações em todas as versões, documentos que funcionem como 'boletins' de uso, documentos que precisem ter o código e resultado impresso para que outras pessoas consigam acompanhar,...
     
 * Como escrever:  
     + ```Help -> Markdown Quick Reference```: guia básico
