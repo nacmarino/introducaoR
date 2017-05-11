@@ -165,17 +165,22 @@ _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction t
 
 ## Introdução ao GitHub
 
-1. O que é?  
-2. Quais as vantagens?  
-3. Etapas para além do controle de versão padrão;  
-4. Por onde fazer tudo?  
-5. Links para a instalação.  
+O que é?  
 
+Quais as vantagens?  
+
+Etapas para além do controle de versão padrão;  
+  
 <center><img src="figures/blischak_2016_plos_comp_biol_3.png" height="600px"></img></center>  
 _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
 
 <center><img src="figures/blischak_2016_plos_comp_biol_4.png" height="600px"></img></center>  
 _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction to version control with Git and GitHub_
+
+Links para a instalação.  
+
+Repositórios privados grátis: https://education.github.com
+Interface gráfica: https://desktop.github.com
 
 ## `rmarkdown`
 
