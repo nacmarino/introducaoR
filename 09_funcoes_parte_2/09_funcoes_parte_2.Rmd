@@ -57,7 +57,7 @@ Vamos fornecer um número determinado para alimentar o ponto de partida do gerad
 
 ```{r}
 # podemos usar qualquer valor, mas para chegarmos no mesmo resultado, vamos usar o mesmo número
-set.seed(943)
+set.seed(1200)
 # gerando 10 números aleatórios que seguem uma distribuição com média 10 e desvio 5
 rnorm(n = 10, mean = 10, sd = 5)
 ```
@@ -94,6 +94,25 @@ Neste último passo, nos transformamos o `vetor1` para números inteiros, para p
 a. Use cada uma das duas funções descritas acima no vetor1;  
 b. Qual a diferença entre elas?  
 
+```{r}
+# para ordenar em ordem crescente ou decrescente um vetor
+sort(x = vetor1, decreasing = FALSE)
+sort(x = vetor1, decreasing = TRUE)
+# retorna a posição dos elementos na ordem crescente ou decrescente
+order(vetor1)
+
+# ordenando um data.frame
+exemplo <- data.frame(coluna1 = vetor1, coluna2 = 1:10)
+exemplo
+
+# indexar a coluna de um data.frame
+exemplo$coluna1
+# ordenando a coluna
+order(exemplo$coluna1)
+# ordenando as linhas do data.frame
+exemplo[order(exemplo$coluna1), ]
+```
+
 ---
 
 Algumas vezes, temos observações geradas a partir de um conjunto de dados que não podem ser biologicamente reamostrados. No entanto, existe um meio de realizar uma _reamostragem estatística_ através da função `sample`.
@@ -118,6 +137,18 @@ b. Use a função `sample` para reamostrar o vetor gerado, usando um tamanho da 
     1. Rode uma vez com substituição;  
     2. Rode uma vez sem substituição;  
 c. O que aconteceu?  
+
+```{r}
+set.seed(20)
+vetor2 <- rnorm(n = 10, mean = 40, sd = 3)
+vetor2
+
+set.seed(20)
+sample(x = vetor2, size = 20, replace = TRUE)
+set.seed(20)
+sample(x = vetor2, size = 9, replace = FALSE)
+# sempre rodar com n-1 elementos quando o replace = FALSE
+```
 
 ---
 
@@ -163,7 +194,9 @@ Sempre escrevemos a lista de argumentos da função dentro dos parênteses que s
 
 ```{r}
 foo <- function(valor_tratamento1, valor_tratamento2){
+  
   log(valor_tratamento1/valor_tratamento2)
+  
 }
 ```
 
@@ -188,10 +221,14 @@ Além disso, como vimos também, uma função pode ter valores padrão (_default
 ```{r}
 # vamos dar um valor padrão para um dos tratamentos
 foo <- function(valor_tratamento1, valor_tratamento2 = 1){
+  
   log(valor_tratamento1/valor_tratamento2)
-}
+
+  }
+
 # se não especificarmos o valor do tratamento2
 foo(valor_tratamento1 = 10)
+
 # e se especificarmoso valor do tratamento2?
 foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
 ```
@@ -204,11 +241,14 @@ foo <- function(valor_tratamento1, valor_tratamento2){
   
   resposta <- log(valor_tratamento1/valor_tratamento2)
 
-  }
+}
+
 # usando a função - cade o resultado?
 foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+
 # obrigando o R a mostrar o resultado
 (foo(valor_tratamento1 = 10, valor_tratamento2 = 5))
+
 # outra forma de obter o resultado
 # usando a função
 cade <- foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
@@ -224,7 +264,8 @@ foo <- function(valor_tratamento1, valor_tratamento2){
   resposta <- log(valor_tratamento1/valor_tratamento2)
   
   print(resposta)
-}
+
+  }
 # usando função
 foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
 ```
@@ -241,6 +282,41 @@ O R não possui uma função capaz de calcular o erro padrão da média de um ve
         3. Determinar o comprimento do vetor e tirar a sua raiz quadrada;  
         4. Dividir o resultado do passo 2 pelo passo 3;  
         5. ...  
+
+```{r}
+# o que esperamos
+vetor1 <- 1:10
+vetor1
+sd(vetor1)
+sqrt(length(vetor1))
+sd(vetor1)/sqrt(length(vetor1))
+
+# como deve funcionar?
+# erro_padrao(vetor1)
+
+erro_padrao <- function(nome_vetor){
+  
+  # calculando o desvio padrao do argumento que será fornecido
+  desvio <- sd(nome_vetor, na.rm = TRUE)
+  
+  # determinando o número de observações no vetor
+  tamanho_do_vetor <- length(nome_vetor)
+  
+  # calculando  denominador para estimarmos o erro padrao
+  den <- sqrt(tamanho_do_vetor)
+  
+  # calculando o erro padrao
+  desvio/den
+  
+}
+
+set.seed(10)
+vetor1 <- rnorm(n = 20, mean = 10, sd = 3)
+vetor1
+
+erro_padrao(nome_vetor = vetor1)
+```
+
 
 ---
 
@@ -388,6 +464,22 @@ lancar_moeda <- function(numero_de_lancamentos) {
 # testando função
 lancar_moeda(20)
 ```
+
+```{r}
+# participantes do amigo oculto
+participantes <- c("anderson", "nathalia", "yamile", "romullo", "pedro", "amanda", "alexandre")
+participantes
+
+amigo_oculto <- function(seu_nome, xuxa){
+  
+  excluido <- xuxa[xuxa != seu_nome]
+  
+  sample(x = excluido, size = 1)
+  
+}
+
+amigo_oculto(seu_nome = "romullo", xuxa = participantes)
+```
     
 ## Controladores de Fluxo
 
@@ -491,7 +583,7 @@ for(i in quantidade_de_vezes) { # onde i é cada uma das vezes
 Um exemplo do uso desse controlador de fluxo é:
 
 ```{r eval=FALSE}
-for (i in 1:10) { # para cada i de 1 a 10
+for (i in 1:20) { # para cada i de 1 a 10
   print(i) # imprima o valor de i
   Sys.sleep(time = 1) # aguarde 1 segundo antes de prosseguir
   # repita a operaçao
@@ -540,12 +632,12 @@ Agora que já nos lembramos como usar a indexação para fazer a soma, podemos t
 
 ```{r eval=FALSE}
 # qual o tamanho da sequência desejado?
-tamanho_sequencia <- 15
+tamanho_sequencia <- 6
 # iniciando o loop
 for(i in 3:tamanho_sequencia){ # para cada valor i, iniciando em i = 3 até i = tamanho da sequência
   vetor1[i] <- vetor1[i - 2] + vetor1[i - 1] # e.g, quando i = 3, "i - 2 = 1" e "i - 1 = 2", com o resultado da soma armazenado em vetor1[i]
   print(vetor1) # mostre o vetor1
-  Sys.sleep(time = 1.5) # aguarde 1 segundo antes de prosseguir
+  Sys.sleep(time = 2) # aguarde 1 segundo antes de prosseguir
 }
 ```
 
@@ -746,7 +838,7 @@ O _loop_ que faz a tarefa árdua e repetitiva para nós está abaixo:
 # observando a planilha de dados
 dados
 # iniciando o loop
-for(i in 2:length(arquivos)) {
+for(i in 3:length(arquivos)) {
   
   tmp <- read_excel(path = paste0("../97_enquete/", arquivos[i]))
 

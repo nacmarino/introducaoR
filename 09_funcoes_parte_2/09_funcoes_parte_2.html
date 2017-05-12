@@ -166,11 +166,11 @@ h1,h2,h3,h4,h5,h6{
 <p>É importante termos isso em mente pois muitas vezes precisamos fazer análises que são baseadas em testes de aleatorização e, portanto, teremos resultados diferentes cada vez que rodarmos uma análise. No entanto, existe uma forma de remover esta aleatoriedade do ‘ponto de partida’ do gerador de números aleatórios se nós fornecermos a esse gerador um ponto de partida determinado. Podemos fazer isso através da função <code>set.seed</code>.</p>
 <p>Vamos fornecer um número determinado para alimentar o ponto de partida do gerador de números aleatórios:</p>
 <pre class="r"><code># podemos usar qualquer valor, mas para chegarmos no mesmo resultado, vamos usar o mesmo número
-set.seed(943)
+set.seed(1200)
 # gerando 10 números aleatórios que seguem uma distribuição com média 10 e desvio 5
 rnorm(n = 10, mean = 10, sd = 5)</code></pre>
-<pre><code>##  [1]  8.019158  6.181476  5.439000 12.496896 10.246580 11.996215 14.331548
-##  [8] 16.224457  3.806046  4.333618</code></pre>
+<pre><code>##  [1]  5.759806  9.761558  9.973398 11.774331 16.668239 14.026457 10.116957
+##  [8] 14.527719  6.287736  9.637595</code></pre>
 <p>Agora chegarmos todos ao mesmo resultado! Assim, cada vez que você for usar uma função que use um gerador de números aleatórios, é necessário fornecer um <em>seed</em>. Isso quer dizer que se rodarmos novamente a função <code>rnorm</code> precisaremos usar o <code>set.seed</code> novamente, com o mesmo valor usado anteriormente.</p>
 <p>Vamos armazenar o resultado daquela função em um objeto para ver algumas outras funções úteis para trabalhar com sequências de números.</p>
 <pre class="r"><code>set.seed(943)
@@ -202,6 +202,47 @@ round(x = vetor1, digits = 3) # 3 casas decimais</code></pre>
 </li>
 <li>Qual a diferença entre elas?</li>
 </ol>
+<pre class="r"><code># para ordenar em ordem crescente ou decrescente um vetor
+sort(x = vetor1, decreasing = FALSE)</code></pre>
+<pre><code>##  [1]  4  4  5  6  8 10 12 12 14 16</code></pre>
+<pre class="r"><code>sort(x = vetor1, decreasing = TRUE)</code></pre>
+<pre><code>##  [1] 16 14 12 12 10  8  6  5  4  4</code></pre>
+<pre class="r"><code># retorna a posição dos elementos na ordem crescente ou decrescente
+order(vetor1)</code></pre>
+<pre><code>##  [1]  9 10  3  2  1  5  4  6  7  8</code></pre>
+<pre class="r"><code># ordenando um data.frame
+exemplo &lt;- data.frame(coluna1 = vetor1, coluna2 = 1:10)
+exemplo</code></pre>
+<pre><code>##    coluna1 coluna2
+## 1        8       1
+## 2        6       2
+## 3        5       3
+## 4       12       4
+## 5       10       5
+## 6       12       6
+## 7       14       7
+## 8       16       8
+## 9        4       9
+## 10       4      10</code></pre>
+<pre class="r"><code># indexar a coluna de um data.frame
+exemplo$coluna1</code></pre>
+<pre><code>##  [1]  8  6  5 12 10 12 14 16  4  4</code></pre>
+<pre class="r"><code># ordenando a coluna
+order(exemplo$coluna1)</code></pre>
+<pre><code>##  [1]  9 10  3  2  1  5  4  6  7  8</code></pre>
+<pre class="r"><code># ordenando as linhas do data.frame
+exemplo[order(exemplo$coluna1), ]</code></pre>
+<pre><code>##    coluna1 coluna2
+## 9        4       9
+## 10       4      10
+## 3        5       3
+## 2        6       2
+## 1        8       1
+## 5       10       5
+## 4       12       4
+## 6       12       6
+## 7       14       7
+## 8       16       8</code></pre>
 <hr />
 <p>Algumas vezes, temos observações geradas a partir de um conjunto de dados que não podem ser biologicamente reamostrados. No entanto, existe um meio de realizar uma <em>reamostragem estatística</em> através da função <code>sample</code>.</p>
 <p>Esta função é bastante importante, pois ela permite que reamostremos os valores de um vetor, determinando o tamanho da amostra gerada (argumento numérico <code>size</code>) e se o procedimento deve ou não ser feito com substituição (argumento lógico <code>sample</code>). Lembre-se, esta reamostragem ocorre de forma aleatória - todos os valores em um vetor têm a mesma probabilidade de serem amostrados! Desta forma, ao usar esta função também precisarmos usar o <code>set.seed</code> para chegarmos todos aos mesmos valores!</p>
@@ -229,6 +270,21 @@ sample(x = vetor1, size = 5, replace = FALSE)</code></pre>
 </ol></li>
 <li>O que aconteceu?</li>
 </ol>
+<pre class="r"><code>set.seed(20)
+vetor2 &lt;- rnorm(n = 10, mean = 40, sd = 3)
+vetor2</code></pre>
+<pre><code>##  [1] 43.48806 38.24223 45.35640 36.00222 38.66030 41.70882 31.33085
+##  [8] 37.39294 38.61489 38.33338</code></pre>
+<pre class="r"><code>set.seed(20)
+sample(x = vetor2, size = 20, replace = TRUE)</code></pre>
+<pre><code>##  [1] 38.61489 37.39294 45.35640 41.70882 38.33338 38.33338 43.48806
+##  [8] 43.48806 36.00222 36.00222 37.39294 37.39294 43.48806 37.39294
+## [15] 38.24223 38.66030 36.00222 38.24223 45.35640 38.61489</code></pre>
+<pre class="r"><code>set.seed(20)
+sample(x = vetor2, size = 9, replace = FALSE)</code></pre>
+<pre><code>## [1] 38.61489 31.33085 45.35640 36.00222 41.70882 38.66030 43.48806 38.33338
+## [9] 37.39294</code></pre>
+<pre class="r"><code># sempre rodar com n-1 elementos quando o replace = FALSE</code></pre>
 <hr />
 <p>A função <code>sample</code> é a base para fazermos testes de aleatorização como <em>bootstrap</em>, <em>jacknife</em> e outros testes não paramétricos. No geral, estes métodos incluem calcular algum teste estatístico a partir dos dados, e recalcular e comparar <em>n</em> vezes o valor deste teste estatístico obtido através de aleatorizações do conjunto original de dados. Nesse sentido, um exemplo do conjunto de operações para obtermos estes testes é: 1. Obter um teste estatístico a partir dos dados; 2. Aleatorizar o conjunto de dados original por reamostragem (com ou sem substituição); 3. Calcular o teste estatístico a partir dos dados aleatorizados; 4. Comparar o valor do teste estatístico original com o do teste estatístico obtido através da aleatorização; 5. Registrar se o valor aleatorizado é maior (ou menor) ao do valor original; 6. Reptir os passos 2 a 5 <em>n</em> vezes; 7. Calcular a proporção das <em>n</em> vezes em que o valor real é maior (ou menor) do que o obtido pela aleatorização.</p>
 <p>Esta lista de passos ilustra que devemos realizar uma tarefa bem repetitiva para chegarmos a um valor desejado. Se fizermos isso na mão, vamos levar uma eternidade - todavia, uma alternativa é programar uma função para fazer isto para nós.</p>
@@ -254,7 +310,9 @@ foo()</code></pre>
 }</code></pre>
 <p>Sempre escrevemos a lista de argumentos da função dentro dos parênteses que seguem à função <code>function</code> e colocaremos todo o corpo que compõem a função dentro de chaves. Para exemplificar, vamos criar uma função simples, que calcula o logaritimo da razão de resposta entre dois tratamentos:</p>
 <pre class="r"><code>foo &lt;- function(valor_tratamento1, valor_tratamento2){
+  
   log(valor_tratamento1/valor_tratamento2)
+  
 }</code></pre>
 <p>Podemos usar essa função, por exemplo, para determinar se o uso do tratamento 1 gera um efeito maior em uma resposta do que o uso do tratamento 2:</p>
 <pre class="r"><code>foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
@@ -271,8 +329,11 @@ foo(valor_tratamento2 = 5, valor_tratamento1 = 10)</code></pre>
 <p>Além disso, como vimos também, uma função pode ter valores padrão (<em>default</em>) - na ausência de uma determinação do usuário, ele vai assumir que tudo deve ser feito utilizando aquele valor padrão:</p>
 <pre class="r"><code># vamos dar um valor padrão para um dos tratamentos
 foo &lt;- function(valor_tratamento1, valor_tratamento2 = 1){
+  
   log(valor_tratamento1/valor_tratamento2)
-}
+
+  }
+
 # se não especificarmos o valor do tratamento2
 foo(valor_tratamento1 = 10)</code></pre>
 <pre><code>## [1] 2.302585</code></pre>
@@ -285,9 +346,11 @@ foo &lt;- function(valor_tratamento1, valor_tratamento2){
   
   resposta &lt;- log(valor_tratamento1/valor_tratamento2)
 
-  }
+}
+
 # usando a função - cade o resultado?
 foo(valor_tratamento1 = 10, valor_tratamento2 = 5)
+
 # obrigando o R a mostrar o resultado
 (foo(valor_tratamento1 = 10, valor_tratamento2 = 5))</code></pre>
 <pre><code>## [1] 0.6931472</code></pre>
@@ -303,7 +366,8 @@ foo &lt;- function(valor_tratamento1, valor_tratamento2){
   resposta &lt;- log(valor_tratamento1/valor_tratamento2)
   
   print(resposta)
-}
+
+  }
 # usando função
 foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
 <pre><code>## [1] 0.6931472</code></pre>
@@ -318,6 +382,43 @@ foo(valor_tratamento1 = 10, valor_tratamento2 = 5)</code></pre>
 3. Determinar o comprimento do vetor e tirar a sua raiz quadrada;<br />
 4. Dividir o resultado do passo 2 pelo passo 3;<br />
 5. …</p>
+<pre class="r"><code># o que esperamos
+vetor1 &lt;- 1:10
+vetor1</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>sd(vetor1)</code></pre>
+<pre><code>## [1] 3.02765</code></pre>
+<pre class="r"><code>sqrt(length(vetor1))</code></pre>
+<pre><code>## [1] 3.162278</code></pre>
+<pre class="r"><code>sd(vetor1)/sqrt(length(vetor1))</code></pre>
+<pre><code>## [1] 0.9574271</code></pre>
+<pre class="r"><code># como deve funcionar?
+# erro_padrao(vetor1)
+
+erro_padrao &lt;- function(nome_vetor){
+  
+  # calculando o desvio padrao do argumento que será fornecido
+  desvio &lt;- sd(nome_vetor, na.rm = TRUE)
+  
+  # determinando o número de observações no vetor
+  tamanho_do_vetor &lt;- length(nome_vetor)
+  
+  # calculando  denominador para estimarmos o erro padrao
+  den &lt;- sqrt(tamanho_do_vetor)
+  
+  # calculando o erro padrao
+  desvio/den
+  
+}
+
+set.seed(10)
+vetor1 &lt;- rnorm(n = 20, mean = 10, sd = 3)
+vetor1</code></pre>
+<pre><code>##  [1] 10.056239  9.447242  5.886008  8.202497 10.883635 11.169383  6.375771
+##  [8]  8.908972  5.119982  9.230565 13.305339 12.267345  9.285299 12.962334
+## [15] 12.224170 10.268042  7.135168  9.414549 12.776564 11.448936</code></pre>
+<pre class="r"><code>erro_padrao(nome_vetor = vetor1)</code></pre>
+<pre><code>## [1] 0.5365955</code></pre>
 <hr />
 <p>Já que estamos começando a entender um pouco melhor como montar uma função, podemos avançar um pouco mais e tentar trabalhar uma ideia um pouco mais complexa de função: cara e coroa!</p>
 <p>Suponha que tenhamos uma moeda e queremos fazer uma simulação para determinar se tomamos ou não uma ação: cara faremos <em>x</em>, coroa faremos <em>y</em>. Podemos escrever uma função que jogue essa ‘moeda’ e nos mostre o resultado de <em>n</em> arremessos dela. Primeiro, vamos criar nossa moeda:</p>
@@ -438,6 +539,21 @@ lancar_moeda(20)</code></pre>
 <pre><code>## lancamentos
 ##  cara coroa 
 ##     8    12</code></pre>
+<pre class="r"><code># participantes do amigo oculto
+participantes &lt;- c(&quot;anderson&quot;, &quot;nathalia&quot;, &quot;yamile&quot;, &quot;romullo&quot;, &quot;pedro&quot;, &quot;amanda&quot;, &quot;alexandre&quot;)
+participantes</code></pre>
+<pre><code>## [1] &quot;anderson&quot;  &quot;nathalia&quot;  &quot;yamile&quot;    &quot;romullo&quot;   &quot;pedro&quot;     &quot;amanda&quot;   
+## [7] &quot;alexandre&quot;</code></pre>
+<pre class="r"><code>amigo_oculto &lt;- function(seu_nome, xuxa){
+  
+  excluido &lt;- xuxa[xuxa != seu_nome]
+  
+  sample(x = excluido, size = 1)
+  
+}
+
+amigo_oculto(seu_nome = &quot;romullo&quot;, xuxa = participantes)</code></pre>
+<pre><code>## [1] &quot;amanda&quot;</code></pre>
 </div>
 </div>
 <div id="controladores-de-fluxo" class="section level2">
@@ -554,7 +670,7 @@ teste_condicional</code></pre>
         &lt;ação&gt;
 }</code></pre>
 <p>Um exemplo do uso desse controlador de fluxo é:</p>
-<pre class="r"><code>for (i in 1:10) { # para cada i de 1 a 10
+<pre class="r"><code>for (i in 1:20) { # para cada i de 1 a 10
   print(i) # imprima o valor de i
   Sys.sleep(time = 1) # aguarde 1 segundo antes de prosseguir
   # repita a operaçao
@@ -595,12 +711,12 @@ vetor1[3]</code></pre>
 <hr />
 <p>Agora que já nos lembramos como usar a indexação para fazer a soma, podemos tentar usar o <code>for</code> para criar a sequência Fibonacci. Neste caso, vamos especificar um tamanho para a sequência, e usar o for para calcular os valores das posições da sequência na posição 3 até aquela que nós determinamos. No entanto, a cada repetição, vamos dizer para o __loop_ armazenar o resultado da soma na posição sendo repetida no <code>vetor1</code>.</p>
 <pre class="r"><code># qual o tamanho da sequência desejado?
-tamanho_sequencia &lt;- 15
+tamanho_sequencia &lt;- 6
 # iniciando o loop
 for(i in 3:tamanho_sequencia){ # para cada valor i, iniciando em i = 3 até i = tamanho da sequência
   vetor1[i] &lt;- vetor1[i - 2] + vetor1[i - 1] # e.g, quando i = 3, &quot;i - 2 = 1&quot; e &quot;i - 1 = 2&quot;, com o resultado da soma armazenado em vetor1[i]
   print(vetor1) # mostre o vetor1
-  Sys.sleep(time = 1.5) # aguarde 1 segundo antes de prosseguir
+  Sys.sleep(time = 2) # aguarde 1 segundo antes de prosseguir
 }</code></pre>
 <hr />
 </div>
@@ -807,7 +923,7 @@ dados</code></pre>
 ## # ... with 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;, P5 &lt;chr&gt;, P6 &lt;chr&gt;,
 ## #   P7 &lt;chr&gt;, P8 &lt;chr&gt;, P9 &lt;chr&gt;</code></pre>
 <pre class="r"><code># iniciando o loop
-for(i in 2:length(arquivos)) {
+for(i in 3:length(arquivos)) {
   
   tmp &lt;- read_excel(path = paste0(&quot;../97_enquete/&quot;, arquivos[i]))
 
@@ -816,9 +932,9 @@ for(i in 2:length(arquivos)) {
 }
 # observando novamente a planilha de dados
 dados</code></pre>
-<pre><code>## # A tibble: 34 × 9
+<pre><code>## # A tibble: 33 × 9
 ##                  P1                                             P2
-## *             &lt;chr&gt;                                          &lt;chr&gt;
+##               &lt;chr&gt;                                          &lt;chr&gt;
 ## 1  Tentar Doutorado Bacharel em Biologia (qualquer especialização)
 ## 2         Doutorado Bacharel em Biologia (qualquer especialização)
 ## 3          Mestrado Bacharel em Biologia (qualquer especialização)
@@ -829,7 +945,7 @@ dados</code></pre>
 ## 8         Doutorado Bacharel em Biologia (qualquer especialização)
 ## 9          Mestrado Bacharel em Biologia (qualquer especialização)
 ## 10         Mestrado Bacharel em Biologia (qualquer especialização)
-## # ... with 24 more rows, and 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;,
+## # ... with 23 more rows, and 7 more variables: P3 &lt;chr&gt;, P4 &lt;chr&gt;,
 ## #   P5 &lt;chr&gt;, P6 &lt;chr&gt;, P7 &lt;chr&gt;, P8 &lt;chr&gt;, P9 &lt;chr&gt;</code></pre>
 <p>Este é só um exemplo de como podemos aplicar um <em>loop</em> para resolver uma tarefa corriqueira que fazemos. Existem outras coisas que poderiam ser úteis ao fazermos uma tarefa como essa, como criando uma coluna dizendo de onde veio cada observação (i.e., que arquivo corresponde a cada observação), mas para o momento está ótimo. Você pode usar esta mesma lógica para carregar qualquer tipo de dado: desde um <code>data.frame</code> até uma página da internet, arquivo raster e por aí vai.</p>
 </div>
