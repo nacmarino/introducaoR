@@ -1,7 +1,6 @@
-setwd("C:/Users/Casa/Dropbox/back up")
 ############# Aula PLOT #################
 
-### o b·sico do b·sico
+### o b√°sico do b√°sico
 
 
 ### alguns objetos para nos guiar
@@ -12,7 +11,7 @@ cobflorestal<- c(30,30,50,50,30,30,10,10,10,10,50,50)
 tamanho<-c("M","M","G","G","M","M","P","P","P","P","G","G")
 
 sexo <- rep(c("F","M"),each=3, times=10)
-dieta<- rep(c("Herb.","Gran.","OnÌ."),each=2,times=10)
+dieta<- rep(c("Herb.","Gran.","On?."),each=2,times=10)
 
 length(area)
 
@@ -42,7 +41,7 @@ plot(Z, type="l")
 plot(Z, type="b")
 plot(Z, type="h")
 
-head(pressure) #dados da relaÁ„o de press„o de vapor e temperatura
+head(pressure) #dados da rela√ß√£o de press√£o de vapor e temperatura
 plot(pressure) 
 
 plot(pressure)
@@ -54,8 +53,8 @@ plot(riqueza,area)
 plot(y=riqueza,x=area)
 
 
-#Cartesiana - plot(x,y)  È diferente de Formula - plot(y~x)
-#Ambas as formas s„o corretas, mas como a grande maioria das an·lises feitas s„o no formato y~x, em vez de x,y, acaba ficando mais f·cil usar y~x.
+#Cartesiana - plot(x,y)  √© diferente de Formula - plot(y~x)
+#Ambas as formas s√£o corretas, mas como a grande maioria das an√°lises feitas s√£o no formato y~x, em vez de x,y, acaba ficando mais f√°cil usar y~x.
 
 
 plot(riqueza~area)
@@ -103,58 +102,58 @@ legend(x=1500,y=10,"riqueza",lwd=1,col="blue",bty="n")
   
   
   
-#tÌtulo
+#t√≠tulo
 plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A")
   legend("bottomright","riqueza",pch=16,col="blue")
-plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="¡rea")
+plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="√Årea")
   legend("bottomright","riqueza",pch=16,col="blue")
-plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="¡rea (ha)")
+plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="√Årea (ha)")
   legend("bottomright","riqueza",pch=16,col="blue")
-plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="¡rea ha",ylab="Riqueza de espÈcies de \n roedores e marsupiais")
+plot(riqueza~area,pch=16, las=1, bty="l", tcl=0.3, col="blue", main="A",xlab="√Årea ha",ylab="Riqueza de esp√©cies de \n roedores e marsupiais")
   legend("bottomright","riqueza",pch=16,col="blue")
 
   
 ### argumentos do PAR
 #### alterando o mar
-par(mar=c(5,5.2,2,1),tcl=0.3,las=1, bty="l") #vetor numÈrico (bottom,left,top,right)
-plot(riqueza~area, pch=16, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de \n roedores e marsupiais")
+par(mar=c(5,5.2,2,1),tcl=0.3,las=1, bty="l") #vetor num√©rico (bottom,left,top,right)
+plot(riqueza~area, pch=16, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais")
 plot(Z)
 
-par(mar=c(5,6,2,1),las=1,tcl=0.3,mgp=c(3,0.3,0)) #mgp: dist‚ncia para os eixos (tÌtulo, eixo y, eixo x), default È c(3,1,0)
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais", pch=16, bty="l",main="A")
+par(mar=c(5,6,2,1),las=1,tcl=0.3,mgp=c(3,0.3,0)) #mgp: dist√¢ncia para os eixos (t√≠tulo, eixo y, eixo x), default √© c(3,1,0)
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de\n roedores e marsupiais", pch=16, bty="l",main="A")
 
 #alterando a letra
 par(mar=c(5,6,2,1),las=1,tcl=0.3,family="serif",mgp=c(3,0.3,0)) 
-  plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais", pch=16, bty="l",main="A")
+  plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", pch=16, bty="l",main="A")
   
   par(family="HersheySerif") 
-  plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de \n roedores e marsupiais", pch=16, bty="l",main="A")
+  plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", pch=16, bty="l",main="A")
   par(family="HersheyGothicItalian") 
-  plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de \n roedores e marsupiais", pch=16, bty="l",main="A")
+  plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", pch=16, bty="l",main="A")
    
 
 #alterandoo cex
 par(mar=c(5,6.7,2,1), cex.axis=1.5, cex.lab=2, family="")
 
-  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais")
+  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais")
 
-  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais",cex=2)
+  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais",cex=2)
 
-  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais",cex=cobflorestal/10)
+  plot(riqueza~area, pch=16, las=1, bty="l", tcl=0.3, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais",cex=cobflorestal/10)
 
 #mudando os eixos
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais", cex=2, pch=16, bty="l", xaxp=c(0,3000,4), ylim= c(0,50))
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©ciess de\n roedores e marsupiais", cex=2, pch=16, bty="l", xaxp=c(0,3000,4), ylim= c(0,50))
 3000/4
 
 
 
-#vamos voltar ao gr·fico com melhor visualizaÁ„o e inserir outros dados
+#vamos voltar ao gr√°fico com melhor visualiza√ß√£o e inserir outros dados
 par(mar=c(5,6.7,2,2),cex.axis=0.9,cex.lab=1.2,cex.main=1.5,family="",las=1,tcl=0.3,mgp=c(3,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\nroedores e marsupiais", cex=1.2, pch=16, bty="l",main="A")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", cex=1.2, pch=16, bty="l",main="A")
 
 w <-c(500,330,270,290,170,100,80,90,50,9,7,10)
 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 par(new=TRUE)
 plot(w~area,  ann=F,axes=F, cex=1.2, pch=17,col="blue") 
 axis(4)
@@ -167,14 +166,14 @@ plot.default(CO2$uptake~jitter(as.numeric(CO2$Treatment)),xaxt="n",xlim=c(0.5,2.
 axis(1, at = 1:2, labels =c ("chilled", "nonchilled"),las=1, cex.axis=1.2)
 
 
-#### 2 gr·ficos
+#### 2 gr√°ficos
 local=rep(c("A","B"),each=2, times=3)
 
 
 
 par(mfrow=c(2,1))
 par(mar=c(3,5,2,2),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 par(new=TRUE)
 plot(w~area,  ann=F,axes=F, cex=1,2, pch=17,col="blue") 
 axis(4)
@@ -184,13 +183,13 @@ boxplot(riqueza~local)
 
 
 
-######### opÁıes
+######### op√ß√µes
 mtplot <- matrix(1:9, ncol=3, nrow=3, byrow=TRUE)
 layout(mtplot)
 layout.show(9)
 mtplot <- matrix(1:9, ncol=3, nrow=3, byrow=TRUE)
 boxplot(riqueza~local)
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 plot.default(CO2$uptake~jitter(as.numeric(CO2$Treatment)),xaxt="n",xlim=c(0.5,2.5), xlab="",ylab="uptake",bty="l")
 mtplot <- matrix(c(0,0,0,1,2,3,0,0,0), ncol=3, nrow=3, byrow=TRUE)
 layout(mtplot, widths=c(0.2, 0.6, 0.2), heights=c(1,4,1))
@@ -224,7 +223,7 @@ barplot(yhist$counts, axes = FALSE, xlim = c(0, top), space = 0, horiz = TRUE)
 #inserindo texto
 par(mfrow=c(2,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de \n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 par(new=TRUE)
 plot(z~area,  ann=F,axes=F, cex=1,2, pch=17,col="blue") 
 axis(4,col="blue")
@@ -239,13 +238,13 @@ mtext("Cidade", side=1, cex=1.2, line=1.5)
 text(2,25, "@", cex=1.8)
 #locator()
 
-##### inserindo linhas de tendÍncia
+##### inserindo linhas de tend√™ncia
 mriq=lm(riqueza~area)
 mz=lm(z~area)
 
 par(mfrow=c(2,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 abline(mriq)
 par(new=TRUE)
 plot(z~area,  ann=F,axes=F, cex=1,2, pch=17,col="blue") 
@@ -263,18 +262,18 @@ mtext("Cidade", side=1, cex=1.2, line=1.5)
 #Outras linhas:
 par(mfrow=c(1,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="Riqueza de espÈcies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="Riqueza de esp√©cies de\n roedores e marsupiais", cex=1.2, pch=16, bty="u")
 abline(v=mean(area))
 abline(h=mean(riqueza))
 
 
 ##### outras dicas
-### uma figura, v·rios gr·ficos
+### uma figura, v√°rios gr√°ficos
 w=c(50,47,44,31,50,48,30,29,25,20,15,11)
 
 par(mfrow=c(1,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
 axis(2,at=c(0,10,20,30))
 abline(h=0)
 
@@ -282,7 +281,7 @@ par(new=TRUE)
 plot(w~area,  cex=1,2, pch=17,col="blue",ylim=c(5,100),ann=F,axes=F) 
 axis(4,at=c(0,10,20,30,40,50))
 
-mtext("Riqueza mamÌferos", side=2, cex=1.2, line=1.5, las=0)
+mtext("Riqueza mam√≠feros", side=2, cex=1.2, line=1.5, las=0)
 mtext("Riqueza insetos", side=4, cex=1.2, line=1.5, las=0,col="blue")
 
 
@@ -297,7 +296,7 @@ lower=riqueza-sdriq
 
 par(mfrow=c(1,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
 arrows()
 arrows(area,upper,area,lower,length=.05,angle=90,code=3)
 axis(2,at=c(0,10,20,30))
@@ -305,20 +304,20 @@ par(new=TRUE)
 plot(w~area,  cex=1,2, pch=17,col="blue",ylim=c(5,100),ann=F,axes=F)
 axis(4,at=c(0,10,20,30,40,50))
 
-mtext("Riqueza mamÌferos", side=2, cex=1.2, line=1.5, las=0)
+mtext("Riqueza mam√≠feros", side=2, cex=1.2, line=1.5, las=0)
 mtext("Riqueza insetos", side=4, cex=1.2, line=1.5, las=0,col="blue")
 
 
 #### inserindo linhas
 par(mfrow=c(1,1))
 par(mar=c(3,4.5,2,3),cex.axis=1.2,cex.lab=1.2,cex.main=1.5,family="serif",las=1,tcl=0.3,mgp=c(2,0.3,0)) 
-plot(riqueza~area, xlab="¡rea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
+plot(riqueza~area, xlab="√Årea (ha)", ylab="", cex=1.2, pch=16, bty="u",ylim=c(-30,30),yaxt="n")
 axis(2,at=c(0,10,20,30))
 par(new=TRUE)
 plot(z~area,  cex=1,2, pch=17,col="blue",ylim=c(5,100),ann=F,axes=F) 
 axis(4,at=c(0,10,20,30,40,50))
 
-mtext("Riqueza mamÌferos", side=2, cex=1.2, line=1.5, las=0)
+mtext("Riqueza mam√≠feros", side=2, cex=1.2, line=1.5, las=0)
 mtext("Riqueza insetos", side=4, cex=1.2, line=1.5, las=0,col="blue")
 
 lines(x=c(0,3000),y=c(10,10), lty=1, lwd=1)
@@ -328,11 +327,10 @@ lines(c(0,3000),c(20, 20), lty=4 , lwd=1)
 
 
 
-### ++++ informaÁıes
+### ++++ informa√ß√µeses
 
 ppt=c(134.3,64.5,68.3,66.6,0.6,72.1,51.2,138.0,121.4,126.1,255.9,217.0,123.1,65.1,59.5,21.6,191.7,28.1, 134.9,141.2)
 
-setwd("C:/Users/Camila/Dropbox/back up")
 mat_mar<-read.table("graf.final.txt", header=T)
 class(mat_mar)
 
@@ -342,7 +340,7 @@ plot(ppt~as.vector(c(1:20)),ann=F,axes=F, col="white", ylim=c(-1,300), xlab="",y
 polygon(x=c(1:20,20:1),y=c(ppt,rep(-10,20)),col="gray90",border="gray90")
 axis(4, at=c(0,50,100,150,200,250,300), lwd=1, las=1,cex=0.8)
 par(new=T)
-barplot(as.matrix(mat_mar),ylab="indivÌduos", args.legend=list(x="topright",bty="n"), xlab="", main= list("M. incanus",font=3), col=c("gray20","gray60", "gray80"),density=c(195,190,80),angle=c(180,90,45), axes=TRUE,axis.lty=1, ylim=c(0,16),cex.names=0.8,legend.text=c("jovens", "subadulto", "adulto"))
+barplot(as.matrix(mat_mar),ylab="indiv√≠duos", args.legend=list(x="topright",bty="n"), xlab="", main= list("M. incanus",font=3), col=c("gray20","gray60", "gray80"),density=c(195,190,80),angle=c(180,90,45), axes=TRUE,axis.lty=1, ylim=c(0,16),cex.names=0.8,legend.text=c("jovens", "subadulto", "adulto"))
 mtext("chuva (mm)",side=4, las=3, line=3)
 
 ###
@@ -354,7 +352,7 @@ points(5.5,6,cex=10,pch=16,col="blue")
 
 
 
-#### salvando os gr·ficos
+#### salvando os gr√°ficos
 ?jpeg
 jpeg("reprod_incanus.jpg", width = 22, height = 16, units = "cm", quality =2000, res= 500)
 par(mfrow=c(1,1))
@@ -363,7 +361,7 @@ plot(ppt~as.vector(c(1:20)),ann=F,axes=F, col="white", ylim=c(-1,300), xlab="",y
 polygon(x=c(1:20,20:1),y=c(ppt,rep(-10,20)),col="gray90",border="gray90")
 axis(4, at=c(0,50,100,150,200,250,300), lwd=1, las=1,cex=0.8)
 par(new=T)
-barplot(as.matrix(mat_mar),ylab="indivÌduos", args.legend=list(x="topright",bty="n"), xlab="", main= list("M. incanus",font=3), col=c("gray20","gray60", "gray80"),density=c(195,190,80),angle=c(180,90,45), axes=TRUE,axis.lty=1, ylim=c(0,16),cex.names=0.8,legend.text=c("jovens", "subadulto", "adulto"))
+barplot(as.matrix(mat_mar),ylab="indiv√≠duos", args.legend=list(x="topright",bty="n"), xlab="", main= list("M. incanus",font=3), col=c("gray20","gray60", "gray80"),density=c(195,190,80),angle=c(180,90,45), axes=TRUE,axis.lty=1, ylim=c(0,16),cex.names=0.8,legend.text=c("jovens", "subadulto", "adulto"))
 mtext("chuva (mm)",side=4, las=3, line=3)
 dev.off()
 
@@ -380,7 +378,7 @@ barplot(table(sexo,dieta), main="sexo X dieta",horiz=TRUE)
 barplot(table(sexo,dieta), main="sexo X dieta",horiz=TRUE,angle = c(45, 135), density = 20)
 
 library(datasets)
-head(OrchardSprays) #dados de material de pulverizaÁ„o de pomares para repelir abelhas,  rowpos:	 numeric	 Row of the design,colpos	 numeric:	 Column of the design (tratamento 8x8), decrease:	 numeric	 Response, treatment: A--> nÌvel mais alto de adubo de cal--> H menor nÌvel
+head(OrchardSprays) #dados de material de pulveriza√ß√£o de pomares para repelir abelhas,  rowpos:	 numeric	 Row of the design,colpos	 numeric:	 Column of the design (tratamento 8x8), decrease:	 numeric	 Response, treatment: A--> n√≠vel mais alto de adubo de cal--> H menor n√≠vel
 
 hist(OrchardSprays$decrease)
 boxplot(OrchardSprays$decrease, col="gray",ylim=c(0,70))
@@ -418,10 +416,10 @@ lines(density(brightness),col="blue" )
 plot(density(brightness),col="blue")
 curve(expr = dnorm(x,mean=mean(brightness),sd=sd(brightness)),add=T, col="red")
 
-### explorando informaÁıes gr·ficas de modelos
+### explorando informa√ß√µes gr√°ficas de modelos
 
 lm.SR <- lm(sr ~ pop15 + pop75 + dpi + ddpi,data = LifeCycleSavings)
-plot(lm.SR)  #produz 4 gr·ficos: "Residuals vs Fitted", "Normal Q-Q plot", "Scale-Location Plot", "Cook¥s distance plot"
+plot(lm.SR)  #produz 4 gr√°ficos: "Residuals vs Fitted", "Normal Q-Q plot", "Scale-Location Plot", "Cook's distance plot"
 
 
 #um teste de normalidade
@@ -443,6 +441,6 @@ qqline(K)
 
 
 #######################
-### mostrar funÁ„o que otimiza criaÁ„o do gr·fico
+### mostrar fun√ß√£o que otimiza cria√ß√£o do gr√°fico
 
 
