@@ -282,8 +282,8 @@ tolower(dados$pergunta.2)
 
 ##### Exercício 4
 
-a. Passe todos os nomes das colunas para caixa baixa;  
-b. Faça com que os nomes das colunas fiquem mais amigáveis a serem usados no R.  
+a. Passe todos os nomes das colunas para caixa baixa; (`tolower`)  
+b. Faça com que os nomes das colunas fiquem mais amigáveis a serem usados no R. (`make.names`)  
 
 ---
 
@@ -306,7 +306,7 @@ paste0("Oi,", "tudo bem?");paste("Oi,","tudo bem?", sep = "")
 
 ##### Exercício 4
 
-a. Sem alterar os nomes das colunas de `dados`, faça com que as colunas de 1 a 9 passem a se chamar P1 a P9.  
+a. Crie um vetor onde cada elemento seja um nome e um número, onde os nomes aumentem sequencialmente.
 
 * Dica: você precisará usar as funções `paste` ou `paste0` e a função `seq`, além da indexação.  
 
@@ -353,7 +353,7 @@ A `pergunta.5` possui duas informações:
 2. O número de cursos que a pessoa já fez.  
 
 Apesar disso, estas duas informações estão confundidas na mesma coluna. Portanto, usando a função `ifelse`:  
-a. Crie uma coluna chamada `usuario`, que deve conter se este é o primeiro curso ou não que a pessoa faz sobre o R;  
+a. Crie uma coluna chamada `usuario`, que deve conter se a pessoa já fez ou não um curso de R.  
 b. Modifique o valor `Nenhum` na coluna da `pergunta.5` para o valor `0`, de forma que esta coluna agora só contenha números (e não mais números e texto).  
 c. Repita o procedimento do item b para a coluna `pergunta.8`, mas substituindo o "Não se aplica" por `NA`.
 
@@ -484,8 +484,8 @@ select(dados, contains("pergunta"))
 
 a. Remova apenas a coluna `country` de `gapminder`;
 b. Selecione as colunas `continent`, `year` e `pop`;
-c. Com o resultado da última opera, ordene as linhas de acordo com a ordem decrescente dos anos;
-d. Além de ordenar as linhas pela ordem decrescente dos anos, ordem agora também o tamanho da população.  
+c. Com o resultado da última operação, ordene as linhas de acordo com a ordem decrescente dos anos;
+d. Além de ordenar as linhas pela ordem crescente dos continentes, ordene agora também o tamanho da população.  
 
 ---
 
@@ -524,7 +524,7 @@ c. Qual país das Américas possui o menor GDP E a menor população?
 Criar uma nova variável em uma tabela envolve indexação, tanto da coluna a ser criada, quanto das variáveis envolvidas na criação desta coluna. Esta função elimina esta necessidade.
 
 ```{r}
-mutate(gapminder, log_gdp = log(gdpPercap))
+mutate(gapminder, log_gdp = log(gdpPercap), exp_gdp = exp(log_gdp))
 ```
 
 ```{r}
@@ -537,7 +537,7 @@ Estas duas funções combinam melhor quando juntas. Você se lembra que quando p
 
 ```{r}
 # agrupando observações por país
-group_by(gapminder, country)
+group_by(gapminder, continent, country)
 ```
 
 ```{r}
@@ -560,8 +560,8 @@ summarise(group_by(gapminder, continent), media_gdp = mean(gdpPercap), desvio_gd
 ##### Exercício 9
 
 a. Qual a expectativa de vida média por continente?
-b. Qual a expectativa de vida máxima dos países Europeus?
-c. Qual a expectativa de vida mínima dos países Asiáticos e Africanos?
+b. Qual a expectativa de vida máxima para cada um dos países Europeus?
+c. Qual a expectativa de vida mínima para cada um dos países Asiáticos e Africanos?
 
 ---
 
@@ -604,8 +604,22 @@ Note como agora ficou tudo mais fácil de ler e compreender! Por conta do _lazy 
 Você se lembra dos dados que estávamos limpando?
 
 a. Quantas pessoas nunca usaram o R? (`usuario`)
-b. Quantas pessoas são mestrandas e quantas são doutorandas? (`pergunta.1`)
-c. Quanto tempo falta, em média para a defesa dos mestrandos e dos doutorandos? (`pergunta.1` e `pergunta.8`)
+b. Quantas pessoas são mestrandas e quantas são doutorandas? (`pergunta.1`/"Cursando")
+c. Quanto tempo falta, em média para a defesa dos mestrandos e dos doutorandos? (`pergunta.1` e `pergunta.8`/"Cursando" e "Prazo defesa")
+
+```{r}
+dados %>% 
+  group_by(usuario) %>% 
+  summarise(quantidade = n())
+
+dados %>% 
+  group_by(Cursando) %>% 
+  summarise(quantidade = n())
+
+dados %>% 
+  group_by(Cursando) %>% 
+  summarise(minimo = mean(`Prazo defesa`))
+```
 
 ---
 
