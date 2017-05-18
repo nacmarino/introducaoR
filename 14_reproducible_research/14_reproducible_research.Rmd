@@ -229,3 +229,5 @@ _Fonte: Blischak et al, 2016, PLOS Computational Biology, A quick introduction t
     + ```Help -> Markdown Quick Reference```: guia básico
     + ```Help -> Cheatsheets -> R Markdown Cheat Sheet```: guia completo 
     + ```Help -> Cheatsheets -> R Markdown Reference Guide```: guia aprofundado
+
+> FIM! =]
