@@ -1,0 +1,294 @@
+---
+title: "Indexação"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. Criando vetores - Parte 2;
+2. Indexação de Vetores;
+3. Indexando `data.frame`;
+4. Indexando Listas.
+
+## Criando vetores - Parte 2
+
+* Podemos criar um vetor ao listarmos uma sequência de valores.
+
+```{r}
+(exemplo <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+```
+
+* No entanto, as vezes é mais útil automatizarmos a criação destas sequências, para evitar erros ou o trabalho repetitivo. 
+* Uma forma de fazer isso é através da função `seq`.
+
+```{r}
+# cria uma sequência de 1 a 10, em intervalos de uma unidade
+seq(from = 1, to = 10, by = 1)
+# cria uma sequência de 20 número de 1 a 10
+seq(from = 1, to = 10, length.out = 20)
+```
+
+* Também podemos pedir ao R para que repita uma sequência de valores através da função `rep`.
+
+```{r}
+# repetir a sequência 1, 2, 3, 4 duas vezes
+rep(x = c(1, 2, 3, 4, 5), 10)
+# repetir duas vezes em sequência cada elemento do vetor 1, 2, 3, 4 
+rep(x = c(1, 2, 3, 4, 5), each = 10)
+```
+
+* Outra forma de fazer isso é através da utilização do operador ":" entre valores: tudo o que está no intervalo x:y (x a y) deve ser impresso.
+
+```{r}
+# cria uma sequência de 1 a 10
+1:10
+# cria uma sequência de 23 a 51
+23:51
+# tente essa
+50:1
+```
+
+* Podemos criar um vetor utilizando este operador.
+
+```{r}
+vetor1 <- 1:100
+vetor1
+```
+
+* Nós podemos determinar o tamanho de um vetor (assim como o número de colunas em um `data.frame`) através da função `length`.
+
+```{r}
+length(vetor1)
+```
+
+---
+
+##### Exercício 1
+
+a. Crie dois vetores:  
+    + Um pelo operador `:`;  
+    + Outro com a função `seq`.  
+b. Junte estes dois vetores em um único vetor, com o nome do objeto de `vetores`;
+c. Qual o comprimento do vetor?
+d. Crie um vetor com as letras "A" e "B", em sequência (comprimento = soma do comprimento dos dois vetores criados em a);
+e. Junte dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
+f. Qual o comprimento do data.frame `dados`? O que este comprimento representa?
+
+---
+
+* Eu vou fazer as três primeiras partes do exercício também:
+
+```{r}
+# vetor 1
+vetor1 <- 1:34
+# vetor 2
+vetor2 <- seq(from = 0, to = 100, length.out = 34)
+# juntando os dois vetores em um só
+vetores <- c(vetor1, vetor2)
+# criando vetor de letras
+letras <- rep(c("A", "B"), 34)
+# juntando os dois vetores em um data.frame
+dados <- data.frame(vetor1, vetor2, letras)
+```
+
+* Com este vetor e `data.frame` tão longos, como podemos fazer para extrair apenas alguns pedaços de interesse maior para trabalharmos?
+
+## Indexação de Vetores e Data Frames
+
+* Indexação é a ação de extrair um elemento específico, ou um conjunto de elementos, de um objeto.
+* Cada objeto criado pode ser descrito por um conjunto de dimensões (copie e rode os exemplos junto de cada caso abaixo):
+    1. um `vector` possui apenas uma dimensão: o seu comprimento linear.
+        + `vetor1`
+    2. uma `matrix` possui duas dimensões: as linhas e as coluna:
+        + `matrix(c(vetor1, vetor2), ncol = 2)`
+        + um `array` é um caso especial de matriz com mais de duas dimensões: e.g. `array(0, dim = c(2, 4, 3))`
+    3. uma `list` possui uma ou mais dimensões: sub-listas, compostas por uma ou sub-listas e as dimensões dos objetos que as compõem:
+        + `list(vetor1, vetor2, list(vetor1, vetor2), list(list(vetor1, vetor2), vetor1))`
+    4. um `data.frame` possui apenas duas dimensões: as linhas e as colunas:
+        + `data.frame(vetor1, vetor2)`
+        
+* Note que, em cada um destes casos, cada elemento pode ser rastreado até uma posição específica. Por exemplo:
+    + no `vetor1` que criamos anteriormente, o número 7 ocupa a sétima posição na sequência;
+    + em `list(vetor1, vetor2)`, o número 100 ocupa a 34a. posição da segunda lista;
+    + em `data.frame(vetor1, vetor2)`, o número 0 ocupa a primeira linha a segunda coluna.
+* Assim, como em um jogo de batalha naval, podemos extrair sub-conjuntos específicos de dados de acordo com as 'coordenadas' dos dados que queremos.
+* Para tal, utilizaremos três tipos de operadores:
+    1. `[]`  extrai um ou mais elementos em vetores, listas, ou `data.frame`;
+    2. `[[]]` extrai um ou mais elementos em listas ou `data.frame`;
+    3. `$` extrai elementos pelo __nome__ em listas e `data.frame`.
+
+### Indexando Vetores
+
+* Por exemplo, se quisermos extrair o 16o. elemento do `vetor2`, podemos usar:
+
+```{r}
+vetor2 <- seq(from = 0, to = 100, length.out = 34)
+vetor2
+vetor2[16]
+```
+
+* Podemos extrair sequências de elementos em um vetor de forma similar àquela que usamos acima:
+
+```{r}
+# extraindo do 16o. ao 21o. elemento do vetor2
+vetor2[16:21]
+```
+
+* Mas o que estamos fazendo ao fornecer esta sequência de números? Compare:
+
+```{r}
+# criando uma sequência de número de 16 a 21
+(numeros <- 16:21)
+# indexando o vetor2 para extrair do 16o. ao 21o. elemento
+vetor2[16:21]
+# indexando o vetor2 para extrair os valores de acordo com a sequencia criada
+vetor2[numeros]
+```
+
+* A indexação está usando um vetor de um ou mais elementos - este vetor marca a posição dos elementos a serem retidos.  
+* Assim, poderíamos criar um vetor com números representando posições específicas que queremos reter:
+
+```{r}
+numeros <- c(1, 5, 7, 9)
+vetor2[numeros]
+vetor2[c(1, 5, 7, 9)]
+```
+
+---
+
+##### Exercício 2
+
+a. Utilizando o `vetor2`, faça uma indexação que retorne:
+    1. Os cinco primeiros elementos;
+    2. Os elementos nas posições 10, 12, 14, 16, 18 e 20;
+    3. Os cinco primeiros elementos e os elementos entre as posições 20 e 30;
+
+---
+
+* Da mesma forma como podemos selecionar os elementos que __queremos__, podemos selecionar aqueles elementos que __não queremos__!
+
+```{r}
+# excluindo o segundo elemento
+vetor2[-2]
+# excluindo os elementos nas posicoes 1, 5, 7, 9
+numeros # vetor que criamos anteriormente
+vetor2[-numeros]
+```
+
+* Para excluirmos uma sequência contínua de valores devemos concatenar estes valores primeiro, caso contrário o R não entende que queremos eliminar uma sequência de posições.
+
+```{r}
+vetor2[-c(1:20)]
+# tambem funciona
+vetor2[-(1:20)]
+vetor2[-1:-20]
+```
+
+---
+
+##### Exercício 3
+
+a. Exclua todos os elementos de 1 a 10 e de 22 a 26 do `vetor2`.  
+
+```{r}
+vetor2[-c(1:10, 22:26)]
+```
+
+---
+
+### Indexando `data.frame`
+
+* Mas e para indexarmos um data.frame?
+* Lembre-se que um `data.frame` possui duas dimensões: linhas e colunas.
+    + A indexação do `data.frame` deve então considerar estas duas dimensões;
+    + A metáfora do jogo de batalha naval é especialmente válida para um `data.frame`: [linha, coluna]
+
+```{r}
+# apenas a primeira linha do data.frame dados
+dados[1,]
+# apenas a primeira coluna do data.frame dados
+dados[,3]
+# apenas o elemento da primeira linha e primeira coluna do data.frame dados
+dados[2,3]
+# podemos usar o operar [[]] para indexar as colunas de um data.frame
+dados[[2]]
+```
+
+---
+
+##### Exercício 4
+
+a. Usando o data.frame `dados`:
+    1. Selecione as linhas de número 3, 12, 18 e 25, retendo todas as colunas;
+    2. Selecione todas as colunas, mas apenas as linhas pares;
+    3. Elimine apenas a coluna 2;
+    4. Elimine as linhas 15 a 30.
+
+---
+
+* Também podemos indexar um conjunto de dados em um `data.frame` através do nome da coluna.
+
+```{r}
+dados[, c("vetor2", "letras")]
+# igual
+dados[,2:3]
+```
+
+* Outra forma de indexar uma coluna de um `data.frame` é através do operador `$`.
+
+```{r}
+dados$letras
+```
+
+* __Dica do RStudio:__ ao tentar indexar um objeto através do uso do `$`, digite o nome do objeto, adicione o `$` e pressione `Tab` - todos os elementos que compõem a estrutura daquele elemento estarão disponíveis.
+
+### Indexando listas
+
+* E para indexarmos uma lista?
+
+```{r}
+# vamos criar, primeiro, uma lista
+lista <- list(vetor2, dados)
+# vamos observar a lista
+lista
+```
+
+* Note que os elementos da lista são marcados como `[[1]]` e `[[2]]`, respectivamente.
+
+```{r}
+# para observar o primeiro elemento da lista
+lista[[1]]
+# para observar o segundo elemento da lista
+lista[[2]]
+```
+
+* Logo, se quisermos selecionar algum elemento de uma das sub-listas devemos primeiro selecionar a sub-lista para, então, selecionar o elemento.  
+
+```{r}
+# selecionando a segunda e terceira coluna da segunda sub-lista
+lista[[2]][,c(2:3)]
+```
+
+---
+
+##### Exercício 5
+
+a. Selecione os elementos nas posições pares (linhas) do objeto na primeira sub-lista de `lista`.

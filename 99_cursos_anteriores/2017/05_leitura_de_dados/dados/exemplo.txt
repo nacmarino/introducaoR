@@ -1,0 +1,1 @@
+site_id	identidade do site			sp	nome da especie			var1	variavel continua			var2	variavel categorica			Cat	Cont	Cont	Cont	Catsite_id	sp1	sp2	var1	var2site1	10	0	1.2	Asite2	20	90	3.4	Bsite3	3	10	10	A

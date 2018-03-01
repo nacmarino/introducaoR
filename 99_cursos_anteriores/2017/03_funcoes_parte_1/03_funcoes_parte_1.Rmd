@@ -1,0 +1,136 @@
+---
+title: "Funções - Parte 1"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. O que são funções?
+2. Scoping rules;
+3. Tipos de Argumentos;
+4. Suas principais fontes de erro serão...
+
+## O que são funções?
+
+* As funções são os blocos fundamentais do R: toda e qualquer tarefa é realizada através delas;
+* Uma função representa um conjunto de ações que devem ser feitas para originar um resultado;
+* Uma função é um _objeto_ (veremos mais sobre objetos e seus tipos depois);
+* Todas as funções possuem três partes:
+    1. O corpo da função, que contém o seu código: `body`;
+    2. Uma lista de __argumentos__, que controlam de que forma você pode usar uma função: `formals`;
+    3. Um "mapa", com a localização das variáveis usadas na função (inclusive, outras funções e objetos) - em outras palavras, onde a função reside: `environment`.
+
+## Scoping rules (regras de escopo)
+
+* É o conjunto de regras que governam de que forma o R interpreta o valor de um __objeto__:
+    + Associação entre um __nome__ e um __objeto__/__valor__/__tarefa__/__ação__.
+    + e.g., Determina de que forma o R vai da palavra pi ao valor de 3.141593.
+
+```{r}
+pi
+```
+
+* Exstem dois tipos principais de Scoping rules:
+
+    1. __Dynamic scoping:__ se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
+        + Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;
+    2. __Lexical scoping:__ quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
+        + Ou a variável é determinada em algum ponto da sessão ou ela não é;
+        + Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.
+        + A busca começa do ambiente global e corre do último ao primeiro ambiente "aberto".
+
+```{r}
+# todos os ambientes carregados na sessão que estamos operando
+search()
+```
+
+* Consequências:
+    + Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;
+    + Todo objeto criado é salvo no ambiente da sessão;
+    + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
+    + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
+    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+    
+* O R usa o __Lexical scoping__.
+    
+## Tipos de Argumentos
+
+* Uma função pode ter diversos argumentos.
+* Cada argumento controla um aspecto da forma como a função é usada e processada.
+
+```{r}
+args(read.table)
+```
+
+* Alguns argumentos precisam ser determinados ao usar uma função: e.g., `file` em `read.table` (afinal, se você não disser, o R não adivinha qual arquivo você quer abrir).
+* No entanto, alguns argumentos das funções no R estão sob _lazy evaluation_: eles só são avaliados se forem usados.
+    + Alguns argumentos assumem valores padrão (_default_): e.g., `header` em `read.table` (a primeira linha deve ser interpretada como o nome das colunas? O padrão é que não seja, mas isto pode gerar problemas).
+    + Já outros argumentos não precisam ser definidos e, tampouco, afetam o funcionamento da função: e.g., `row.names` em `read.table` (você pode ou não adicionar um nome às linhas que serão carregadas ao R, sem nenhum tipo de problema.)
+
+* Note que, por conta destes dois últimos tipos de argumento, __você não precisa determinar todos os argumentos em um função__, __mas precisa saber o que deve ser selecionado para gerar o resultado que você deseja__.
+
+* Além disso, quando você usar uma função, você pode especificar seus argumentos por posição, nome completo ou nome parcial. Ou seja:
+
+```{r eval=FALSE}
+# por posição
+read.table("nome_do_arquivo", TRUE, ",")
+# por nome completo
+read.table(file = "nome_do_arquivo", header = TRUE, sep = ",")
+# por nome parcial
+read.table("nome_do_arquivo", head = TRUE, ",")
+```
+
+* Assim, os argumentos são examinados na seguinte ordem:
+    1. Nome Completo;
+    2. Prefixo;
+    3. Posição.
+
+* Isto quer dizer que você pode fornecer os argumentos na sequência que você quer, desde que forneça o nome completo e/ou prefixo primeiro:
+
+```{r eval=FALSE}
+read.table(sep = ",", header = TRUE, file = "nome_do_arquivo")
+```
+
+* No entanto, é bom manter a boa prática e manter a sequência dos argumentos em ordem e, sempre que possível, adicionar o nome completo do argumento.
+
+## Suas principais fonte de erro serão...
+
+* Você é o seu pior inimigo:
+    1. Erros de digitação ao chamar um objeto ou função (e.g., `read.tab1e` ou `readtable` ao invés de `read.table`);
+    2. Esquecer de criar um objeto antes de rodar uma função;
+    3. Especificar um argumento que não existe na função;
+    4. Especificar o argumento certo de forma errada (adicionar um número onde na realidade deveria ser algo como VERDADEIRO/FALSE);
+    5. Especificar o argumento certo mas com o tipo de objeto errado (como veremos, existem muitos tipos de objetos no ambiente R);
+    6. Misturar letras e números no mesmo tipo de objeto (veremos mais isso ao longo do curso).
+
+* __Dica do R:__ você sabe a diferença entre um `error`, `warning` e uma `message`?
+    + `error`: uma indicação de que um problema fatal ocorreu, levando à parada da execução da função;
+    + `warning`: uma indicação de que algo de errado aconteceu, mas que não é necessariamente fatal - desta forma, a execução da função prossegue;
+    + `message`: uma mensagem ou notificação genérica, que não tem haver com um erro ou problema na execução da função - tudo ocorre de forma natural.
+
+* `error` vs `warning` vs `message`: 
+    1. ordem de perigo: `warning` > `message` > `error` (__melhor não fazer, do que fazer mal feito__).
+    2. ordem de desespero de alguém que está iniciando: `warning` = `message` = `error`.
+
+* __Boa prática__: 
+    + Apague objetos que você não vá usar mais em uma sessão - `rm(objeto)`;
+    + Evite salvar a área de trabalho ao sair do R (casos especiais justificam salvá-lo);
+    + Ao iniciar uma sessão, limpe tudo que está no ambiente global do R - `rm(list = ls(all = TRUE))`.
