@@ -24,8 +24,9 @@ h1,h2,h3,h4,h5,h6{
 # Elementos da Aula
 
 1. Operações matemáticas básicas no R;
-2. Criação de Objetos;
-3. Tipos e classes de Objetos.
+2. Criação de objetos;
+3. Regras de escopo;
+3. Tipos e classes de objetos.
 
 ## Operações matemáticas básicas no R
 
@@ -96,28 +97,6 @@ month.name
 
 a. Qual a raiz quadrada do arcoseno de 0.43?
 
-```{r}
-# uma forma
-sqrt(x = (asin(0.43)))
-
- # outra forma
-sqrt(asin(0.43))
-
-# + # outra forma
-asin(0.43)  
-sqrt(0.4444928)
-
-# mais uma forma
-sqrt(x = asin(x = 0.43)) 
-
-# mais uma forma
-asin(x = 0.43)
-asin <- asin(x = 0.43)
-sqrt(asin)
-rm(asin)
-```
-
-
 ---
 
 ## Objetos
@@ -152,10 +131,6 @@ b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 d. Por que o valor de `resultado` mudou?
 
-```{r}
-(resultado <- 5 * 6)
-```
-
 ---
 
 ##### Exercício 3
@@ -165,14 +140,40 @@ b. Armazene o resultado desta operação em um objeto chamado `resultado`;
 c. Sem olhar, qual o valor armazenado no objeto `resultado`?
 d. O valor encontado bateu com as suas expectativas? Por que?
 
+---
+
+## Regras de escopo
+
+* É o conjunto de regras que governam de que forma o R interpreta o valor de um __objeto__:
+    + Associação entre um __nome__ e um __objeto__/__valor__/__tarefa__/__ação__.
+    + e.g., Determina de que forma o R vai da palavra pi ao valor de 3.141593.
+
 ```{r}
-# esperado
-resultado/sqrt(9)
-# similar
-arco_seno <- asin(x = 0.50)
-esperado <- sqrt(x = arco_seno)
-esperado
+pi
 ```
+
+* Exstem dois tipos principais de Scoping rules:
+
+    1. __Dynamic scoping:__ se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
+        + Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;
+    2. __Lexical scoping:__ quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
+        + Ou a variável é determinada em algum ponto da sessão ou ela não é;
+        + Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.
+        + A busca começa do ambiente global e corre do último ao primeiro ambiente "aberto".
+
+```{r}
+# todos os ambientes carregados na sessão que estamos operando
+search()
+```
+
+* Consequências:
+    + Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;
+    + Todo objeto criado é salvo no ambiente da sessão;
+    + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
+    + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
+    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+    
+* O R usa o __Lexical scoping__.
 
 ---
 
@@ -202,10 +203,6 @@ is.character(x = "Ola!")
 ##### Exercício 4
 
 a. Pergunte ao R se o número 5 é um número inteiro.
-
-```{r}
-is.integer(x = 5)
-```
 
 ---
 
@@ -264,15 +261,6 @@ is.factor(x = 5)
 
 a. Faça com que o número 5 seja entendido como um fator.
 
-```{r}
-# sempre que tiver "as." estamos coagindo um valor a assumir aquela classe
-nome <- as.factor(x = 5)
-is.factor(x = 5)
-is.factor(x = as.factor(x = 5))
-is.factor(x = nome)
-as.numeric(as.character(x = as.factor(x = 5)))
-```
-
 ---
 
 ## Vetores
@@ -305,11 +293,6 @@ a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
 
 * __Dica:__ ao utilizar qualquer palavra ou criar um vetor que contenha palavras, você precisa usar as aspas em cada palavra, para que o R entenda que aquilo é uma palavra, caso contrário ele vai procurar um objeto que contenha aquele nome no ambiente global.
 
-```{r}
-frutas <- c("banana", "melão", "morango")
-frutas
-```
-
 ---
 
 ##### Exercício 7
@@ -317,21 +300,6 @@ frutas
 a. Crie um vetor combinando os vetores `frutas` e `idade`.
 b. O objeto criado é um vetor?
 c. Sem olhar, qual a classe do objeto criado?
-
-```{r}
-# passo a
-conjunto <- c(frutas, idade)
-conjunto
-
-# passo b
-is.vector(conjunto)
-
-# passo c
-class(x = conjunto)
-
-# exemplo de vetor com elementos de múltiplas classes
-class(x = c("agora", 3, TRUE))
-```
 
 ---
 
@@ -424,32 +392,10 @@ length(idade)
 ##### Exercício 8
 
 a. Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;  
-
-```{r}
-nomes <- c("romullo", "yamile", "viviane", "adriana", "pedro", "rodrigo")
-```
-  
 b. Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;  
- 
-```{r}
-# uma forma de criar uma matrix
-info2 <- matrix(data = c(nomes, idade), nrow = 6, ncol = 2, byrow = FALSE);info2
-# outra forma
-conjuntinho <- c(idade, nomes)
-matrix(data = conjuntinho, nrow = 6, ncol = 2, byrow = FALSE)
-# mais uma forma
-matrix(data = c(nomes, idade), nrow = length(idade), ncol = 2, byrow = FALSE)
-```
-
 c. O que aconteceu à matriz quando criamos a matriz com idades e nomes?
-
 d. Por que isso acontenceu?  
-
 e. O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?  
-
-```{r}
-as.numeric(x = info2)
-```
 
 * Ou seja:
     + Uma matriz pode armazenar objetos de apenas um tipo: ou todos os objetos são numéricos, ou são todos caracteres, ou são todos lógicos, e etc.
@@ -481,35 +427,6 @@ anos <- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 a. Crie uma lista com duas sub-listas: uma com os nomes das linhas e outra com os nomes de colunas;  
 b. Adicione esta lista ao `dimnames` da `matrix` informações.  
 
-```{r}
-# exemplo de lista
-list(c(1, 2, 3, 4, 5, 6), c("idade", "altura"))
-# matrix que haviamos criado
-informacoes
-     
-# colocando a lista em um objeto
-(dimensoes <- list(c(1, 2, 3, 4, 5, 6), c("idade", "altura")))
-# adicionando nomes as linhas e colunas 
-matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)
-
-# o que estamos fazendo?
-nome_das_linhas <- c(1,2,3,4,5,6)
-nomes_das_colunas <- c("idade", "altura")
-# combinando tudo em uma lista
-(dimensoes <- list(nome_das_linhas, nomes_das_colunas))
-# observando a matriz
-matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE, dimnames = dimensoes)
-
-# transformando a numeração das linhas em nomes das pessoas
-(dimensoes <- list(nomes, c("idade", "altura")))
-# observando a matriz
-matrix(data = c(idade, altura), nrow = 6, ncol = 2, byrow = FALSE,
-       dimnames = dimensoes)
-
-# tamanho da matriz
-dim(informacoes)
-```
-
 ---
 
 ## Data Frame
@@ -537,39 +454,9 @@ str(dados)
 ##### Exercício 9
 
 a. Crie dois vetores com uma informação que você desejar;  
-  
-```{r}
-vetor1 <- c("amarelo", "rosa", "vermelho")
-vetor2 <- c("apito", "copo", "garrafa")
-```
-  
 b. Crie uma matriz contendo a informação destes dois vetores;  
-  
-```{r}
-matriz <- matrix(data = c(vetor1, vetor2), nrow = 3, byrow = FALSE)
-matriz
-```
-  
-c. Crie um Data Frame contendo a informação destes dois vetores;  
-  
-```{r}
-exemplo <- data.frame(vetor1, vetor2)
-exemplo
-
-# preciso especificar o objeto que vai pras colunas?
-data.frame(c("vermelho", "rosa", "amarelo"), c("apito", "copo", "garrafa"))
-# outra forma
-data.frame(cores = c("vermelho", "rosa", "amarelo"), objetos = c("apito", "copo", "garrafa"))
-# e se os vetores não forem de mesmo tamanho?
-data.frame(cores = c("vermelho", "rosa","amarelo", "azul"), 
-           objetos = c("apito", "copo", "garrafa", NA))
-```
-  
+c. Crie um `data.frame` contendo a informação destes dois vetores;
 d. Coloque tudo isto em uma lista (pelo menos a `matrix` e o `data.frame`).  
-
-```{r}
-list(vetor1, vetor2, matriz, exemplo)
-```
 
 ---
 
@@ -587,10 +474,6 @@ list(vetor1, vetor2, matriz, exemplo)
 a. Repita o passo "c" do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.  
 b. Qual função é a melhor para o caso acima?  
 c. Por que?  
-
-```{r}
-cbind.data.frame(vetor1, vetor2)
-```
 
 ---
 
@@ -666,12 +549,3 @@ factor(x = frutas, levels = c("maca", "laranja", "banana", "morango"))
 ##### Exercício Extra
 
 Crie um vetor e faça com que ele seja um fator ordenado, de forma personalizada.  
-
-```{r}
-# criando vetor
-vetor1 <- c("quadrado", "triangulo", "circulo")
-# ordenando
-ordered(x = vetor1, c("circulo", "triangulo", "quadrado"))
-```
-
----
