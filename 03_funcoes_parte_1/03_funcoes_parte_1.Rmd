@@ -23,14 +23,13 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. O que são funções?
-2. Entendendo uma função;
-3. Instalação de pacotes;
-2. Regras de escopo;
-3. Tipos de Argumentos;
-4. Suas principais fontes de erro serão...
+1. [O que são funções?](#anchor1)
+2. [Entendendo uma função](#anchor2)
+3. [Tipos de Argumentos](#anchor3)
+4. [Instalação de pacotes](#anchor4)
+5. [Suas principais fontes de erro serão...](#anchor5)
 
-## O que são funções?
+## O que são funções? {#anchor1}
 
 * As funções são os blocos fundamentais do R: toda e qualquer tarefa é realizada através delas;
 * __Assim como qualquer outra língua, você precisa saber o básico dela para entender o que está escrito.__
@@ -44,7 +43,7 @@ h1,h2,h3,h4,h5,h6{
 * Um argumento são valores ou opções necessárias para a execução de uma função.
 * As funções são criadas através de outra função, chamada `function`.
 
-## Entendendo uma função
+## Entendendo uma função {#anchor2}
 
 * Vamos usar o exemplo da função `mean`.
 * Para pedir ajuda sobre qualquer função você pode usar:
@@ -79,7 +78,7 @@ h1,h2,h3,h4,h5,h6{
   
    <center><img src="figures/funcoes3.png" height="250px"></img></center>  
 
-## Tipos de Argumentos
+## Tipos de Argumentos {#anchor3}
 
 * Uma função pode ter diversos argumentos.
 * Cada argumento controla um aspecto da forma como a função é usada e processada.
@@ -119,7 +118,7 @@ read.table(sep = ",", header = TRUE, file = "nome_do_arquivo")
 
 * No entanto, é bom manter a boa prática e manter a sequência dos argumentos em ordem e, sempre que possível, adicionar o nome completo do argumento.
 
-## Instalação de Pacotes
+## Instalação de Pacotes {#anchor4}
 
 * Nem todas as funções que você vai precisar usar estarão prontamente disponíveis no R quando você instalar ele;
 * Você pode criar suas próprias funções, mas algumas das funções que executam algumas tarefas comuns ou normais dentro de um contexto estão organizadas em __pacotes__.  
@@ -135,7 +134,7 @@ install.packages(pkgs = "gapminder", dependencies = TRUE)
 
 1. Instale os pacotes `RColorBrewer` e `viridis`, além de todas as suas dependencias.
     
-## Suas principais fonte de erro serão...
+## Suas principais fonte de erro serão... {#anchor5}
 
 * Você é o seu pior inimigo:
     1. Erros de digitação ao chamar um objeto ou função (e.g., `read.tab1e` ou `readtable` ao invés de `read.table`);

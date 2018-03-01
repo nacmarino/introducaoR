@@ -23,11 +23,11 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Introdução ao RStudio;
-2. As janelas de navegação do RStudio;
-3. Dicas do RStudio.
+1. [Introdução ao RStudio](#anchor1)
+2. [As janelas de navegação do RStudio](#anchor2)
+3. [Dicas do RStudio](#anchor3)
 
-## Introdução ao RStudio
+## Introdução ao RStudio {#anchor1}
 
 * O RStudio é uma __interface__ usada para facilitar a sua vida ao utilizar a linguagem R.  
 * __Ele não é o R em si!__
@@ -36,7 +36,9 @@ h1,h2,h3,h4,h5,h6{
 
 <center><img src="figures/figura0.png" height="250px"></img></center>  
 
-### O Console
+## As janelas de navegação do RStudio {#anchor2}
+
+### O Console 
 
 * É a janela de execução do R, similar a abrir somente o programa base do R.
 * Nesta área você encontra:
@@ -93,7 +95,7 @@ h1,h2,h3,h4,h5,h6{
 
 <center><img src="figures/figura5.png" height="250px"></img></center>  
 
-## Algumas dicas iniciais do RStudio
+## Algumas dicas iniciais do RStudio {#anchor3}
 
 1. Use sempre um projeto para organizar os seus scripts;
 2. Organize seu script em "capítulos" - para isso, utilize o atalho do teclado: `Command + Shift + r` no MAC ou `Control + Shift + r` no Windows;
