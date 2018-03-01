@@ -24,53 +24,61 @@ h1,h2,h3,h4,h5,h6{
 # Elementos da Aula
 
 1. O que são funções?
-2. Scoping rules;
+2. Entendendo uma função;
+3. Instalação de pacotes;
+2. Regras de escopo;
 3. Tipos de Argumentos;
 4. Suas principais fontes de erro serão...
 
 ## O que são funções?
 
 * As funções são os blocos fundamentais do R: toda e qualquer tarefa é realizada através delas;
+* __Assim como qualquer outra língua, você precisa saber o básico dela para entender o que está escrito.__
 * Uma função representa um conjunto de ações que devem ser feitas para originar um resultado;
 * Uma função é um _objeto_ (veremos mais sobre objetos e seus tipos depois);
 * Todas as funções possuem três partes:
-    1. O corpo da função, que contém o seu código: `body`;
-    2. Uma lista de __argumentos__, que controlam de que forma você pode usar uma função: `formals`;
-    3. Um "mapa", com a localização das variáveis usadas na função (inclusive, outras funções e objetos) - em outras palavras, onde a função reside: `environment`.
+    1. O __código__ que compõem o corpo da função;
+    2. Uma lista de __argumentos__, que controlam de que forma você pode usar uma função;
+    3. Um "mapa", com a localização das variáveis usadas na função (inclusive, outras funções e objetos) - em outras palavras, onde a função reside.
+* Uma função pode levar inúmeros __argumentos__.
+* Um argumento são valores ou opções necessárias para a execução de uma função.
+* As funções são criadas através de outra função, chamada `function`.
 
-## Scoping rules (regras de escopo)
+## Entendendo uma função
 
-* É o conjunto de regras que governam de que forma o R interpreta o valor de um __objeto__:
-    + Associação entre um __nome__ e um __objeto__/__valor__/__tarefa__/__ação__.
-    + e.g., Determina de que forma o R vai da palavra pi ao valor de 3.141593.
+* Vamos usar o exemplo da função `mean`.
+* Para pedir ajuda sobre qualquer função você pode usar:
+    1. Método específico para funções:
+        + `?nome_da_funcao`;
+        + `help(topic = "nome_da_funcao", package = "nome_do_pacote_em_que_esta_a_funcao")`;
+    2. Método específico para pacotes:
+        + `help(package = "nome_do_pacote_em_que_esta_a_funcao")`;
+    3. Ajuda de forma generalizada sobre um pacote ou função:
+        + `??nome_do_pacote_ou_funcao`;
+        + O pacote `sos` tem um método de busca bem legal também.
+* Todo arquivo de ajuda de uma função é separado em:
+    1. Nome da função e pacote no qual ela está localizada;
+    2. Título da função;
+    3. Descrição geral da função
+    4. Forma de uso da função, contendo a sua chamada e todos os argumentos existentes nelas;
+    5. Descrição detalhada de todos os argumentos usados pela função;
+    6. Outras informações relevantes sobre os dados que são carregados na função e/ou os dados que ela te retorna;
+    7. Referências bibliográficas relacionadas à função;
+    8. Sugestões de funções correlatas;
+    9. Exemplo prático do uso da função.
 
-```{r}
-pi
-```
+   <center><img src="figures/funcoes1.png" height="250px"></img></center>  
 
-* Exstem dois tipos principais de Scoping rules:
+* O arquivo de ajuda de uma função também pode conter (a) uma descrição detalhada do funcionamento da função, consequências do uso de um ou outro tipo de opção no uso dos argumentos, discussão geral sobre a teoria por trás de cada argumento e etc.
 
-    1. __Dynamic scoping:__ se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
-        + Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;
-    2. __Lexical scoping:__ quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
-        + Ou a variável é determinada em algum ponto da sessão ou ela não é;
-        + Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.
-        + A busca começa do ambiente global e corre do último ao primeiro ambiente "aberto".
-
-```{r}
-# todos os ambientes carregados na sessão que estamos operando
-search()
-```
-
-* Consequências:
-    + Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;
-    + Todo objeto criado é salvo no ambiente da sessão;
-    + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
-    + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
-    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+   <center><img src="figures/funcoes2.png" height="150px"></img></center>  
     
-* O R usa o __Lexical scoping__.
-    
+                
+* E também (b) notas gerais sobre o funcionamento da função e (c) o(s) nome(s) dx(s) autorx(s) da função.
+  
+  
+   <center><img src="figures/funcoes3.png" height="250px"></img></center>  
+
 ## Tipos de Argumentos
 
 * Uma função pode ter diversos argumentos.
@@ -90,10 +98,10 @@ args(read.table)
 * Além disso, quando você usar uma função, você pode especificar seus argumentos por posição, nome completo ou nome parcial. Ou seja:
 
 ```{r eval=FALSE}
-# por posição
-read.table("nome_do_arquivo", TRUE, ",")
 # por nome completo
 read.table(file = "nome_do_arquivo", header = TRUE, sep = ",")
+# por posição
+read.table("nome_do_arquivo", TRUE, ",")
 # por nome parcial
 read.table("nome_do_arquivo", head = TRUE, ",")
 ```
@@ -111,6 +119,22 @@ read.table(sep = ",", header = TRUE, file = "nome_do_arquivo")
 
 * No entanto, é bom manter a boa prática e manter a sequência dos argumentos em ordem e, sempre que possível, adicionar o nome completo do argumento.
 
+## Instalação de Pacotes
+
+* Nem todas as funções que você vai precisar usar estarão prontamente disponíveis no R quando você instalar ele;
+* Você pode criar suas próprias funções, mas algumas das funções que executam algumas tarefas comuns ou normais dentro de um contexto estão organizadas em __pacotes__.  
+* Um pacote do R contém um conjunto de funções que auxiliam na execução de determinadas tarefas (carregamento de dados, criação de gráficos, análises estatísticas e etc). 
+* Podemos instalar pacotes através da função `install.packages`.
+* Vamos instalar um pacote para exemplificar o uso da função `install.packages`:
+
+```{r eval=FALSE}
+install.packages(pkgs = "gapminder", dependencies = TRUE)
+```
+
+## Exercício
+
+1. Instale os pacotes `RColorBrewer` e `viridis`, além de todas as suas dependencias.
+    
 ## Suas principais fonte de erro serão...
 
 * Você é o seu pior inimigo:
@@ -134,3 +158,7 @@ read.table(sep = ",", header = TRUE, file = "nome_do_arquivo")
     + Apague objetos que você não vá usar mais em uma sessão - `rm(objeto)`;
     + Evite salvar a área de trabalho ao sair do R (casos especiais justificam salvá-lo);
     + Ao iniciar uma sessão, limpe tudo que está no ambiente global do R - `rm(list = ls(all = TRUE))`.
+
+* __Dica do RStudio:__
+    + Use a ferramenta de auto-completar do RStudio: comece a escrever o nome da função que você deseja, aperte `Tab` e navegue pelas opções através das setas;  
+    + Na dúvida também sobre os argumentos que existem em uma função? Dentro do parenteses que descreve seus argumentos, pressione `Tab`, navegue pela lista de argumentos e veja uma pequena descrição do que cada um deles deve ser.  
