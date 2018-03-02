@@ -20,19 +20,21 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Importando dados;  
-2. Importando dados via a `base` do R;  
-3. Carregando pacotes;  
-4. Importando dados a usando o pacote `readr`;  
-5. Importando dados a usando o pacote `readxl`;  
-6. Exportando dados.  
+1. [Importando dados](#anchor1)
+2. [Caminhos absolutos _vs_ relativos](#anchor2)
+3. [Importando dados via a `base` do R](#anchor3)
+4. [Carregando pacotes](#anchor4)  
+5. [Importando dados a usando o pacote `readr`](#anchor5) 
+6. [Importando dados a usando o pacote `readxl`](#anchor6)  
+7. [Importanto dados organizados em listas](#anchor7)
+8. [Exportando dados](#anchor8)
 
-## Importando dados
+## Importando dados {#anchor1}
 
 * Nosso principal uso da linguagem de programação R normalmente é na manipulação e análise de dados. Portanto, nossos dados muitas vezes vêm de fontes externas ao ambiente R:
-    + arquivos de Excel com extensão: .xlsx e xls;
-    + arquivos de texto separado por tabulação: .txt;
-    + arquivos separados por vírgulas: .csv;
+    + arquivos de Excel com extensão: `.xlsx` e .`xls`;
+    + arquivos de texto separado por tabulação: `.txt`;
+    + arquivos separados por vírgulas: `.csv`;
     + ...
 
 * O R dispõem de um conjunto de funções que tornam a leitura de dados a partir de fontes externas muito mais fácil e rápida:
@@ -53,7 +55,7 @@ h1,h2,h3,h4,h5,h6{
 
 > Tabelar os dados de forma correta é reduzir drasticamente as chances de ter um erro ao carregar uma planilha de dados.
 
-### Caminhos absolutos _vs_ caminhos relativos: outra fonte de erros
+### Caminhos absolutos _vs_ caminhos relativos: outra fonte de erros {#anchor2}
 
 Uma coisa que começará a ficar muito clara a partir deste ponto é o quão importante é usarmos um __caminho relativo__ para nos referirmos a um arquivo salvo no nosso HD, ao invés do __caminho absoluto__.  
 
@@ -64,7 +66,7 @@ Muitas vezes, temos um erro ao importar ou exportar um arquivo pois confundimos 
 
 Portanto, toda vez que você iniciar o R, você pode ter acesso ao seu diretório de trabalho através da função `getwd()`, e poderá modificar o seu diretório de trabalho através do `setwd(<novo_diretorio>)`. Uma tática para usar um caminho relativo então é sempre usar o `setwd` para dizer ao R que tudo que você precisará será encontrado a partir de um diretório. Todavia, esta ainda não é a solução ideal. O melhor que você pode fazer é criar um __projeto__ no RStudio e sempre que você for trabalhar nos scripts daquele projeto, carregar o projeto e começar a trabalhar. 
 
-## Importando dados via a `base` do R
+## Importando dados via a `base` do R {#anchor3}
 
 * Pela `base` do R, podemos usar as funções `read.csv` para a leitura de dados separados por vírgula (extensão .csv).
 
@@ -169,24 +171,9 @@ a. Use a função `read.table` para ler o arquivo `exemplo.txt`.
 b. Você conseguiu carregar este arquivo? Se não, por que?
 c. Como consertar este possível 'Erro'?
 
-```{r eval=FALSE}
-# solucao corretar
-read.table(file = "05_leitura_de_dados/dados/exemplo.txt", header = TRUE, skip = 5)
-```
-
 ---
 
-* Uma forma de carregar o arquivo `exemplo.txt` é:
-
-```{r}
-# suppressWarnings suprime o aviso de 'warnings'
-# uso somente para fins demonstrativos
-suppressWarnings(read.table(file = "dados/exemplo.txt", header = TRUE, skip = 5))
-```
-
-* Fazer anotações nos seus dados é importante para não se perder a longo prazo, mas existe uma forma correta de fazer isso (veremos isso na próxima semana);
-
-## Carregando pacotes no R
+## Carregando pacotes no R {#anchor4}
 
 * Existem duas formas de se carregar um pacote no R:
     + `library("nome_do_pacote")`;
@@ -196,7 +183,7 @@ suppressWarnings(read.table(file = "dados/exemplo.txt", header = TRUE, skip = 5)
 * Algumas funções não mostram tudo o que podem fazer! Por conta do ritmo de desenvolvimento e, até mesmo da utilidade em nível basal de certas funções em um pacote, algumas funções são escondidas do usuário. Para ter acesso a elas, basta usar:
     + `nome_do_pacote:::nome_da_funcao`
 
-## Importanto dados com o pacote `readr`
+## Importanto dados com o pacote `readr` {#anchor5}
 
 * Outra opção é carregar seus dados com o pacote `readr`;
 
@@ -225,7 +212,7 @@ args(read_delim)
 read_delim(file = "dados/lista_de_presenca.csv", delim = ";")
 ```
 
-## Importanto dados com o pacote `readxl`
+## Importanto dados com o pacote `readxl` {#anchor6}
 
 * Muitas vezes, nossos dados não estão no formato .txt e nem no formato .csv, mas sim em .xls ou .xlsx;
 * O pacote `readxl` tem duas funções úteis para lermos dados com esta estrutura:
@@ -248,10 +235,23 @@ read_excel(path = "dados/Lista de Palestras.xlsx")
     + Você pode 'acelerar' a leitura de dados através destas funções adicionar o tipo de variável que cada coluna assume pelo argumento `col_types` nestas funções;
     + Caso você não o faça, não há problema: as duas funções vão ler as primeiras linhas de cada coluna e tentar este processo de 'adivinhação' (quase sempre, acertam).
 
-## Exportando dados
+## Importando dados organizados em listas {#anchor7}
+
+* Pode ocorrer de você ter que importar algum tipo de dado que esteja organizado no formato de listas, por exemplo:
+    + Resultados de diversos modelos;
+    + Dados para plotar diferentes figuras;
+    + Informações de bases de dados;
+* Normalmente, listas do R são salvas com a extensão `.rds`.
+* Para importar uma lista, podemos usar a função `base::readRDS` ou `readr::read_rds`.
+
+```{r}
+readRDS(file = "dados/lista.rds")
+```
+
+## Exportando dados {#anchor8}
 
 * Carregar os dados é parte do trabalho, a outra parte é exportar os dados que você limpou, ou aqueles que devem ser usados no final das contas para uma análise, ou até mesmo os resultados de uma análise e as predições de um modelo para gerar uma figura posteriormente;
-* Para tal, utilizamos as funções `write.table` do pacote `base` ou as funções `write_<extensão>` disponíveis no pacote `readr`.
+* Para tal, utilizamos as funções `write.<extensão>` do pacote `base` ou as funções `write_<extensão>` disponíveis no pacote `readr`.
 
 ```{r}
 # pelo pacote base
@@ -260,6 +260,8 @@ args(write.table)
 args(write_tsv)
 # pelo readr
 args(write_delim)
+## para listas
+args(write_rds)
 ```
 
 * Um exemplo do uso de uma destas funções é:
@@ -285,4 +287,4 @@ e. Leia estes dois arquivos a partir do seu HD.
 
 > __Importante:__ nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!
 
-> Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!
+> Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!  
