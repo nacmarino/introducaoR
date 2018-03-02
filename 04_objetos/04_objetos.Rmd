@@ -23,12 +23,17 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Operações matemáticas básicas no R;
-2. Criação de objetos;
-3. Regras de escopo;
-3. Tipos e classes de objetos.
+1. [Operações matemáticas básicas no R](#anchor1)
+2. [Objetos](#anchor2)
+3. [Regras de escopo](#anchor3)
+4. [Tipos e classes de objetos](#anchor4)
+    + [Vetores](#anchor5)
+    + [Matrizes](#anchor6)
+    + [Listas](#anchor7)
+    + [`data.frame`](#anchor8)
+5. [Fatores ordenados](#anchor9)
 
-## Operações matemáticas básicas no R
+## Operações matemáticas básicas no R {#anchor1}
 
 * O R pode ser usado para fazer operações matemáticas básicas:
     
@@ -99,7 +104,7 @@ a. Qual a raiz quadrada do arcoseno de 0.43?
 
 ---
 
-## Objetos
+## Objetos {#anchor2}
 
 * Pode ser muito repetitivo ter que ficar digitando constantemente uma operação para obter um resultado; as vezes, isto não é só repetitivo, mas a escrita do código pode ser demasiada longa e enviesada ao erro;
 * Para facilitar a sua vida, você pode criar __objetos__ para armazenar uma determinada operação, comando, arquivos ou outros objetos.
@@ -126,23 +131,14 @@ resultado
 
 ##### Exercício 2
 
-a. Calcule o resultado da operação da multiplicação de 5 por 6;
-b. Armazene o resultado desta operação em um objeto chamado `resultado`;
-c. Sem olhar, qual o valor armazenado no objeto `resultado`?
-d. Por que o valor de `resultado` mudou?
+a. Divida o objeto `resultado` pela raiz quadrada de 4 e armazene esta operação no objeto `resultado`;
+b. Sem olhar, qual o valor armazenado no objeto `resultado`?
+c. Divida agora o objeto `resultado` pela raiz quadrada de 9 e armazene esta operação no objeto `resultado`;
+d. O valor no objeto `resultado` é diferente daquele que você imaginou? Se sim, por que?
 
 ---
 
-##### Exercício 3
-
-a. Divida o objeto `resultado` pela raiz quadrada de 9;
-b. Armazene o resultado desta operação em um objeto chamado `resultado`;
-c. Sem olhar, qual o valor armazenado no objeto `resultado`?
-d. O valor encontado bateu com as suas expectativas? Por que?
-
----
-
-## Regras de escopo
+## Regras de escopo {#anchor3}
 
 * É o conjunto de regras que governam de que forma o R interpreta o valor de um __objeto__:
     + Associação entre um __nome__ e um __objeto__/__valor__/__tarefa__/__ação__.
@@ -152,14 +148,10 @@ d. O valor encontado bateu com as suas expectativas? Por que?
 pi
 ```
 
-* Exstem dois tipos principais de Scoping rules:
-
-    1. __Dynamic scoping:__ se uma variável é necessária para fazer algum processamento, como rodar uma função, esta variável é determinada no contexto do momento do processamento (i.e., no escopo do processamento).
-        + Em um determinado pedaço do código de uma função não tem como saber o que ela está gerando, tudo depende de todo o contexto em que ela estava operando;
-    2. __Lexical scoping:__ quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, ela a busca passa para os níveis acima (e.g., a sessão de trabalho).
+* O R usa o __lexical scoping__ para relacionar uma nome ao que ele representa:
+        + Quando existe a necessidade do uso de uma variável, o valor que ela assume é buscada dentro do ambiente da função; caso ela não esteja lá, O R a busca nos níveis de organização acima aquele no qual ela está sendo usada (e.g., a sessão de trabalho).
         + Ou a variável é determinada em algum ponto da sessão ou ela não é;
         + Sabendo o valor da variável, que foi determinado em algum ponto da sessão, você consegue predizer o resultado esperado para uma função em determinado ponto do código que a compõem.
-        + A busca começa do ambiente global e corre do último ao primeiro ambiente "aberto".
 
 ```{r}
 # todos os ambientes carregados na sessão que estamos operando
@@ -170,17 +162,23 @@ search()
     + Você só precisa definir uma única vez um nome para um objeto/valor/tarefa/ação;
     + Todo objeto criado é salvo no ambiente da sessão;
     + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
-    + Sobre-escrever o nome de um objeto com outro substitui a informação que existia anteriormente;
-    + Sobre-escrever o nome de uma função com um objeto _não_ apaga a função, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
-    
-* O R usa o __Lexical scoping__.
+    + Sobre-escrever um objeto por outro substitui a informação que existia anteriormente;
+    + Sobre-escrever o nome de uma função por um objeto _não_ apaga a função e seu conteúdo, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+
+* __Dicas do R:__
+    + Não há como o primeiro caractere do nome de um objeto ser um número;
+    + Evite sobre-escrever objetos o máximo que você puder, para evitar comportamentos e resultados inesperados durante uma sessão;
+    + Evite nomear um objeto usando o nome de função já existente - você pode não conseguir usar outras funções que dependam a função em questão;
+    + Não use espaços em branco no nome de um objeto, opter por usar o ponto ou o _underscore_ para separar palavras: e.g. `resultado_anova` ou `resultado.anova`
+    + Evite nomes longos para nomear um objeto: e.g. `resultado_da_anova_removendo_os_sites_com_os_singletons`
+    + Evite nomes de objetos que sejam pouco informativos: e.g. `analise`
 
 ---
 
-## Tipos e Classes de Objetos
+## Tipos e classes de objetos {#anchor4}
 
-* Como qualquer outra língua, os elementos e objetos que compõem a linguagem R pertencem a diferentes classes (em um paralelo às classes gramaticas de uma língua).
-* Você pode determinar a classe de um objeto perguntando para o R:
+* Como qualquer outra língua, os elementos e objetos que compõem a linguagem R pertencem a diferentes classes (em um paralelo às classes gramaticais).
+* Você pode determinar a qual classe pertence um objeto perguntando para o R:
 
 ```{r}
 class(x = 5)
@@ -200,7 +198,7 @@ is.character(x = "Ola!")
 
 ---
 
-##### Exercício 4
+##### Exercício 3
 
 a. Pergunte ao R se o número 5 é um número inteiro.
 
@@ -234,7 +232,7 @@ is.nan(x = 1/sqrt(-2))
 is.infinite(x = 10/0)
 ```
 
-* Além de perguntarmos a classe de um objeto, também podemos forçar que um objeto assuma uma determina classe:
+* Além de perguntarmos a classe de um objeto, também podemos "forçar" com que um objeto assuma uma determina classe:
 
 ```{r}
 # o número 5 é inteiro?
@@ -257,13 +255,13 @@ is.factor(x = 5)
 
 ---
 
-##### Exercício 5
+##### Exercício 4
 
 a. Faça com que o número 5 seja entendido como um fator.
 
 ---
 
-## Vetores
+## Vetores {#anchor5}
 
 * Até o momento estamos trabalhando com objetos que armazenam e/ou assumem um único valor, mas muitas vezes estamos interessados em conjuntos de valores muito maiores.
 * Podemos juntar diferentes valores em um __vetor__ através da função `c` (abreviação para __concatenar__):
@@ -287,7 +285,7 @@ is.vector(x = idade)
 
 ---
 
-##### Exercício 6
+##### Exercício 5
 
 a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
 
@@ -295,17 +293,15 @@ a. Crie um objeto chamado `frutas`, contendo o nome de 3 frutas.
 
 ---
 
-##### Exercício 7
+##### Exercício 6
 
 a. Crie um vetor combinando os vetores `frutas` e `idade`.
-b. O objeto criado é um vetor?
-c. Sem olhar, qual a classe do objeto criado?
+b. Sem olhar, qual a classe do objeto criado?
 
 ---
 
 * Ou seja:
     + Por padrão, sempre que houver algum caractere em um vetor, o R vai assumir que aquele é um vetor de caracteres.
-    + Um vetor pode conter qualquer tipo de objeto: lógicos, numéricos, inteiros, caracteres...
     + Um fator é um valor que codifica uma categoria: pode ser um número ou um caractere.
 * Você também pode criar um vetor através da função `vector`.
 
@@ -316,46 +312,9 @@ vector(length = 10)
 vector()
 ```
 
-Continuando de onde paramos:
+---
 
-a. Crie o vetor `frutas`;  
-
-```{r}
-# criando o vetor
-frutas <- c("uva", "melancia", "kiwi", "uva", "melancia", "kiwi", "banana", "laranja", "maçã",
-             "banana", "laranja", "maçã")
-# vetor de frutas
-frutas
-```
-
-b. Vetores _vs_ fatores;  
-
-```{r}
-# classe do objeto
-class(frutas)
-# tipo de objeto
-is.vector(frutas)
-# coerção a um fator
-exemplo <- as.factor(x = frutas)
-# vetor de fatores
-exemplo
-# qual a classe de exemplo?
-class(exemplo)
-```
-
-c. Crie o vetor `idade`;  
-
-```{r}
-idade <- c(27, 22, 29, 24, 26, 23)
-```
-
-d. Juntando vetores.
-
-```{r}
-c(idade, frutas)
-```
-
-## Matriz
+## Matriz {#anchor6}
 
 * Um conjunto de vetores pode ser organizado dentro de uma matriz, criada a partir da função `matrix`.
 * A matriz pode ser criada a partir de um vetor, determinando quantas linhas e quantas colunas ela deve assumir.
@@ -389,7 +348,7 @@ length(idade)
 
 ---
 
-##### Exercício 8
+##### Exercício 7
 
 a. Crie um vetor contendo nomes, com comprimento igual ao vetor de idades;  
 b. Crie uma matriz contendo as idades em uma das colunas e os nomes em outra;  
@@ -403,7 +362,7 @@ e. O que acontece se forçarmos a matriz a conter variáveis numéricas apenas?
 
 ---
 
-## Lista
+## Lista {#anchor7}
 
 * Uma outra forma de armazenar informacões é através da criação de listas com a função `list`;
 * Cada elemento de uma lista pode ser um vetor, matriz ou outro tipo de objeto (inclusive, outra lista);
@@ -418,18 +377,11 @@ anos <- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 (coisas <- list(informacoes, frutas, anos))
 ```
 
-* Uma lista pode ser muito útil para armazenarmos informações de diferentes tipos, mas não facilita muito o uso destes dados e, tampouco, salvar os dados que estão dentro delas.
+* Uma lista pode ser muito útil para armazenarmos informações de diferentes tipos, bem como realizar o mesmo tipo de processamento a conjuntos de dados similares.
 
 ---
 
-##### Exercício Extra
-
-a. Crie uma lista com duas sub-listas: uma com os nomes das linhas e outra com os nomes de colunas;  
-b. Adicione esta lista ao `dimnames` da `matrix` informações.  
-
----
-
-## Data Frame
+## `data.frame` {#anchor8}
 
 * O tipo de objeto mais utilizado por nós é o data frame, criado pela função `data.frame`.
 * Ao contrário da matriz, um `data.frame` pode comportar diferentes tipos de objetos em cada coluna; de forma similar, ao contrário da lista, todos os elementos estão no mesmo 'plano'.
@@ -451,27 +403,27 @@ str(dados)
 
 ---
 
-##### Exercício 9
+##### Exercício 8
 
 a. Crie dois vetores com uma informação que você desejar;  
 b. Crie uma matriz contendo a informação destes dois vetores;  
 c. Crie um `data.frame` contendo a informação destes dois vetores;
-d. Coloque tudo isto em uma lista (pelo menos a `matrix` e o `data.frame`).  
+d. Coloque tudo isto em uma lista (a `matrix` e o `data.frame`).  
 
 ---
 
 ## Outras formas de criar Matrizes e Data Frames
 
-* Uma matriz ou data.frame pode ser criado tanto pela adição de colunas quanto pela adicao de linhas;
+* Uma matriz ou `data.frame` pode ser criado tanto pela adição de colunas quanto pela adicao de linhas;
 * O R dispõem de duas funções que fazem estas tarefas:
-    + `rbind` e `rbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de linhas, respectivamente;
-    + `cbind` e `cbind.data.frame`, para criar/expandir matrizes e data.frames pela adição de colunas, respectivamente.
+    + `rbind` e `rbind.data.frame`, para criar/expandir matrizes e `data.frame` pela adição de linhas, respectivamente;
+    + `cbind` e `cbind.data.frame`, para criar/expandir matrizes e `data.frame` pela adição de colunas, respectivamente.
 
 ---
 
-##### Exercício 10
+##### Exercício 9
 
-a. Repita o passo "c" do exercício anterior (Exercício 9) utilizando uma das duas funções descritas.  
+a. Repita o passo "c" do exercício anterior (Exercício 8) utilizando uma das duas funções descritas.  
 b. Qual função é a melhor para o caso acima?  
 c. Por que?  
 
@@ -488,31 +440,21 @@ as.matrix.data.frame(dados)
 
 Você pode associar `cbind.data.frame` e `rbind.data.frame` para adicionar informações a um `data.frame`.
 
-```{r}
+```{r eval=FALSE}
 rbind.data.frame(dados, c(30, "Anderson", TRUE))
 ```
 
 ---
 
-## Um atalho para determinar o tipo e classe dos elementos de um objeto
+##### Exercício 10
 
-* Ao trabalharmos com qualquer um dos tipos de objetos descritos acima, é sempre interessante verificar a estrutura dele com o uso da função `str`.
-* Esta função te mostra qual a classe geral do objeto e, dentro dele, qual os tipos de elementos que o compõem.
+a. O procedimento `rbind.data.frame(dados, c(30, "Anderson", TRUE))` transcorreu sem problemas?
+b. Caso tenha havido algum problema, por que você acha que ele ocorreu?
+c. Como resolver este problema?
 
-```{r}
-# qual a estrutura do objeto 'informacoes'?
-str(object = informacoes)
-# qual a estrutura do objeto 'coisas'?
-str(object = coisas)
-# qual a estrutura do objeto 'dados'?
-str(object = dados)
-```
+---
 
-* Um vetor de caracteres são 'transformados' em fatores ao serem adicionados a um data.frame.
-    + __Lado positivo:__ ao codificarmos uma variável como caracteres, normalmente queremos que eles sejam fatores, variáveis com níveis discretos; este padrão então facilita a nossa vida.
-    + __Lado negativo:__ se você codificar os níveis dos fatores como números, o R não vai entender que são fatores; você precisa transformar esta variável antes de usar em uma análise ou na confecção de gráficos.
-    
-## Fatores ordenados
+## Fatores ordenados {#anchor9}
 
 * Por padrão, o R ordena os níveis de um fator em ordem alfabética e/ou do menor para o maior.
 
@@ -538,14 +480,34 @@ ordered(x = c(6, 4, 2, 10, 1), c(4, 2, 10, 1, 6))
 
 ```{r}
 # adicionando um nível do fator que não está originalmente lá
-factor(x = nomes, levels = c("Joana", "Joao","Maria",
-                             "Mario", "Joelma", "Ximbinha", "Anderson"))
+factor(x = nomes, levels = c("Joana", "Joao","Maria", "Mario", "Joelma", "Ximbinha", "Anderson"))
 # modificando a sequência de fatores - sem assumir fatores ordenados
 factor(x = frutas, levels = c("maca", "laranja", "banana", "morango"))
 ```
 
 ---
 
-##### Exercício Extra
+##### Exercício 11
 
-Crie um vetor e faça com que ele seja um fator ordenado, de forma personalizada.  
+a. Crie um vetor e faça com que ele seja um fator ordenado.  
+
+---
+
+## Um atalho para determinar o tipo e classe dos elementos de um objeto
+
+* Ao trabalharmos com qualquer um dos tipos de objetos descritos acima, é sempre interessante verificar a estrutura dele com o uso da função `str`.
+* Esta função te mostra qual a classe geral do objeto e, dentro dele, qual os tipos de elementos que o compõem.
+
+```{r}
+# qual a estrutura do objeto 'informacoes'?
+str(object = informacoes)
+# qual a estrutura do objeto 'coisas'?
+str(object = coisas)
+# qual a estrutura do objeto 'dados'?
+str(object = dados)
+```
+
+* Um vetor de caracteres são 'transformados' em fatores ao serem adicionados a um data.frame.
+    + __Lado positivo:__ ao codificarmos uma variável como caracteres, normalmente queremos que eles sejam fatores, variáveis com níveis discretos; este padrão então facilita a nossa vida.
+    + __Lado negativo:__ se você codificar os níveis dos fatores como números, o R não vai entender que são fatores; você precisa transformar esta variável antes de usar em uma análise ou na confecção de gráficos.
+    
