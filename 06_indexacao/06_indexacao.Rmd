@@ -23,12 +23,14 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. Criando vetores - Parte 2;
-2. Indexação de Vetores;
-3. Indexando `data.frame`;
-4. Indexando Listas.
+1. [Criando vetores - Parte 2](#anchor1)
+2. [Operações com vetores](#anchor2)
+3. [Indexação de vetores e `data.frame`](#anchor3)
+      + [Indexação de vetores](#anchor4)
+      + [Indexando `data.frame`](#anchor5)
+4. [Indexando listas](#anchor6)
 
-## Criando vetores - Parte 2
+## Criando vetores - Parte 2 {#anchor1}
 
 * Podemos criar um vetor ao listarmos uma sequência de valores.
 
@@ -111,7 +113,11 @@ dados <- data.frame(vetor1, vetor2, letras)
 
 * Com este vetor e `data.frame` tão longos, como podemos fazer para extrair apenas alguns pedaços de interesse maior para trabalharmos?
 
-## Indexação de Vetores e Data Frames
+## Operações com vetores {#anchor2}
+
+
+
+## Indexação de vetores e `data.frame` {#anchor3}
 
 * Indexação é a ação de extrair um elemento específico, ou um conjunto de elementos, de um objeto.
 * Cada objeto criado pode ser descrito por um conjunto de dimensões (copie e rode os exemplos junto de cada caso abaixo):
@@ -135,7 +141,7 @@ dados <- data.frame(vetor1, vetor2, letras)
     2. `[[]]` extrai um ou mais elementos em listas ou `data.frame`;
     3. `$` extrai elementos pelo __nome__ em listas e `data.frame`.
 
-### Indexando Vetores
+### Indexando Vetores {#anchor4}
 
 * Por exemplo, se quisermos extrair o 16o. elemento do `vetor2`, podemos usar:
 
@@ -214,7 +220,7 @@ vetor2[-c(1:10, 22:26)]
 
 ---
 
-### Indexando `data.frame`
+### Indexando `data.frame` {#anchor5}
 
 * Mas e para indexarmos um data.frame?
 * Lembre-se que um `data.frame` possui duas dimensões: linhas e colunas.
@@ -260,7 +266,7 @@ dados$letras
 
 * __Dica do RStudio:__ ao tentar indexar um objeto através do uso do `$`, digite o nome do objeto, adicione o `$` e pressione `Tab` - todos os elementos que compõem a estrutura daquele elemento estarão disponíveis.
 
-### Indexando listas
+### Indexando listas {#anchor6}
 
 * E para indexarmos uma lista?
 
