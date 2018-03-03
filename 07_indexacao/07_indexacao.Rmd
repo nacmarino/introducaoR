@@ -46,8 +46,12 @@ h1,h2,h3,h4,h5,h6{
     + no `vetor1` que criamos anteriormente, o número 7 ocupa a sétima posição na sequência;
     + em `list(vetor1, vetor2)`, o número 100 ocupa a 34a. posição da segunda lista;
     + em `data.frame(vetor1, vetor2)`, o número 0 ocupa a primeira linha a segunda coluna.
-* Assim, como em um jogo de batalha naval, podemos extrair sub-conjuntos específicos de dados de acordo com as 'coordenadas' dos dados que queremos.
-* Para tal, utilizaremos três tipos de operadores:
+
+* Assim, podemos extrair sub-conjuntos específicos de dados de acordo com as 'coordenadas' dos dados que queremos, como em um jogo de batalha naval.  
+
+<center><img src="figures/batalha_naval.png" height="350px"></img></center>  
+
+* Utilizaremos três tipos de operadores para realizar a indexação:
     1. `[]`  extrai um ou mais elementos em vetores, listas, ou `data.frame`;
     2. `[[]]` extrai um ou mais elementos em listas ou `data.frame`;
     3. `$` extrai elementos pelo __nome__ em listas e `data.frame`.
