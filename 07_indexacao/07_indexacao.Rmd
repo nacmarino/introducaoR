@@ -97,7 +97,7 @@ vetor2[c(1, 5, 7, 9)]
 
 ##### Exercício 1
 
-a. Utilizando o `vetor2`, faça uma indexação que retorne:
+a. Utilizando o `vetor1`, faça uma indexação que retorne:
     1. Os cinco primeiros elementos;
     2. Os elementos nas posições 10, 12, 14, 16, 18 e 20;
     3. Os cinco primeiros elementos e os elementos entre as posições 20 e 30;

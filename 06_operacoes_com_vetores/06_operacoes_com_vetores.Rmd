@@ -49,9 +49,11 @@ seq(from = 1, to = 10, length.out = 20)
 
 ```{r}
 # repetir a sequência 1, 2, 3, 4 duas vezes
-rep(x = c(1, 2, 3, 4, 5), 10)
+rep(x = c(1, 2, 3, 4, 5), times = 10)
 # repetir duas vezes em sequência cada elemento do vetor 1, 2, 3, 4 
 rep(x = c(1, 2, 3, 4, 5), each = 10)
+# combinando times + each [each tem precedencia]
+rep(x = c(1, 2, 3, 4, 5), times = 10, each = 10)
 ```
 
 * Outra forma de fazer isso é através da utilização do operador `:` entre valores: tudo o que está no intervalo x:y (x a y) deve ser impresso.
@@ -87,7 +89,7 @@ a. Crie dois vetores:
     + Outro com a função `seq`.  
 b. Junte estes dois vetores em um único vetor, com o nome do objeto de `vetores`;
 c. Qual o comprimento do vetor?
-d. Crie um vetor com as letras "A" e "B", em sequência (comprimento = soma do comprimento dos dois vetores criados em a);
+d. Crie um vetor com as letras "A" e "B", em sequência (e.g., "A", "B", "A", "B", "A", "B", ...; com comprimento do vetor `vetores`, criado no item b);
 e. Junte dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
 f. Qual o comprimento do data.frame `dados`? O que este comprimento representa?
 
@@ -159,7 +161,7 @@ summary(object = numeros)
 
 ##### Exercício 2
 
-a. Simule um vetor com 100 números aleatórios que siga a distribuição normal e que tenha média 10 e desvio padrão 3.
+a. Simule um vetor com 100 números aleatórios que siga a distribuição normal e que tenha média 10 e desvio padrão 3 (função `rnorm`).
 b. Calcule o erro padrão da média dos valores neste vetor.
     + O erro padrão da média é igual as desvio padrão dividido pela raiz quadrada do tamanho da amostra;
 

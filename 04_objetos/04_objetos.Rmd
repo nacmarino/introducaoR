@@ -133,8 +133,6 @@ resultado
 
 a. Divida o objeto `resultado` pela raiz quadrada de 4 e armazene esta operação no objeto `resultado`;
 b. Sem olhar, qual o valor armazenado no objeto `resultado`?
-c. Divida agora o objeto `resultado` pela raiz quadrada de 9 e armazene esta operação no objeto `resultado`;
-d. O valor no objeto `resultado` é diferente daquele que você imaginou? Se sim, por que?
 
 ---
 
@@ -387,6 +385,8 @@ anos <- c(1987, 1990, 1993, 1996, 1999, 2002, 2005, 2008, 2011, 2014, 2017)
 * Ao contrário da matriz, um `data.frame` pode comportar diferentes tipos de objetos em cada coluna; de forma similar, ao contrário da lista, todos os elementos estão no mesmo 'plano'.
 
 ```{r}
+# vetor de idades
+idade <- c(27, 24, 22, 29, 23, 22)
 # um vetor com nomes
 nomes <- c("Joana", "Joao", "Maria", "Mario", "Joelma", "Ximbinha")
 # um vetor lógico
