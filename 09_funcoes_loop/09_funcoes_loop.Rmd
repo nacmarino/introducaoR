@@ -1,5 +1,5 @@
 ---
-title: "09_funcoes_loop"
+title: "Funções loop"
 author: "Nicholas A. C. Marino, Vitor Borges Jr"
 date: "08/03/2018"
 output: html_document
