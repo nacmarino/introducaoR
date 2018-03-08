@@ -1,0 +1,175 @@
+---
+title: "09_funcoes_loop"
+author: "Nicholas A. C. Marino, Vitor Borges Jr"
+date: "08/03/2018"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. [Funções loop: `aggregate` e `by`](#anchor1).
+2. [Funções loop: `for`](#anchor2).
+3. [Amostragem utilizando `for`](#anchor3).
+
+## Funções loop: `aggregate` e `by` {#anchor1}
+
+* As __funções loop__ são usadas para aplicar a mesma tarefa para um dado conjunto de dados de acordo com os níveis de um fator - é como se para cada nível de um fator elas aplicassem uma tarefa, fossem para outro nível, repetissem a mesma tarefa; corresse para o próximo nível, repetisse a mesma tarefa; por aí vai...
+
+* Existem pelo menos 5 funções loop principais que podem nos ser úteis:
+
+Função        | Significado
+------------- | ------------
+`apply`       | aplica uma função nas linhas ou colunas de um conjunto de dados, retornando um __vetor__
+`aggregate`   | aplica uma função a sub-conjuntos dos dados (i.e., aceita um `data.frame`), retorna um __data.frame__
+`tapply`      | aplica uma função a sub-conjuntos de um __vetor__, retorna um __vetor__ (caso haja apenas um sub-conjunto) ou uma __tabela de contigência__ (caso haja dois ou mais sub-conjuntos)
+`by`          | aplica uma função a um __vetor__, `data.frame` ou matriz por sub-conjuntos de um fator, retorna sempre uma __lista__
+`lapply`      | aplica uma função a uma __lista__, retorna uma __lista__
+`sapply`      | identico ao `lapply`, mas retorna um __vetor__
+
+* Ao usar essas funções loop lembrem-se sempre que:
+    1. Em quase 100% das vezes é necessário indexar o data.frame que estamos trabalhando para conseguirmos rodar elas;
+    2. Cada uma dessas funções deve ser aplicada a um tipo de objeto diferente: ou vetores, ou listas, ou `data.frame` - difícil lembrar qual é usada em que.
+    3. Cada uma dessas funções pode ter argumentos específicos e, portanto, é difícil ficar lembrando e acertando os argumentos caso a caso;
+    4. O resultado dessas funções podem retornar diferentes tipos de objetos: umas retornam lista e outras retornam `data.frame`.
+
+### `aggregate`
+
+Argumento     | Significado
+------------- | ------------
+x             | um objeto (__vetor__ ou `data.frame`)
+by            | uma __lista__ de elementos que agrupem observações, de tamanho igual ao de x
+FUN           | a função a ser aplicada
+
+---
+
+##### Exercício 1
+
+a. Aplique a função `aggregate` para determinar a absorção média de CO2 das plantas originárias de Quebec e Mississippi, no conjunto de dados `CO2`.
+
+--- 
+
+#### `by` 
+
+Argumento     | Significado
+------------- | ------------
+data          | um `data.frame` ou __matriz__
+INDICES       | uma __lista__ de elementos que agrupem observações, de tamanho igual ao de x
+FUN           | a função a ser aplicada
+
+---
+
+##### Exercício 2
+
+a. Aplique a função `by` para determinar a cconcentração de CO2 no ambiente nos diferentes niveis de tratamento no conjunto de dados `CO2`.
+
+--- 
+
+* Para que usar estas funções loop?
+    + Calcular estatísticas descritivas que podem ser usadas para criação de gráficos;  
+    + Realizar tarefas repetitivas em um mesmo conjunto de dados de acordo com alguma categorização;  
+    + Aplicar funções que você mesmo criou a sub-conjuntos de dados. 
+    
+---
+
+## Funções loop: `for` {#anchor2}
+
+* As funções de loop servem para repetir uma tarefa específica no R tantas vezes quanto desejarmos.
+* Umas das funções de loping mais importantes é a função `for`.
+* A função `for` funciona da seguinte maneira:
+
+> for(i in 1:n) {comandos}
+
+* onde para cada valor de *i* o R executa os comandos que estão entre as chaves. A expressão "i in 1:n" indica que os valores de i serão de i = 1 até i = n.
+* Ou seja, na primeira rodada i = 1, na segunda i = 2, e assim por diante até que i = n.
+* Vamos ver como a função `for funciona na prática. Primeiro precisamos criar um objeto vazio para armazenar o resultado da operação.
+
+```{r eval = FALSE}
+# gerar um vetor numérico vazio
+resu <- numeric(0) 
+resu  
+```
+
+* Agora vamos utilizar a função `for` para elevar i valores ao quadrado.
+
+```{r eval = FALSE}
+for (i in 1:5) { # será o i = 1, i = 2, i = 3, i = 4, i = 5
+        resu[i] <- i^2 # realiza a operação e armazena no vetor resu
+} # fim da função
+resu
+(1:5)^2
+```
+* Vamos fazer um "filme" para demonstrar o que a função `for está fazendo.
+
+```{r eval = FALSE}
+plot(0:10,0:10, type="n") # plota um gráfico vazio 
+for (i in 1:9) {
+        text(i,i, paste("Passo", i)) # plota um texto no gráfico
+        Sys.sleep(1) ## retarda os passos em 1 s
+}
+```
+
+* A sequência de Fibonacci é uma sequência famosa na matemática. Os dois primeiros números da sequência são `[1, 1]`. 
+* Os números subsequentes são compostos pela soma dos dois números anteriores. 
+* Assim, o terceiro número da sequência de Fibonacci é `1 + 1 = 2`, o quarto é `1 + 2 = 3`, e assim por diante. 
+* Vamos usar a função `for` para descobrir os 12 primeiros números da sequência de Fibonacci
+
+```{r eval = FALSE}
+Fibonacci <- numeric(0)
+Fibonacci[c(1, 2)] <- 1 # o primeiro e segundo valor da sequência devem ser 1
+for (i in 3:12) { # 3 a 12 porque já temos os dois primeiros
+        Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1]
+}
+Fibonacci
+```
+
+### **Exercício 3**
+
+1. Mude os dois primeiros elementos da sequencia para 2 e 2 
+2. Mude os dois primeiros elementos da sequencia para 3 e 2
+3. Modifique o código para que os valores sejam compostos pela diferença entre o primeiro e o segundo valor imediatamente anteriores.
+4. Modifique o código para que os valores sejam compostos pela diferença entre os dois valores imediatamente anteriores somada ao terceiro valor imediatamente anterior. Faça inicialmente com que a sequencia comece com 3 valores [1,1,1]
+
+---
+
+## Amostragem utilizando `for` {#anchor3}
+
+* Também podemos utilizar a função `for` para realizar sorteios e amostragens aleatóreas.
+* Vamos sortear 20 jogos da megasena.
+
+```{r eval = FALSE}
+njogos <- 20 # determinar o número de jogos
+numeros <- matrix(NA, nrow = 6, ncol = njogos) # criar a matriz para armazenar os jogos
+for (i in 1:njogos) { # determina o número total de jogos sorteados
+  numeros[, i]<-sample(1:60, 6) # realiza a amostragem de 6 números por jogo
+ }
+numeros
+```
+
+* A partir do mesmo princípio, podemos utilizar as funções `sample` e `mean` para realizar subamostragens e caluclar suas médias.
+
+```{r eval = FALSE}
+reamostragens <- 100 # determinar o número de jogos
+medias <- numeric(0) # criar a matriz para armazenar os jogos
+for (i in 1:reamostragens) { # determina o número total de jogos sorteados
+  medias[i]<-mean(sample(1:60, 6)) # realiza a amostragem de 6 números por jogo
+ }
+medias
+```
+
+---
+
