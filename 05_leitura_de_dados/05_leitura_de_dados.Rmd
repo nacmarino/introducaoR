@@ -26,7 +26,7 @@ h1,h2,h3,h4,h5,h6{
 4. [Carregando pacotes](#anchor4)  
 5. [Importando dados a usando o pacote `readr`](#anchor5) 
 6. [Importando dados a usando o pacote `readxl`](#anchor6)  
-7. [Importanto dados organizados em listas](#anchor7)
+7. [Importando dados organizados em listas](#anchor7)
 8. [Exportando dados](#anchor8)
 
 ## Importando dados {#anchor1}
