@@ -1,0 +1,243 @@
+---
+title: "Operações com vetores"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
+output: html_document
+---
+
+<style type="text/css">
+body, td {
+   font-size: 18px;
+}
+code.r{
+  font-size: 16px;
+}
+pre {
+  font-size: 16px
+}
+h1,h2,h3,h4,h5,h6{
+  font-size: 24pt;
+}
+</style>
+
+# Elementos da Aula
+
+1. [Criando vetores - Parte 2](#anchor1)
+2. [Operações orientadas a vetores](#anchor2)
+3. [Reciclagem de vetores](#anchor3)
+
+## Criando vetores - Parte 2 {#anchor1}
+
+* Podemos criar um vetor ao listarmos uma sequência de valores.
+
+```{r}
+(exemplo <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+```
+
+* No entanto, ás vezes, é mais útil automatizarmos a criação destas sequências, para evitar erros ou o trabalho repetitivo. 
+* Uma forma de fazer isso é através da função `seq`.
+
+```{r}
+# cria uma sequência de 1 a 10, em intervalos de uma unidade
+seq(from = 1, to = 10, by = 1)
+# cria uma sequência de 20 número de 1 a 10
+seq(from = 1, to = 10, length.out = 20)
+```
+
+* Também podemos pedir ao R para que repita uma sequência de valores através da função `rep`.
+
+```{r}
+# repetir a sequência 1, 2, 3, 4 duas vezes
+rep(x = c(1, 2, 3, 4, 5), times = 10)
+# repetir duas vezes em sequência cada elemento do vetor 1, 2, 3, 4 
+rep(x = c(1, 2, 3, 4, 5), each = 10)
+# combinando times + each [each tem precedencia]
+rep(x = c(1, 2, 3, 4, 5), times = 10, each = 10)
+```
+
+* Outra forma de fazer isso é através da utilização do operador `:` entre valores: tudo o que está no intervalo x:y (x a y) deve ser impresso.
+
+```{r}
+# cria uma sequência de 1 a 10
+1:10
+# cria uma sequência de 23 a 51
+23:51
+# tente essa
+50:1
+```
+
+* Podemos criar um vetor utilizando este operador.
+
+```{r}
+vetor1 <- 1:100
+vetor1
+```
+
+* Nós podemos determinar o tamanho de um vetor (assim como o número de colunas em um `data.frame`, ver ) através da função `length`.
+
+```{r}
+length(vetor1)
+```
+
+---
+
+##### Exercício 1
+
+a. Crie dois vetores:  
+    + Um pelo operador `:`;  
+    + Outro com a função `seq`.  
+b. Junte estes dois vetores em um único vetor, com o nome do objeto de `vetores`;
+c. Qual o comprimento do vetor?
+d. Crie um vetor com as letras "A" e "B", em sequência (e.g., "A", "B", "A", "B", "A", "B", ...; com comprimento do vetor `vetores`, criado no item b);
+e. Junte dois vetores em um data.frame, com cada vetor sendo uma coluna diferente - crie o objeto `dados`;
+f. Qual o comprimento do data.frame `dados`? O que este comprimento representa?
+
+---
+
+## Operações orientadas a vetores {#anchor2}
+
+* Podemos utilizar algumas informações armazenadas em vetores para realizar algumas operações matemáticas e/ou extrair informações úteis sobre um conjunto de dados.  
+* Um exemplo simples de operação com vetores é a extração de informações de estatística descritiva.
+
+```{r}
+## criando um vetor com números aleatórios extraídos da distribuição uniforme
+set.seed(seed = 33)
+numeros <- runif(n = 10, min = 0, max = 20)
+numeros
+
+## calculando a média do vetor
+mean(x = numeros)
+
+## calculando a mediana
+median(x = numeros)
+
+## calculando o desvio padrão do vetor
+sd(x = numeros)
+
+## o valor mínimo em números
+min(x = numeros)
+
+## o valor máximo em números
+max(x = numeros)
+
+## quantis
+quantile(x = numeros)
+
+# trimmed mean
+mean(x = numeros, trim = 0.1, na.rm = TRUE) # removendo 10% dos dados mais extremos
+mean(x = numeros, trim = 0.4, na.rm = TRUE) # removendo 40% dos dados mais extremos
+```
+
+* Podemos usar algumas funções periféricas para fazer cálculos que podem ajudar em algumas análises estatísticas e fornecer novas perspectivas sobre um conjunto de dados que estamos trabalhando:
+
+```{r}
+# criando um vetor de 1 a 10
+(vetor1 <- 1:10)
+# somatório de todos os valores presentes no vetor1
+sum(x = vetor1)
+# somatório acumulado de todos os valores presentes no vetor1
+cumsum(x = vetor1)
+```
+
+* Tambem podemos contar o número de casos dentro de cada categoria e/ou criar tabelas de contigência através da função `table`.
+
+```{r}
+## com um vetor
+table(state.division)
+## com outro vetor
+table(state.region)
+## os dois vetores simultaneamente
+table(state.division, state.region)
+```
+
+* Um atalho para extrair diversas estatísticas descritivas de um vetor é através da função `summary`.
+
+```{r}
+summary(object = numeros)
+```
+
+---
+
+##### Exercício 2
+
+a. Simule um vetor com 100 números aleatórios que siga a distribuição normal e que tenha média 10 e desvio padrão 3 (função `rnorm`).
+b. Calcule o erro padrão da média dos valores neste vetor.
+    + O erro padrão da média é igual as desvio padrão dividido pela raiz quadrada do tamanho da amostra;
+
+---
+
+## Reciclagem de vetores {#anchor3}
+
+* Como já veremos, muito do que fazemos tende a ser focado em vetores - estejam eles na forma de um vetor _per se_ ou como uma coluna em um `data.frame`.
+* Assim como para um número qualquer, podemos fazer qualquer operação matemática usando um vetor inteiro.
+
+```{r}
+# vamos criar um vetor com uma sequência de 20 números
+(vetor1 <- 1:20)
+# podemos adicionar uma constante ao vetor
+vetor1 + 10
+# podemos subtrair uma contante ao vetor
+vetor1 - 5
+# multiplicar
+vetor1 * 3
+# ou dividir
+vetor1 / 3
+```
+
+* Além disso, podemos realizar outras operações matemáticas com os vetores:
+
+```{r}
+# raiz quadrada
+sqrt(x = vetor1)
+# log
+log10(x = vetor1)
+# potencia
+vetor1^2
+```
+
+* E também podemos fazer operações entre vetores:
+
+```{r}
+# criando um novo vetor
+(vetor2 <- 21:40)
+# adição entre vetores
+vetor1 + vetor2
+# multiplicacao
+vetor1 * vetor2
+# potencia
+vetor1 ^ vetor2
+```
+
+---
+
+##### Exercício 3
+
+a. Multiple os valores do vetor1 por um outro vetor que contenha apenas dois elementos: o número 1 e o número 0.
+b. Qual é o comportamento do resultado?
+c. Por que isso acontenceu?
+
+---
+
+* Ao realizar uma operação com vetores de tamanho diferentes, ocorre a __reciclagem__ do vetor mais curso: o vetor mais curto é reaproveitado _n_ vezes na operação até o final do vetor mais longo.
+    + Lado Positivo: facilita a sua vida dependendo do tipo de calculo que você precisa fazer;
+    + Lado Negativo: por desatenção, você pode errar em uma operação simples em que você não previa um vetor de tamanho menor.
+    
+---
+
+* __Dica do R:__ por vezes, é provável que você encontre um ou mais `NA` em um vetor. Isto pode ser um complicador ao executar algumas funções, que acabam fazendo o que você quer, mas de forma errada.
+
+```{r}
+## criando um vetor com NA
+vetor3 <- c(3, 8, 5, NA, 15)
+## tirando a media desse vetor
+mean(x = vetor3)
+```
+
+* Para evitar com que isso aconteça, diversas funções que você normalmente usará possuem o argumento lógico `na.rm`, que determina se o `NA` deve ser removido do vetor ao executar a função.
+
+```{r}
+mean(x = vetor3, na.rm = TRUE)
+```
+
+* Outra opção para lidar com esse problema é você mesmo excluir os `NA` através da __Indexação__.
