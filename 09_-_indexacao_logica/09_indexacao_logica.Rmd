@@ -1,6 +1,6 @@
 ---
 title: "Indexação por lógica"
-subtitle: "Vitor N. T. Borges Jr. & Nicholas A. C. Marino"
+subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
 output: html_document
@@ -9,6 +9,7 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -23,8 +24,6 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da aula
 
----
-
 1. [Operadores de lógica](#anchor1);
 2. [Operações condicionais em vetores](#anchor2);
 3. [Operações condicionais em `data.frames`](#anchor3);
@@ -32,8 +31,6 @@ h1,h2,h3,h4,h5,h6{
 5. [Aplicação da indexação e operações condicionais](#anchor5).
 
 ## Operadores de lógica {#anchor1}
-
----
 
 * Apesar de reter ou eliminar posições específicas de um objeto no R ser algo útil, na maior parte das vezes queremos realizar esta tarefa para conjuntos dos dados que cumpram certos requerimentos (por exemplo, reter apenas as observações de uma determinada categoria).
 * Uma forma de fazer isto é através de testes lógicos.
@@ -657,5 +654,3 @@ a. Substitua o conteúdo de cada linha pela idade e um sobrenome de 5 pessoas qu
 b. Substitua apenas o título da coluna 'nome' por 'sobrenome'.
 
 ---
-
-
