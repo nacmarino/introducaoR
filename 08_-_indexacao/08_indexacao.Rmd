@@ -9,6 +9,7 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -27,27 +28,33 @@ h1,h2,h3,h4,h5,h6{
 2. [Indexação de vetores](#anchor2)
 3. [Indexando `data.frame`](#anchor3)
 4. [Indexando listas](#anchor4)
+5. Exercícios
+    + [Exercício 1](#anchor5)
+    + [Exercício 2](#anchor6)
+    + [Exercício 3](#anchor7)
+    + [Exercício 4](#anchor8)
 
-## Indexação {#anchor1}
+## 1. Indexação {#anchor1}
 
 * Indexação é a ação de extrair um elemento específico, ou um conjunto de elementos, de um objeto.
 * Cada objeto criado pode ser descrito por um conjunto de dimensões (copie e rode os exemplos junto de cada caso abaixo):
     1. um `vector` possui apenas uma dimensão: o seu comprimento linear.
-        + `vetor1`
+        + `vetor1 <- 17:33`
+        + `vetor2 <- seq(from = 0, to = 100, length.out = 17)`
     2. uma `matrix` possui duas dimensões: as linhas e as coluna:
         + `matrix(c(vetor1, vetor2), ncol = 2)`
         + um `array` é um caso especial de matriz com mais de duas dimensões: e.g. `array(0, dim = c(2, 4, 3))`
-    3. uma `list` possui uma ou mais dimensões: sub-listas, compostas por uma ou sub-listas e as dimensões dos objetos que as compõem:
-        + `list(vetor1, vetor2, list(vetor1, vetor2), list(list(vetor1, vetor2), vetor1))`
-    4. um `data.frame` possui apenas duas dimensões: as linhas e as colunas:
+    3. um `data.frame` possui apenas duas dimensões: as linhas e as colunas:
         + `data.frame(vetor1, vetor2)`
+    4. uma `list` possui uma ou mais dimensões: sub-listas, compostas por uma ou sub-listas e as dimensões dos objetos que as compõem:
+        + `list(vetor1, vetor2, list(vetor1, vetor2), list(list(vetor1, vetor2), vetor1))`
         
 * Note que, em cada um destes casos, cada elemento pode ser rastreado até uma posição específica. Por exemplo:
-    + no `vetor1` que criamos anteriormente, o número 7 ocupa a sétima posição na sequência;
-    + em `list(vetor1, vetor2)`, o número 100 ocupa a 34a. posição da segunda lista;
-    + em `data.frame(vetor1, vetor2)`, o número 0 ocupa a primeira linha a segunda coluna.
+    + no `vetor1` que criamos anteriormente, o número 23 ocupa a sétima posição na sequência;
+    + em `list(vetor1, vetor2)`, o número 68.75 ocupa a 12a. posição do segundo elemento da lista;
+    + em `data.frame(vetor1, vetor2)`, o número 0 ocupa a primeira linha da segunda coluna.
 
-* Assim, podemos extrair sub-conjuntos específicos de dados de acordo com as 'coordenadas' dos dados que queremos, como em um jogo de batalha naval.  
+* Assim, podemos extrair sub-conjuntos específicos de dados e editá-los de acordo com as 'coordenadas' daquilo queremos, como em um jogo de batalha naval.  
 
 <center><img src="figures/batalha_naval.png" height="350px"></img></center>  
 
@@ -56,7 +63,7 @@ h1,h2,h3,h4,h5,h6{
     2. `[[]]` extrai um ou mais elementos em listas ou `data.frame`;
     3. `$` extrai elementos pelo __nome__ em listas e `data.frame`.
 
-### Indexando Vetores {#anchor2}
+## 2. Indexando Vetores {#anchor2}
 
 * Por exemplo, se quisermos extrair o 16o. elemento do `vetor2`, podemos usar:
 
@@ -84,7 +91,7 @@ vetor2[16:21]
 vetor2[numeros]
 ```
 
-* A indexação está usando um vetor de um ou mais elementos - este vetor marca a posição dos elementos a serem retidos.  
+* A indexação está usando um vetor de um ou mais elemento para marcar a posição daquilo que queremos reter.  
 * Assim, poderíamos criar um vetor com números representando posições específicas que queremos reter:
 
 ```{r}
@@ -95,12 +102,11 @@ vetor2[c(1, 5, 7, 9)]
 
 ---
 
-##### Exercício 1
+#### Exercício 1 {#anchor5}
 
 a. Utilizando o `vetor1`, faça uma indexação que retorne:
-    1. Os cinco primeiros elementos;
-    2. Os elementos nas posições 10, 12, 14, 16, 18 e 20;
-    3. Os cinco primeiros elementos e os elementos entre as posições 20 e 30;
+    + Os cinco primeiros elementos;
+    + Os elementos nas posições pares.
 
 ---
 
@@ -125,17 +131,13 @@ vetor2[-1:-20]
 
 ---
 
-##### Exercício 2
+#### Exercício 2 {#anchor6}
 
 a. Exclua todos os elementos de 1 a 10 e de 22 a 26 do `vetor2`.  
 
-```{r}
-vetor2[-c(1:10, 22:26)]
-```
-
 ---
 
-### Indexando `data.frame` {#anchor3}
+## 3. Indexando `data.frame` {#anchor3}
 
 * Mas e para indexarmos um data.frame?
 
@@ -170,13 +172,13 @@ dados[[2]]
 
 ---
 
-##### Exercício 3
+#### Exercício 3 {#anchor7}
 
 a. Usando o data.frame `dados`:
-    1. Selecione as linhas de número 3, 12, 18 e 25, retendo todas as colunas;
-    2. Selecione todas as colunas, mas apenas as linhas pares;
-    3. Elimine apenas a coluna 2;
-    4. Elimine as linhas 15 a 30.
+    + Selecione as linhas de número 3, 12, 18 e 25, retendo todas as colunas;
+    + Selecione todas as colunas, mas apenas as linhas pares;
+    + Elimine apenas a coluna 2;
+    + Elimine as linhas 15 a 30.
 
 ---
 
@@ -195,9 +197,9 @@ dados[,2:3]
 dados$letras
 ```
 
-* __Dica do RStudio:__ ao tentar indexar um objeto através do uso do `$`, digite o nome do objeto, adicione o `$` e pressione `Tab` - todos os elementos que compõem a estrutura daquele elemento estarão disponíveis.
+* __Dica do RStudio:__ ao tentar indexar algum elemento que está dentro de um objeto através do uso do `$`, digite o nome do objeto, adicione o `$` e pressione `Tab` - todos os elementos que compõem a estrutura daquele elemento estarão disponíveis.
 
-### Indexando listas {#anchor4}
+## 4. Indexando listas {#anchor4}
 
 * E para indexarmos uma lista?
 
@@ -226,6 +228,6 @@ lista[[2]][,c(2:3)]
 
 ---
 
-##### Exercício 4
+#### Exercício 4 {#anchor8}
 
-a. Selecione os elementos nas posições pares (linhas) do objeto na primeira sub-lista de `lista`.
+a. Selecione os elementos nas posições pares das linhas do objeto no primeira elemento de `lista`.
