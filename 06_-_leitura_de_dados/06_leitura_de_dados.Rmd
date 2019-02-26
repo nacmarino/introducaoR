@@ -9,9 +9,13 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
+}
+pre {
+  font-size: 16px
 }
 h1,h2,h3,h4,h5,h6{
   font-size: 24pt;
@@ -20,67 +24,109 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da Aula
 
-1. [Importando dados](#anchor1)
+1. [Preparando uma tabela de dados](#anchor1)
 2. [Caminhos absolutos _vs_ relativos](#anchor2)
-3. [Importando dados via a `base` do R](#anchor3)
-4. [Carregando pacotes](#anchor4)  
-5. [Importando dados a usando o pacote `readr`](#anchor5) 
-6. [Importando dados a usando o pacote `readxl`](#anchor6)  
-7. [Importando dados organizados em listas](#anchor7)
-8. [Exportando dados](#anchor8)
+3. [Importando tabelas em `.csv` e `.txt`](#anchor3)
+4. [`data.frame` e `tibble`](#anchor4)
+5. [Importando tabelas do Excel](#anchor5)
+6. [Importando listas](#anchor6)
+7. [Exportando `data.frame` e listas](#anchor7)
+8. Exercícios
+    + [Exercício 1](#anchor8)
+    + [Exercício 2](#anchor9)
+    + [Exercício 3](#anchor10)
+    + [Exercício 4](#anchor11)
+    + [Exercício 5](#anchor12)
 
-## Importando dados {#anchor1}
+## 1. Preparando uma tabela de dados {#anchor1}
 
-* Nosso principal uso da linguagem de programação R normalmente é na manipulação e análise de dados. Portanto, nossos dados muitas vezes vêm de fontes externas ao ambiente R:
+* Uma parte fundamental do que fazemos ao utilizar o R envolve importar um conjunto de dados de uma planilha para a sessão de trabalho;
+* Neste sentido, é bastante provável que os arquivos que desejamos importar estarão em um ou mais dos seguintes formatos e suas extensões:
     + arquivos de Excel com extensão: `.xlsx` e .`xls`;
     + arquivos de texto separado por tabulação: `.txt`;
     + arquivos separados por vírgulas: `.csv`;
     + ...
-
-* O R dispõem de um conjunto de funções que tornam a leitura de dados a partir de fontes externas muito mais fácil e rápida:
-    + `base`: funções padrão que já vem instaladas no R;
-    + `readr`: adiciona novas funcionalidades que torna mais rápida a leitura de dados, além de reduzir erros de carragamento
-    + `readxl`: adiciona a capacidade da leitura de arquivos Excel de forma rápida, além de reduzir erros de carragamento
-    + `data.table`: muito utilizado para leitura de dados que ocupam muitos Mb ou Gb no seu HD.
-
-* __Maior parte dos erros de leitura de dados ocorrem por conta de erros na edição da planilha__.  
+* Entretanto, é extremamente importante que a planilha que vamos utilizar esteja formatada corretamente, de forma que as informações necessárias sejam apresentadas ao computador da forma como ele melhor as entende: visão humana _vs_ visão da máquina.
+* __A maior parte dos erros de leitura de dados ocorrem por conta de erros na criação e edição da planilha que ser importar__.  
     1. __"," no lugar de "." para separar decimais:__ editável através de um argumento nas funções de leitura de dados;  
     2. __espaços entre palavras nos títulos e células:__ isto era uma problema nas versões anteriores do R, mas aparentemente foi resolvido;  
     3. __espaços no final de um célula:__ durante o preenchimento das planilhas podem haver células fantasmas;  
     4. __células vazias:__ uma célula pode estar vazia por dois motivos, e é importante codificar de forma correta:
         + Não existe observação feita para aquela informação: adicionar __NA__ (not available); __não__ usar "ND" ou "N/A".
         + A observação foi feita, mas o valor foi zero: adicionar o valor 0.
-    5. __acento e outras coisas do português:__ lembre-se que computadores não entendem português tão bem e, tampouco, o R - eles podem se confudir com os acentos que usamos nas palavras (problema nas versões anteriores, mas melhorando - entretanto, não abuse);  
-    6. __caracteres especiais:__ assim como no item anterior, evite usar caracteres especiais nas suas planilhas, como "ç" e símbolo gregos (como $\mu$, para simbolizar micro) (problema nas versões anteriores, mas melhorando - entretanto, não abuse).  
+    5. __acentos e outras coisas do português:__ lembre-se que computadores não entendem português tão bem e, tampouco, o R - eles podem se confudir com os acentos que usamos nas palavras (problema nas versões anteriores, mas melhorando - entretanto, não abuse);  
+    6. __caracteres especiais:__ assim como no item anterior, evite usar caracteres especiais nas suas planilhas, como "ç" e símbolo gregos (como $\mu$, para simbolizar micro) (problema nas versões anteriores, mas melhorando - entretanto, não abuse);  
+    7. __linhas com comentários antes de iniciar a apresentação dos dados:__ editável através de um argumento nas funções de leitura de dados.
 
 > Tabelar os dados de forma correta é reduzir drasticamente as chances de ter um erro ao carregar uma planilha de dados.
 
-### Caminhos absolutos _vs_ caminhos relativos: outra fonte de erros {#anchor2}
+## 2. Caminhos absolutos _vs_ caminhos relativos {#anchor2}
 
-Uma coisa que começará a ficar muito clara a partir deste ponto é o quão importante é usarmos um __caminho relativo__ para nos referirmos a um arquivo salvo no nosso HD, ao invés do __caminho absoluto__.  
+* Carregar um conjunto de dados no R não é um problema quando: 
+    + somos um único indivíduo mexendo em conjunto de dados;
+    + estamos trabalhando em um conjunto de dados utilizando em um único computador;
+    + estamos trabalhando em um conjunto de dados durante um curto intervalo de tempo (~ 1 ano). 
+* Entretanto, nem sempre teremos essas situações tão bem controladas durante a nossa vida, uma vez que (1) você pode estar usando mais de um computador nesse momento, (2) ou utilizar um computador diferente no futuro ou, ainda, (3) estar trabalhando junto de outra pessoa.
+* Por que isso é um problema?
+    + O 'caminho' (_path_) que aponta para um determinado arquivo difere de pessoa para pessoa ou computador para computador;
+    + Depois de algum tempo você dificilmente vai lembrar em qual diretório estava que arquivo e/ou que arquivo é usado em que script e para o quê.
+* Algumas soluções para remediar estes problemas potenciais:
+    + __Nunca__ usar o `setwd(<novo_diretorio>)` ou `file.choose` para a importação dos dados;  
+    + Utilizar os __projetos__ do RStudio para organizar o seu trabalho;  
+    + Utilizar __caminhos relativos__ ao invés de __caminhos absolutos__ para importar um conjunto de dados.  
+       + __Caminho absoluto:__ descreve o caminho até um arquivo desde a raiz do computador;  
+       + __Caminho relativo:__ descreve o caminho até um arquivo a partir do diretório de trabalho atual.  
 
-* __Caminho absoluto:__ é aquele que determina a localização de um arquivo a ser importado ou exportado desde a raiz do seu computador.  
-* __Caminho relativo:__ é aquele que determina a localização de um arquivo a ser importado ou exportado a partir do diretório de trabalho.  
+<center><img src="figures/caminhos.png" height="250px"></img></center>  
 
-Muitas vezes, temos um erro ao importar ou exportar um arquivo pois confundimos um caminho absoluto com um caminho relativo. Apesar de parecer mais vantajoso trabalhar com um caminho absoluto, na realidade a melhor opção é __sempre__ trabalharmos com caminhos relativos pois caso você esteja operando o mesmo script em outro computador, o caminho absoluto não será mais válido (já que o nome do usuário, diretórios e etc vão diferir). Isto prejudica e muito a reprodutibilidade de um script por outro pesquisador ou por você mesmo no futuro. Além disso, o próprio fato de você ter que escrever um caminho absoluto muito extenso já é fonte possível de erros e de perda de tempo.
 
-Portanto, toda vez que você iniciar o R, você pode ter acesso ao seu diretório de trabalho através da função `getwd()`, e poderá modificar o seu diretório de trabalho através do `setwd(<novo_diretorio>)`. Uma tática para usar um caminho relativo então é sempre usar o `setwd` para dizer ao R que tudo que você precisará será encontrado a partir de um diretório. Todavia, esta ainda não é a solução ideal. O melhor que você pode fazer é criar um __projeto__ no RStudio e sempre que você for trabalhar nos scripts daquele projeto, carregar o projeto e começar a trabalhar. 
+> __Importante:__ nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!
 
-## Importando dados via a `base` do R {#anchor3}
+> Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!  
 
-* Pela `base` do R, podemos usar as funções `read.csv` para a leitura de dados separados por vírgula (extensão .csv).
+---
+
+### Exercício 1 {#anchor8}
+
+1. Qual o caminho absoluto até o arquivo desta aula no seu computador?
+2. Qual o caminho relativo para este mesmo arquivo?
+    + __Dica__: utilize a função `getwd` para visualizar os caminhos, e preste atenção ao caminho indicado debaixo da aba 'Console'.  
+
+---
+
+## 3. Importando tabelas em `.csv` e `.txt` {#anchor3}
+
+* Existem três principais formatos que utilizamos para salvar uma tabela de dados:
+    + arquivos de texto separado por tabulação: `.txt`;
+    + arquivos separados por vírgulas: `.csv`;
+    + arquivos de Excel: `.xlsx` e .`xls`;
+* O R dispõem de diversos pacotes e funções capazes de importar estes dados e, também, exportar informações nestes mesmos formatos. A `base` do R possui uma variedade de funções para tal, mas recentemente os pacotes `readr` e `readxl` têm se mostrado mais úteis, rápidos e menos propensos a apresentar erros de leitura.
+* Estes e muitos outros pacotes de leitura de dados possuem funções com estruturas muito similares para a importação e exportação de dados:
+    + `read.<extensão>`, para importar (na `base`, `read.<extensão>`);  
+    + `write_<extensão>`, para exportar (na `base`, `write.<extensão>`).
+
+* Vamos examinar a função `read.csv` que é utilizada para carregar um conjunto de dados com extensão `.csv` (_comma-separated values_).
 
 ```{r}
+# da base do R
 args(read.csv)
 ```
 
-* Vamos utilizar esta função para carregar os dados da lista de presença das Palestras do PPGE.
-* Note que aqui explicitamente fizemos duas coisas:
-    + determinamos que o separador entre colunas é o ";" ao invés da "," (meu computador está salvando .csv com ";");
-    + falamos para o R que queremos que ele leia todas as linhas de todas as colunas, ao apagar a opção `nrows`.
+* Vamos utilizar esta função para carregar um conjunto de dados. Todavia, é necessário garantirmos que (1) determinamos que o separador entre colunas é o ";" ao invés da "," (isto difere de computador para computador - alguns salvam `.csv` separado por ";" como padrão, enquanto outros usam ",") e (2) ele entenda que a primeira linha corresponda aos nomes das colunas.
+* __Importante:__ é sempre uma boa ideia atribuir a um objeto os dados que você está carregando; caso você não o faço, os dados vão 'existir' dentro da sessão de trabalho somente quando você executar a linha de comando que serve para carregar eles. Com a atribuição dos dados a um objeto, eles vão 'existir' dentro da sessão de trabalho até que você a encerre (ou remova eles).
 
-```{r}
-read.csv(file = "dados/lista_de_presenca.csv", header = TRUE, sep = ";", nrows = 5)
+```{r echo=FALSE, message=FALSE}
+dados_climaticos <- read.csv(file = "../96_-_dados_para_exemplos/dados climaticos.csv", header = TRUE)
+```
+
+```{r eval=FALSE}
+## use um ou outro:
+# se o seu computador entender o csv como separado por vírgula
+dados_climaticos <- read.csv(file = "dados climaticos.csv", header = TRUE)
+dados_climaticos
+# se o seu computador entender o csv como separado por ponto-e-vírgula
+dados_climaticos <- read.csv(file = "dados climaticos.csv", header = TRUE, sep = ";")
+dados_climaticos
 ```
 
 * __Dica do RStudio:__ você não precisa ficar vendo no Explorer/Finder o caminho para chegar ao arquivo que você quer carregar. Basta:
@@ -90,47 +136,41 @@ read.csv(file = "dados/lista_de_presenca.csv", header = TRUE, sep = ";", nrows =
     + Caso o diretório que você deseja esteja "acima" daquele que você está, basta adicionar `../` no início do caminho e apertar `Tab` - você verá o diretório acima; caso o diretório alvo esteja ainda mais acima, é só adicionar mais um `../` na frente do que você já usou (e.g., `../../`);
     + Caso você queira iniciar a busca diretamente a partir da raíz do seu computador, é só começar a preencher o caminho com `/` e ir apertando `Tab`.
 
-* Podemos adicionar a execução desta função a um objeto, facilitando o uso desta planilha de dados em outros momentos.
-
-```{r}
-dados <- read.csv(file = "dados/lista_de_presenca.csv", header = TRUE, sep = ";")
-```
-
 * Podemos verificar as primeiras linhas de uma tabela que carregamos pela função `head`:
 
 ```{r}
-head(x = dados)
+head(x = dados_climaticos)
 ```
 
 * E também podemos verificar as últimas linhas desta tabela pela função `tail`:
 
 ```{r}
-tail(x = dados)
+tail(x = dados_climaticos)
 ```
 
 * Além disso, podemos verificar a estrutura do conjunto de dados que carregamos com a função `str`:
 
 ```{r}
-str(dados)
+str(dados_climaticos)
 ```
 
 * Podemos também ter acesso à características específicas deste conjunto de dados, como o número de linhas e colunas:
 
 ```{r}
 # numero de dimensoes da planilha (linhas e dados)
-dim(dados)
+dim(dados_climaticos)
 # numero de colunas
-ncol(dados)
+ncol(dados_climaticos)
 # numero de linhas
-nrow(dados)
+nrow(dados_climaticos)
 ```
 
 * E também podemos verificar os nomes das linhas e colunas.
 ```{r}
 # nomes das colunas
-colnames(dados)
+colnames(dados_climaticos)
 # nomes das linhas
-rownames(dados)
+rownames(dados_climaticos)
 ```
 
 * Outra forma de ver os nomes das linhas de um data.frame, ou o nome das observações em um vetor ou das sub-listas de uma lista é através da função `names`.
@@ -138,104 +178,76 @@ rownames(dados)
 ```{r}
 # nomes das colunas do data.frame dados
 # outra forma de ver isso: nome dos vetores que compõem o data.frame dados
-names(x = dados)
+names(x = dados_climaticos)
 ```
 
-* Atenção: ao contrário de um data.frame, uma matriz possui nomes às suas dimensões!
-
-```{r}
-# criando uma matriz de zeros
-(matriz <- matrix(0, nrow = 2, ncol = 2, dimnames = list(c(1, 2), c(3, 4))))
-# quais os nomes das colunas da matriz?
-names(matriz)
-# quais os nomes das colunas da matriz?
-colnames(matriz)
-# quais os nomes das dimensões da matriz?
-dimnames(matriz)
-```
-
-* Normalmente, ao carregarmos um conjunto de dados, é boa prática verificar se ele corresponde de fato aquilo que esperamos, para evitar surpresas durante a análise de dados ou no seu primeiro uso.
-
-* A função `read.csv` é específica para arquivos separados por `,` (ou `;` como no caso do nosso exemplo), mas existem também outras funções que permitem ler arquivos com outro tipo de extensão, como a função `read.table`.
-* A função `read.table` é usada principalmente para leitura de arquivos com extensão .txt.
-
-```{r}
-args(read.table)
-```
+* De forma análoga à função `read.csv` que importa arquivos com extensão `.csv`, temos a função `read.table` que pode ser utilizada para a leitura de arquivos de texto separados por tabulação - isto é, arquivos com extensão `.txt`.
 
 ---
 
-##### Exercício 1
+#### Exercício 2 {#anchor9}
 
-a. Use a função `read.table` para ler o arquivo `exemplo.txt`.
-b. Você conseguiu carregar este arquivo? Se não, por que?
-c. Como consertar este possível 'Erro'?
+a. Use a função `read.table` para ler o arquivo `biomassa.txt`, e atribua estes dados ao objeto `biomassa`.
+b. Utilize a função `str` para entender a estrutura do objeto que você criou.
 
 ---
 
-## Carregando pacotes no R {#anchor4}
+## 4. `data.frame` e `tibble` {#anchor4}
 
-* Existem duas formas de se carregar um pacote no R:
-    + `library("nome_do_pacote")`;
-    + `require("nome_do_pacote")`.
-* Caso você não queira carregar o pacote ou ainda esteja havendo algum conflito no R por conta de nomes de objetos repetidos entre pacotes ou entre um pacote e algo que você fez use:
-    + `nome_do_pacote::nome_da_funcao`;
-* Algumas funções não mostram tudo o que podem fazer! Por conta do ritmo de desenvolvimento e, até mesmo da utilidade em nível basal de certas funções em um pacote, algumas funções são escondidas do usuário. Para ter acesso a elas, basta usar:
-    + `nome_do_pacote:::nome_da_funcao`
+* Quando só havia a `base` do R para carregar um conjunto de dados, toda a planilha importada era um objeto de classe `data.frame`.
+    + Contém duas dimensões, as linhas e as colunas.
+    + As colunas contém os valores das diferentes variáveis, que caracterizam cada unidade observacional registradas nas linhas.
+    + Cada coluna armazena um único tipo de valor - somente números, somente caracteres, somente argumentos lógicos.
+* Atualmente, com a implementação de pacotes como o `readr` e o `readxl`, estas tabelas são tanto um objeto da classe `data.frame` quando da classe `tibble`:
+    + Possui a mesma estrutura e dimensões de um `data.frame`;
+    + Objetivo é facilitar a visualização dos dados na tabela;
+    + A classe de objeto dos elementos de cada coluna é apresentada junto da própria tabela;
+    + Previne a automatização da atribuição de certas classes de objeto a algumas colunas (_e.g._, toda coluna com caracteres é um fator, o que torna difícil sua manipulação).
+* Como todo `tibble` é um `data.frame`, toda e qualquer função que funcione com um `data.frame` também funcionará com um `tibble`.  
+* O pacote `readr`, por exemplo, possui duas funções análogas às disponíveis na `base` para a leitura de arquivos com extensão `.csv` e `.txt`:
+    + `read_csv` para arquivos `.csv` cujo separador entre colunas é a vírgula;  
+    + `read_csv2` para arquivos `.csv` cujo separador entre colunas é o ponto-e-vírgula;  
+    + `read_tsv` para arquivos `.txt` cujo separador entre colunas são as tabulações (_tab-separated values_ ou _tab-delimited values_).  
 
-## Importanto dados com o pacote `readr` {#anchor5}
+---
 
-* Outra opção é carregar seus dados com o pacote `readr`;
+#### Exercício 3 {#anchor10}
 
-```{r}
-library(readr)
-```
+a. Utilize as funções do pacote `readr` para carregar os arquivos `.csv` e `.txt` que havíamos carregado utilizando as funções da `base` do R. Não esqueça de carregar aquele pacote, de verificar a lista de argumentos das duas funções, e atribuir estes dois conjuntos de dados a novos objetos.  
+b. Utilize a função `str` para verificar a estrutura dos dados que você carregou utilizando as funções do pacote `readr`. O que você vê de diferente entre a estrutura desses objetos e aqueles criados utilizando as funções da `base`?
 
-* Este pacote espelha muitas das funções disponíveis na `base`, mas de forma aprimorada:
-    + `read_tsv`: para leitura de arquivos separados por tabulação (e.g., .txt);
-    + `read_csv`: para leitura de arquivos separados por vígula (e.g., .csv).
-    + `read_delim`: função guarda-chuva para leitura de arquivos separados por um delimitador específico, e.g.:
-        a. `delim = ";"` para .csv separado por ";";
-        b. `delim = "\t"` para .txt ou texto separado por tabulação;
-        c. ...
-    
-```{r}
-args(read_delim)
-```
+---
 
-* Vantagens das funções do pacote `readr`:
-    1. tende a fazer a leitura de conjunto de dados mais extensos de forma muito mais rápida;
-    2. não transforma caracteres em fatores de forma automática; e,
-    3. tem um método de apresentação muito mais intuitivo e útil.
+## 5. Importanto tabelas do Excel {#anchor5}
 
-```{r}
-read_delim(file = "dados/lista_de_presenca.csv", delim = ";")
-```
-
-## Importanto dados com o pacote `readxl` {#anchor6}
-
-* Muitas vezes, nossos dados não estão no formato .txt e nem no formato .csv, mas sim em .xls ou .xlsx;
-* O pacote `readxl` tem duas funções úteis para lermos dados com esta estrutura:
-    + `read_excel`, para ler uma aba de um arquivo Excel;
-    + `excel_sheets`, para ver uma lista com o nome e posição de todas as abas no arquivo Excel.
+* Algumas pessoas preferem utilizar plataformas para entrada de dados que tenham extensão não-proprietárias, como aquelas com extensão `.csv`. Por outro lado, é de praxe que quase todos nós usemos o Excel para a entrada de dados; isto fez, até há alguns anos atrás, que nós tivéssemos que entrar dados no Excel, e salvar um novo arquivo em formato `.txt` para que estes dados pudessem ser importados para o R.
+* As desvantagens principais disso são que você sempre precisava criar duas versões do mesmo conjunto de dados - uma para editar, outra para carregar no R -, e toda vez que você precisava editar alguma coisa na planilha Excel, você precisava salvar uma nova versão do arquivo `.txt`. 
+* Nos últimos anos, o pacote `readxl` veio para facilitar o uso direto de arquivos Excel dentro do ambiente de programação do R, através de duas funções principais:
+    + `excel_sheets`, para ver uma lista com o nome e posição de todas as abas no arquivo Excel;
+    + `read_excel`, para ler uma aba de um arquivo Excel, com extensão `.xls` e `.xlsx`.
+* A função `read_excel` permite que você selecione qual aba será carregada, tanto pela posição dela (_i.e._, 1, 2, 3,...) quanto pelo seu nome (_e.g._, "aba A", "dado B", "observacoes C",...).  
 
 ```{r}
+# para carregar o pacote
 library(readxl)
-args(read_excel)
+
+# para ver os nomes das abas existentes dentro do arquivo excel
 args(excel_sheets)
+
+# para ver a lista de argumentos da funcao de leitura de excel
+args(read_excel)
 ```
 
-* É uma função com alta velocidade de leitura.
+---
 
-```{r}
-read_excel(path = "dados/Lista de Palestras.xlsx")
-```
+#### Exercício 4 {#anchor11}
 
-* Tanto o `readxl::read_excel` quanto o `readr::read_<extensão>` fazem uma 'leitura prévia' dos dados em questão e tentam 'adivinhar' qual é o tipo de objeto em cada uma das colunas, de forma apresentar de forma mais adequada o dado para o usuário. Isto vem às custas de uma lentidão (quase imperceptível aos nossos olhos) na hora de carregar os dados.
-    + Você pode 'acelerar' a leitura de dados através destas funções adicionar o tipo de variável que cada coluna assume pelo argumento `col_types` nestas funções;
-    + Caso você não o faça, não há problema: as duas funções vão ler as primeiras linhas de cada coluna e tentar este processo de 'adivinhação' (quase sempre, acertam).
+a. Carregue os dois conjuntos de dados do Excel e atribua-os a novos objetos (`ilhas.xlsx` e `revistas.xls`).  
+b. Verifique a estrutura dos dois objetos que você criou.  
 
-## Importando dados organizados em listas {#anchor7}
+---
+
+## 6. Importando listas {#anchor6}
 
 * Pode ocorrer de você ter que importar algum tipo de dado que esteja organizado no formato de listas, por exemplo:
     + Resultados de diversos modelos;
@@ -244,47 +256,47 @@ read_excel(path = "dados/Lista de Palestras.xlsx")
 * Normalmente, listas do R são salvas com a extensão `.rds`.
 * Para importar uma lista, podemos usar a função `base::readRDS` ou `readr::read_rds`.
 
-```{r}
-readRDS(file = "dados/lista.rds")
+```{r eval=FALSE}
+resultados <- readRDS(file = "lista.rds")
+resultados
 ```
 
-## Exportando dados {#anchor8}
+## 7. Exportando `data.frame` e listas {#anchor7}
 
-* Carregar os dados é parte do trabalho, a outra parte é exportar os dados que você limpou, ou aqueles que devem ser usados no final das contas para uma análise, ou até mesmo os resultados de uma análise e as predições de um modelo para gerar uma figura posteriormente;
-* Para tal, utilizamos as funções `write.<extensão>` do pacote `base` ou as funções `write_<extensão>` disponíveis no pacote `readr`.
+* Carregar os dados é parte do trabalho, a outra parte é exportar os dados que você produziu, aqueles que devem ser usados para uma análise, ou até mesmo os resultados dessa análise;
+* Para tal, utilizamos as funções `write.<extensão>` no pacote da `base` ou as funções `write_<extensão>` disponíveis no pacote `readr`.
+
+```{r echo=FALSE, message=FALSE}
+library(readr)
+```
 
 ```{r}
 # pelo pacote base
 args(write.table)
 # pelo readr
 args(write_tsv)
-# pelo readr
-args(write_delim)
 ## para listas
 args(write_rds)
 ```
 
-* Um exemplo do uso de uma destas funções é:
+* Note que no argumento `path`, nós podemos (e devemos) especificar o diretório específico onde um arquivo de dados será salvo, bem como o nome desse arquivo e sua extensão.  
+* Por exemplo, podemos criar uma lista e exportá-la como:
 
 ```{r eval=FALSE}
-# para pegar um arquivo que salvaremos
-arquivo <- read.table(file = "dados/exemplo.txt", header = TRUE, skip = 5)
-# para salvar este arquivo
-write_delim(x = arquivo, path = "dados/teste.xls", delim = "\t", col_names = TRUE)
+# criando a lista
+minha_lista <- list(resultados = read_rds(path = "resultados da analise.rds"),
+                    clima = read_csv(file = "dados climaticos.csv"),
+                    ilhas = read_excel(path = "ilhas.xlsx"))
+# exportando a lista
+write_rds(x = minha_lista, path = "minha_lista.rds")
 ```
 
 ---
 
-##### Exercício 2
+#### Exercício 5 {#anchor12}
 
 a. Crie três vetores contendo tipos de informações diferentes;
 b. Transforme estes três vetores em um data.frame;
-c. Salve este data.frame como um arquivo .csv e como um arquivo .xls em um diretório a sua escolha;
-d. Apague os objetos que você criou para salvar estes arquivos;
-e. Leia estes dois arquivos a partir do seu HD.
-
----
-
-> __Importante:__ nunca, em hipótese alguma, use o file.choose para abrir um arquivo! Caso você mude de computador, mude o nome do arquivo, se distraia ou simplesmente passe muito tempo desde que você usou o script pela última vez, você não se lembrará, não achará o arquivo, ou usará o arquivo incorreto. Isso é totalmente perigoso e contra-produtivo! Tenha boas práticas!
-
-> Não se esqueça: tente sempre trabalhar usando os projetos do RStudio!  
+c. Exporte este `data.frame` como um arquivo `.csv` e como um arquivo .xls em um diretório a sua escolha;
+d. Apague os objetos que você criou para salvar estes arquivos (não se esqueça da função `rm()`);
+e. Importe estes dois arquivos a partir do seu HD.
