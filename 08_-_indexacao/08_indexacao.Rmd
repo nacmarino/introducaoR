@@ -1,5 +1,5 @@
 ---
-title: "Indexação"
+title: "Introdução à indexação"
 subtitle: "Nicholas A. C. Marino"
 author: "nac.marino@gmail.com"
 date: "github.com/nacmarino/introducaoR"
