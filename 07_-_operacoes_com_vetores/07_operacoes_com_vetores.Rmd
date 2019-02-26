@@ -9,6 +9,7 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -26,8 +27,12 @@ h1,h2,h3,h4,h5,h6{
 1. [Criando vetores - Parte 2](#anchor1)
 2. [Operações orientadas a vetores](#anchor2)
 3. [Reciclagem de vetores](#anchor3)
+4. Exercícios
+    + [Exercício 1](#anchor4)
+    + [Exercício 2](#anchor5)
+    + [Exercício 3](#anchor6)
 
-## Criando vetores - Parte 2 {#anchor1}
+## 1. Criando vetores - Parte 2 {#anchor1}
 
 * Podemos criar um vetor ao listarmos uma sequência de valores.
 
@@ -82,7 +87,7 @@ length(vetor1)
 
 ---
 
-##### Exercício 1
+#### Exercício 1 {#anchor4}
 
 a. Crie dois vetores:  
     + Um pelo operador `:`;  
@@ -95,7 +100,7 @@ f. Qual o comprimento do data.frame `dados`? O que este comprimento representa?
 
 ---
 
-## Operações orientadas a vetores {#anchor2}
+## 2. Operações orientadas a vetores {#anchor2}
 
 * Podemos utilizar algumas informações armazenadas em vetores para realizar algumas operações matemáticas e/ou extrair informações úteis sobre um conjunto de dados.  
 * Um exemplo simples de operação com vetores é a extração de informações de estatística descritiva.
@@ -159,15 +164,16 @@ summary(object = numeros)
 
 ---
 
-##### Exercício 2
+#### Exercício 2 {#anchor5}
 
 a. Simule um vetor com 100 números aleatórios que siga a distribuição normal e que tenha média 10 e desvio padrão 3 (função `rnorm`).
 b. Calcule o erro padrão da média dos valores neste vetor.
     + O erro padrão da média é igual as desvio padrão dividido pela raiz quadrada do tamanho da amostra;
+c. Carregue o conjunto de `dados climáticos.csv`, que trabalhamos na última aula. Com estes dados, calcule a média da temperatura instantânea e da velocidade do vento.  
 
 ---
 
-## Reciclagem de vetores {#anchor3}
+## 3. Reciclagem de vetores {#anchor3}
 
 * Como já veremos, muito do que fazemos tende a ser focado em vetores - estejam eles na forma de um vetor _per se_ ou como uma coluna em um `data.frame`.
 * Assim como para um número qualquer, podemos fazer qualquer operação matemática usando um vetor inteiro.
@@ -211,7 +217,7 @@ vetor1 ^ vetor2
 
 ---
 
-##### Exercício 3
+#### Exercício 3 {#anchor6}
 
 a. Multiple os valores do vetor1 por um outro vetor que contenha apenas dois elementos: o número 1 e o número 0.
 b. Qual é o comportamento do resultado?
