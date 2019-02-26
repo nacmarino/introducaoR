@@ -9,6 +9,7 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -30,7 +31,7 @@ h1,h2,h3,h4,h5,h6{
 5. [As funções na linguagem R](#anchor5)
 6. [Instalação de pacotes](#anchor6)
 7. [Suas principais fontes de erro serão...](#anchor7)
-8. Lista de Exercícios
+8. Exercícios
     + [Exercício 1](#anchor8)
     + [Exercício 2](#anchor9)
     + [Exercício 3](#anchor10)

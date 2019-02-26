@@ -9,6 +9,7 @@ output: html_document
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -30,7 +31,7 @@ h1,h2,h3,h4,h5,h6{
     + [2.3. `data.frame`](#anchor5)
     + [2.4. Lista](#anchor6)
 2. [Fatores ordenados](#anchor7)
-3. Lista de Exercícios
+3. Exercícios
     + [Exercício 1](#anchor8)
     + [Exercício 2](#anchor9)
     + [Exercício 3](#anchor10)
