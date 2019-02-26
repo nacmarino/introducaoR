@@ -376,6 +376,21 @@ riqueza(a = 3, z = 2)</code></pre>
 <li>Modifique a funcao acima de forma que todos os valores para o cálculo da riqueza de espécies seja fornecida pelo usuário.</li>
 </ol>
 <hr />
+<ul>
+<li>Um pouquinho mais sobre a criação de objetos:
+<ul>
+<li>Todo objeto criado é salvo no ambiente da sessão;</li>
+<li>Cada objeto criado ocupa um espaço e ‘come’ poder de processamento;</li>
+<li>Sobre-escrever um objeto por outro substitui a informação que existia anteriormente;</li>
+<li>Sobre-escrever o nome de uma função por um objeto <em>não</em> apaga a função e seu conteúdo, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.</li>
+<li>Não há como o primeiro caractere do nome de um objeto ser um número;</li>
+<li>Evite sobre-escrever objetos ao máximo que você puder, para evitar comportamentos e resultados inesperados durante uma sessão;</li>
+<li>Evite nomear um objeto usando o nome de função já existente - você pode não conseguir usar outras funções que dependam a função em questão;</li>
+<li>Não use espaços em branco no nome de um objeto, opter por usar o ponto ou o <em>underscore</em> para separar palavras: e.g. <code>resultado_anova</code> ou <code>resultado.anova</code></li>
+<li>Evite nomes longos para nomear um objeto: e.g. <code>resultado_da_anova_removendo_os_sites_com_os_singletons</code></li>
+<li>Evite nomes de objetos que sejam pouco informativos: e.g. <code>analise</code></li>
+</ul></li>
+</ul>
 </div>
 </div>
 <div id="anchor5" class="section level2">
@@ -465,13 +480,13 @@ read.table(sep = &quot;,&quot;, header = TRUE, file = &quot;nome_do_arquivo&quot
 <li>Podemos instalar pacotes através da função <code>install.packages</code>.</li>
 <li>Vamos instalar um pacote para exemplificar o uso da função <code>install.packages</code>:</li>
 </ul>
-<pre class="r"><code>install.packages(pkgs = &quot;gapminder&quot;, dependencies = TRUE)</code></pre>
+<pre class="r"><code>install.packages(pkgs = &quot;readxl&quot;, dependencies = TRUE)</code></pre>
 <hr />
 </div>
 <div id="anchor12" class="section level2">
 <h2>Exercício 5</h2>
 <ol style="list-style-type: lower-alpha">
-<li>Instale os pacotes <code>RColorBrewer</code> e <code>viridis</code>, além de todas as suas dependencias.</li>
+<li>Instale os pacotes <code>RColorBrewer</code> e <code>readr</code>, além de todas as suas dependencias.</li>
 </ol>
 <hr />
 </div>

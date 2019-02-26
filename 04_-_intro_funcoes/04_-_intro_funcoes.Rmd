@@ -235,6 +235,18 @@ b. Modifique a funcao acima de forma que todos os valores para o cálculo da riq
 
 ---
 
+* Um pouquinho mais sobre a criação de objetos:
+    + Todo objeto criado é salvo no ambiente da sessão;
+    + Cada objeto criado ocupa um espaço e 'come' poder de processamento;
+    + Sobre-escrever um objeto por outro substitui a informação que existia anteriormente;
+    + Sobre-escrever o nome de uma função por um objeto _não_ apaga a função e seu conteúdo, apenas faz com que o seu uso necessite de operadores especiais para que ela seja buscada no ambiente correto.
+    + Não há como o primeiro caractere do nome de um objeto ser um número;
+    + Evite sobre-escrever objetos ao máximo que você puder, para evitar comportamentos e resultados inesperados durante uma sessão;
+    + Evite nomear um objeto usando o nome de função já existente - você pode não conseguir usar outras funções que dependam a função em questão;
+    + Não use espaços em branco no nome de um objeto, opter por usar o ponto ou o _underscore_ para separar palavras: e.g. `resultado_anova` ou `resultado.anova`
+    + Evite nomes longos para nomear um objeto: e.g. `resultado_da_anova_removendo_os_sites_com_os_singletons`
+    + Evite nomes de objetos que sejam pouco informativos: e.g. `analise`
+    
 ## 5. As funções na linguagem R {#anchor5}
 
 * Existem funções já escritas para grande parte das tarefas que você precisará executar utilizando a linguagem R.
@@ -300,14 +312,14 @@ read.table(sep = ",", header = TRUE, file = "nome_do_arquivo")
 * Vamos instalar um pacote para exemplificar o uso da função `install.packages`:
 
 ```{r eval=FALSE}
-install.packages(pkgs = "gapminder", dependencies = TRUE)
+install.packages(pkgs = "readxl", dependencies = TRUE)
 ```
 
 ---
 
 ## Exercício 5 {#anchor12}
 
-a. Instale os pacotes `RColorBrewer` e `viridis`, além de todas as suas dependencias.
+a. Instale os pacotes `RColorBrewer` e `readr`, além de todas as suas dependencias.
 
 ---
 
