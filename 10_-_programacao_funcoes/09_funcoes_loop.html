@@ -617,6 +617,17 @@ resultado &lt;- aleatorizacao(valor_de_x = densidade, tamanho_de_x = 20, numero_
 <li>Eleja o nome potencial mais estranho da lista.</li>
 </ul></li>
 </ol>
+<hr />
+<ul>
+<li>Algumas outras observações sobre os controladores de fluxo e o <code>for</code>:
+<ul>
+<li>Você pode (e deve tentar) automatizar ao máximo a estrutura de um <em>loop</em>, reduzindo a quantidade de informações que você precisa fornecer explicitamente, e deixando que o próprio computador as extraia por você. Um exemplo disso é dizer que o <code>n</code> no loop deve ir de 1 até o <code>length</code> do vetor onde você armazenará a informação (<em>e.g.</em>, <code>for(i in 1:length(vetor))</code>).</li>
+<li>Em cada passo do <em>loop</em> estamos utilizando o valor <em>i</em> para representar qual passo ao qual estamos nos referindo; isto se reflete no momento em que estamos armazenando a informação estimada em cada passo, quando indexamos o vetor onde estamos armazenando com o valor <em>i</em>, que será incrementado automaticamente em cada passo;</li>
+<li>Aqui utilizamos um vetor para armazenar as informações e, por conta disso, estamos utilizando a indexação específica para vetores: <code>vetor[i]</code>; caso estivéssemos trabalhando em armazenar informações em um <code>data.frame</code> deveríamos usar a indexação própria para eles: <code>data.frame[i,j]</code>; note então que ao utilizarmos esta última classe de objeto, podemos mapear tanto os valores que serão armazenados em cada linha <em>i</em> quanto aqueles que serão armazenados em cada coluna <em>j</em> a cada passo da <em>loop</em> para <em>i</em> e <em>j</em>;</li>
+<li><em>loops</em>: quanto mais você usa, mais você aprende;</li>
+<li>Existem funções que fazem a mesma coisa que os <em>loops</em> que fizemos utilizando a função <code>for</code>. Normalmente, estas funções tendem a ser mais rápidas que o <code>for</code>, mas também bem mais engessadas. Assim, o uso de um ou outro método vai depender daquilo que você quer fazer.</li>
+</ul></li>
+</ul>
 </div>
 </div>
 </div>

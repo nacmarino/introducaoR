@@ -345,3 +345,13 @@ abline(v = mean(resultado) + (sd(resultado)/sqrt(100)), lwd = 3, col = "indianre
     + Repita isso tantas vezes quantas quiser;
     + Ao final, crie um `data.frame` onde uma coluna será o nome a outra o sobrenome;
     + Eleja o nome potencial mais estranho da lista.
+
+---
+
+* Algumas outras observações sobre os controladores de fluxo e o `for`:
+    + Você pode (e deve tentar) automatizar ao máximo a estrutura de um _loop_, reduzindo a quantidade de informações que você precisa fornecer explicitamente, e deixando que o próprio computador as extraia por você. Um exemplo disso é dizer que o `n` no loop deve ir de 1 até o `length` do vetor onde você armazenará a informação (_e.g._, `for(i in 1:length(vetor))`).
+    + Em cada passo do _loop_ estamos utilizando o valor _i_ para representar qual passo ao qual estamos nos referindo; isto se reflete no momento em que estamos armazenando a informação estimada em cada passo, quando indexamos o vetor onde estamos armazenando com o valor _i_, que será incrementado automaticamente em cada passo;
+    + Aqui utilizamos um vetor para armazenar as informações e, por conta disso, estamos utilizando a indexação específica para vetores: `vetor[i]`; caso estivéssemos trabalhando em armazenar informações em um `data.frame` deveríamos usar a indexação própria para eles: `data.frame[i,j]`; note então que ao utilizarmos esta última classe de objeto, podemos mapear tanto os valores que serão armazenados em cada linha _i_ quanto aqueles que serão armazenados em cada coluna _j_ a cada passo da _loop_ para _i_ e _j_;
+    + _loops_: quanto mais você usa, mais você aprende;
+    + Existem funções que fazem a mesma coisa que os _loops_ que fizemos utilizando a função `for`. Normalmente, estas funções tendem a ser mais rápidas que o `for`, mas também bem mais engessadas. Assim, o uso de um ou outro método vai depender daquilo que você quer fazer.  
+    
