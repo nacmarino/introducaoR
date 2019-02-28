@@ -1,13 +1,15 @@
 ---
-title: "Funções loop"
-author: "Nicholas A. C. Marino, Vitor Borges Jr"
-date: "08/03/2018"
+title: "Funções _loop_ e controladores de fluxo"
+subtitle: "Nicholas A. C. Marino"
+author: "nac.marino@gmail.com"
+date: "github.com/nacmarino/introducaoR"
 output: html_document
 ---
 
 <style type="text/css">
 body, td {
    font-size: 18px;
+   text-align: justify;
 }
 code.r{
   font-size: 16px;
@@ -20,156 +22,326 @@ h1,h2,h3,h4,h5,h6{
 }
 </style>
 
+
 # Elementos da Aula
 
-1. [Funções loop: `aggregate` e `by`](#anchor1).
-2. [Funções loop: `for`](#anchor2).
-3. [Amostragem utilizando `for`](#anchor3).
+1. [Funções _loop_](#anchor 1)  
+    1.1. [`by`](#anchor3)  
+    1.2. [`aggregate`](#anchor2)  
+    1.3. [`apply`](#anchor4)  
+2. [Controladores de fluxo](#anchor5)  
+    2.1. [`for`](#anchor6)  
+3. Exercícios  
+    + [Exercício 1](#anchor7)
+    + [Exercício 2](#anchor8)
+    + [Exercício 3](#anchor9)
+    + [Exercício 4](#anchor10)
 
-## Funções loop: `aggregate` e `by` {#anchor1}
+## 1. Funções loop {#anchor1}
 
-* As __funções loop__ são usadas para aplicar a mesma tarefa para um dado conjunto de dados de acordo com os níveis de um fator - é como se para cada nível de um fator elas aplicassem uma tarefa, fossem para outro nível, repetissem a mesma tarefa; corresse para o próximo nível, repetisse a mesma tarefa; por aí vai...
-
-* Existem pelo menos 5 funções loop principais que podem nos ser úteis:
+* As __funções loop__ são usadas para realizar uma mesma tarefa sobre um dado conjunto de dados de acordo com os níveis de um fator
+* Elas recebem esse nome pois funcionam na forma de um ciclo (_i.e._, _loop_): realize uma tarefa ao primeiro nível de um fator, vá para o outro nível e realize a mesma tarefa, até o último nível daquele fator.
+* Elas são muito úteis para calcularmos sumários estatísticos de um conjunto de dados, podendo ser aplicados a vetores, `data.frame`, matrizes e listas:
 
 Função        | Significado
 ------------- | ------------
-`apply`       | aplica uma função nas linhas ou colunas de um conjunto de dados, retornando um __vetor__
-`aggregate`   | aplica uma função a sub-conjuntos dos dados (i.e., aceita um `data.frame`), retorna um __data.frame__
-`tapply`      | aplica uma função a sub-conjuntos de um __vetor__, retorna um __vetor__ (caso haja apenas um sub-conjunto) ou uma __tabela de contigência__ (caso haja dois ou mais sub-conjuntos)
-`by`          | aplica uma função a um __vetor__, `data.frame` ou matriz por sub-conjuntos de um fator, retorna sempre uma __lista__
-`lapply`      | aplica uma função a uma __lista__, retorna uma __lista__
-`sapply`      | identico ao `lapply`, mas retorna um __vetor__
+`by`          | aplica uma função a um __vetor__, `data.frame` ou matriz de acordo com os níveis de um fator, retornando sempre um objeto da classe __lista__
+`aggregate`   | aplica uma função a sub-conjuntos de um `data.frame` que sejam definidos por um fator, retornando um objeto da classe __`data.frame`__
+`apply`       | aplica uma função às linhas ou às colunas de um conjunto de dados em uma matriz, `array` ou `data.frame`, retornando um __vetor__
+`tapply`      | aplica uma função a sub-conjuntos de um __vetor__ de acordo com os níveis de um ou mais fatores, retornando um __vetor__ caso haja apenas um fator ou uma __tabela de contigência__ caso haja dois ou mais fatores
+`lapply`      | aplica uma função a uma __lista__ de acordo com os níveis de um fator, retorna um objeto da classe __lista__
+`sapply`      | idêntico ao `lapply`, mas retorna um objeto da classe __vetor__
 
-* Ao usar essas funções loop lembrem-se sempre que:
-    1. Em quase 100% das vezes é necessário indexar o data.frame que estamos trabalhando para conseguirmos rodar elas;
-    2. Cada uma dessas funções deve ser aplicada a um tipo de objeto diferente: ou vetores, ou listas, ou `data.frame` - difícil lembrar qual é usada em que.
-    3. Cada uma dessas funções pode ter argumentos específicos e, portanto, é difícil ficar lembrando e acertando os argumentos caso a caso;
-    4. O resultado dessas funções podem retornar diferentes tipos de objetos: umas retornam lista e outras retornam `data.frame`.
+* Ao usar essas funções loop lembre-se sempre que:
+    + Em quase 100% das vezes é necessário indexar o objeto que estamos trabalhando e de onde queremos extrair as informações;
+    + Cada uma dessas funções é orientada a uma classe diferente de objeto;
+    + Cada uma dessas funções retorna objetos pertencentes a classes diferentes;
+    + Cada uma dessas funções possui uma lista de argumentos específicos para que elas funcionem.
 
-### `aggregate`
-
-Argumento     | Significado
-------------- | ------------
-x             | um objeto (__vetor__ ou `data.frame`)
-by            | uma __lista__ de elementos que agrupem observações, de tamanho igual ao de x
-FUN           | a função a ser aplicada
-
----
-
-##### Exercício 1
-
-a. Aplique a função `aggregate` para determinar a absorção média de CO2 das plantas originárias de Quebec e Mississippi, no conjunto de dados `CO2`.
-
---- 
-
-#### `by` 
+### 1.1. `by` {#anchor2}
 
 Argumento     | Significado
 ------------- | ------------
 data          | um `data.frame` ou __matriz__
-INDICES       | uma __lista__ de elementos que agrupem observações, de tamanho igual ao de x
-FUN           | a função a ser aplicada
+INDICES       | um __vetor__ ou __lista__ de elementos que agrupem observações, de comprimento igual aquele do argumento `data`
+FUN           | a função a ser aplicada à `data` de acordo com `INDICES`
+
+```{r}
+## para apenas um dos fatores
+by(data = CO2$uptake, INDICES = CO2$Treatment, FUN = mean)
+## para dois dos fatores
+by(data = CO2$uptake, INDICES = list(CO2$Treatment, CO2$Type), FUN = mean)
+```
 
 ---
 
-##### Exercício 2
+#### Exercício 1 {#anchor7}
 
-a. Aplique a função `by` para determinar a cconcentração de CO2 no ambiente nos diferentes niveis de tratamento no conjunto de dados `CO2`.
+1. Carregue o conjunto de dados das `ilhas`, atribuindo estas informações ao objeto homônimo (_i.e._, arquivo `ilhas.xlsx`).
+2. Determine a média da riqueza de espécies de acordo com o tamanho do arquipelago ao qual a ilha pertence.
+3. Calcule o desvio padrão da riqueza de espécies de acordo com o tamanho do arquipelago e o tipo de ilha ao qual a ilha pertence.
 
 --- 
 
-* Para que usar estas funções loop?
-    + Calcular estatísticas descritivas que podem ser usadas para criação de gráficos;  
-    + Realizar tarefas repetitivas em um mesmo conjunto de dados de acordo com alguma categorização;  
-    + Aplicar funções que você mesmo criou a sub-conjuntos de dados. 
+### 1.2. `aggregate` {#anchor3}
+
+Argumento     | Significado
+------------- | ------------
+x             | um __vetor__ ou um `data.frame`
+by            | uma __lista__ de elementos que agrupem observações, de comprimento igual aquele do argumento `x`
+FUN           | a função a ser aplicada
+
+```{r}
+## para apenas um dos fatores
+aggregate(x = CO2$uptake, by = list(CO2$Treatment), FUN = mean)
+## para dois dos fatores
+aggregate(x = CO2$uptake, by = list(CO2$Treatment, CO2$Type), FUN = mean)
+## para dois dos fatores, adicionando nomes para cada um no output
+aggregate(x = CO2$uptake, by = list(tratamento = CO2$Treatment, tipo = CO2$Type), FUN = mean)
+```
+
+---
+
+#### Exercício 2 {#anchor8}
+
+1. Carregue o conjunto de dados climáticos, atribuindo estas informações ao objeto `clima` (_i.e._, arquivo `dados climaticos.csv`).
+2. Determine a média da temperatura máxima de acordo com o horario do dia.
+3. Calcule o desvio padrão da temperatura máxima de acordo com o dia em que a medida foi tomada.
+
+--- 
+
+### 1.3. `apply` {#anchor4}
+
+Argumento     | Significado
+------------- | ------------
+x             | uma matriz, `array` ou `data.frame`
+MARGIN        | aplica a função `FUN` às linhas (`MARGIN = 1`) ou às colunas (`MARGIN = 2`) de um `data.frame`
+FUN           | a função a ser aplicada
+
+```{r echo=FALSE}
+suppressPackageStartupMessages(library(vegan))
+```
+
+```{r eval=FALSE}
+## carregando o pacote vegan
+library(vegan)
+## carregando o conjunto de dados da composicao de especies em algumas parcelas
+data(varespec)
+## MARGIN = 1: calculando a densidade total de espécies em cada parcela
+apply(X = varespec, MARGIN = 1, FUN = sum)
+## MARGIN = 2: calculando a densidade total de cada espécies nas parcelas amostradas
+apply(X = varespec, MARGIN = 2, FUN = sum)
+```
+
+---
+
+#### Exercício 3 {#anchor9}
+
+1. Carregue os dados de `biomassa` (arquivo `biomassa.txt`) e atribua estas informações a um objeto homônimo.
+2. Calcule a média dos valores de biomassa e densidade amostrados.
+3. O procedimento ocorreu como o esperado? Se não, o que houve? O que poderia ser feito para previnir este resultado?
+
+---
+
+## 2. Controladores de fluxo {#anchor5}
+
+* Uma das grandes vantagens de utilizar uma linguagem de programação é a facilidade com a qual ela nos ajuda a realizar tarefas repetitivas de forma automatizada.
+* Estas tarefas nada mais são do que executar um conjunto de ações de novo, e de novo e quantas vezes forem necessárias, por vezes observando-se algumas decisões lógicas que devem ser tomadas a cada passo do processamento.
+* Grande parte dessas decisões lógicas podem ser resumidas de acordo com alguns "verbos":
+
+Verbo         | Significado
+------------- | ------------
+`for`         | repita um processamento tantas vezes quantas aquelas determinadas
+`while`       | enquanto um condição for satisfeita, realize um determinado processamento
+`if`...`else` | se o que temos corresponder a essa condição, realize um determinado processaemnto; caso contrário, realize este outro
+`repeat`      | repita um processamento sem parar (_i.e._, infinitamente)
+`break`       | quebra a execução de um `repeat`
+`return`      | finalizado o processamento, retorne para o usuário um determinado resultado
+
+* Estes "verbos" são conhecidos como __controladores de fluxo__, e podem ser usados diretamente no seu código para realizar algum tipo de tomada de decisão ou tarefa repetitiva ou, ainda, dentro de funções que você mesmo pode vir a escrever.
+* Dentre estes controladores de fluxo, o `for` é aqueles que nós mais usamos para realizar processamentos cíclicos - ou _loops_.
+
+### 2.1. `for` {#anchor6}
+
+* Para ilustrar o funcionamento de um controlador de fluxo `for`, vamos primeiro criar uma série de números. Você pode imaginar, por exemplo, que estes números representam estimativas independentes do tamanho de uma mesma população de uma espécie.
+
+* Muitas vezes, não temos como repetir uma amostragem para a estimativa de um parametro ou, ainda, precisamos estimar este parametro mas não existe uma análise robusta que comporte a distribuição dos nossos dados. Nesses casos, o que se quer muitas vezes é não só ter a estimativa desse parametro, mas também a incerteza ao seu redor. 
+* Uma das formas de atingir este objetivo é assumir que os próprios dados que estão disponíveis representam a distribuição do fenômeno sob estudo. Assim, reamostrando um número bem grande de vezes os próprios dados já coletados, teríamos uma boa estimativa da distribuição a partir da qual eles vêm e, portanto, de sua tendência central e incerteza ao redor dessa tendência.
+* Este procedimento recebe o nome de _bootstrap_, e pode facilmente ser implementado no R através do controlador de fluxo `for`:
+    1. Obtenha um conjunto de dados;
+    2. Reamostre este conjunto de dados aleatoriamente, com substituição;
+    3. Calcule o parametro de interesse e armazene esta estimativa;
+    4. Repita os passos 2 e 3 _n_ vezes;
+    5. Ao final dessas _n_ repetições, determine o valor parametro de interesse e a incerteza ao redor dessa estimativa.
+
+* Como faríamos isso mecanicamente no nosso caso?
+
+```{r}
+## selecionando uma semente dentro do gerador de numeros aleatorios
+set.seed(42)
+
+## simulando um conjunto de dados selecionando 10 números aleatórios a partir da distribuição de poisson
+densidade <- rpois(n = 20, lambda = 100)
+densidade
+
+## criando um vetor vazio, que comporte 4 números - utilizaremos este vetor para armazenar a estimativa do parametro de interesse
+estimativa <- vector(length = 3)
+estimativa
+
+## reamostrando os dados originais com repeticao
+reamostragem <- sample(x = densidade, size = 20, replace = TRUE)
+reamostragem
+
+## estimando o valor da densidade média e salvando ele no vetor de estimativas
+estimativa[1] <- mean(reamostragem)
+estimativa
+
+## reamostrando os dados originais com repeticao
+reamostragem <- sample(x = densidade, size = 20, replace = TRUE)
+reamostragem
+
+## estimando o valor da densidade média e salvando ele no vetor de estimativas
+estimativa[2] <- mean(reamostragem)
+estimativa
+
+## reamostrando os dados originais com repeticao
+reamostragem <- sample(x = densidade, size = 20, replace = TRUE)
+reamostragem
+
+## estimando o valor da densidade média e salvando ele no vetor de estimativas
+estimativa[3] <- mean(reamostragem)
+estimativa
+```
+
+* Uma vez que tenhamos estas _n_ estimativas do parametro de interesse vinda do conjunto de dados, podemos assumir que ela descreve a sua distribuição e, então, tomar as suas estimativas centrais e de dispersão.
+
+```{r}
+## a media da estimativa
+media <- mean(estimativa)
+## o erro padrao da estimativa: desvio padrao/sqrt(n)
+erro_padrao <- sd(estimativa)/sqrt(3)
+## calculando intervalo de confianca
+media - 1.96 * erro_padrao ## IC inferior
+media + 1.96 * erro_padrao ## IC superior
+```
+
+* Compare esta estimativa aquela obtida diretamente do conjunto de dados originais:
+
+```{r}
+mean(densidade)
+```
+
+* Todavia, 3 repetições para uma estimativa como essa é muito pouco, mas fazer isto manualmente exigiria muitas linhas de comando, e seria extremamente plausível que cometessemos erros. É nesse sentido que o controlador de fluxo `for` vem a calhar. Todo controlador de fluxo `for` é estruturado da mesma forma:
+
+> for(i in 1:n) {tarefas a serem executadas}
+
+* O que essa linha de comando que dizer?
+
+> para(a repetição i de 1 até n vezes que você quiser) {farei as seguintes tarefas}
+
+* A implementação mais fácil e rápida de um `for` ocorre quando nós já conseguimos entender e reproduzir o passo-a-passo daquilo que deve ser feito, e só 'mostramos' para o `for` o que ele deve fazer uma única vez.
+* Para demonstrar o passo-a-passo desse _loop_, vamos adicionar duas funções adicionais: o `print`, para o `for` nos mostrar o que está acontencendo a cada etapa do _loop_, e o `Sys.sleep` para que ele de um pequeno intervalo de tempo entre processamentos.
+
+```{r eval=FALSE}
+## criando um vetor para armazenar os resultados do loop
+estimativa <- vector(length = 10)
+
+## implementando o loop
+for(i in 1:10) {
+  
+  ## realizando a reamostragem
+  reamostragem <- sample(x = densidade, size = 20, replace = TRUE)
+
+  ## calculando e armazenando a estimativa de cada repetição i no vetor estimativa, em posicao correspondente àquela da repetição
+  estimativa[i] <- mean(reamostragem)
+  
+  ## apresentando a estimativa
+  print(estimativa)
+  
+  ## pedindo para o loop esperar dois segundos antes de passar ao próximo passo
+  Sys.sleep(2)
+  
+}
+```
+
+```{r echo=FALSE}
+## criando um vetor para armazenar os resultados do loop
+estimativa <- vector(length = 10)
+
+## implementando o loop
+for(i in 1:10) {
+  
+  ## realizando a reamostragem
+  reamostragem <- sample(x = densidade, size = 20, replace = TRUE)
+
+  ## calculando e armazenando a estimativa de cada repetição i no vetor estimativa, em posicao correspondente àquela da repetição
+  estimativa[i] <- mean(reamostragem)
+  
+  ## apresentando a estimativa
+  print(estimativa)
+  
+}
+```
+
+* Com os 10 valores da estimativa salvos, agora podemos repetir todos os procedimentos acima.
+
+```{r}
+## a media da estimativa
+media <- mean(estimativa)
+## o erro padrao da estimativa: desvio padrao/sqrt(n)
+erro_padrao <- sd(estimativa)/sqrt(3)
+## calculando intervalo de confianca
+media - 1.96 * erro_padrao ## IC inferior
+media + 1.96 * erro_padrao ## IC superior
+```
+
+* Como nós poderíamos amarrar este _loop_ dentro de uma função?
+
+```{r}
+aleatorizacao <- function(valor_de_x, tamanho_de_x, numero_de_aleatorizacoes) {
+  
+  for(i in 1:numero_de_aleatorizacoes) {
     
----
-
-## Funções loop: `for` {#anchor2}
-
-* As funções de loop servem para repetir uma tarefa específica no R tantas vezes quanto desejarmos.
-* Umas das funções de loping mais importantes é a função `for`.
-* A função `for` funciona da seguinte maneira:
-
-> for(i in 1:n) {comandos}
-
-* onde para cada valor de *i* o R executa os comandos que estão entre as chaves. A expressão "i in 1:n" indica que os valores de i serão de i = 1 até i = n.
-* Ou seja, na primeira rodada i = 1, na segunda i = 2, e assim por diante até que i = n.
-* Vamos ver como a função `for funciona na prática. Primeiro precisamos criar um objeto vazio para armazenar o resultado da operação.
-
-```{r eval = FALSE}
-# gerar um vetor numérico vazio
-resu <- numeric(0) 
-resu  
-```
-
-* Agora vamos utilizar a função `for` para elevar i valores ao quadrado.
-
-```{r eval = FALSE}
-for (i in 1:5) { # será o i = 1, i = 2, i = 3, i = 4, i = 5
-        resu[i] <- i^2 # realiza a operação e armazena no vetor resu
-} # fim da função
-resu
-(1:5)^2
-```
-* Vamos fazer um "filme" para demonstrar o que a função `for está fazendo.
-
-```{r eval = FALSE}
-plot(0:10,0:10, type="n") # plota um gráfico vazio 
-for (i in 1:9) {
-        text(i,i, paste("Passo", i)) # plota um texto no gráfico
-        Sys.sleep(1) ## retarda os passos em 1 s
+    ## realizando a reamostragem
+    reamostragem <- sample(x = valor_de_x, size = tamanho_de_x, replace = TRUE)
+    
+    ## calculando e armazenando a estimativa de cada repetição i no vetor estimativa, em posicao correspondente àquela da repetição
+    estimativa[i] <- mean(reamostragem)
+    
+  }
+  
+  print(estimativa)
+  
 }
 ```
 
-* A sequência de Fibonacci é uma sequência famosa na matemática. Os dois primeiros números da sequência são `[1, 1]`. 
-* Os números subsequentes são compostos pela soma dos dois números anteriores. 
-* Assim, o terceiro número da sequência de Fibonacci é `1 + 1 = 2`, o quarto é `1 + 2 = 3`, e assim por diante. 
-* Vamos usar a função `for` para descobrir os 12 primeiros números da sequência de Fibonacci
+* E agora, para usarmos a nossa função:
 
-```{r eval = FALSE}
-Fibonacci <- numeric(0)
-Fibonacci[c(1, 2)] <- 1 # o primeiro e segundo valor da sequência devem ser 1
-for (i in 3:12) { # 3 a 12 porque já temos os dois primeiros
-        Fibonacci[i] <- Fibonacci[i - 2] + Fibonacci[i - 1]
-}
-Fibonacci
+```{r}
+## armazenando o resultado em um objeto
+resultado <- aleatorizacao(valor_de_x = densidade, tamanho_de_x = 20, numero_de_aleatorizacoes = 100)
 ```
 
-### **Exercício 3**
+```{r echo=FALSE, fig.align='center', fig.height=8, fig.width=8}
+## visualizando graficamente esta distribuicao
+hist(resultado, xlab = "Média estimada", ylab = "Frequência", main = "Distribuição de frequência das \n médias em 100 aleatorizações")
+abline(v = mean(resultado), lwd = 3, col = "indianred3")
+abline(v = mean(resultado) - (sd(resultado)/sqrt(100)), lwd = 3, col = "indianred3", lty = 2)
+abline(v = mean(resultado) + (sd(resultado)/sqrt(100)), lwd = 3, col = "indianred3", lty = 2)
+```
 
-1. Mude os dois primeiros elementos da sequencia para 2 e 2 
-2. Mude os dois primeiros elementos da sequencia para 3 e 2
-3. Modifique o código para que os valores sejam compostos pela diferença entre o primeiro e o segundo valor imediatamente anteriores.
-4. Modifique o código para que os valores sejam compostos pela diferença entre os dois valores imediatamente anteriores somada ao terceiro valor imediatamente anterior. Faça inicialmente com que a sequencia comece com 3 valores [1,1,1]
+* Note que é mais fácil começar a escrever e a entender este _loop_ de dentro para fora - isto é, do que está dentro do `for` para aquilo que está fora do `for`. Além disso, duas boas dicas ao escrevermos um _loop_ e/ou uma função são: (1) listar tudo aquilo que você quer executar e (2) realizar a primeira tentativa do processamento de forma mecânica.
 
 ---
 
-## Amostragem utilizando `for` {#anchor3}
+#### Exercício 4 {#anchor10}
 
-* Também podemos utilizar a função `for` para realizar sorteios e amostragens aleatóreas.
-* Vamos sortear 20 jogos da megasena.
-
-```{r eval = FALSE}
-njogos <- 20 # determinar o número de jogos
-numeros <- matrix(NA, nrow = 6, ncol = njogos) # criar a matriz para armazenar os jogos
-for (i in 1:njogos) { # determina o número total de jogos sorteados
-  numeros[, i]<-sample(1:60, 6) # realiza a amostragem de 6 números por jogo
- }
-numeros
-```
-
-* A partir do mesmo princípio, podemos utilizar as funções `sample` e `mean` para realizar subamostragens e caluclar suas médias.
-
-```{r eval = FALSE}
-reamostragens <- 100 # determinar o número de jogos
-medias <- numeric(0) # criar a matriz para armazenar os jogos
-for (i in 1:reamostragens) { # determina o número total de jogos sorteados
-  medias[i]<-mean(sample(1:60, 6)) # realiza a amostragem de 6 números por jogo
- }
-medias
-```
-
----
-
+1. Personalize a função que criamos de forma que o usuário possa selecionar se ele quer que a aleatorização seja com ou sem substituição.
+2. Agora, personalize esta função de forma que ela forneça diretamente ao usuário os valores da média e do intervalo de confiança já calculados, bem como os dados utilizados para chegar a estes números.
+3. Crie uma função que possa fornecer os nomes completos potenciais de pessoas, baseado no nome e no sobrenome das outras pessoas da turma.
+    + Crie um vetor com o primeiro nome das pessoas;
+    + Crie um vetor com um sobrenome das pessoas;
+    + Reamostre aleatoriamente cada um desses vetores (um elemento por vez) e registre cada uma desses nomes e sobrenome em novos vetores;
+    + Repita isso tantas vezes quantas quiser;
+    + Ao final, crie um `data.frame` onde uma coluna será o nome a outra o sobrenome;
+    + Eleja o nome potencial mais estranho da lista.
