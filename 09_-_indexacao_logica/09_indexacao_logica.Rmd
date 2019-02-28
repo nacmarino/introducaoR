@@ -24,17 +24,31 @@ h1,h2,h3,h4,h5,h6{
 
 # Elementos da aula
 
-1. [Operadores de lógica](#anchor1);
-2. [Operações condicionais em vetores](#anchor2);
-3. [Operações condicionais em `data.frames`](#anchor3);
-4. [Outras operações e funções condicionais](#anchor4);
-5. [Aplicação da indexação e operações condicionais](#anchor5).
+1. [Operadores de lógica](#anchor1)
+2. [Operações condicionais em vetores](#anchor2)
+3. [Operações condicionais em `data.frame`](#anchor3)
+4. [Funções condicionais](#anchor4)
+5. [Aplicação da indexação e operações condicionais](#anchor5)
+6. Exercícios
+    + [Exercício 1](#anchor6)
+    + [Exercício 2](#anchor7)
+    + [Exercício 3](#anchor8)
+    + [Exercício 4](#anchor9)
+    + [Exercício 5](#anchor10)
+    + [Exercício 6](#anchor11)
+    + [Exercício 7](#anchor12)
+    + [Exercício 8](#anchor13)
 
-## Operadores de lógica {#anchor1}
+## 1. Operadores de lógica {#anchor1}
 
-* Apesar de reter ou eliminar posições específicas de um objeto no R ser algo útil, na maior parte das vezes queremos realizar esta tarefa para conjuntos dos dados que cumpram certos requerimentos (por exemplo, reter apenas as observações de uma determinada categoria).
-* Uma forma de fazer isto é através de testes lógicos.
-* Existem 8 operadores de lógica na linguagem R.  
+* Na maior parte das vezes, desejamos realizar operações com objetos utilizando critérios específicos, como por exemplo:
+    + Reter ou eliminar todas as linhas de um `data.frame` que correspondam à uma determina categoria;
+    + Organizar as linhas de um `data.frame` de acordo com a ordem crescente ou decrescente dos valores de uma coluna;
+    + Modificar os valores de uma coluna de um `data.frame` que tenham certas características;
+    + Realizar as mesmas operações com vetores, matrizes e listas;
+    + ...
+* Todas estas ações envolvem operações condicionais, que podem ser descritos através de testes de lógica - faça _x_ se o valor for maior que _y_; caso contrário, faça _z_. 
+* Nesse sentido, existem 8 operadores de lógica que podem nos ajudar a manipular qualquer tipo de objeto dentro da linguagem de programação R.  
 
 Operador | Significado
 -------- | ------------
@@ -47,9 +61,11 @@ Operador | Significado
 &        | "e"
 "|"      | "ou"
 
-* O uso desses operadores é razoavelmente lógico para nós:
+* O resultado do uso desses operadores lógicos é um objeto da classe `logical`:
+    + Se o resultado do teste lógico for verdadeiro, então `TRUE`.
+    + Se o resultado do teste lógico for falso, então `FALSE`.
 
-```{r eval = FALSE}
+```{r}
 # o número 4 é maior do que o 5?
 4 > 5
 # um número 4 é menor do que o 5?
@@ -66,169 +82,142 @@ Operador | Significado
 "Ola" != "Ola"
 ```
 
-* Um caso um pouco mais complexo é determinarmos se um elemento cumpre com uma ou mais condições:
+* Também podemos realizar testes lógicos de acordo com duas ou mais condições.  
 
-```{r, eval = FALSE}
+```{r}
 # o número 4 é maior que o 5 E é menor que o 3?
 4 > 5 & 4 < 3
 # o número 4 é menor que o 5 E é maior que o 3?
 4 < 5 & 4 > 3
+# o número 4 é maior que o 5 E é maior que o 3?
+4 > 5 & 4 > 3
 # o número 4 é maior do que 5 OU é menor do que 3?
 4 > 5 | 4 < 3
-# o número 4 é maior do que 5 OU é menor do que 3?
+# o número 4 é menor do que 5 OU é maior do que 3?
 4 < 5 | 4 > 3
+# o número 4 é menor do que 5 OU é maior do que 3?
+4 > 5 | 4 > 3
 ```
+
+* Note que uma diferença fundamental entre estas duas formas de fazer um teste lógico com múltiplas condições é que:
+    + __Todos__ os testes lógicos precisam ser `TRUE` para que um `TRUE` ocorra quando utilizamos o operador `&`;
+    + __Pelo menos um__ dos testes lógicos precisam ser `TRUE` para que um `TRUE` ocorra quando utilizamos o operador `|`.
 
 ---
 
-###### **Exercício 1**
+#### Exercício 1 {#anchor6}
 
-a. Sem olhar, qual valor o teste lógico 4 > 5 | 4 > 3 deve assumir?
-b. A sua expectativa corresponde ao resultado do teste lógico? 
-c. Qual a explicação para isso?
-
-* Como podemos observar, estes operadores de lógica funcionam bem para sabermos se um elemento passa em um determinado teste.
-* Uma forma de usar isso a nosso favor é:
-    + se um elemento passar em um determinado teste, retenha este elemento;
-    + se um elemento não passar em um determinado teste, elimine este elemento.
-    
-* Agora, veremos como podemos usar estes critérios para realizar operações condicionais com `vetores`, `listas` e `data.frames`.
+1. Os testes lógicos a seguir funcionam? Se não, por quê?
+    + 4 = 5
+    + 5 =< 5
+    + Eu == Voce
+    + Ontem < Hoje
+2. Qual seria o jeito correto de realizar estes testes lógicos?
 
 ---
 
-## Operações condicionais em vetores {#anchor2}
+## 2. Operações condicionais em vetores {#anchor2}
 
-* Vamos criar um vetor de comprimento 100 utilizando a função `seq`;
-* O vetor vai ser gerado a partir de uma sequência de números que variam de 23 a 34;
-* Utilizamos este vetor, que apresenta distribuição uniforme,  para garar 20 novos valores que seguem agora uma distribuição normal;
-* Podemos utilizar este novo vetor  em estudos de simulação para, por exemplo, se obter a amostra da sua população de interesse.
+* Vamos criar um vetor de comprimento 50, contendo uma sequência de números de 1 a 34, e usar a função `round` para arredondar os valores para 1 casa decimal.
 
-```{r eval = FALSE}
-vetor1 <- seq(from = 23, to = 34, 
-              length.out = 100)
-hist(vetor1)
-media <- mean(x = vetor1)
-desvio <- sd(x = vetor1)
-amostra1 <- rnorm(n = 20, mean = media,
-                 sd = desvio)
-length(amostra1)
-
+```{r}
+# criando o vetor
+vetor1 <- seq(from = 1, to = 34, length.out = 50)
+# olhando o vetor
+vetor1
+# arredondando os valores
+vetor1 <- round(x = vetor1, digits = 1)
+# observando os valores
+vetor1
 ```
 
-* Acesse o help das funções `seq`, `hist`, `mean` e `sd`e veja quais são os seus argumentos e o que cada um significa. 
+* Assim como podemos testar se um elemento atende a uma determina condição, também podemos testar _quais elementos de um vetor atendem a uma determinada condição_.
 
-```{r eval = FALSE}
-
-?seq
-help("hist")
-?mean
-help("sd")
-?rnorm
-
-```
-
-* Um hábito que facilita o entendimento de uma função após a leitura do help é executar os exemplos que se encontram ao final do arquivo. Você pode copiar, colar e executar o exemplo a partir do seu script, ou rodar todos os exemplos utilizando a função `example`.
-
-```{r eval = FALSE}
-
-example(seq)
-
-```
-
-* Assim como podemos testar se um elemento atende a uma determina condição, também podemos testar quais elementos de um vetor atendem a uma determinada condição.
-
-```{r eval = FALSE}
-# quais elementos do vetor amostra são maiores que 28?
-amostra1 > 25
-# quais elementos do vetor amostra são menores ou iguais a 32?
-amostra1 <= 32
-
+```{r}
+# quais elementos do vetor1 são maiores que 10?
+vetor1 > 10
+# quais elementos do vetor1 são menores ou iguais a 10?
+vetor1 <= 10
 ```
 
 * Podemos usar a mesma lógica para retermos caracteres que assumam determinados valores:
 
-```{r eval = FALSE}
-# criando uma sequência de letras de "A" a "J" para representar quadrantes de amostragem
-quadrats1 <- rep(LETTERS[1:10], each = 2)
-# quais letras são iguais a "A"
-quadrats1 == "A"
-#quais letras não são iguais a "A"
-quadrats1 != "A"
-
+```{r}
+# criando uma sequência de letras "A" e "B"
+letras <- rep(c("A", "B"), each = 25)
+# quais das letras são iguais a A
+letras == "A"
+# quais das letras não são iguais a A
+letras != "B"
 ```
 
 ---
 
-###### **Exercício 2**
+#### Exercício 2 {#anchor7}
 
-a. Quais elementos do vetor amostra1 são menores do que 23 e maiores do que 30? 
-b. Quais elementos do vetor amostra1 são maiores de 25 (inclusive) ou menores do que 33?
-
-```{r eval = FALSE}
-
-amostra1 < 31 & amostra1 > 29
-ifelse(amostra1 < 31 & amostra1 > 29, yes = TRUE, no = FALSE)
-ifelse(amostra1 < 31 & amostra1 > 29, amostra1[], no = NA)
-
-```
+1. Quais elementos do `vetor1` são menores do que 10 e maiores do que 25?
+2. Quais elementos do `vetor1` são maiores de 15 (inclusive) ou menores do que 3?
 
 ---
 
-* Uma coisa importante a se notar é que ao fazermos estes testes, **o resultado retornado é um vetor**.
+* Uma coisa importante a se notar é que ao fazermos estes testes, __o resultado retornado é um vetor__.
 
-```{r eval = FALSE}
-
-# quais os valores do amostra1 maiores que 28?
-(maior28 <- amostra1 > 28)
+```{r}
+# quais os valores do vetor1 maiores que 17?
+(maior17 <- vetor1 > 17)
 # este teste lógico é um vetor?
-is.vector(x = maior28)
-
+is.vector(x = maior17)
 ```
 
 * Portanto, podemos usar estes testes lógicos para indexar vetores também.
 
-```{r eval = FALSE}
-
+```{r}
 # retornando elementos do vetor1 que sejam maiores que 17
-amostra1[maior28]
+vetor1[maior17]
 # outra forma de fazer isso:
-amostra1[amostra1 > 28]
-
+vetor1[vetor1 > 17]
 ```
 
-* Também podemos usar um vetor para indexar um outro vetor, desde que eles tenham o mesmo tamanho.
+* Além disso, podemos usar um vetor para indexar um outro vetor, desde que eles tenham o mesmo tamanho.
 
-```{r eval = FALSE}
-
+```{r}
+# supondo que os valores do vetor1 correspondem as valores das categorias em letras
 # quais as categorias de letras são iguais a "B"?
-letraB <- quadrats1 == "B"
+letraB <- letras == "B"
 # quais os elementos do vetor1 pertencem à categoria letra "B"?
-amostra1[letraB]
-
+vetor1[letraB]
 ```
 
 * O que acontece se os vetores não diferem o mesmo tamanho?
 
-```{r eval = FALSE}
-
+```{r}
 # criando um vetor de letras de menor comprimento
-quadrats2 <- rep(LETTERS[1:10], each = 1)
-length(quadrats2)
+exemplo <- rep(c("A", "B"), each = 10)
 # indexando o vetor1 com este vetor de letras menor
-amostra1[quadrats2 == "B"]
-amostra1[quadrats1 == "B"]
+vetor1[exemplo == "B"]
 # ou seja, todo o resto do vetor que não corresponde às posições dos TRUEs é descartada!
 # cuidado ao usar esta forma de indexação!
 ```
 
+* Finalmente, algo interessante a se notar é que os argumentos lógicos como `TRUE` ou `FALSE` são entendidos pelos computadores como `1` e `0`, respectivamente. Isto significa, que podemos fazer operações matemáticas utilizando vetores lógicos, de forma a responder algumas questões rapidamente.
+
+```{r}
+## quantos valores do vetor1 são maiores do que 11 e menores do que 22?
+### teste lógico
+teste_logico <- vetor1 > 11 & vetor1 < 22
+teste_logico
+## somando
+sum(teste_logico)
+```
+
 ---
 
-###### **Exercício 3**
+#### Exercício 3 {#anchor8}
 
-a. Crie um vetor de número de 1 a 100 e guarde este vetor em um objeto. 
-b. Crie um segundo vetor com duas categorias: "impar" e "par" (nesta ordem), e guarde em um objeto. 
-c. Faça com que os valores "impar" e "par" sejam repetidos 50 vezes, de forma intercalada ("impar", "par", "impar", "par", ...); guarde isso em um objeto. 
-d. Indexe o vetor criado no passo "a" de forma que somente os números em posição par sejam apresentados.
+1. Crie um vetor de número de 1 a 100 e guarde este vetor em um objeto.
+2. Crie um segundo vetor com duas categorias: "impar" e "par" (nesta ordem), e guarde em um objeto.
+3. Faça com que os valores "impar" e "par" sejam repetidos 50 vezes, de forma intercalada ("impar", "par", "impar", "par", ...); guarde isso em um objeto.
+4. Indexe o vetor criado no passo "a" de forma que somente os números em posição __par__ sejam apresentados.
 
 * O que este último exercício nos mostra é que podemos usar condições relacionadas a um vetor para indexar valores em um outro vetor. Isto é um passo importante para entendermos as operações condicionais em um `data.frame`.
 
@@ -236,284 +225,205 @@ d. Indexe o vetor criado no passo "a" de forma que somente os números em posiç
 
 ## Operações condicionais em `data.frame` {#anchor3}
 
-* Muito frequentemente, ao trabalharmos com a indexação de um `data.frame`, o nosso objetivo é selecionar, ou excluir, as linhas que satisfaçam uma ou mais condições. 
-
-* Estas linhas correspondem a um conjunto de observações que descrevem um conjunto particular de dados.
-
+* Muito frequentemente, ao trabalharmos com a indexação de um `data.frame`, o nosso objeto é selecionar as __linhas__ que satisfaçam a uma ou mais condições: estas linhas correspondem a um conjunto de observações que descrevem um conjunto particular de dados.
 * Para entender melhor as operações condicionais em um `data.frame` vamos, primeiro criar um.
 
-## **Exercício 4**
+```{r}
+# vamos tornar a coisa um pouco mais complexa, adicionando mais uma coluna
+paises <- rep(c("Brasil", "Togo", "Jamaica", "Uruguai", "Trinidad"), times = 10)
+# vamos criar o data.frame com os vetores paises, vetor1 e letras
+dados <- data.frame(paises, vetor1, letras)
+# e vamos verificar as primeiras linhas deste data.frame
+head(dados)
+```
 
-a. Armazene em um vetor (ex. vetor2) um conjunto de dado de distribuição uniforme com 1000 observações e que varie entre 20 e 35;
-b. Crie, a partir deste vetor, um novo conjunto de dados de distribuição normal com 100 observações que possua a mesma média e desvio padrão do vetor2. Note que podemos interpretar esse conjunto de dados, por exemplo, como o nicho térmico realizado de uma espécie;
-c. Agora, vamos gerar um novo vetor que pode representar, por exemplo, os quadrantes de um grid composto por 20 quadrantes de onde cinco observações foram realizadas. Para isso, vamos criar um vetor (ex. quadrats2) contendo 20 letras, cada uma se repetindo 5 vezes. Descubra a classe desse vetor e transforme-o num vetor do tipo fator;
-d. Falta um vetor que represente o número da observação, ou da amostra, realizada em cada nível do fator quadrante. Gere um vetor (ex. obs2) que repita a sequência númerica de 1 a 5 20 vezes.
-e. Finalmente, crie um novo `data.frame` para armazenar o novo conjunto de dados. Lembre de nomear as colunas que serão criadas.
-f. Conheça a estrutura do seu conjunto de dados
+* Você pode se lembrar que uma das formas de indexarmos um `data.frame` é como em um jogo de batalha naval: [linhas, colunas].
 
----
-
-* Você pode se lembrar que uma das formas de indexarmos um data.frame é como em um jogo de batalha naval: `dados2[linhas, colunas]`.
-
-```{r eval = FALSE}
+```{r}
 # apenas as linhas 10 a 20 e colunas 1 e 2
-dados2[10:20, c(1, 2)]
-
+dados[10:20, c(1, 2)]
 ```
 
-* Como vimos ainda pouco, esta o modo como essa indexação é feita é pelo fornecimento de um vetor para cada lado da vírgula, que determina as posições a serem retidas.
+* Como vimos ainda pouco, esta o modo como essa indexação é feita é pelo fornecimento de um vetor para cada lado da vírgula, que determina as posições a serem retidas.  
+* Podemos usar isso em nosso favor, mas primeiro precisamos lembrar como indexar uma coluna de um `data.frame` através do operador `$`.
 
-* Podemos usar isso em nosso favor, mas primeiro precisamos lembrar como indexar uma coluna de um `data.frame` através do operador $.
-
-```{r eval = FALSE}
-
-# retorna um vetor com os níveis da categoria Quadrante
-dados2$quadrante
-# retorna um vetor com os valores de temperatura
-dados2$temperatura
-# retorna um vetor com os números das observações
-dados2$observação
-
+```{r}
+# retorna um vetor com os níveis da categoria paises
+dados$paises
+# retorna um vetor com os números do vetor1
+dados$vetor1
+# retorna um vetor com os níveis da categoria letras
+dados$letras
 ```
 
-* Note que, em todos os casos, ao usarmos o operador $ estamos indexando uma coluna e tendo como resultado um vetor.
+* Note que, em todos os casos, ao usarmos o operador `$` estamos indexando uma coluna e tendo como resultado um _vetor_.
 
-```{r eval = FALSE}
-
-# um teste lógico para saber quais das observacoes corresponde ao quadrante C
-condicao_quadranteC <- dados2$quadrante == "C"
-# se quiséssemos indexar o vetor temperatura dentro do data.frame...
-dados2$temperatura[condicao_quadranteC]
-
+```{r}
+# um teste lógico para saber quais das observacoes corresponde ao país "Brasil"
+condicao_brasil <- dados$paises == "Brasil"
+# se quiséssemos indexar o vetor paises dentro do data.frame...
+dados$vetor1[condicao_brasil]
 ```
 
-* Acabamos de ver que podemos usar uma operação de lógica em um vetor para filtrar outro vetor. Como podemos aplicar isto a um data.frame então?
+* Ora, acabamos de ver que podemos usar uma operação de lógica em um vetor para filtrar outro vetor. Como podemos aplicar isto a um `data.frame` então? Lembre-se que um `data.frame` "conhece" os vetores que o compõe!
 
-* Lembre-se que um `data.frame` "conhece" os vetores que o compõe!
-
-```{r eval = FALSE}
-
-# se quiséssemos indexar apenas as linhas que correspondem ao quadrante C
-dados2[dados2$quadrante == "C", ]
+```{r}
+# se quiséssemos indexar apenas as linhas que correspondem ao país Brasil
+dados[dados$paises == "Brasil", ]
 # podemos ainda determinar quais colunas queremos também reter
-dados2[dados2$quadrante == "C", c(1,3)]
-
+dados[dados$paises == "Brasil", c(2,3)]
 ```
 
-* O que estamos fazendo é dizer ao R para que ele olhe o `data.frame` e retenha as observações de temperatura nas linhas que satisfaçam a uma determina condição (nesse caso, cujo quadrante seja C).
+* O que estamos fazendo é dizendo para o R para que ele olhe o `data.frame` e retenha as observações nas linhas que satisfaçam a uma determina condição (nesse caso, cujo país seja o Brasil).
 
 ---
 
-###### **Exercício 5**
+#### Exercício 4 {#anchor9}
 
-a. Indexe, ou selecione, todas as linhas de dados2 cujo valor da coluna temperatura seja maior do que 30 (inclusive); 
-b. Selecione todas as linhas de dados que correspondam ao quadrante "B", mas removendo a coluna observação.
-
-```{r eval = FALSE}
-
-# a
-condicao_temp <- dados2$temperatura >= 30
-dados2[condicao_temp, ]
-dados2[dados2$temperatura >= 30, ]
-
-# b
-dados2[dados2$quadrante == "B", -3]
-dados2[dados2$quadrante == "B", c(1, 2)]
-dados2[dados2$quadrante == "B", c("temperatura", "quadrante")]
-
-```
+1. Indexe todas as linhas de `dados` cujo valor da coluna `vetor1` seja maior 30 (inclusive);
+2. Indexe todas as linhas de `dados` que correspondam à letra "B", mas removendo a coluna países.
 
 ---
 
 * Podemos extender o uso da indexação para mais de uma condição:
 
-```{r eval = FALSE}
-
-# retendo todas as observações que correspondam aos quadrantes F ou J
-dados2[dados2$quadrante == "F" | dados2$quadrante == "J", ]
-# todas as linhas que contenham a informação do quadrante P OU cujos valores de temperatura sejam maiores do que 30
-dados2[dados2$quadrante == "P" | dados2$temperatura > 30, ]
-# todas as linhas que contenham a informação do quadrante H E cujas temperaturas sejam maiores que 28
-dados2[dados2$quadrante == "H" & dados2$temperatura > 28, ]
-# todas as linhas que contenham a informação do quadrante H OU I E cujas temperaturas sejam maiores que 28
-dados2[dados2$quadrante == "H" | dados2$quadrante == "I"  & dados2$temperatura > 28, ]
-
+```{r}
+# retendo todas as observacoes que correspondam aos países Brasil ou Togo
+dados[dados$paises == "Brasil" | dados$paises == "Togo", ]
+# todas as linhas que contenham a informação do Brasil OU cujos valores do vetor1 sejam maiores do que 30
+dados[dados$paises == "Brasil" | dados$vetor1 > 30, ]
+# todas as linhas que contenham a informação do Brasil E cujas categorias de letras seja "A"
+dados[dados$paises == "Brasil" & dados$letras == "A", ]
 ```
 
 * Mas o que acontece ao condicionarmos esta indexação à condições que estejam na mesma coluna?
 
-```{r eval = FALSE}
-
-# retendo todas as observacoes que correspondam aos quadrantes F e P
-dados2[dados2$quadrante == "F" & dados2$quadrante == "P", ]
-
+```{r}
+# retendo todas as observacoes que correspondam aos países Brasil e Togo
+dados[dados$paises == "Brasil" & dados$paises == "Togo", ]
 ```
 
-* Não existe na coluna quadrante observações que satisfaçam tanto a condição de pertencerem ao quadrante F quanto ao quadrante P: ou é F ou é P. Portanto, ao usarmos este tipo de indexação é necessário usar o operador | ou o operador %in%.
+* Não existe na coluna `paises` observações que satisfaçam tanto a condição de pertencerem ao Brasil quanto a Togo: ou é Brasil ou é Togo. Portanto, ao usarmos este tipo de indexação é necessário usar o operador `|` ou o operador `%in%`.
+    + `%in%` busca uma determinada condição dentro de um determinado vetor.
 
-+   %in% busca uma determinada condição dentro de um determinado vetor.
-
-```{r eval = FALSE}
-
-# observacoes que pertençam ao quadrante F OU P
-dados2[dados2$quadrante == "F" | dados2$quadrante == "P", ]
+```{r}
+# observacoes que pertençam ao Brasil ou ao Togo
+dados[dados$paises == "Brasil" | dados$paises == "Togo", ]
 ## MESMO RESULTADO
 # observacoes que satisfaçam às informações que existem no vetor fornecido
-dados2[dados2$quadrante %in% c("F", "P"), ]
-
+dados[dados$paises %in% c("Brasil","Togo"), ]
 ```
+
+* Este último caso ilustra que ao indexar elementos que estejam dentro de uma mesma coluna devemos sempre utilizar os operadores `|` ou `%in%`.
 
 ---
 
-## **Exercício 6**
+#### Exercício 5 {#anchor10}
 
-a. Vamos usar uma tabela de dados que já existe no seu R: airquality. Primeiramente, explore o seu conteúdo e estrutura utlizando as funções `help` e `str`.
+1. Carregue o conjunto de dados das ilhas que trabalhamos na aula de leitura de dados (`ilhas.xlsx`).
+    + Vamos padronizar o nome do objeto que vai receber estes dados a fim de que utilizemos a mesma terminologia entre nós - minha sugestão: `ilhas`.  
+2. Retenha todos os dados das ilhas que pertençam à arquipélagos de tamanho medio;  
+3. Agora, retenha todas as linhas de ilhas cuja riqueza de espécies seja maior que 30 e que sejam ilhas oceanicas;
+4. Elimine todas as linhas que pertençam às ilhas de grande porte;
+5. Por fim, retenha todas as linhas de ilhas cuja área seja maior do que 1000km², e que sejam ilhas oceanicas em arquipelagos grandes e pequenos; além disso, elimine as colunas que descrevem a produtividade, tamanho da populacao humana, a diversidade de habitats e a existência de montanhas nestas ilhas.
 
-b. Com ela, retenha todas as colunas cujas linhas pertençam ao mês 8; 
+--- 
 
-c. Agora, retenha todas as linhas cuja temperatura seja maior que 70 **E** a concentração de ozônio maior do que 80; 
+* Indexar um `data.frame` de acordo com múltiplas condições pode rapidamente se tornar complexo e impraticável.
+* Existe uma forma mais fácil de __filtrar__ um sub-conjunto dos dados, usando a função `subset`.
+    + podemos usar o argumento `subset` desta função para indicar os elementos que queremos indexar;
+    + podemos usar o argumento `select` desta função para indicar as colunas que queremos preservar.
 
-d. Retenha todas as observações que tenham a velocidade do vento maior do que 10 **E** menor do que 15 **OU** cuja temperatura seja maior ou igual a 86; 
-
-e. Por fim, retenha todas as linhas cujo ozônio seja maior do 100, a radiação solar seja menor do que 230 e que a temperatura seja maior ou igual a 90.
-
----
-
-* Como podemos ver, indexar um `data.frame` de acordo com múltiplas condições pode rapidamente se tornar complexo.
-
-* Existe uma forma mais fácil de filtrar um sub-conjunto dos dados, usando a função `subset`.
-+   podemos usar o argumento `subset` desta função para indicar os elementos que queremos indexar;
-+   podemos usar o argumento `select` desta função para indicar as colunas que queremos preservar.
-
-```{r eval = FALSE}
-
-# todos as observações com Temp < 70
-
-# todos as linhas com Temp < 70 e Solar.R < 100
-subset(x = airquality, subset = Temp < 70 & Solar.R < 100)
-# todos as observações que atendam as condições acima, mas somente as colunas Temp, Solar.R e Month
-subset(x = airquality, subset = Temp < 70 & Solar.R < 100, select = c(Temp, Solar.R, Month))
-
+```{r}
+## utilizando o conjunto de dados mtcars, existente na base do R e disponível logo de sua inicialização
+# todos os carros com mpg > 20
+subset(x = mtcars, mpg > 20)
+# todos os carros com mpg > 20 e hp < 100
+subset(x = mtcars, mpg > 20 & hp < 100)
+# todos os carros que atendam as condições acima, mas somente as colunas mpg, cyl e hp
+subset(x = mtcars, mpg > 20 & hp < 100, select = c(mpg, cyl, hp))
 ```
 
-* Através desta função, também podemos usar o operador `:` para selecionar colunas que estejam em sequência em um `data.frame:
+* Através desta função, também podemos usar o operador `:` para selecionar colunas que estejam em sequência em um `data.frame`:
 
-```{r eval = FALSE}
-
-subset(x = airquality, select = c(Wind:Month))
-
+```{r}
+subset(x = mtcars, select = c(mpg:disp, am:carb))
 ```
 
 * E até reordenar as colunas:
 
-```{r eval = FALSE}
-
-subset(x = airquality, select = c(Day, Month, Temp, Wind, Ozone, Solar.R))
-
+```{r}
+subset(x = mtcars, select = c(cyl, hp, mpg, disp))
 ```
 
 ---
 
-######  **Exercício 7**
+#### Exercício 6 {#anchor11}
 
-* Utilize a função subset e o conjunto de dados CO2 para: 
-
-a. reter somente as observações do tratamento "nonchilled"; 
-
-b. remover as observações cuja concentração de CO2 no ambientefoi maior que 675 (inclusive); 
-
-c. reter apenas as observações oriundas de Quebec; 
-
-d. reter as observações da planta Qn3 cuja absorção de CO2 seja menor do que 40.
+1. Carregue o conjunto de dados que contém as informações climáticas, que utilizamos na aula de leitura de dados, e atribua ele a um objeto chamado `clima` (arquivo: `dados climáticos.csv`).  
+2. Quais os dias e horários nos quais a temperatura máxima registrada foi maior do que 33ºC?
+3. Quais foram os dias nos quais a temperatura mínima à meia noite foi menor do que 25ºC ou maior do que 30ºC?
+4. Quantas observações indicam a ocorrência de eventos de precipitação? 
+4. Qual foi o dia e horário onde houve o maior registro de precipitação?
 
 ---
 
-##  Outras operações e funções condicionais {#anchor4}
+## 4. Funções condicionais {#anchor4}
 
 * Além dos operadores lógicos, o R possui um conjunto de funções que também podem ser empregadas para testes lógicos: `is.na`, `is.infinite` e `is.nan`.
-
 * As funções `is.na`, `is.inf`, `is.nan` são usadas para determinar a existência de `NA`, `Inf` e `NaN` em um vetor: assim como os testes lógicos em vetores, estas funções retornam valores de `TRUE` ou `FALSE` para os valores que passam ou não no teste lógico.
 
-```{r eval = FALSE}
-
+```{r}
 # criando um vetor com NA e testando sua existência
-vetor.NA <- c(3, 6, NA, 12, 15)
-is.na(vetor.NA)
+vetor3 <- c(3, 6, NA, 12, 15)
+is.na(vetor3)
 # criando um vetor com Inf e testando sua existência
-vetor.inf <- c(9, 4, 1, Inf, 0)
-is.infinite(vetor.inf)
+vetor4 <- c(9, 4, 1, Inf, 0)
+is.infinite(vetor4)
 # criando com NaN e testando sua existência
-vetor.NaN <- c(7, NaN, 5, 99, 2)
-is.nan(vetor.NaN)
-# testando a existência de NA na coluna Ozone do `data.frame` airquality
-is.na(airquality$Ozone)
-# testando a existência de NA no `data.frame` airquality
-is.na(airquality)
-# criando um vetor com Inf e testando sua existência
-vetor.inf <- c(9, 4, 1, Inf, 0)
-is.infinite(vetor.inf)
-# criando com NaN e testando sua existência
-vetor.NaN <- c(7, NaN, 5, 99, 2)
-is.nan(vetor.NaN)
-
+vetor5 <- c(7, NaN, 5, 99, 2)
+is.nan(vetor5)
 ```
 
-* Uma coisa importante a se notar é que um NaN é um NA, mas o contrário não é válido: um valor que não é um número é interpretado como um valor não disponível, mas um valor não disponível não é necessariamente um valor que não é um número.
+* Uma coisa importante a se notar é que um `NaN` é um `NA`, mas o contrário não é válido: um valor que não é um número é interpretado como um valor não disponível, mas um valor não disponível não é necessário um valor que não é um número.
 
-```{r eval = FALSE}
-
+```{r}
 # para o vetor que possui um NA
-is.na(vetor.NA) # existe um NA na terceira posição
-is.nan(vetor.NA) # mas não existe um valor que não seja um número
+is.na(vetor3) # existe um NA na terceira posição
+is.nan(vetor3) # mas não existe um valor que não seja um número
 # para o vetor que possui um NaN
-is.na(vetor.NaN) # existe um valor na segunda posição que não está disponível
-is.nan(vetor.NaN) # este valor na segunda posição é um NaN
+is.na(vetor5) # existe um valor na segunda posição que não está disponível
+is.nan(vetor5) # este valor na segunda posição é um NaN
 ```
 
-* Você pode reter, ou remover linhas de um data.frame que contenham NA através da indexação e do teste lógico, como já vimos anteriormente:
+* Você pode remover linhas de um `data.frame` que contenham `NA` através da indexação e do teste lógico, como já vimos anteriormente:
 
-```{r eval = FALSE}
-
+```{r}
 # crindo uma tabela que contenha um NA
 exemplo <- data.frame(foo1 = c(2, 7, NA, 3, 9), foo2 = c("A", "B", "A", "B", "A"))
 # onde está o NA?
 is.na(exemplo)
 # retendo a linha que contenha o NA
 exemplo[is.na(exemplo),]
-
 ```
 
-* Vimos que o NA está na terceira linha, na coluna foo1. Podemos excluir esta linha de duas formas.
+* Vimos que o NA está na terceira linha, na coluna `foo1`. Podemos excluir esta linha de duas formas.
 
-* De forma mecânica:
-
-```{r eval = FALSE}
-
-exemplo[-3,]
+```{r}
+## de maneira mecanica
 # a vantagem: mais fácil
 # a desvantagem: se, por algum motivo, esta linha mudar de posição, você acabará excluindo a linha errada
-
-```
-
-* De forma automatizada, pela argumento ! (= que não seja):
-
-```{r eval = FALSE}
-
-# o NA está na coluna foo1
+exemplo[-3,]
+## de forma automatizada, utilizando o pela argumento `!` (i.e., que não seja)
 is.na(exemplo$foo1)
-# removendo a linha em que haja NA, a partir do momento que sabemos em qual coluna está aquele NA
+!is.na(exemplo$foo1)
+# o NA está na coluna foo1
 exemplo[!is.na(exemplo$foo1), ]
-
 ```
 
-* Todos os exemplos que vimos até agora trabalham como testes lógicos que retornam `TRUE` e `FALSE`. Isto é útil para visualizar quais os valores não batem como uma condição e, mais a frente, veremos que também pode ser útil em operações matemáticas.
+* Por vezes queremos saber qual a posição em que está um elemento que satisfaça a uma determinada condição. Para isto existem algumas funções específicas que são utilizadas especificamente em vetores: `which.min`, `which.max`, `which`.
 
-* No entanto, às vezes queremos saber qual a posição absoluta em que está o elemento que satisfaça uma condição. 
-
-* Para isto existem as funções: `which.min`, `which.max`, `which` - note que essas funções devem ser usadas em **vetores**.
-
-```{r eval = FALSE}
-
+```{r}
 # criando um vetor
 (vetor1 <- 20:30)
 # onde está o valor mínimo do vetor1?
@@ -524,96 +434,81 @@ which.max(vetor1)
 which(vetor1 >= 25)
 which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") == "Joana")
 which(c("Joao", "Maria", "Gabriel", "Joana", "Mario", "Gabriela") != "Joana")
-
 ```
 
 ---
 
-###### **Exercício 8**
+#### Exercício 7 {#anchor12}
 
-* Usando o conjunto de dados CO2:
-
-a. Em que linha está o valor mínimo de concentração de CO2 no ambiente? 
-
-b. Em que linha está o valor máximo de absorção de CO2? 
-
-c. Em que linhas estão as observações que correspondem à planta "Qn2? 
-
-d. Filtre apenas as linhas com observações de plantas do Mississippi.
+1. Carregue o conjunto de dados com as informações de algumas revistas científicas e atribua estes dados ao objeto `revistas` (arquivo `revistas.xls`).  
+2. Em que linha está a revista com maior índice de impacto (_i.e._, `SJR`)? Que revista é essa?
+3. Em que linha está a revista com menor índice de impacto (_i.e._, `SJR`)? Que revista é essa?
+4. Em que linhas estão as revistas brasileiras?
+5. Quais são as revistas brasileiras que tem o índice de impacto maior que 0.5?
+6. Quais as revistas brasileiras que não tem índice de impacto?
 
 ---
 
-* Também podemos usar a função `which` para determinarmos qual a posição dos elementos compartilhados por dois vetores.
+* Também podemos usar a função `which` para determinarmos qual a posição dos elementos compartilhados por dois vetores. 
 
-```{r eval = FALSE}
-
+```{r}
 # criando um segundo vetor
 (vetor2 <- 25:35)
 # qual a posição dos elementos do vetor1 que estão presentes no vetor2?
 which(vetor1 %in% vetor2)
 # qual a posição dos elementos do vetor2 que estão presentes no vetor1?
 which(vetor2 %in% vetor1)
-
 ```
 
-* Este tipo de teste pode ser feito através do conjunto de funções: `setdiff`, `intersect` e `union`
+* Este tipo de teste pode ser feito através do conjunto de funções: `setdiff`, `intersect` e `union`.
 
-```{r eval = FALSE}
-
+```{r}
 # quais os valores diferentes entre o vetor1 e o vetor2?
 setdiff(vetor1, vetor2)
 # quais os valores semelhantes entre o vetor1 e o vetor2?
 intersect(vetor1, vetor2)
 # qual a união dos valores no vetor1 e vetor2?
 union(vetor1, vetor2)
-
 ```
 
+---
+
 * Por fim, existe a função `ifelse`, que usa um teste lógico para executar uma ação:
-+   Dado um teste lógico;
-+   Faça `yes` caso ele seja verdadeiro;
-+   Faça `no` caso ele seja falso.
+    + Dado um teste lógico;
+    + Faça `yes` caso ele seja verdadeiro;
+    + Faça `no` caso ele seja falso.
 
-```{r eval = FALSE}
-
+```{r}
 args(ifelse)
-
 ```
 
 * Um exemplo da aplicação desta função:
 
-```{r eval = FALSE}
-
-ifelse(vetor1 <= 23, "baixo", "alto")
-require(vegan)
-data(mite)
-View(mite)
-incidence <- ifelse(mite > 0,  1, 0)
-
+```{r}
+ifelse(test = vetor1 <= 23, yes = "baixo", no = "alto")
 ```
 
 * Você pode encadear diversos testes e substituições lógicos, mas cuidado - isto tende a se tornar cada vez mais complexo!
 
-```{r eval = FALSE}
-
+```{r}
 ifelse(vetor1 <= 23, "baixo", ifelse(vetor1 <= 26, "médio", ifelse(vetor1 <= 29, "alto", "muito alto")))
-
 ```
 
-##  Aplicação da indexação e operações condicionais {#anchor5}
+---
 
-* Talvez você se pergunte: "para que gastar tanto tempo entendendo como fazer estas indexações e realizar testes lógicos"?
+## Aplicação da indexação e operações condicionais {#anchor5}
 
-* Você verá, ao longo do tempo, que a indexação é muito útil em diversas etapas da análise, manipulação e limpeza de dados para, por exemplo:
-+   Trabalhar com sub-conjuntos dos dados para tarefas específicas;
-+   Remover ou adicionar observacões a um conjunto de dados;
-+   Consertar erros em um conjunto de dados;
-+   Modificar aspectos de um conjuntos de dados;
+* Talvez você se pergunte: "_para que gastar tanto tempo entendendo como fazer estas indexações e realizar testes lógicos_"?
+* Você verá, ao longo do tempo, a indexação é muito útil em diversas etapas da análise, manipulação e limpeza de dados:
+    + Trabalhar com sub-conjuntos dos dados para tarefas específicas;
+    + Remover ou adicionar observacões a um conjunto de dados;
+    + _Consertar_ erros em um conjunto de dados;
+    + _Modificar_ aspectos de um conjuntos de dados;
+    + ...
 
-* Um exemplo de como podemos usar a indexação para consertar um dado: o `data.frame` que criamos, exemplo.
+* Um exemplo de como podemos usar a indexação para consertar um dado: o `data.frame` que criamos, `exemplo`.
 
-```{r eval = FALSE}
-
+```{r}
 # você se lembra do 'NA', na terceira linha?
 exemplo
 # e se por um acaso descobrirmos que esse NA era, na realidade o número 10? podemos alterar este valor diretamente pela indexacao
@@ -623,34 +518,37 @@ exemplo[3,1] # aqui está o NA
 exemplo[3,1] <- 10
 # se olharmos este data.frame agora
 exemplo
-
 ```
 
 * De forma similar, podemos indexar alguns aspectos de um objeto para fazer outros tipos de modificações:
 
-```{r eval = FALSE}
-
+```{r}
 # foo1 e foo2 são dois nomes péssimos para colunas, o que acham de modificarmos estes nomes?
 names(exemplo) # aqui estão os nomes das colunas - estes nomes são um vetor!
 # vamos criar outros dois nomes para as colunas: idade e nome
 novas_colunas <- c("idade", "nome")
 # podemos dizer para o R que os nomes das colunas de exemplo agora serão dadas pelo vetor que criamos
 names(exemplo) <- novas_colunas
-# se olharmos o `data.frame`
+# se olharmos o data.frame
 exemplo
+```
 
+* Finalmente, podemos utilizar a indexação através do operador `$` para criar uma nova coluna em um `data.frame`.
+
+```{r}
+exemplo$programa <- c("a", "b", "c", "d", "e")
+exemplo
 ```
 
 * Note, portanto, que a indexação e testes lógicos podem ser muito úteis para a edição e customização dos dados diretamente no R, sem a necessidade de fazermos qualquer alteração através do Excel (por exemplo).
 
 ---
 
-###### **Exercício 9**
+#### Exercício 8 {#anchor13}
 
-* Com o `data.frame` que acabamos de usar, exemplo: 
-
-a. Substitua o conteúdo de cada linha pela idade e um sobrenome de 5 pessoas que estão sentadas próximas a você; 
-
-b. Substitua apenas o título da coluna 'nome' por 'sobrenome'.
-
----
+* Com o `data.frame` que acabamos de usar, `exemplo`:
+    1. Substitua o conteúdo de cada linha pela idade e um sobrenome de 5 pessoas que estão sentadas próximas a você;
+    2. Substitua apenas o título da coluna `nome` por `sobrenome`;
+    3. Substitua os valores da coluna `programa` pela sigla do programa de pós-graduação ao qual estas pessoas pertençam;
+    4. Adicione uma nova coluna que indique o nível da `graduação` no qual cada pessoa está se formando (_e.g._, graduação, mestrado, doutorado,...).
+    
