@@ -168,7 +168,7 @@ summary(object = numeros)
 
 a. Simule um vetor com 100 números aleatórios que siga a distribuição normal e que tenha média 10 e desvio padrão 3 (função `rnorm`).
 b. Calcule o erro padrão da média dos valores neste vetor.
-    + O erro padrão da média é igual as desvio padrão dividido pela raiz quadrada do tamanho da amostra;
+   + O erro padrão da média é igual as desvio padrão dividido pela raiz quadrada do tamanho da amostra;
 c. Carregue o conjunto de `dados climáticos.csv`, que trabalhamos na última aula. Com estes dados, calcule a média da temperatura instantânea e da velocidade do vento.  
 
 ---
